@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Hao Sun</title>
-    <link>https://sunhao1256.github.io/</link>
-    <description>Recent content on Hao Sun</description>
+    <title>面试 on Hao Sun</title>
+    <link>https://sunhao1256.github.io/tags/%E9%9D%A2%E8%AF%95/</link>
+    <description>Recent content in 面试 on Hao Sun</description>
     <image>
       <url>https://sunhao1256.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
       <link>https://sunhao1256.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
     </image>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Tue, 11 Jan 2022 14:43:18 +0800</lastBuildDate><atom:link href="https://sunhao1256.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 11 Jan 2022 14:43:18 +0800</lastBuildDate><atom:link href="https://sunhao1256.github.io/tags/%E9%9D%A2%E8%AF%95/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>八股文</title>
       <link>https://sunhao1256.github.io/posts/%E5%85%AB%E8%82%A1%E6%96%87/</link>
@@ -23,17 +23,6 @@
   固定窗口java实现：
 private final AtomicInteger cur = new AtomicInteger(0); private Long startTime; public boolean isAllowed(int maxCount, int interval) { //如果没有第一次时间，则当下为第一次时间  if (startTime == null) startTime = System.currentTimeMillis(); //新增一次  cur.addAndGet(1); //如果当前时间减去开始时间，大于间隙了，说明进入新一轮计算  if (System.currentTimeMillis() - interval * 1000L &amp;gt; startTime) { //重置开始时间  startTime = System.currentTimeMillis(); //重置计数  cur.set(1); return true; } //还在时间内  return cur.get() &amp;lt;= maxCount; } 固定窗口解决了在单位时间内流量次数不会超过阀值，但是在临界点会出现问题。</description>
     </item>
-    
-    <item>
-      <title>测试一张壁纸</title>
-      <link>https://sunhao1256.github.io/posts/%E6%B5%8B%E8%AF%95%E4%B8%80%E5%BC%A0%E5%A3%81%E7%BA%B8/</link>
-      <pubDate>Tue, 11 Jan 2022 14:06:29 +0800</pubDate>
-      
-      <guid>https://sunhao1256.github.io/posts/%E6%B5%8B%E8%AF%95%E4%B8%80%E5%BC%A0%E5%A3%81%E7%BA%B8/</guid>
-      <description>壁纸 </description>
-    </item>
-    
-    
     
   </channel>
 </rss>

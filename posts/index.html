@@ -67,6 +67,22 @@
 </header>
 <article class=post-entry>
 <header class=entry-header>
+<h2>八股文
+</h2>
+</header>
+<section class=entry-content>
+<p>Redis redis如何做到限流的 限流的几个方式
+计数器
+计数器即是计算在单位时间窗口内请求访问的次数是否超过阀值。
+窗口分为：固定窗口、滑动窗口
+固定窗口java实现：
+private final AtomicInteger cur = new AtomicInteger(0); private Long startTime; public boolean isAllowed(int maxCount, int interval) { //如果没有第一次时间，则当下为第一次时间 if (startTime == null) startTime = System.currentTimeMillis(); //新增一次 cur.addAndGet(1); //如果当前时间减去开始时间，大于间隙了，说明进入新一轮计算 if (System.currentTimeMillis() - interval * 1000L > startTime) { //重置开始时间 startTime = System.currentTimeMillis(); //重置计数 cur.set(1); return true; } //还在时间内 return cur.get() &lt;= maxCount; } 固定窗口解决了在单位时间内流量次数不会超过阀值，但是在临界点会出现问题。...</p>
+</section>
+<footer class=entry-footer><span title="2022-01-11 14:43:18 +0800 CST">January 11, 2022</span>&nbsp;·&nbsp;3 min&nbsp;·&nbsp;Hao Sun</footer>
+<a class=entry-link aria-label="post link to 八股文" href=https://sunhao1256.github.io/posts/%E5%85%AB%E8%82%A1%E6%96%87/></a>
+</article>
+<article class=post-entry>
+<header class=entry-header>
 <h2>测试一张壁纸
 </h2>
 </header>
