@@ -88,7 +88,287 @@ private final AtomicInteger cur = new AtomicInteger(0); private Long startTime; 
 </h1>
 <div class=post-meta><span title="2022-01-11 14:43:18 +0800 CST">January 11, 2022</span>&nbsp;·&nbsp;3 min&nbsp;·&nbsp;Hao Sun
 </div>
-</header>
+</header> <div class=toc>
+<details>
+<summary accesskey=c title="(Alt + C)">
+<span class=details>Table of Contents</span>
+</summary>
+<div class=inner><ul>
+<li>
+<a href=#redis aria-label=Redis>Redis</a><ul>
+<ul>
+<ul>
+<li>
+<a href=#redis%e5%a6%82%e4%bd%95%e5%81%9a%e5%88%b0%e9%99%90%e6%b5%81%e7%9a%84 aria-label=redis如何做到限流的>redis如何做到限流的</a></li>
+<li>
+<a href=#redis%e6%98%af%e5%8d%95%e7%ba%bf%e7%a8%8b%e7%9a%84%e5%90%97 aria-label=redis是单线程的吗>redis是单线程的吗</a></li>
+<li>
+<a href=#redis%e4%b8%ba%e4%bb%80%e4%b9%88%e8%bf%99%e4%b9%88%e5%9d%97 aria-label=redis为什么这么块>redis为什么这么块</a></li>
+<li>
+<a href=#redis%e7%9a%84%e6%8c%81%e4%b9%85%e5%8c%96 aria-label=redis的持久化>redis的持久化</a></li>
+<li>
+<a href=#redis%e5%b8%83%e9%9a%86%e8%bf%87%e6%bb%a4%e5%99%a8 aria-label=redis布隆过滤器>redis布隆过滤器</a></li>
+<li>
+<a href=#redis%e5%88%86%e5%b8%83%e5%bc%8f%e9%94%81 aria-label=redis分布式锁>redis分布式锁</a></li>
+<li>
+<a href=#redis%e4%b8%ba%e4%bb%80%e4%b9%88%e9%80%89%e7%94%a8%e8%b7%b3%e8%a1%a8 aria-label=redis为什么选用跳表>redis为什么选用跳表</a></li>
+<li>
+<a href=#redis%e9%98%b2%e5%87%bb%e7%a9%bf%e9%9b%aa%e5%b4%a9%e7%a9%bf%e9%80%8f aria-label=redis防击穿、雪崩、穿透>redis防击穿、雪崩、穿透</a></li>
+<li>
+<a href=#redis%e6%98%af%e5%85%88%e5%88%a0%e7%bc%93%e5%ad%98%e8%bf%98%e6%98%af%e5%85%88%e5%86%99%e5%ba%93%e6%80%8e%e4%b9%88%e8%a7%a3%e5%86%b3%e7%bc%93%e5%ad%98%e4%b8%80%e8%87%b4%e6%80%a7 aria-label=redis是先删缓存还是先写库，怎么解决缓存一致性>redis是先删缓存还是先写库，怎么解决缓存一致性</a></li></ul>
+</ul>
+</ul>
+</li>
+<li>
+<a href=#%e9%97%ae%e9%a2%98%e6%8e%92%e6%9f%a5 aria-label=问题排查>问题排查</a><ul>
+<ul>
+<ul>
+<li>
+<a href=#arthas aria-label=arthas>arthas</a></li>
+<li>
+<a href=#jdk%e8%87%aa%e5%b8%a6%e5%91%bd%e4%bb%a4 aria-label=jdk自带命令>jdk自带命令</a></li></ul>
+</ul>
+</ul>
+</li>
+<li>
+<a href=#kafka aria-label=Kafka>Kafka</a><ul>
+<ul>
+<ul>
+<li>
+<a href=#kafka%e7%9a%84%e6%8e%a8%e8%bf%98%e6%98%af%e6%8b%89 aria-label=Kafka的推还是拉>Kafka的推还是拉</a></li>
+<li>
+<a href=#kafka%e5%a6%82%e4%bd%95%e5%81%9a%e5%88%b0%e6%b6%88%e6%81%af%e4%b8%8d%e4%b8%a2%e5%a4%b1%e7%9a%84 aria-label=Kafka如何做到消息不丢失的>Kafka如何做到消息不丢失的</a></li>
+<li>
+<a href=#kafka%e4%b8%ba%e4%bb%80%e4%b9%88%e5%8f%af%e4%bb%a5%e6%9c%89%e8%bf%99%e4%b9%88%e5%a4%a7%e7%9a%84%e5%90%9e%e5%90%90%e9%87%8f aria-label=Kafka为什么可以有这么大的吞吐量>Kafka为什么可以有这么大的吞吐量</a></li></ul>
+</ul>
+</ul>
+</li>
+<li>
+<a href=#mysql aria-label=MySql>MySql</a><ul>
+<ul>
+<ul>
+<li>
+<a href=#mysql%e7%9a%84%e7%b4%a2%e5%bc%95%e6%95%b0%e6%8d%ae%e7%bb%93%e6%9e%84%e4%b8%ba%e4%bb%80%e4%b9%88%e7%94%a8b%e6%a0%91 aria-label=mysql的索引数据结构为什么用B+树>mysql的索引数据结构为什么用B+树</a></li>
+<li>
+<a href=#%e6%9c%80%e5%b7%a6%e5%8c%b9%e9%85%8d%e5%8e%9f%e5%88%99%e6%98%af%e4%bb%80%e4%b9%88 aria-label=最左匹配原则是什么>最左匹配原则是什么</a></li>
+<li>
+<a href=#%e8%af%b4%e5%87%ba%e4%bd%a0%e5%a6%82%e4%bd%95%e8%b0%83%e4%bc%98%e7%9a%84 aria-label=说出你如何调优的>说出你如何调优的</a></li>
+<li>
+<a href=#%e5%b8%b8%e8%a7%81%e7%9a%84%e4%bc%98%e5%8c%96%e6%89%8b%e6%ae%b5 aria-label=常见的优化手段>常见的优化手段</a></li>
+<li>
+<a href=#mvvc aria-label=MVVC>MVVC</a></li>
+<li>
+<a href=#%e4%ba%8b%e5%8a%a1%e7%89%b9%e6%80%a7%e9%9a%94%e7%a6%bb%e7%ba%a7%e5%88%ab%e6%80%8e%e4%b9%88%e8%a7%a3%e5%86%b3%e5%b9%bb%e8%af%bb aria-label=事务特性，隔离级别，怎么解决幻读？>事务特性，隔离级别，怎么解决幻读？</a></li>
+<li>
+<a href=#%e4%b8%ba%e4%bb%80%e4%b9%88%e8%a6%81%e5%88%86%e5%ba%93%e5%88%86%e8%a1%a8%e6%9c%89%e4%bb%80%e4%b9%88%e6%96%b9%e6%a1%88 aria-label=为什么要分库分表，有什么方案>为什么要分库分表，有什么方案</a></li></ul>
+</ul>
+</ul>
+</li>
+<li>
+<a href=#mybatis aria-label=Mybatis>Mybatis</a></li>
+<li>
+<a href=#spring aria-label=Spring>Spring</a><ul>
+<ul>
+<ul>
+<li>
+<a href=#spring%e7%9a%84bean%e6%b3%a8%e5%85%a5%e8%bf%87%e7%a8%8b%e8%ae%b2%e4%b8%80%e4%b8%8b aria-label=Spring的Bean注入过程讲一下>Spring的Bean注入过程讲一下</a></li>
+<li>
+<a href=#spring%e4%b8%ad%e5%b8%b8%e8%a7%81%e7%9a%84%e8%ae%be%e8%ae%a1%e6%a8%a1%e5%bc%8f%e8%af%b4%e4%b8%80%e8%af%b4 aria-label=Spring中常见的设计模式说一说>Spring中常见的设计模式说一说</a></li>
+<li>
+<a href=#spring%e6%98%af%e6%80%8e%e4%b9%88%e8%a7%a3%e5%86%b3bean%e4%b9%8b%e9%97%b4%e7%9a%84%e5%be%aa%e7%8e%af%e4%be%9d%e8%b5%96%e9%97%ae%e9%a2%98 aria-label=Spring是怎么解决Bean之间的循环依赖问题>Spring是怎么解决Bean之间的循环依赖问题</a></li>
+<li>
+<a href=#springmvc%e7%9a%84%e6%b5%81%e7%a8%8b aria-label=SpringMvc的流程>SpringMvc的流程</a></li>
+<li>
+<a href=#springboot%e7%9a%84%e5%90%af%e5%8a%a8%e5%8e%9f%e7%90%86 aria-label=SpringBoot的启动原理>SpringBoot的启动原理</a></li>
+<li>
+<a href=#springcloud%e4%ba%86%e8%a7%a3%e5%a4%9a%e5%b0%91 aria-label=SpringCloud了解多少>SpringCloud了解多少</a></li>
+<li>
+<a href=#aop%e6%80%8e%e4%b9%88%e5%ae%9e%e7%8e%b0%e7%9a%84 aria-label=AOP怎么实现的>AOP怎么实现的</a></li></ul>
+</ul>
+</ul>
+</li>
+<li>
+<a href=#%e5%be%ae%e6%9c%8d%e5%8a%a1 aria-label=微服务>微服务</a><ul>
+<ul>
+<ul>
+<li>
+<a href=#%e4%b8%ba%e4%bb%80%e4%b9%88%e8%a6%81%e7%94%a8dubbo aria-label=为什么要用dubbo>为什么要用dubbo</a></li>
+<li>
+<a href=#%e5%88%86%e5%b8%83%e5%bc%8f%e4%ba%8b%e5%8a%a1%e5%88%86%e5%b8%83%e5%bc%8f%e9%94%81 aria-label=分布式事务、分布式锁>分布式事务、分布式锁</a></li></ul>
+</ul>
+</ul>
+</li>
+<li>
+<a href=#es aria-label=ES>ES</a><ul>
+<ul>
+<ul>
+<li>
+<a href=#%e4%b8%ba%e4%bb%80%e4%b9%88es%e8%83%bd%e6%9f%a5%e8%af%a2%e7%9a%84%e8%bf%99%e4%b9%88%e5%bf%ab aria-label=为什么ES能查询的这么快>为什么ES能查询的这么快</a></li></ul>
+</ul>
+</ul>
+</li>
+<li>
+<a href=#zookeeper aria-label=Zookeeper>Zookeeper</a><ul>
+<ul>
+<ul>
+<li>
+<a href=#zookeeper%e6%98%af%e5%b9%b2%e4%bb%80%e4%b9%88%e7%9a%84 aria-label=Zookeeper是干什么的>Zookeeper是干什么的</a></li></ul>
+</ul>
+</ul>
+</li>
+<li>
+<a href=#java%e5%b9%b6%e5%8f%91 aria-label=Java并发>Java并发</a><ul>
+<ul>
+<ul>
+<li>
+<a href=#%e4%bd%a0%e7%9f%a5%e9%81%93%e5%93%aa%e5%87%a0%e7%a7%8d%e9%94%81 aria-label=你知道哪几种锁>你知道哪几种锁</a></li>
+<li>
+<a href=#%e8%ae%b2%e4%b8%80%e4%b8%8b%e7%ba%bf%e7%a8%8b%e7%9a%84%e7%94%9f%e5%91%bd%e5%91%a8%e6%9c%9f aria-label=讲一下线程的生命周期>讲一下线程的生命周期</a></li>
+<li>
+<a href=#aqs%e6%98%af%e4%bb%80%e4%b9%88 aria-label=AQS是什么？>AQS是什么？</a></li>
+<li>
+<a href=#waitnotifysleepyieldjoin%e8%bf%99%e5%87%a0%e4%b8%aa%e6%96%b9%e6%b3%95%e7%9a%84%e4%bd%9c%e7%94%a8 aria-label=wait()、notify()、sleep()、yield()、join()这几个方法的作用>wait()、notify()、sleep()、yield()、join()这几个方法的作用</a></li>
+<li>
+<a href=#%e5%ae%9e%e7%8e%b0%e7%ba%bf%e7%a8%8b%e5%ae%89%e5%85%a8%e7%9a%84%e6%96%b9%e6%b3%95 aria-label=实现线程安全的方法>实现线程安全的方法</a></li>
+<li>
+<a href=#%e5%85%ac%e5%b9%b3%e9%94%81%e5%92%8c%e9%9d%9e%e5%85%ac%e5%b9%b3%e9%94%81%e7%9a%84%e5%8c%ba%e5%88%abreentrantlock%e6%98%af%e6%80%8e%e4%b9%88%e5%ae%9e%e7%8e%b0%e7%9a%84 aria-label=公平锁和非公平锁的区别,ReentrantLock是怎么实现的>公平锁和非公平锁的区别,ReentrantLock是怎么实现的</a></li>
+<li>
+<a href=#cas%e6%98%af%e4%bb%80%e4%b9%88%e6%80%8e%e4%b9%88%e8%a7%a3%e5%86%b3aba%e9%97%ae%e9%a2%98 aria-label=CAS是什么，怎么解决ABA问题>CAS是什么，怎么解决ABA问题</a></li>
+<li>
+<a href=#concurrenthashmap%e7%9a%84%e5%88%86%e6%ae%b5%e9%94%81 aria-label=ConcurrentHashMap的分段锁>ConcurrentHashMap的分段锁</a></li>
+<li>
+<a href=#%e4%bd%a0%e7%94%a8%e8%bf%87%e5%93%aa%e4%ba%9bjavautilconcurrent%e4%b8%8b%e7%9a%84%e7%b1%bb aria-label=你用过哪些Java.util.concurrent下的类>你用过哪些Java.util.concurrent下的类</a></li>
+<li>
+<a href=#%e8%ae%b2%e4%b8%80%e4%b8%8b%e7%ba%bf%e7%a8%8b%e6%b1%a0%e7%9a%84%e5%87%a0%e4%b8%aa%e5%8f%82%e6%95%b0%e5%90%ab%e4%b9%89 aria-label=讲一下线程池的几个参数含义>讲一下线程池的几个参数含义</a></li>
+<li>
+<a href=#synchronized%e5%85%b3%e9%94%ae%e5%ad%97%e6%80%8e%e4%b9%88%e4%bc%98%e5%8c%96%e7%9a%84%e8%86%a8%e8%83%80%e7%9a%84%e6%b5%81%e7%a8%8b aria-label=synchronized关键字，怎么优化的，膨胀的流程>synchronized关键字，怎么优化的，膨胀的流程</a></li>
+<li>
+<a href=#volatile%e5%85%b3%e9%94%ae%e5%ad%97 aria-label=volatile关键字>volatile关键字</a></li>
+<li>
+<a href=#java%e5%86%85%e5%ad%98%e6%a8%a1%e5%9e%8b aria-label=Java内存模型>Java内存模型</a></li>
+<li>
+<a href=#threadlocal aria-label=ThreadLocal>ThreadLocal</a></li></ul>
+</ul>
+</ul>
+</li>
+<li>
+<a href=#java%e5%9f%ba%e7%a1%80 aria-label=Java基础>Java基础</a><ul>
+<ul>
+<ul>
+<li>
+<a href=#%e8%af%b4%e4%b8%80%e8%af%b4%e4%bd%a0%e7%90%86%e8%a7%a3%e7%9a%84%e5%a4%9a%e6%80%81 aria-label=说一说你理解的多态>说一说你理解的多态</a></li>
+<li>
+<a href=#%e6%9d%a5%e4%b8%aa%e7%ae%80%e5%8d%95%e7%9a%84java%e4%bd%9c%e7%94%a8%e5%9f%9f%e6%9c%89%e5%93%aa%e4%ba%9b%e4%b8%ba%e4%bb%80%e4%b9%88%e8%a6%81%e8%80%83%e8%99%91%e4%bd%9c%e7%94%a8%e5%9f%9f aria-label=来个简单的，Java作用域有哪些，为什么要考虑作用域>来个简单的，Java作用域有哪些，为什么要考虑作用域</a></li>
+<li>
+<a href=#%e8%ae%b2%e4%b8%80%e4%b8%8b%e6%b3%9b%e5%9e%8b%e5%92%8c%e6%b3%a8%e8%a7%a3 aria-label=讲一下泛型和注解>讲一下泛型和注解</a></li>
+<li>
+<a href=#%e8%ae%b2%e4%b8%80%e4%b8%8b%e5%8f%8d%e5%b0%84%e5%92%8c%e5%8a%a8%e6%80%81%e4%bb%a3%e7%90%86 aria-label=讲一下反射和动态代理>讲一下反射和动态代理</a></li>
+<li>
+<a href=#java%e7%9a%84%e5%87%a0%e7%a7%8d%e5%bc%95%e7%94%a8%e4%bd%a0%e7%94%a8%e8%bf%87%e5%87%a0%e7%a7%8d aria-label=Java的几种引用，你用过几种>Java的几种引用，你用过几种</a></li>
+<li>
+<a href=#%e8%af%b4%e8%af%b4%e8%bf%9b%e7%a8%8b%e5%92%8c%e7%ba%bf%e7%a8%8b%e7%9a%84%e5%8c%ba%e5%88%ab aria-label=说说进程和线程的区别>说说进程和线程的区别</a></li></ul>
+</ul>
+</ul>
+</li>
+<li>
+<a href=#java%e9%9b%86%e5%90%88 aria-label=Java集合>Java集合</a><ul>
+<ul>
+<ul>
+<li>
+<a href=#%e8%ae%b2%e4%b8%80%e8%ae%b2%e9%9b%86%e5%90%88%e7%b1%bb%e5%b8%b8%e7%94%a8%e7%9a%84%e9%9b%86%e5%90%88%e4%bb%a5%e5%8f%8a%e5%9c%a8%e5%a4%9a%e7%ba%bf%e7%a8%8b%e4%b8%8b%e4%bd%a0%e6%98%af%e5%a6%82%e4%bd%95%e4%bf%9d%e9%9b%86%e5%90%88%e5%ae%89%e5%85%a8%e7%9a%84 aria-label=讲一讲集合类，常用的集合，以及在多线程下你是如何保集合安全的>讲一讲集合类，常用的集合，以及在多线程下你是如何保集合安全的</a></li>
+<li>
+<a href=#%e8%ae%b2%e8%ae%b2hashmap aria-label=讲讲HashMap>讲讲HashMap</a></li></ul>
+</ul>
+</ul>
+</li>
+<li>
+<a href=#jvm aria-label=JVM>JVM</a><ul>
+<ul>
+<ul>
+<li>
+<a href=#jvm%e6%98%af%e4%bb%80%e4%b9%88 aria-label=JVM是什么>JVM是什么</a></li>
+<li>
+<a href=#jvm%e5%86%85%e5%ad%98%e6%a8%a1%e5%9e%8b aria-label=JVM内存模型>JVM内存模型</a></li>
+<li>
+<a href=#java%e7%bc%96%e8%af%91%e5%88%b0%e6%89%a7%e8%a1%8c%e7%9a%84%e8%bf%87%e7%a8%8b aria-label=Java编译到执行的过程>Java编译到执行的过程</a></li>
+<li>
+<a href=#%e5%8f%8c%e4%ba%b2%e5%a7%94%e6%b4%be%e6%9c%ba%e5%88%b6%e6%98%af%e5%b9%b2%e4%bb%80%e4%b9%88%e7%9a%84 aria-label=双亲委派机制是干什么的>双亲委派机制是干什么的</a></li>
+<li>
+<a href=#jvm%e6%98%af%e6%80%8e%e4%b9%88%e8%bf%9b%e8%a1%8c%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e7%9a%84%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e6%9c%ba%e5%88%b6%e6%98%af%e5%a6%82%e4%bd%95%e7%9a%84%e6%80%8e%e4%b9%88%e5%88%a4%e6%96%ad%e6%98%af%e4%b8%8d%e6%98%af%e5%9e%83%e5%9c%be aria-label=JVM是怎么进行垃圾回收的，垃圾回收机制是如何的，怎么判断是不是垃圾>JVM是怎么进行垃圾回收的，垃圾回收机制是如何的，怎么判断是不是垃圾</a></li>
+<li>
+<a href=#%e5%b9%b3%e6%97%b6%e5%a6%82%e4%bd%95%e8%b0%83%e4%bc%98 aria-label=平时如何调优>平时如何调优</a></li>
+<li>
+<a href=#%e4%b8%80%e4%b8%aa%e5%af%b9%e8%b1%a1%e5%88%b0%e5%ba%95%e6%9c%89%e5%a4%9a%e5%a4%a7%e5%af%b9%e8%b1%a1%e5%9c%a8%e5%86%85%e5%ad%98%e4%b8%ad%e9%95%bf%e4%bb%80%e4%b9%88%e6%a0%b7%e5%ad%90 aria-label=一个对象到底有多大，“对象在内存中长什么样子”>一个对象到底有多大，“对象在内存中长什么样子”</a></li></ul>
+</ul>
+</ul>
+</li>
+<li>
+<a href=#%e7%bd%91%e7%bb%9c aria-label=网络>网络</a><ul>
+<ul>
+<ul>
+<li>
+<a href=#%e8%ae%b2%e4%b8%80%e4%b8%8btcpip aria-label=讲一下TCP/IP>讲一下TCP/IP</a></li>
+<li>
+<a href=#%e8%ae%b2%e4%b8%80%e4%b8%8bhttp aria-label=讲一下HTTP>讲一下HTTP</a></li>
+<li>
+<a href=#netty%e5%b9%b2%e4%bb%80%e4%b9%88%e7%9a%84%e7%94%a8%e8%bf%87%e5%90%97 aria-label=Netty干什么的，用过吗>Netty干什么的，用过吗</a></li>
+<li>
+<a href=#%e4%bd%a0%e7%9f%a5%e9%81%93%e5%93%aa%e4%ba%9b%e7%bd%91%e7%bb%9c%e6%a8%a1%e5%9e%8b aria-label=你知道哪些网络模型？>你知道哪些网络模型？</a></li>
+<li>
+<a href=#bionioaio%e9%83%bd%e6%98%af%e4%bb%80%e4%b9%88 aria-label=BIO、NIO、AIO都是什么>BIO、NIO、AIO都是什么</a></li>
+<li>
+<a href=#%e8%ae%b2%e4%b8%80%e4%b8%8bhttps aria-label=讲一下Https>讲一下Https</a></li>
+<li>
+<a href=#%e4%bb%80%e4%b9%88%e6%98%af%e5%a4%9a%e8%b7%af%e5%a4%8d%e7%94%a8 aria-label=什么是多路复用>什么是多路复用</a></li></ul>
+</ul>
+</ul>
+</li>
+<li>
+<a href=#%e4%bb%a3%e7%a0%81%e4%b9%a6%e5%86%99 aria-label=代码书写>代码书写</a><ul>
+<ul>
+<ul>
+<li>
+<a href=#%e8%81%8a%e8%81%8a%e8%ae%be%e8%ae%a1%e6%a8%a1%e5%bc%8f%e4%bd%a0%e7%9f%a5%e9%81%93%e5%93%aa%e4%ba%9b%e7%94%a8%e8%bf%87%e5%93%aa%e4%ba%9b%e4%b8%ba%e4%bb%80%e4%b9%88%e8%a6%81%e7%94%a8%e8%ae%be%e8%ae%a1%e6%a8%a1%e5%bc%8f aria-label=聊聊设计模式，你知道哪些，用过哪些，为什么要用设计模式>聊聊设计模式，你知道哪些，用过哪些，为什么要用设计模式</a></li></ul>
+</ul>
+</ul>
+</li>
+<li>
+<a href=#%e6%95%b0%e6%8d%ae%e7%bb%93%e6%9e%84 aria-label=数据结构>数据结构</a><ul>
+<ul>
+<ul>
+<li>
+<a href=#%e4%bd%a0%e7%9f%a5%e9%81%93%e5%93%aa%e4%ba%9b%e6%95%b0%e6%8d%ae%e7%bb%93%e6%9e%84 aria-label=你知道哪些数据结构>你知道哪些数据结构</a></li>
+<li>
+<a href=#%e7%ba%a2%e9%bb%91%e6%a0%91b%e6%a0%91b%e6%a0%91%e4%ba%8c%e5%8f%89%e6%a0%91%e5%ae%8c%e5%85%a8%e5%b9%b3%e8%a1%a1%e4%ba%8c%e5%8f%89%e6%a0%91 aria-label=红黑树、B树、B+树、二叉树、完全平衡二叉树>红黑树、B树、B+树、二叉树、完全平衡二叉树</a></li>
+<li>
+<a href=#%e6%89%8b%e5%86%99%e4%b8%80%e4%b8%aa%e9%93%be%e8%a1%a8%e5%ae%9e%e7%8e%b0%e6%ad%a3%e5%90%91%e8%be%93%e5%87%ba%e5%8f%8d%e5%90%91%e8%be%93%e5%87%ba%e6%89%be%e5%88%b0%e6%9c%80%e4%b8%ad%e9%97%b4%e7%9a%84%e5%85%83%e7%b4%a0 aria-label=手写一个链表，实现正向输出，反向输出，找到最中间的元素>手写一个链表，实现正向输出，反向输出，找到最中间的元素</a></li></ul>
+</ul>
+</ul>
+</li>
+<li>
+<a href=#%e7%ae%97%e6%b3%95 aria-label=算法>算法</a><ul>
+<ul>
+<ul>
+<li>
+<a href=#%e5%b8%b8%e8%a7%81%e7%9a%848%e4%b8%aa%e6%8e%92%e5%ba%8f%e7%ae%97%e6%b3%95%e4%bd%a0%e8%83%bd%e5%86%99%e5%87%ba%e5%87%a0%e4%b8%aa aria-label=常见的8个排序算法，你能写出几个>常见的8个排序算法，你能写出几个</a></li></ul>
+</ul>
+</ul>
+</li>
+<li>
+<a href=#%e6%93%8d%e4%bd%9c%e7%b3%bb%e7%bb%9f aria-label=操作系统>操作系统</a><ul>
+<ul>
+<ul>
+<li>
+<a href=#%e9%9b%b6%e6%8b%b7%e8%b4%9d%e6%98%af%e4%bb%80%e4%b9%88 aria-label=零拷贝是什么>零拷贝是什么</a>
+</li>
+</ul>
+</ul>
+</ul>
+</li>
+</ul>
+</div>
+</details>
+</div>
 <div class=post-content><h1 id=redis>Redis<a hidden class=anchor aria-hidden=true href=#redis>#</a></h1>
 <h4 id=redis如何做到限流的>redis如何做到限流的<a hidden class=anchor aria-hidden=true href=#redis如何做到限流的>#</a></h4>
 <p>限流的几个方式</p>
