@@ -5,12 +5,24 @@
 <meta name=robots content="index, follow">
 <title>八股文 | Hao Sun</title>
 <meta name=keywords content="面试">
-<meta name=description content="Redis redis如何做到限流的 限流的几个方式
-  计数器
-计数器即是计算在单位时间窗口内请求访问的次数是否超过阀值。
-窗口分为：固定窗口、滑动窗口
-  固定窗口java实现：
-private final AtomicInteger cur = new AtomicInteger(0); private Long startTime; public boolean isAllowed(int maxCount, int interval) { //如果没有第一次时间，则当下为第一次时间  if (startTime == null) startTime = System.currentTimeMillis(); //新增一次  cur.addAndGet(1); //如果当前时间减去开始时间，大于间隙了，说明进入新一轮计算  if (System.currentTimeMillis() - interval * 1000L > startTime) { //重置开始时间  startTime = System.currentTimeMillis(); //重置计数  cur.set(1); return true; } //还在时间内  return cur.get() <= maxCount; } 固定窗口解决了在单位时间内流量次数不会超过阀值，但是在临界点会出现问题。">
+<meta name=description content="Redis redis有哪些数据结构，你用过哪些，做过什么事情   String
+最简单的数据结构，用于存放字符串，实际上在redis中存放的是字符数组，类似java中的arrayList，**Redis 为了对内存做极致的优化，不同长度的字符串使用不同的结构体来表示。**Redis 规定了字符串的长度不得超过 512 MB
+  List
+底层用的双向列表，类似java中的LinkedList，因为是链表所有，插入删除都是O(1)，查询是O(n)
+常见的命令
+  lpush从头添加元素，rpush从尾添加
+  lpop拿出头部的元素，rpop从尾部拿元素
+索引，lpush+lpop即可实现栈，rpush+lpop可以实现队列
+    Hash
+对应着java中的hashMap
+  Set
+Redis 的集合相当于 Java 语言中的 HashSet，它内部的键值对是无序、唯一的。它的内部实现相当于一个特殊的字典，字典中所有的 value 都是一个值 NULL。
+  Zset
+它类似于 Java 中 SortedSet 和 HashMap 的结合体，一方面它是一个 set，保证了内部 value 的唯一性，另一方面它可以为每个 value 赋予一个 score 值，用来代表排序的权重。
+使用场景：
+ 排行榜，key是用户id，value是访问次数。 限流，key是用户id+接口id，value是时间戳，每次进方法之前，拿当前时间戳-interval，删除小于now-interval的元素，算出加入当前这次请求set中的个数是否大于max，大于则限流。    BloomFilter
+  redis如何做到限流的 限流的几个方式
+  计数器">
 <meta name=author content="Hao Sun">
 <link rel=canonical href=https://sunhao1256.github.io/posts/%E5%85%AB%E8%82%A1%E6%96%87/>
 <link crossorigin=anonymous href=/assets/css/stylesheet.min.c88963fe2d79462000fd0fb1b3737783c32855d340583e4523343f8735c787f0.css integrity="sha256-yIlj/i15RiAA/Q+xs3N3g8MoVdNAWD5FIzQ/hzXHh/A=" rel="preload stylesheet" as=style>
@@ -27,12 +39,24 @@ private final AtomicInteger cur = new AtomicInteger(0); private Long startTime; 
 <style>#theme-toggle,.top-link{display:none}</style>
 <style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style>
 </noscript><meta property="og:title" content="八股文">
-<meta property="og:description" content="Redis redis如何做到限流的 限流的几个方式
-  计数器
-计数器即是计算在单位时间窗口内请求访问的次数是否超过阀值。
-窗口分为：固定窗口、滑动窗口
-  固定窗口java实现：
-private final AtomicInteger cur = new AtomicInteger(0); private Long startTime; public boolean isAllowed(int maxCount, int interval) { //如果没有第一次时间，则当下为第一次时间  if (startTime == null) startTime = System.currentTimeMillis(); //新增一次  cur.addAndGet(1); //如果当前时间减去开始时间，大于间隙了，说明进入新一轮计算  if (System.currentTimeMillis() - interval * 1000L > startTime) { //重置开始时间  startTime = System.currentTimeMillis(); //重置计数  cur.set(1); return true; } //还在时间内  return cur.get() <= maxCount; } 固定窗口解决了在单位时间内流量次数不会超过阀值，但是在临界点会出现问题。">
+<meta property="og:description" content="Redis redis有哪些数据结构，你用过哪些，做过什么事情   String
+最简单的数据结构，用于存放字符串，实际上在redis中存放的是字符数组，类似java中的arrayList，**Redis 为了对内存做极致的优化，不同长度的字符串使用不同的结构体来表示。**Redis 规定了字符串的长度不得超过 512 MB
+  List
+底层用的双向列表，类似java中的LinkedList，因为是链表所有，插入删除都是O(1)，查询是O(n)
+常见的命令
+  lpush从头添加元素，rpush从尾添加
+  lpop拿出头部的元素，rpop从尾部拿元素
+索引，lpush+lpop即可实现栈，rpush+lpop可以实现队列
+    Hash
+对应着java中的hashMap
+  Set
+Redis 的集合相当于 Java 语言中的 HashSet，它内部的键值对是无序、唯一的。它的内部实现相当于一个特殊的字典，字典中所有的 value 都是一个值 NULL。
+  Zset
+它类似于 Java 中 SortedSet 和 HashMap 的结合体，一方面它是一个 set，保证了内部 value 的唯一性，另一方面它可以为每个 value 赋予一个 score 值，用来代表排序的权重。
+使用场景：
+ 排行榜，key是用户id，value是访问次数。 限流，key是用户id+接口id，value是时间戳，每次进方法之前，拿当前时间戳-interval，删除小于now-interval的元素，算出加入当前这次请求set中的个数是否大于max，大于则限流。    BloomFilter
+  redis如何做到限流的 限流的几个方式
+  计数器">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://sunhao1256.github.io/posts/%E5%85%AB%E8%82%A1%E6%96%87/"><meta property="og:image" content="https://sunhao1256.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta property="article:section" content="posts">
 <meta property="article:published_time" content="2022-01-11T14:43:18+08:00">
@@ -40,14 +64,26 @@ private final AtomicInteger cur = new AtomicInteger(0); private Long startTime; 
 <meta name=twitter:card content="summary_large_image">
 <meta name=twitter:image content="https://sunhao1256.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E">
 <meta name=twitter:title content="八股文">
-<meta name=twitter:description content="Redis redis如何做到限流的 限流的几个方式
-  计数器
-计数器即是计算在单位时间窗口内请求访问的次数是否超过阀值。
-窗口分为：固定窗口、滑动窗口
-  固定窗口java实现：
-private final AtomicInteger cur = new AtomicInteger(0); private Long startTime; public boolean isAllowed(int maxCount, int interval) { //如果没有第一次时间，则当下为第一次时间  if (startTime == null) startTime = System.currentTimeMillis(); //新增一次  cur.addAndGet(1); //如果当前时间减去开始时间，大于间隙了，说明进入新一轮计算  if (System.currentTimeMillis() - interval * 1000L > startTime) { //重置开始时间  startTime = System.currentTimeMillis(); //重置计数  cur.set(1); return true; } //还在时间内  return cur.get() <= maxCount; } 固定窗口解决了在单位时间内流量次数不会超过阀值，但是在临界点会出现问题。">
+<meta name=twitter:description content="Redis redis有哪些数据结构，你用过哪些，做过什么事情   String
+最简单的数据结构，用于存放字符串，实际上在redis中存放的是字符数组，类似java中的arrayList，**Redis 为了对内存做极致的优化，不同长度的字符串使用不同的结构体来表示。**Redis 规定了字符串的长度不得超过 512 MB
+  List
+底层用的双向列表，类似java中的LinkedList，因为是链表所有，插入删除都是O(1)，查询是O(n)
+常见的命令
+  lpush从头添加元素，rpush从尾添加
+  lpop拿出头部的元素，rpop从尾部拿元素
+索引，lpush+lpop即可实现栈，rpush+lpop可以实现队列
+    Hash
+对应着java中的hashMap
+  Set
+Redis 的集合相当于 Java 语言中的 HashSet，它内部的键值对是无序、唯一的。它的内部实现相当于一个特殊的字典，字典中所有的 value 都是一个值 NULL。
+  Zset
+它类似于 Java 中 SortedSet 和 HashMap 的结合体，一方面它是一个 set，保证了内部 value 的唯一性，另一方面它可以为每个 value 赋予一个 score 值，用来代表排序的权重。
+使用场景：
+ 排行榜，key是用户id，value是访问次数。 限流，key是用户id+接口id，value是时间戳，每次进方法之前，拿当前时间戳-interval，删除小于now-interval的元素，算出加入当前这次请求set中的个数是否大于max，大于则限流。    BloomFilter
+  redis如何做到限流的 限流的几个方式
+  计数器">
 <script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://sunhao1256.github.io/posts/"},{"@type":"ListItem","position":2,"name":"八股文","item":"https://sunhao1256.github.io/posts/%E5%85%AB%E8%82%A1%E6%96%87/"}]}</script>
-<script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"八股文","name":"八股文","description":"Redis redis如何做到限流的 限流的几个方式\n  计数器\n计数器即是计算在单位时间窗口内请求访问的次数是否超过阀值。\n窗口分为：固定窗口、滑动窗口\n  固定窗口java实现：\nprivate final AtomicInteger cur = new AtomicInteger(0); private Long startTime; public boolean isAllowed(int maxCount, int interval) { //如果没有第一次时间，则当下为第一次时间  if (startTime == null) startTime = System.currentTimeMillis(); //新增一次  cur.addAndGet(1); //如果当前时间减去开始时间，大于间隙了，说明进入新一轮计算  if (System.currentTimeMillis() - interval * 1000L \u0026gt; startTime) { //重置开始时间  startTime = System.currentTimeMillis(); //重置计数  cur.set(1); return true; } //还在时间内  return cur.get() \u0026lt;= maxCount; } 固定窗口解决了在单位时间内流量次数不会超过阀值，但是在临界点会出现问题。","keywords":["面试"],"articleBody":"Redis redis如何做到限流的 限流的几个方式\n  计数器\n计数器即是计算在单位时间窗口内请求访问的次数是否超过阀值。\n窗口分为：固定窗口、滑动窗口\n  固定窗口java实现：\nprivate final AtomicInteger cur = new AtomicInteger(0); private Long startTime; public boolean isAllowed(int maxCount, int interval) { //如果没有第一次时间，则当下为第一次时间  if (startTime == null) startTime = System.currentTimeMillis(); //新增一次  cur.addAndGet(1); //如果当前时间减去开始时间，大于间隙了，说明进入新一轮计算  if (System.currentTimeMillis() - interval * 1000L  startTime) { //重置开始时间  startTime = System.currentTimeMillis(); //重置计数  cur.set(1); return true; } //还在时间内  return cur.get()  maxCount; } 固定窗口解决了在单位时间内流量次数不会超过阀值，但是在临界点会出现问题。\n在前一个一秒内，0.8秒到1秒，访问了5次，没有超过阀值，1秒到1.2秒访问了5次，没有超过阀值。0.8秒到1.2秒之间的0.4秒访问了10次，超过了阀值。没有达到目的。这样的问题原因是窗口没有“滑动”。\n  滑动窗口\n滑动窗口是一种算法思想\n 滑动窗口算法（Sliding Window Algorithm）\n  Sliding window algorithm is used to perform required operation on specific window size of given large buffer or array.\n滑动窗口算法是在给定特定窗口大小的数组或字符串上执行要求的操作。\n  This technique shows how a nested for loop in few problems can be converted to single for loop and hence reducing the time complexity.\n该技术可以将一部分问题中的嵌套循环转变为一个单循环，因此它可以减少时间复杂度。\n 简而言之，滑动窗口算法在一个特定大小的字符串或数组上进行操作，而不在整个字符串和数组上操作，这样就降低了问题的复杂度，从而也达到降低了循环的嵌套深度。其实这里就可以看出来滑动窗口主要应用在数组和字符串上。\n常见的算法题，找到A字符串中，包含T个字符的最小覆盖子串\n//找到字符串EBBANCF中包含ABC三个字符的最小子串  //往往类似于“ 请找到满足 xx 的最 x 的区间（子串、子数组）的 xx ”这类问题都可以使用该方法进行解决。  public String noFixed(String str,String target){ String[] s = str.split(\"\"); String[] t = target.split(\"\"); //定义两个指针，在s上滑动  int left=0,right=0; String res=null; List window=new ArrayList(); //一直滑动，直到右指针到头了  while (rights.length){ //移动右指针，一直到包含了所有的目标元素  window.add(s[right]); right++; //如果window满足要求了，就移动左指针  while (window.containsAll(Arrays.asList(t))){ if(res==null){ //第一次得到结果  res=String.join(\"\",window); }else{ //比较当前的长度大小和目前最小的结果  res=(window.size()res.length())?String.join(\"\",window):res; } //移动左指针,直至窗口不满足  window.remove(s[left]); left++; } } return res; } /** * 固定窗口大小为f */ public String fixed(Integer f, String str) { String result = null; int right = 0; //寻找字符串中长度为f的包含最多元音字母的子串  String[] s = str.split(\"\"); List window = new ArrayList(); while (right  s.length) { //滑动右指针  window.add(s[right]); right++; //达到目标窗口的大小  if (right = f) { //检查条件  String cur = String.join(\"\", window); if (result == null) { //满足条件的话  if (countOfVowel(cur)  0) result = cur; } else { int i = countOfVowel(result); int j = countOfVowel(cur); result = i  j ? result : cur; } //移动左指针，因为窗口固定，删除左边right-f个字符  window.remove(s[right-f]); } } return result; } private int countOfVowel(String s) { String[] split = s.split(\"\"); ListString vowels = Arrays.asList(\"A\", \"E\", \"I\", \"O\", \"U\"); int res = 0; for (int i = 0; i  split.length; i++) { if (vowels.contains(split[i].toUpperCase())) { res++; } } return res; } 滑动窗口解决了临界的问题，但是当在窗口内达到了阀值，剩余的请求都会被拒绝，这样处理不好。\n    漏桶\npublic class LeakBucketLimit { /** * 出水率 */ private final long rate=5L;//1秒出水5个请求  /** * 桶的容量 */ private final long capacity=10L; /** * 当前水量 */ private long currentWater; /** * 最后刷新时间 */ private long refreshTime; public boolean tryAcquire(){ /** * 获取当前时间 */ long currentTime = System.currentTimeMillis(); /** * 流出去的水 */ long outWater = (currentTime-refreshTime)/1000*rate; /** * 当前 */ currentWater = Math.max(0,currentWater-outWater); System.out.println(currentWater); refreshTime=currentTime; if(currentWater=capacity){ //不够流了  return false; } //加水  currentWater++; return true; } } 缺陷：不管是什么流量，桶都会按照rate一点一点消费，如果来了爆炸的流量，依然一点一点消费，实际情况中，我们希望能快速消费。而平时就按照rate消费。\n  令牌桶\n令牌桶就是为了解决漏桶的缺点。\n  有一个令牌管理员，根据限流大小，定速往令牌桶里放令牌。 如果令牌数量满了，超过令牌桶容量的限制，那就丢弃。 系统在接受到一个用户请求时，都会先去令牌桶要一个令牌。如果拿到令牌，那么就处理这个请求的业务逻辑； 如果拿不到令牌，就直接拒绝这个请求。   /** * 令牌桶发放速度 */ private final long tokenRate=5L; /** * 桶的容量 */ private final long capacity=10; /** * 上一次刷新的时间 */ private long refreshTime; /** * 当前桶里的令牌 */ private long currentToken; public boolean tryAcquire(){ //当前时间  long currentTime=System.currentTimeMillis(); //更新当前桶里的令牌个数  //当前token个数=原来当前个数+间隙之间生产出来的token个数（可能为0）  currentToken =Math.min (capacity,(currentToken+currentTime - refreshTime) / 1000 * tokenRate); refreshTime=currentTime; if(currentToken0){ //还有令牌  currentToken--; return true; } return false; }   redis是单线程的吗 redis为什么这么块 redis的持久化 redis布隆过滤器 redis分布式锁 redis为什么选用跳表 redis防击穿、雪崩、穿透 redis是先删缓存还是先写库，怎么解决缓存一致性 问题排查 arthas jdk自带命令 Kafka Kafka的推还是拉 Kafka如何做到消息不丢失的 Kafka为什么可以有这么大的吞吐量 MySql mysql的索引数据结构为什么用B+树 最左匹配原则是什么 说出你如何调优的 常见的优化手段 MVVC 事务特性，隔离级别，怎么解决幻读？ 为什么要分库分表，有什么方案 Mybatis Spring Spring的Bean注入过程讲一下 Spring中常见的设计模式说一说 Spring是怎么解决Bean之间的循环依赖问题 SpringMvc的流程 SpringBoot的启动原理 SpringCloud了解多少 AOP怎么实现的 微服务 为什么要用dubbo 分布式事务、分布式锁 ES 为什么ES能查询的这么快 Zookeeper Zookeeper是干什么的 Java并发 你知道哪几种锁 讲一下线程的生命周期 AQS是什么？ wait()、notify()、sleep()、yield()、join()这几个方法的作用 实现线程安全的方法 公平锁和非公平锁的区别,ReentrantLock是怎么实现的 CAS是什么，怎么解决ABA问题 ConcurrentHashMap的分段锁 你用过哪些Java.util.concurrent下的类 讲一下线程池的几个参数含义 synchronized关键字，怎么优化的，膨胀的流程 volatile关键字 Java内存模型 ThreadLocal Java基础 说一说你理解的多态 来个简单的，Java作用域有哪些，为什么要考虑作用域 讲一下泛型和注解 讲一下反射和动态代理 Java的几种引用，你用过几种 说说进程和线程的区别 Java集合 讲一讲集合类，常用的集合，以及在多线程下你是如何保集合安全的 讲讲HashMap JVM JVM是什么 JVM内存模型 Java编译到执行的过程 双亲委派机制是干什么的 JVM是怎么进行垃圾回收的，垃圾回收机制是如何的，怎么判断是不是垃圾 平时如何调优 一个对象到底有多大，“对象在内存中长什么样子” 网络 讲一下TCP/IP 讲一下HTTP Netty干什么的，用过吗 你知道哪些网络模型？ BIO、NIO、AIO都是什么 讲一下Https 什么是多路复用 代码书写 聊聊设计模式，你知道哪些，用过哪些，为什么要用设计模式 数据结构 你知道哪些数据结构 红黑树、B树、B+树、二叉树、完全平衡二叉树 手写一个链表，实现正向输出，反向输出，找到最中间的元素 算法 常见的8个排序算法，你能写出几个 操作系统 零拷贝是什么 ","wordCount":"526","inLanguage":"en","datePublished":"2022-01-11T14:43:18+08:00","dateModified":"2022-01-11T14:43:18+08:00","author":{"@type":"Person","name":"Hao Sun"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://sunhao1256.github.io/posts/%E5%85%AB%E8%82%A1%E6%96%87/"},"publisher":{"@type":"Organization","name":"Hao Sun","logo":{"@type":"ImageObject","url":"https://sunhao1256.github.io/%3Clink%20/%20abs%20url%3E"}}}</script>
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"八股文","name":"八股文","description":"Redis redis有哪些数据结构，你用过哪些，做过什么事情   String\n最简单的数据结构，用于存放字符串，实际上在redis中存放的是字符数组，类似java中的arrayList，**Redis 为了对内存做极致的优化，不同长度的字符串使用不同的结构体来表示。**Redis 规定了字符串的长度不得超过 512 MB\n  List\n底层用的双向列表，类似java中的LinkedList，因为是链表所有，插入删除都是O(1)，查询是O(n)\n常见的命令\n  lpush从头添加元素，rpush从尾添加\n  lpop拿出头部的元素，rpop从尾部拿元素\n索引，lpush+lpop即可实现栈，rpush+lpop可以实现队列\n    Hash\n对应着java中的hashMap\n  Set\nRedis 的集合相当于 Java 语言中的 HashSet，它内部的键值对是无序、唯一的。它的内部实现相当于一个特殊的字典，字典中所有的 value 都是一个值 NULL。\n  Zset\n它类似于 Java 中 SortedSet 和 HashMap 的结合体，一方面它是一个 set，保证了内部 value 的唯一性，另一方面它可以为每个 value 赋予一个 score 值，用来代表排序的权重。\n使用场景：\n 排行榜，key是用户id，value是访问次数。 限流，key是用户id+接口id，value是时间戳，每次进方法之前，拿当前时间戳-interval，删除小于now-interval的元素，算出加入当前这次请求set中的个数是否大于max，大于则限流。    BloomFilter\n  redis如何做到限流的 限流的几个方式\n  计数器","keywords":["面试"],"articleBody":"Redis redis有哪些数据结构，你用过哪些，做过什么事情   String\n最简单的数据结构，用于存放字符串，实际上在redis中存放的是字符数组，类似java中的arrayList，**Redis 为了对内存做极致的优化，不同长度的字符串使用不同的结构体来表示。**Redis 规定了字符串的长度不得超过 512 MB\n  List\n底层用的双向列表，类似java中的LinkedList，因为是链表所有，插入删除都是O(1)，查询是O(n)\n常见的命令\n  lpush从头添加元素，rpush从尾添加\n  lpop拿出头部的元素，rpop从尾部拿元素\n索引，lpush+lpop即可实现栈，rpush+lpop可以实现队列\n    Hash\n对应着java中的hashMap\n  Set\nRedis 的集合相当于 Java 语言中的 HashSet，它内部的键值对是无序、唯一的。它的内部实现相当于一个特殊的字典，字典中所有的 value 都是一个值 NULL。\n  Zset\n它类似于 Java 中 SortedSet 和 HashMap 的结合体，一方面它是一个 set，保证了内部 value 的唯一性，另一方面它可以为每个 value 赋予一个 score 值，用来代表排序的权重。\n使用场景：\n 排行榜，key是用户id，value是访问次数。 限流，key是用户id+接口id，value是时间戳，每次进方法之前，拿当前时间戳-interval，删除小于now-interval的元素，算出加入当前这次请求set中的个数是否大于max，大于则限流。    BloomFilter\n  redis如何做到限流的 限流的几个方式\n  计数器\n计数器即是计算在单位时间窗口内请求访问的次数是否超过阀值。\n窗口分为：固定窗口、滑动窗口\n  固定窗口java实现：\nprivate final AtomicInteger cur = new AtomicInteger(0); private Long startTime; public boolean isAllowed(int maxCount, int interval) { //如果没有第一次时间，则当下为第一次时间  if (startTime == null) startTime = System.currentTimeMillis(); //新增一次  cur.addAndGet(1); //如果当前时间减去开始时间，大于间隙了，说明进入新一轮计算  if (System.currentTimeMillis() - interval * 1000L  startTime) { //重置开始时间  startTime = System.currentTimeMillis(); //重置计数  cur.set(1); return true; } //还在时间内  return cur.get()  maxCount; } 固定窗口解决了在单位时间内流量次数不会超过阀值，但是在临界点会出现问题。\n在前一个一秒内，0.8秒到1秒，访问了5次，没有超过阀值，1秒到1.2秒访问了5次，没有超过阀值。0.8秒到1.2秒之间的0.4秒访问了10次，超过了阀值。没有达到目的。这样的问题原因是窗口没有“滑动”。\n  滑动窗口\n滑动窗口是一种算法思想\n 滑动窗口算法（Sliding Window Algorithm）\n  Sliding window algorithm is used to perform required operation on specific window size of given large buffer or array.\n滑动窗口算法是在给定特定窗口大小的数组或字符串上执行要求的操作。\n  This technique shows how a nested for loop in few problems can be converted to single for loop and hence reducing the time complexity.\n该技术可以将一部分问题中的嵌套循环转变为一个单循环，因此它可以减少时间复杂度。\n 简而言之，滑动窗口算法在一个特定大小的字符串或数组上进行操作，而不在整个字符串和数组上操作，这样就降低了问题的复杂度，从而也达到降低了循环的嵌套深度。其实这里就可以看出来滑动窗口主要应用在数组和字符串上。\n常见的算法题，找到A字符串中，包含T个字符的最小覆盖子串\n//找到字符串EBBANCF中包含ABC三个字符的最小子串  //往往类似于“ 请找到满足 xx 的最 x 的区间（子串、子数组）的 xx ”这类问题都可以使用该方法进行解决。  public String noFixed(String str,String target){ String[] s = str.split(\"\"); String[] t = target.split(\"\"); //定义两个指针，在s上滑动  int left=0,right=0; String res=null; List window=new ArrayList(); //一直滑动，直到右指针到头了  while (rights.length){ //移动右指针，一直到包含了所有的目标元素  window.add(s[right]); right++; //如果window满足要求了，就移动左指针  while (window.containsAll(Arrays.asList(t))){ if(res==null){ //第一次得到结果  res=String.join(\"\",window); }else{ //比较当前的长度大小和目前最小的结果  res=(window.size()res.length())?String.join(\"\",window):res; } //移动左指针,直至窗口不满足  window.remove(s[left]); left++; } } return res; } /** * 固定窗口大小为f */ public String fixed(Integer f, String str) { String result = null; int right = 0; //寻找字符串中长度为f的包含最多元音字母的子串  String[] s = str.split(\"\"); List window = new ArrayList(); while (right  s.length) { //滑动右指针  window.add(s[right]); right++; //达到目标窗口的大小  if (right = f) { //检查条件  String cur = String.join(\"\", window); if (result == null) { //满足条件的话  if (countOfVowel(cur)  0) result = cur; } else { int i = countOfVowel(result); int j = countOfVowel(cur); result = i  j ? result : cur; } //移动左指针，因为窗口固定，删除左边right-f个字符  window.remove(s[right-f]); } } return result; } private int countOfVowel(String s) { String[] split = s.split(\"\"); ListString vowels = Arrays.asList(\"A\", \"E\", \"I\", \"O\", \"U\"); int res = 0; for (int i = 0; i  split.length; i++) { if (vowels.contains(split[i].toUpperCase())) { res++; } } return res; } 滑动窗口解决了临界的问题，但是当在窗口内达到了阀值，剩余的请求都会被拒绝，这样处理不好。\n    漏桶\npublic class LeakBucketLimit { /** * 出水率 */ private final long rate=5L;//1秒出水5个请求  /** * 桶的容量 */ private final long capacity=10L; /** * 当前水量 */ private long currentWater; /** * 最后刷新时间 */ private long refreshTime; public boolean tryAcquire(){ /** * 获取当前时间 */ long currentTime = System.currentTimeMillis(); /** * 流出去的水 */ long outWater = (currentTime-refreshTime)/1000*rate; /** * 当前 */ currentWater = Math.max(0,currentWater-outWater); System.out.println(currentWater); refreshTime=currentTime; if(currentWater=capacity){ //不够流了  return false; } //加水  currentWater++; return true; } } 缺陷：不管是什么流量，桶都会按照rate一点一点消费，如果来了爆炸的流量，依然一点一点消费，实际情况中，我们希望能快速消费。而平时就按照rate消费。\n  令牌桶\n令牌桶就是为了解决漏桶的缺点。\n  有一个令牌管理员，根据限流大小，定速往令牌桶里放令牌。 如果令牌数量满了，超过令牌桶容量的限制，那就丢弃。 系统在接受到一个用户请求时，都会先去令牌桶要一个令牌。如果拿到令牌，那么就处理这个请求的业务逻辑； 如果拿不到令牌，就直接拒绝这个请求。   /** * 令牌桶发放速度 */ private final long tokenRate=5L; /** * 桶的容量 */ private final long capacity=10; /** * 上一次刷新的时间 */ private long refreshTime; /** * 当前桶里的令牌 */ private long currentToken; public boolean tryAcquire(){ //当前时间  long currentTime=System.currentTimeMillis(); //更新当前桶里的令牌个数  //当前token个数=原来当前个数+间隙之间生产出来的token个数（可能为0）  currentToken =Math.min (capacity,(currentToken+currentTime - refreshTime) / 1000 * tokenRate); refreshTime=currentTime; if(currentToken0){ //还有令牌  currentToken--; return true; } return false; }   redis是单线程的吗，它为什么这么快？   是“单线程”也不是“单线程”\n在redis6.0后，推出了多线程的概念。这里的单线程或者多线程，是对于整个redis来说的。并不是针对一个缓存的读取而言。\n说redis是单线程的，并不是说redis的所有操作模块都是单线程的。redis单线程指的是，用单个线程进行网络io和键值读取。\nRedis中只有网络请求模块和数据操作模块是单线程的。而其他的如持久化存储模块、集群支撑模块等是多线程的\n在redis6.0之前一直是这样处理的，为什么对于网络的io不用多线程呢。\n 首先使用多线程的目的是为了提高IO利用率和CPU利用率，而redis的是io密集型软件。CPU并不是它的瓶颈。可以使用多线程来提高IO\n利用率，但是提高IO利用率的方法并非只有多线程一种方式\n 对线程带来的弊端：内存模型，锁，CAS操作保证并发。\n虽然，采用多线程可以帮助我们提升CPU和I/O的利用率，但是多线程带来的并发问题也给这些语言和框架带来了更多的复杂性。而且，多线程模型中，多个线程的互相切换也会带来一定的性能开销。\n所以，在提升I/O利用率这个方面上，Redis并没有采用多线程技术，而是选择了多路复用 I/O技术。\n多路复用即redis使用单线程，去接收并发下的网络套接字。redis没有使用多线程，减少线程之前切换的开销，以及多线程带来的共享对象的并发问题。因此大家称redis是单线程的\n由于多路复用的IO模型本质上仍然是同步阻塞型IO模型。\n在多路复用的IO模型中，在处理网络请求时，调用 select （其他函数同理）的过程是阻塞的，也就是说这个过程会阻塞线程，如果并发量很高，此处可能会成为瓶颈。\n如果能采用多线程，使得网络处理的请求并发进行，就可以大大的提升性能。多线程除了可以减少由于网络 I/O 等待造成的影响，还可以充分利用 CPU 的多核优势。\nRedis 6.0采用多个IO线程来处理网络请求，网络请求的解析可以由其他线程完成，然后把解析后的请求交由主线程进行实际的内存读写。提升网络请求处理的并行度，进而提升整体性能。\n但是，Redis 的多 IO 线程只是用来处理网络请求的，对于读写命令，Redis 仍然使用单线程来处理。因此不会数据上的并发安全问题\n  为什么快？\n 完全基于内存 数据结构简单，对数据操作也简单，如哈希表、跳表都有很高的性能 采用单线程，避免了不必要的上下文切换和竞争条件，也不存在多进程或者多线程导致的切换而消耗 CPU 使用多路I/O复用模型    redis的高可用 redis的持久化 Redis提供了2中持久化方式AOF，RDB\n AOF RDB  redis布隆过滤器 布隆过滤器可以使用高效的数据结构，存放大量的数据。布隆过滤器说存在，则不一定存在，但是布隆过滤器说不存在，则一定不存在。常用于缓存穿透的问题。\n特点\n 空间效率高 多次hash，时间效率高 存在误判，所以不好做删除  使用场景\n 黑名单 URL去重 ID校验 防止穿透  原理：\n 布隆过滤器本质上是一个位数组，每个元素只占1个bit，只会有0和1，通过n次hash，减少hash碰撞。当一个key过来的时候，进行n次hash，得出n次结果，将n次结果的位值在数组中查找，如果发现有一个值为0，则key一定不在过滤器中。如果都为1可能在过滤器中，因为hash值会碰撞。hash的次数和数组的大小决定了布隆过滤器的准确度。  使用：\n google在guava中封装好的BloomFilter redis 4.0后可以加入module BloomFilter  redis分布式锁 redis为什么选用跳表 redis防击穿、雪崩、穿透   击穿\n和雪崩有一点像。击穿是大量请求，打一个key，这个key突然失效，导致打挂了库。而雪崩是大量key一起失效\n  穿透\n访问一个不可能存在的key，一直打到数据库，导致数据库挂了\n解决方案：\n 代码中针对查key的逻辑需要注意，在逻辑上就处理掉这些不会出现的key 对于不存在的key，依然存缓存，value设为null，或者提示语句。例如“稍后再试，请求不正确”。并且给他一个过期时间 使用布隆过滤器 通过nginx做ip的限制，加黑名单。    雪崩\n大批量的key在同时一时刻失效，导致大批量的请求全部打到数据上。数据库承受不住挂了。\n解决方案：\n 设置过期时间的时候加上随机数，保证同一时间不会有大量的key失效 设置这种热点数据用不过期。需要更新的时候，顺手更新一下缓存就可以了    redis是先删缓存还是先写库，怎么解决缓存一致性   先删缓存，再更新数据库\n缓存删除完成后，数据库更新操作还没好，此时请求过来，读缓存，读不到，读数据库，得到的是旧数据\n解决方案：延时双删\n 流程如下：\n 线程1删除缓存，然后去更新数据库 线程2来读缓存，发现缓存已经被删除，所以直接从数据库中读取，这时候由于线程1还没有更新完成，所以读到的是旧值，然后把旧值写入缓存 线程1，根据估算的时间，sleep，由于sleep的时间大于线程2读数据+写缓存的时间，所以缓存被再次删除 如果还有其他线程来读取缓存的话，就会再次从数据库中读取到最新值     先更新库，再删除缓存\n更新数据库成功，如果删除缓存失败或者还没有来得及删除，那么，其他线程从缓存中读取到的就是旧值，还是会发生不一致。\n解决方案：先更新数据库，成功后往消息队列发消息，消费到消息后再删除缓存，借助消息队列的重试机制来实现，达到最终一致性的效果。进阶一点，使用数据的binlog通知到消息队列，然后更新缓存。无代码入侵\n 缺陷：\n 引入消息中间件之后，问题更复杂了，怎么保证消息不丢失更麻烦 就算更新数据库和删除缓存都没有发生问题，消息的延迟也会带来短暂的不一致性，不过这个延迟相对来说还是可以接受的     设置过期时间\n 每次放入缓存的时候，设置一个过期时间，比如5分钟，以后的操作只修改数据库，不操作缓存，等待缓存超时后从数据库重新读取。\n如果对于一致性要求不是很高的情况，可以采用这种方案。\n这个方案还会有另外一个问题，就是如果数据更新的特别频繁，不一致性的问题就很大了。\n在实际生产中，我们有一些活动的缓存数据是使用这种方式处理的。\n因为活动并不频繁发生改变，而且对于活动来说，短暂的不一致性并不会有什么大的问题。\n   总结\n首先，我们要明确一点，缓存不是更新，而应该是删除。\n删除缓存有两种方式：\n 先删除缓存，再更新数据库。解决方案是使用延迟双删。 先更新数据库，再删除缓存。解决方案是消息队列或者其他binlog同步，引入消息队列会带来更多的问题，并不推荐直接使用。  针对缓存一致性要求不是很高的场景，那么只通过设置超时时间就可以了。\n其实，如果不是很高的并发，无论你选择先删缓存还是后删缓存的方式，都几乎很少能产生这种问题，但是在高并发下，你应该知道怎么解决问题。\n  问题排查 arthas jdk自带命令 Kafka Kafka的推还是拉 Kafka如何做到消息不丢失的 Kafka为什么可以有这么大的吞吐量 MySql mysql的索引数据结构为什么用B+树 最左匹配原则是什么 说出你如何调优的 常见的优化手段 MVVC 事务特性，隔离级别，怎么解决幻读？ 为什么要分库分表，有什么方案 Mybatis Spring Spring的Bean注入过程讲一下 Spring中常见的设计模式说一说 Spring是怎么解决Bean之间的循环依赖问题 SpringMvc的流程 SpringBoot的启动原理 SpringCloud了解多少 AOP怎么实现的 微服务 为什么要用dubbo，和SpringCloud的区别是什么 分布式事务、分布式锁、分布式链路追踪解决方案 ES 为什么ES能查询的这么快 Zookeeper Zookeeper是干什么的，你使用过吗，用它做过什么事情吗 Java并发 异步、同步；阻塞、非阻塞；线程、进程他们的关系   异步和同步\n同步与异步最大的区别就是被调用方的执行方式和返回时机，同步指的是被调用方做完事情之后再返回，异步指的是被调用方先返回，然后再做事情，做完之后再想办法通知调用方\n  阻塞和非阻塞\n阻塞就是发起一个请求，调用者一直等待请求结果返回，也就是当前线程会被挂起，无法从事其他任务，只有当条件就绪才能继续。\n非阻塞就是发起一个请求，调用者不用一直等着结果返回，可以先去干其他事情。\n   阻塞和同步不是一回事，同步，异步与阻塞，非阻塞针对的对象是不一样的，阻塞,非阻塞是说的调用者，同步，异步说的是被调用者\n 你知道哪几种锁 讲一下线程的生命周期 java.lang.Thread.State中定义了线程的状态\npublic enum State { /** * Thread state for a thread which has not yet started. */ //新建状态,线程还未开始  NEW, /** * Thread state for a runnable thread. A thread in the runnable * state is executing in the Java virtual machine but it may * be waiting for other resources from the operating system * such as processor. */ //可以运行状态，已经在jvm虚拟机中了，正在等待操作系统分配资源  RUNNABLE, /** * Thread state for a thread blocked waiting for a monitor lock. * A thread in the blocked state is waiting for a monitor lock * to enter a synchronized block/method or * reenter a synchronized block/method after calling * {@link Object#wait() Object.wait}. */ //阻塞状态，正在等待一个monitor锁，就是我们平时用的synchronized的关键字。  //或者在调用了Object.wait()方法且被notify()之后也会进入BLOCKED状态  BLOCKED, /** * Thread state for a waiting thread. * A thread is in the waiting state due to calling one of the * following methods: *  * {@link Object#wait() Object.wait} with no timeout * {@link #join() Thread.join} with no timeout * {@link LockSupport#park() LockSupport.park} *  * * A thread in the waiting state is waiting for another thread to * perform a particular action. * * For example, a thread that has called {@code Object.wait()} * on an object is waiting for another thread to call * {@code Object.notify()} or {@code Object.notifyAll()} on * that object. A thread that has called {@code Thread.join()} * is waiting for a specified thread to terminate. * 等待状态 * 1. Object.wait()无超时的方法后且未被notify()前，如果被notify()了会进入BLOCKED状态 * 2. Thread.join()无超时的方法后 * 3. LockSupport.park()无超时的方法后 */ WAITING, /** * Thread state for a waiting thread with a specified waiting time. * A thread is in the timed waiting state due to calling one of * the following methods with a specified positive waiting time: *  * {@link #sleep Thread.sleep} * {@link Object#wait(long) Object.wait} with timeout * {@link #join(long) Thread.join} with timeout * {@link LockSupport#parkNanos LockSupport.parkNanos} * {@link LockSupport#parkUntil LockSupport.parkUntil} *  *超市等待状态,调用了 * 1. Thread.sleep()方法后 * 2. Object.wait(timeout)方法后且未到超时时间前，如果达到超时了或被notify()了会进入BLOCKED状态 * 3. Thread.join(timeout)方法后 * 4. LockSupport.parkNanos(nanos)方法后 * 5. LockSupport.parkUntil(deadline)方法后 /* TIMED_WAITING, /** * Thread state for a terminated thread. * The thread has completed execution. */ //终止状态，线程执行完毕  TERMINATED; } 线程可以被终止吗，怎么终止 AQS是什么？ wait()、notify()、sleep()、yield()、join()这几个方法的作用 实现线程安全的方法 公平锁和非公平锁的区别,ReentrantLock是怎么实现的 CAS是什么，怎么解决ABA问题 ConcurrentHashMap的分段锁 你用过哪些Java.util.concurrent下的类 讲一下线程池的几个参数含义 synchronized关键字，怎么优化的，膨胀的流程 volatile关键字 Java内存模型 ThreadLocal Java基础 说一说你理解的多态 来个简单的，Java作用域有哪些，为什么要考虑作用域 讲一下泛型和注解 讲一下反射和动态代理 Java的几种引用，你用过几种 说说进程和线程的区别 Java集合 讲一讲集合类，常用的集合，以及在多线程下你是如何保集合安全的 讲讲HashMap JVM JVM是什么 JVM内存模型 Java编译到执行的过程 双亲委派机制是干什么的 JVM是怎么进行垃圾回收的，垃圾回收机制是如何的，怎么判断是不是垃圾 平时如何调优 一个对象到底有多大，“对象在内存中长什么样子” 网络 讲一下TCP/IP，它和HTTP的关系 Netty干什么的，用过吗 你知道哪些网络模型？   OSI网络7层模型\n 应用层：各种web应用 表示层：数据格式标识，基本加解密 会话层：控制各个程序之间的会话能力，软件数据分发给其他不同的软件 传输层：TCP UDP协议 网络层：定义IP地址，定义路由的基本功能，实现设备之间的数据转发 数据链路层：定义数据的基本格式，如何传输、如何标识，例如网卡的MAC地址 物理层：物理设备的传输，例如网卡标准、网线标准    TCP/IP模型\n 应用层：各种基于TCP/IP的协议，例如HTTP、FTP、SMTP 传输层：TCP或者UDP协议 网络层：它负责为两台主机提供通信服务，并通过选择合适的路由将数据传递到目标主机。 网络接口层：物理设备的环境    五层网络模型\n由OSI7层模型演变而来\n  你知道哪些IO模型，BIO、NIO、AIO都是什么，他们的使用场景是什么   java中的IO模型\n  BIO\nBlocking IO，传统的同步阻塞IO，对应着java.io，例如文件的读取，输入输出流，Socket的网络编程\n  NIO\nNo Blocking IO/New IO，同步非阻塞IO，对应着jdk1.4之后进入的nio，对于java.nio，提供了Channel，Buffer，Selector等抽象\n  AIO\nAsync IO ，异步非阻塞IO，在 Java 7 中引入了 NIO 的改进版 NIO 2,它是异步非阻塞的IO模型\n    java中的io操作最终还是依赖于操作系统的io实现的，如在Linux 2.6以后，Java中的NIO和AIO都是通过 epoll\n  Linux中的IO模型\n  BIO\n 一个输入操作通常包括两个不同的阶段:\n 等待数据准备好 从内核向进程复制数据  对于一个套接字上的输入操作，第一步通常涉及等待数据从网络中到达，当所等待分组到达时，它被复制到内核中的某个缓冲区，第二步就是把数据从内核缓冲区复制到应用进程缓冲区。\n从上图可以看出，应用进程通过 系统调用 recvfrom 去接收数据，而由于内核数据没有准备好，应用进程就会阻塞，直到内核准备好数据并将其从内核复制到应用进程的缓冲区中或者发生错误才返回。最常见的错误就是系统调用被信号中断。进程从调用recvfrom开始到它返回的整段时间内是被阻塞的。\nLinux下的阻塞式I/O模型就对应了Java下的BIO模型，BIO的底层实现是调用操作系统的API去执行的，也就是调用操作系统的Socket套接字。\n   NIO\n 应用进程通过系统调用 recvfrom 不断的去和内核交互，直到内核数据报准备好，而如果内核无数据准备好，转而立即返回一个 EWOULDBLOCK的错误，过一段时间再次发送 recvfrom请求，在此期间进程可以做其他事情，不用一直等待，这就是非阻塞。\n当一个应用进程循环调用 recvfrom时，我们称之为轮询(polling)，应用进程持续轮询内核，以查看某个操作是否就绪。Java的NIO映射到Linux操作系统就是如上图所示的非阻塞I/O模型\n   I/O复用模型\n IO多路复用使用select/poll/epoll函数，多个进程的IO都可以注册在同一个 select 上，当用户进程调用该 select时，select去监听所有注册好的IO,如果所有被监听的IO需要的数据都没有准备好，那么 select调用进程会被阻塞，只要任意一个IO的数据报套接字变为可读，即数据报已经准备好，select 就返回套接字可读这一条件，然后调用 recvfrom把所读数据报复制到应用进程缓冲区。\n强调一点就是，IO多路复用模型并没有涉及到非阻塞，进程在发出select后，要一直阻塞等待其监听的所有IO操作至少有一个数据准备好才返回，强调阻塞状态，不存在非阻塞。\n而在 Java NIO中也可以实现多路复用，主要是利用多路复用器 Selector，与这里的 select函数类型，Selector会不断轮询注册在其上的通道Channel，如果有某一个Channel上面发生读或写事件，这个Channel处于就绪状态，就会被Selector轮询出来。\n   信号驱动式/io模型\n 应用进程预先向内核安装一个信号处理函数，然后立即返回，进程继续工作，不阻塞，当数据报准备好读取时，内核就为该进程产生一个信号通知进程，然后进程再调用recvfrom读取数据报。\n信号驱动式IO在数据准备阶段是异步的，当内核中有数据报准备后再通知进程，但是在调用 recvfrom操作进行数据拷贝时是同步的，所以总体来说，整个IO过程不能是异步的。\n   异步IO模型，AIO\n 应用进程调用aio_read函数，给内核传递描述符，缓存区指针，缓存区大小和文件偏移，并告诉内核当整个操作完成时如何通知进程，然后该系统调用立即返回，而且在等待I/O完成期间，我们的进程不被阻塞，进程可以去干其他事情，然后内核开始等待数据准备，数据准备好以后再拷贝数据到进程缓冲区，最后通知整个IO操作已完成。\nJava的AIO提供了异步通道API，其操作系统底层实现就是这个异步I/O模型\n     使用场景\n BIO方式适用于连接数目比较小且固定的架构，这种方式对服务器资源要求比较高，并发局限于应用中，JDK1.4以前的唯一选择，但程序直观简单易理解。\nNIO方式适用于连接数目多且连接比较短（轻操作）的架构，比如聊天服务器，并发局限于应用中，编程比较复杂，JDK1.4开始支持。\nAIO方式适用于连接数目多且连接比较长（重操作）的架构，比如相册服务器，充分调用OS参与并发操作，编程比较复杂，JDK7开始支持。\n   讲一下Https、Http、Http1.0、Http1.1、Http2 什么是多路复用   IO多路复用是一种同步IO模型，实现一个线程可以监视多个文件句柄；一旦某个文件句柄就绪，就能够通知应用程序进行相应的读写操作；没有文件句柄就绪时会阻塞应用程序，交出cpu。多路是指多个网络连接多个句柄，复用指的是同一个线程（结合上图），实际上在代码中，一个线程去调用select方法，当没有连接准备好的时候，select阻塞。select返回连接列表，进行处理\nfds = [listen_fd] // 伪代码描述 while(1) { // 通过内核获取有读写事件发生的fd，只要有一个则返回，无则阻塞 // 整个过程只在调用select、poll、epoll这些调用的时候才会阻塞，accept/recv是不会阻塞 for (fd in select(fds)) { if (fd == listen_fd) { client_fd = accept(listen_fd) fds.append(client_fd) } elseif (len = recv(fd) \u0026\u0026 len != -1) { // logic } } }   linux实现多路复用的方式\n  epoll的et和lt的区别\nepoll LT 与 ET模式的区别\n epoll有EPOLLLT和EPOLLET两种触发模式，LT是默认的模式，ET是“高速”模式。 LT模式下，只要这个fd还有数据可读，每次 epoll_wait都会返回它的事件，提醒用户程序去操作 ET模式下，它只会提示一次，直到下次再有数据流入之前都不会再提示了，无论fd中是否还有数据可读。所以在ET模式下，read一个fd的时候一定要把它的buffer读完，或者遇到EAGAIN错误    代码书写 聊聊设计模式，你知道哪些，用过哪些，为什么要用设计模式 数据结构 你知道哪些数据结构 红黑树、B树、B+树、二叉树、完全平衡二叉树 手写一个链表，实现正向输出，反向输出，找到最中间的元素 算法 常见的8个排序算法，你能写出几个 操作系统 零拷贝是什么 ","wordCount":"1143","inLanguage":"en","datePublished":"2022-01-11T14:43:18+08:00","dateModified":"2022-01-11T14:43:18+08:00","author":{"@type":"Person","name":"Hao Sun"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://sunhao1256.github.io/posts/%E5%85%AB%E8%82%A1%E6%96%87/"},"publisher":{"@type":"Organization","name":"Hao Sun","logo":{"@type":"ImageObject","url":"https://sunhao1256.github.io/%3Clink%20/%20abs%20url%3E"}}}</script>
 </head>
 <body id=top>
 <script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add('dark'):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove('dark'):window.matchMedia('(prefers-color-scheme: dark)').matches&&document.body.classList.add('dark')</script>
@@ -86,7 +122,7 @@ private final AtomicInteger cur = new AtomicInteger(0); private Long startTime; 
 <h1 class=post-title>
 八股文
 </h1>
-<div class=post-meta><span title="2022-01-11 14:43:18 +0800 CST">January 11, 2022</span>&nbsp;·&nbsp;3 min&nbsp;·&nbsp;Hao Sun
+<div class=post-meta><span title="2022-01-11 14:43:18 +0800 CST">January 11, 2022</span>&nbsp;·&nbsp;6 min&nbsp;·&nbsp;Hao Sun
 </div>
 </header> <div class=toc>
 <details>
@@ -99,11 +135,13 @@ private final AtomicInteger cur = new AtomicInteger(0); private Long startTime; 
 <ul>
 <ul>
 <li>
+<a href=#redis%e6%9c%89%e5%93%aa%e4%ba%9b%e6%95%b0%e6%8d%ae%e7%bb%93%e6%9e%84%e4%bd%a0%e7%94%a8%e8%bf%87%e5%93%aa%e4%ba%9b%e5%81%9a%e8%bf%87%e4%bb%80%e4%b9%88%e4%ba%8b%e6%83%85 aria-label=redis有哪些数据结构，你用过哪些，做过什么事情>redis有哪些数据结构，你用过哪些，做过什么事情</a></li>
+<li>
 <a href=#redis%e5%a6%82%e4%bd%95%e5%81%9a%e5%88%b0%e9%99%90%e6%b5%81%e7%9a%84 aria-label=redis如何做到限流的>redis如何做到限流的</a></li>
 <li>
-<a href=#redis%e6%98%af%e5%8d%95%e7%ba%bf%e7%a8%8b%e7%9a%84%e5%90%97 aria-label=redis是单线程的吗>redis是单线程的吗</a></li>
+<a href=#redis%e6%98%af%e5%8d%95%e7%ba%bf%e7%a8%8b%e7%9a%84%e5%90%97%e5%ae%83%e4%b8%ba%e4%bb%80%e4%b9%88%e8%bf%99%e4%b9%88%e5%bf%ab aria-label=redis是单线程的吗，它为什么这么快？>redis是单线程的吗，它为什么这么快？</a></li>
 <li>
-<a href=#redis%e4%b8%ba%e4%bb%80%e4%b9%88%e8%bf%99%e4%b9%88%e5%9d%97 aria-label=redis为什么这么块>redis为什么这么块</a></li>
+<a href=#redis%e7%9a%84%e9%ab%98%e5%8f%af%e7%94%a8 aria-label=redis的高可用>redis的高可用</a></li>
 <li>
 <a href=#redis%e7%9a%84%e6%8c%81%e4%b9%85%e5%8c%96 aria-label=redis的持久化>redis的持久化</a></li>
 <li>
@@ -192,9 +230,9 @@ private final AtomicInteger cur = new AtomicInteger(0); private Long startTime; 
 <ul>
 <ul>
 <li>
-<a href=#%e4%b8%ba%e4%bb%80%e4%b9%88%e8%a6%81%e7%94%a8dubbo aria-label=为什么要用dubbo>为什么要用dubbo</a></li>
+<a href=#%e4%b8%ba%e4%bb%80%e4%b9%88%e8%a6%81%e7%94%a8dubbo%e5%92%8cspringcloud%e7%9a%84%e5%8c%ba%e5%88%ab%e6%98%af%e4%bb%80%e4%b9%88 aria-label=为什么要用dubbo，和SpringCloud的区别是什么>为什么要用dubbo，和SpringCloud的区别是什么</a></li>
 <li>
-<a href=#%e5%88%86%e5%b8%83%e5%bc%8f%e4%ba%8b%e5%8a%a1%e5%88%86%e5%b8%83%e5%bc%8f%e9%94%81 aria-label=分布式事务、分布式锁>分布式事务、分布式锁</a></li></ul>
+<a href=#%e5%88%86%e5%b8%83%e5%bc%8f%e4%ba%8b%e5%8a%a1%e5%88%86%e5%b8%83%e5%bc%8f%e9%94%81%e5%88%86%e5%b8%83%e5%bc%8f%e9%93%be%e8%b7%af%e8%bf%bd%e8%b8%aa%e8%a7%a3%e5%86%b3%e6%96%b9%e6%a1%88 aria-label=分布式事务、分布式锁、分布式链路追踪解决方案>分布式事务、分布式锁、分布式链路追踪解决方案</a></li></ul>
 </ul>
 </ul>
 </li>
@@ -212,7 +250,7 @@ private final AtomicInteger cur = new AtomicInteger(0); private Long startTime; 
 <ul>
 <ul>
 <li>
-<a href=#zookeeper%e6%98%af%e5%b9%b2%e4%bb%80%e4%b9%88%e7%9a%84 aria-label=Zookeeper是干什么的>Zookeeper是干什么的</a></li></ul>
+<a href=#zookeeper%e6%98%af%e5%b9%b2%e4%bb%80%e4%b9%88%e7%9a%84%e4%bd%a0%e4%bd%bf%e7%94%a8%e8%bf%87%e5%90%97%e7%94%a8%e5%ae%83%e5%81%9a%e8%bf%87%e4%bb%80%e4%b9%88%e4%ba%8b%e6%83%85%e5%90%97 aria-label=Zookeeper是干什么的，你使用过吗，用它做过什么事情吗>Zookeeper是干什么的，你使用过吗，用它做过什么事情吗</a></li></ul>
 </ul>
 </ul>
 </li>
@@ -221,9 +259,13 @@ private final AtomicInteger cur = new AtomicInteger(0); private Long startTime; 
 <ul>
 <ul>
 <li>
+<a href=#%e5%bc%82%e6%ad%a5%e5%90%8c%e6%ad%a5%e9%98%bb%e5%a1%9e%e9%9d%9e%e9%98%bb%e5%a1%9e%e7%ba%bf%e7%a8%8b%e8%bf%9b%e7%a8%8b%e4%bb%96%e4%bb%ac%e7%9a%84%e5%85%b3%e7%b3%bb aria-label=异步、同步；阻塞、非阻塞；线程、进程他们的关系>异步、同步；阻塞、非阻塞；线程、进程他们的关系</a></li>
+<li>
 <a href=#%e4%bd%a0%e7%9f%a5%e9%81%93%e5%93%aa%e5%87%a0%e7%a7%8d%e9%94%81 aria-label=你知道哪几种锁>你知道哪几种锁</a></li>
 <li>
 <a href=#%e8%ae%b2%e4%b8%80%e4%b8%8b%e7%ba%bf%e7%a8%8b%e7%9a%84%e7%94%9f%e5%91%bd%e5%91%a8%e6%9c%9f aria-label=讲一下线程的生命周期>讲一下线程的生命周期</a></li>
+<li>
+<a href=#%e7%ba%bf%e7%a8%8b%e5%8f%af%e4%bb%a5%e8%a2%ab%e7%bb%88%e6%ad%a2%e5%90%97%e6%80%8e%e4%b9%88%e7%bb%88%e6%ad%a2 aria-label=线程可以被终止吗，怎么终止>线程可以被终止吗，怎么终止</a></li>
 <li>
 <a href=#aqs%e6%98%af%e4%bb%80%e4%b9%88 aria-label=AQS是什么？>AQS是什么？</a></li>
 <li>
@@ -307,17 +349,15 @@ private final AtomicInteger cur = new AtomicInteger(0); private Long startTime; 
 <ul>
 <ul>
 <li>
-<a href=#%e8%ae%b2%e4%b8%80%e4%b8%8btcpip aria-label=讲一下TCP/IP>讲一下TCP/IP</a></li>
-<li>
-<a href=#%e8%ae%b2%e4%b8%80%e4%b8%8bhttp aria-label=讲一下HTTP>讲一下HTTP</a></li>
+<a href=#%e8%ae%b2%e4%b8%80%e4%b8%8btcpip%e5%ae%83%e5%92%8chttp%e7%9a%84%e5%85%b3%e7%b3%bb aria-label=讲一下TCP/IP，它和HTTP的关系>讲一下TCP/IP，它和HTTP的关系</a></li>
 <li>
 <a href=#netty%e5%b9%b2%e4%bb%80%e4%b9%88%e7%9a%84%e7%94%a8%e8%bf%87%e5%90%97 aria-label=Netty干什么的，用过吗>Netty干什么的，用过吗</a></li>
 <li>
 <a href=#%e4%bd%a0%e7%9f%a5%e9%81%93%e5%93%aa%e4%ba%9b%e7%bd%91%e7%bb%9c%e6%a8%a1%e5%9e%8b aria-label=你知道哪些网络模型？>你知道哪些网络模型？</a></li>
 <li>
-<a href=#bionioaio%e9%83%bd%e6%98%af%e4%bb%80%e4%b9%88 aria-label=BIO、NIO、AIO都是什么>BIO、NIO、AIO都是什么</a></li>
+<a href=#%e4%bd%a0%e7%9f%a5%e9%81%93%e5%93%aa%e4%ba%9bio%e6%a8%a1%e5%9e%8bbionioaio%e9%83%bd%e6%98%af%e4%bb%80%e4%b9%88%e4%bb%96%e4%bb%ac%e7%9a%84%e4%bd%bf%e7%94%a8%e5%9c%ba%e6%99%af%e6%98%af%e4%bb%80%e4%b9%88 aria-label=你知道哪些IO模型，BIO、NIO、AIO都是什么，他们的使用场景是什么>你知道哪些IO模型，BIO、NIO、AIO都是什么，他们的使用场景是什么</a></li>
 <li>
-<a href=#%e8%ae%b2%e4%b8%80%e4%b8%8bhttps aria-label=讲一下Https>讲一下Https</a></li>
+<a href=#%e8%ae%b2%e4%b8%80%e4%b8%8bhttpshttphttp10http11http2 aria-label=讲一下Https、Http、Http1.0、Http1.1、Http2>讲一下Https、Http、Http1.0、Http1.1、Http2</a></li>
 <li>
 <a href=#%e4%bb%80%e4%b9%88%e6%98%af%e5%a4%9a%e8%b7%af%e5%a4%8d%e7%94%a8 aria-label=什么是多路复用>什么是多路复用</a></li></ul>
 </ul>
@@ -370,6 +410,47 @@ private final AtomicInteger cur = new AtomicInteger(0); private Long startTime; 
 </details>
 </div>
 <div class=post-content><h1 id=redis>Redis<a hidden class=anchor aria-hidden=true href=#redis>#</a></h1>
+<h4 id=redis有哪些数据结构你用过哪些做过什么事情>redis有哪些数据结构，你用过哪些，做过什么事情<a hidden class=anchor aria-hidden=true href=#redis有哪些数据结构你用过哪些做过什么事情>#</a></h4>
+<ul>
+<li>
+<p>String</p>
+<p>最简单的数据结构，用于存放字符串，实际上在redis中存放的是字符数组，类似java中的arrayList，**Redis 为了对内存做极致的优化，不同长度的字符串使用不同的结构体来表示。**Redis 规定了字符串的长度不得超过 512 MB</p>
+</li>
+<li>
+<p>List</p>
+<p>底层用的双向列表，类似java中的LinkedList，因为是链表所有，插入删除都是O(1)，查询是O(n)</p>
+<p>常见的命令</p>
+<ul>
+<li>
+<p>lpush从头添加元素，rpush从尾添加</p>
+</li>
+<li>
+<p>lpop拿出头部的元素，rpop从尾部拿元素</p>
+<p>索引，lpush+lpop即可实现栈，rpush+lpop可以实现队列</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Hash</p>
+<p>对应着java中的hashMap</p>
+</li>
+<li>
+<p>Set</p>
+<p>Redis 的集合相当于 Java 语言中的 <strong>HashSet</strong>，它内部的键值对是无序、唯一的。它的内部实现相当于一个特殊的字典，字典中所有的 value 都是一个值 NULL。</p>
+</li>
+<li>
+<p>Zset</p>
+<p>它类似于 Java 中 <strong>SortedSet</strong> 和 <strong>HashMap</strong> 的结合体，一方面它是一个 set，保证了内部 value 的唯一性，另一方面它可以为每个 value 赋予一个 score 值，用来代表排序的权重。</p>
+<p>使用场景：</p>
+<ul>
+<li>排行榜，key是用户id，value是访问次数。</li>
+<li>限流，key是用户id+接口id，value是时间戳，每次进方法之前，拿当前时间戳-interval，删除小于now-interval的元素，算出加入当前这次请求set中的个数是否大于max，大于则限流。</li>
+</ul>
+</li>
+<li>
+<p>BloomFilter</p>
+</li>
+</ul>
 <h4 id=redis如何做到限流的>redis如何做到限流的<a hidden class=anchor aria-hidden=true href=#redis如何做到限流的>#</a></h4>
 <p>限流的几个方式</p>
 <ul>
@@ -400,8 +481,6 @@ private final AtomicInteger cur = new AtomicInteger(0); private Long startTime; 
 </span><span style=color:#75715e></span>        <span style=color:#66d9ef>return</span> cur<span style=color:#f92672>.</span><span style=color:#a6e22e>get</span><span style=color:#f92672>()</span> <span style=color:#f92672>&lt;=</span> maxCount<span style=color:#f92672>;</span>
     <span style=color:#f92672>}</span>
 </code></pre></div><p>固定窗口解决了在单位时间内流量次数不会超过阀值，但是在临界点会出现问题。</p>
-<p><img loading=lazy src=https://pic-frank.oss-cn-beijing.aliyuncs.com/img/202201071338226.png alt=image-20220107133811134>
-</p>
 <p>在前一个一秒内，0.8秒到1秒，访问了5次，没有超过阀值，1秒到1.2秒访问了5次，没有超过阀值。0.8秒到1.2秒之间的0.4秒访问了10次，超过了阀值。没有达到目的。这样的问题原因是窗口没有“滑动”。</p>
 </li>
 <li>
@@ -512,8 +591,6 @@ private final AtomicInteger cur = new AtomicInteger(0); private Long startTime; 
 </li>
 <li>
 <p>漏桶</p>
-<p><img loading=lazy src=https://pic-frank.oss-cn-beijing.aliyuncs.com/img/202201071537771.png alt=image-20220107153708735>
-</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>LeakBucketLimit</span> <span style=color:#f92672>{</span>
 
     <span style=color:#75715e>/**
@@ -571,8 +648,6 @@ private final AtomicInteger cur = new AtomicInteger(0); private Long startTime; 
 <li>
 <p>令牌桶</p>
 <p>令牌桶就是为了解决漏桶的缺点。</p>
-<p><img loading=lazy src=https://pic-frank.oss-cn-beijing.aliyuncs.com/img/202201071541284.png alt=image-20220107154158252>
-</p>
 <blockquote>
 <ul>
 <li>有一个令牌管理员，根据限流大小，定速往令牌桶里放令牌。</li>
@@ -621,14 +696,148 @@ private final AtomicInteger cur = new AtomicInteger(0); private Long startTime; 
 
 </code></pre></div></li>
 </ul>
-<h4 id=redis是单线程的吗>redis是单线程的吗<a hidden class=anchor aria-hidden=true href=#redis是单线程的吗>#</a></h4>
-<h4 id=redis为什么这么块>redis为什么这么块<a hidden class=anchor aria-hidden=true href=#redis为什么这么块>#</a></h4>
+<h4 id=redis是单线程的吗它为什么这么快>redis是单线程的吗，它为什么这么快？<a hidden class=anchor aria-hidden=true href=#redis是单线程的吗它为什么这么快>#</a></h4>
+<ul>
+<li>
+<p>是“单线程”也不是“单线程”</p>
+<p>在redis6.0后，推出了多线程的概念。这里的单线程或者多线程，是对于整个redis来说的。并不是针对一个缓存的读取而言。</p>
+<p>说redis是单线程的，并不是说redis的所有操作模块都是单线程的。redis单线程指的是，用单个线程进行网络io和键值读取。</p>
+<p><strong>Redis中只有网络请求模块和数据操作模块是单线程的。而其他的如持久化存储模块、集群支撑模块等是多线程的</strong></p>
+<p>在redis6.0之前一直是这样处理的，为什么对于网络的io不用多线程呢。</p>
+<blockquote>
+<p>首先使用多线程的目的是为了提高IO利用率和CPU利用率，而redis的是io密集型软件。CPU并不是它的瓶颈。可以使用多线程来提高IO</p>
+<p>利用率，但是提高IO利用率的方法并非只有多线程一种方式</p>
+</blockquote>
+<p>对线程带来的弊端：内存模型，锁，CAS操作保证并发。</p>
+<p><strong>虽然，采用多线程可以帮助我们提升CPU和I/O的利用率，但是多线程带来的并发问题也给这些语言和框架带来了更多的复杂性。而且，多线程模型中，多个线程的互相切换也会带来一定的性能开销。</strong></p>
+<p>所以，在提升I/O利用率这个方面上，Redis并没有采用多线程技术，而是选择了<strong>多路复用 I/O</strong>技术。</p>
+<p><strong>多路复用即redis使用单线程，去接收并发下的网络套接字。redis没有使用多线程，减少线程之前切换的开销，以及多线程带来的共享对象的并发问题。因此大家称redis是单线程的</strong></p>
+<p><strong>由于多路复用的IO模型本质上仍然是同步阻塞型IO模型</strong>。</p>
+<p><strong>在多路复用的IO模型中，在处理网络请求时，调用 select （其他函数同理）的过程是阻塞的，也就是说这个过程会阻塞线程，如果并发量很高，此处可能会成为瓶颈。</strong></p>
+<p><strong>如果能采用多线程，使得网络处理的请求并发进行，就可以大大的提升性能。多线程除了可以减少由于网络 I/O 等待造成的影响，还可以充分利用 CPU 的多核优势。</strong></p>
+<p>Redis 6.0采用多个IO线程来处理网络请求，网络请求的解析可以由其他线程完成，然后把解析后的请求交由主线程进行实际的内存读写。提升网络请求处理的并行度，进而提升整体性能。</p>
+<p>但是，Redis 的多 IO 线程只是用来处理网络请求的，对于读写命令，Redis 仍然使用单线程来处理。因此不会数据上的并发安全问题</p>
+</li>
+<li>
+<p>为什么快？</p>
+<ul>
+<li>完全基于内存</li>
+<li>数据结构简单，对数据操作也简单，如哈希表、跳表都有很高的性能</li>
+<li>采用单线程，避免了不必要的上下文切换和竞争条件，也不存在多进程或者多线程导致的切换而消耗 CPU</li>
+<li>使用多路I/O复用模型</li>
+</ul>
+</li>
+</ul>
+<h4 id=redis的高可用>redis的高可用<a hidden class=anchor aria-hidden=true href=#redis的高可用>#</a></h4>
 <h4 id=redis的持久化>redis的持久化<a hidden class=anchor aria-hidden=true href=#redis的持久化>#</a></h4>
+<p>Redis提供了2中持久化方式AOF，RDB</p>
+<ul>
+<li>AOF</li>
+<li>RDB</li>
+</ul>
 <h4 id=redis布隆过滤器>redis布隆过滤器<a hidden class=anchor aria-hidden=true href=#redis布隆过滤器>#</a></h4>
+<p>布隆过滤器可以使用高效的数据结构，存放大量的数据。布隆过滤器说存在，则不一定存在，但是布隆过滤器说不存在，则一定不存在。常用于缓存穿透的问题。</p>
+<p>特点</p>
+<ul>
+<li>空间效率高</li>
+<li>多次hash，时间效率高</li>
+<li>存在误判，所以不好做删除</li>
+</ul>
+<p>使用场景</p>
+<ul>
+<li>黑名单</li>
+<li>URL去重</li>
+<li>ID校验</li>
+<li>防止穿透</li>
+</ul>
+<p>原理：</p>
+<ul>
+<li>布隆过滤器本质上是一个位数组，每个元素只占1个bit，只会有0和1，通过n次hash，减少hash碰撞。当一个key过来的时候，进行n次hash，得出n次结果，将n次结果的位值在数组中查找，如果发现有一个值为0，则key一定不在过滤器中。如果都为1可能在过滤器中，因为hash值会碰撞。hash的次数和数组的大小决定了布隆过滤器的准确度。</li>
+</ul>
+<p>使用：</p>
+<ul>
+<li>google在guava中封装好的BloomFilter</li>
+<li>redis 4.0后可以加入module BloomFilter</li>
+</ul>
 <h4 id=redis分布式锁>redis分布式锁<a hidden class=anchor aria-hidden=true href=#redis分布式锁>#</a></h4>
 <h4 id=redis为什么选用跳表>redis为什么选用跳表<a hidden class=anchor aria-hidden=true href=#redis为什么选用跳表>#</a></h4>
 <h4 id=redis防击穿雪崩穿透>redis防击穿、雪崩、穿透<a hidden class=anchor aria-hidden=true href=#redis防击穿雪崩穿透>#</a></h4>
+<ul>
+<li>
+<p>击穿</p>
+<p>和雪崩有一点像。击穿是大量请求，打一个key，这个key突然失效，导致打挂了库。而雪崩是大量key一起失效</p>
+</li>
+<li>
+<p>穿透</p>
+<p>访问一个不可能存在的key，一直打到数据库，导致数据库挂了</p>
+<p>解决方案：</p>
+<ul>
+<li>代码中针对查key的逻辑需要注意，在逻辑上就处理掉这些不会出现的key</li>
+<li>对于不存在的key，依然存缓存，value设为null，或者提示语句。例如“稍后再试，请求不正确”。并且给他一个过期时间</li>
+<li>使用布隆过滤器</li>
+<li>通过nginx做ip的限制，加黑名单。</li>
+</ul>
+</li>
+<li>
+<p>雪崩</p>
+<p>大批量的key在同时一时刻失效，导致大批量的请求全部打到数据上。数据库承受不住挂了。</p>
+<p>解决方案：</p>
+<ul>
+<li>设置过期时间的时候加上随机数，保证同一时间不会有大量的key失效</li>
+<li>设置这种热点数据用不过期。需要更新的时候，顺手更新一下缓存就可以了</li>
+</ul>
+</li>
+</ul>
 <h4 id=redis是先删缓存还是先写库怎么解决缓存一致性>redis是先删缓存还是先写库，怎么解决缓存一致性<a hidden class=anchor aria-hidden=true href=#redis是先删缓存还是先写库怎么解决缓存一致性>#</a></h4>
+<ul>
+<li>
+<p>先删缓存，再更新数据库</p>
+<p>缓存删除完成后，数据库更新操作还没好，此时请求过来，读缓存，读不到，读数据库，得到的是旧数据</p>
+<p>解决方案：延时双删</p>
+<blockquote>
+<p>流程如下：</p>
+<ol>
+<li>线程1删除缓存，然后去更新数据库</li>
+<li>线程2来读缓存，发现缓存已经被删除，所以直接从数据库中读取，这时候由于线程1还没有更新完成，所以读到的是旧值，然后把旧值写入缓存</li>
+<li>线程1，根据估算的时间，sleep，由于sleep的时间大于线程2读数据+写缓存的时间，所以缓存被再次删除</li>
+<li>如果还有其他线程来读取缓存的话，就会再次从数据库中读取到最新值</li>
+</ol>
+</blockquote>
+</li>
+<li>
+<p>先更新库，再删除缓存</p>
+<p>更新数据库成功，如果删除缓存失败或者还没有来得及删除，那么，其他线程从缓存中读取到的就是旧值，还是会发生不一致。</p>
+<p>解决方案：先更新数据库，成功后往消息队列发消息，消费到消息后再删除缓存，<strong>借助消息队列的重试机制来实现</strong>，达到最终一致性的效果。进阶一点，使用数据的binlog通知到消息队列，然后更新缓存。无代码入侵</p>
+<blockquote>
+<p>缺陷：</p>
+<ol>
+<li>引入消息中间件之后，问题更复杂了，怎么保证消息不丢失更麻烦</li>
+<li>就算更新数据库和删除缓存都没有发生问题，消息的延迟也会带来短暂的不一致性，不过这个延迟相对来说还是可以接受的</li>
+</ol>
+</blockquote>
+</li>
+<li>
+<p>设置过期时间</p>
+<blockquote>
+<p>每次放入缓存的时候，设置一个过期时间，比如5分钟，以后的操作只修改数据库，不操作缓存，等待缓存超时后从数据库重新读取。</p>
+<p>如果对于一致性要求不是很高的情况，可以采用这种方案。</p>
+<p>这个方案还会有另外一个问题，就是如果数据更新的特别频繁，不一致性的问题就很大了。</p>
+<p>在实际生产中，我们有一些活动的缓存数据是使用这种方式处理的。</p>
+<p>因为活动并不频繁发生改变，而且对于活动来说，短暂的不一致性并不会有什么大的问题。</p>
+</blockquote>
+</li>
+<li>
+<p>总结</p>
+<p>首先，我们要明确一点，缓存不是更新，而应该是删除。</p>
+<p>删除缓存有两种方式：</p>
+<ol>
+<li>先删除缓存，再更新数据库。解决方案是使用延迟双删。</li>
+<li>先更新数据库，再删除缓存。解决方案是消息队列或者其他binlog同步，引入消息队列会带来更多的问题，并不推荐直接使用。</li>
+</ol>
+<p>针对缓存一致性要求不是很高的场景，那么只通过设置超时时间就可以了。</p>
+<p>其实，如果不是很高的并发，无论你选择先删缓存还是后删缓存的方式，都几乎很少能产生这种问题，但是在高并发下，你应该知道怎么解决问题。</p>
+</li>
+</ul>
 <h1 id=问题排查>问题排查<a hidden class=anchor aria-hidden=true href=#问题排查>#</a></h1>
 <h4 id=arthas>arthas<a hidden class=anchor aria-hidden=true href=#arthas>#</a></h4>
 <h4 id=jdk自带命令>jdk自带命令<a hidden class=anchor aria-hidden=true href=#jdk自带命令>#</a></h4>
@@ -654,15 +863,112 @@ private final AtomicInteger cur = new AtomicInteger(0); private Long startTime; 
 <h4 id=springcloud了解多少>SpringCloud了解多少<a hidden class=anchor aria-hidden=true href=#springcloud了解多少>#</a></h4>
 <h4 id=aop怎么实现的>AOP怎么实现的<a hidden class=anchor aria-hidden=true href=#aop怎么实现的>#</a></h4>
 <h1 id=微服务>微服务<a hidden class=anchor aria-hidden=true href=#微服务>#</a></h1>
-<h4 id=为什么要用dubbo>为什么要用dubbo<a hidden class=anchor aria-hidden=true href=#为什么要用dubbo>#</a></h4>
-<h4 id=分布式事务分布式锁>分布式事务、分布式锁<a hidden class=anchor aria-hidden=true href=#分布式事务分布式锁>#</a></h4>
+<h4 id=为什么要用dubbo和springcloud的区别是什么>为什么要用dubbo，和SpringCloud的区别是什么<a hidden class=anchor aria-hidden=true href=#为什么要用dubbo和springcloud的区别是什么>#</a></h4>
+<h4 id=分布式事务分布式锁分布式链路追踪解决方案>分布式事务、分布式锁、分布式链路追踪解决方案<a hidden class=anchor aria-hidden=true href=#分布式事务分布式锁分布式链路追踪解决方案>#</a></h4>
 <h1 id=es>ES<a hidden class=anchor aria-hidden=true href=#es>#</a></h1>
 <h4 id=为什么es能查询的这么快>为什么ES能查询的这么快<a hidden class=anchor aria-hidden=true href=#为什么es能查询的这么快>#</a></h4>
 <h1 id=zookeeper>Zookeeper<a hidden class=anchor aria-hidden=true href=#zookeeper>#</a></h1>
-<h4 id=zookeeper是干什么的>Zookeeper是干什么的<a hidden class=anchor aria-hidden=true href=#zookeeper是干什么的>#</a></h4>
+<h4 id=zookeeper是干什么的你使用过吗用它做过什么事情吗>Zookeeper是干什么的，你使用过吗，用它做过什么事情吗<a hidden class=anchor aria-hidden=true href=#zookeeper是干什么的你使用过吗用它做过什么事情吗>#</a></h4>
 <h1 id=java并发>Java并发<a hidden class=anchor aria-hidden=true href=#java并发>#</a></h1>
+<h4 id=异步同步阻塞非阻塞线程进程他们的关系>异步、同步；阻塞、非阻塞；线程、进程他们的关系<a hidden class=anchor aria-hidden=true href=#异步同步阻塞非阻塞线程进程他们的关系>#</a></h4>
+<ul>
+<li>
+<p>异步和同步</p>
+<p>同步与异步最大的区别就是<strong>被调用方</strong>的<strong>执行方式</strong>和<strong>返回时机</strong>，同步指的是<strong>被调用方</strong>做完事情之后再返回，异步指的是<strong>被调用方</strong>先返回，然后再做事情，做完之后再想办法通知调用方</p>
+</li>
+<li>
+<p>阻塞和非阻塞</p>
+<p>阻塞就是发起一个请求，<strong>调用者</strong>一直等待请求结果返回，也就是当前线程会被挂起，无法从事其他任务，只有当条件就绪才能继续。</p>
+<p>非阻塞就是发起一个请求，<strong>调用者</strong>不用一直等着结果返回，可以先去干其他事情。</p>
+</li>
+</ul>
+<blockquote>
+<p>阻塞和同步不是一回事，同步，异步与阻塞，非阻塞针对的对象是不一样的，<strong>阻塞,非阻塞是说的调用者，同步，异步说的是被调用者</strong></p>
+</blockquote>
 <h4 id=你知道哪几种锁>你知道哪几种锁<a hidden class=anchor aria-hidden=true href=#你知道哪几种锁>#</a></h4>
 <h4 id=讲一下线程的生命周期>讲一下线程的生命周期<a hidden class=anchor aria-hidden=true href=#讲一下线程的生命周期>#</a></h4>
+<p>java.lang.Thread.State中定义了线程的状态</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>enum</span> State <span style=color:#f92672>{</span>
+    <span style=color:#75715e>/**
+</span><span style=color:#75715e>     * Thread state for a thread which has not yet started.
+</span><span style=color:#75715e>     */</span>
+  <span style=color:#75715e>//新建状态,线程还未开始
+</span><span style=color:#75715e></span>    NEW<span style=color:#f92672>,</span>
+
+    <span style=color:#75715e>/**
+</span><span style=color:#75715e>     * Thread state for a runnable thread.  A thread in the runnable
+</span><span style=color:#75715e>     * state is executing in the Java virtual machine but it may
+</span><span style=color:#75715e>     * be waiting for other resources from the operating system
+</span><span style=color:#75715e>     * such as processor.
+</span><span style=color:#75715e>     */</span>
+  <span style=color:#75715e>//可以运行状态，已经在jvm虚拟机中了，正在等待操作系统分配资源
+</span><span style=color:#75715e></span>    RUNNABLE<span style=color:#f92672>,</span>
+
+    <span style=color:#75715e>/**
+</span><span style=color:#75715e>     * Thread state for a thread blocked waiting for a monitor lock.
+</span><span style=color:#75715e>     * A thread in the blocked state is waiting for a monitor lock
+</span><span style=color:#75715e>     * to enter a synchronized block/method or
+</span><span style=color:#75715e>     * reenter a synchronized block/method after calling
+</span><span style=color:#75715e>     * {@link Object#wait() Object.wait}.
+</span><span style=color:#75715e>     */</span>
+  <span style=color:#75715e>//阻塞状态，正在等待一个monitor锁，就是我们平时用的synchronized的关键字。
+</span><span style=color:#75715e></span>  <span style=color:#75715e>//或者在调用了Object.wait()方法且被notify()之后也会进入BLOCKED状态
+</span><span style=color:#75715e></span>    BLOCKED<span style=color:#f92672>,</span>
+
+    <span style=color:#75715e>/**
+</span><span style=color:#75715e>     * Thread state for a waiting thread.
+</span><span style=color:#75715e>     * A thread is in the waiting state due to calling one of the
+</span><span style=color:#75715e>     * following methods:
+</span><span style=color:#75715e>     * &lt;ul&gt;
+</span><span style=color:#75715e>     *   &lt;li&gt;{@link Object#wait() Object.wait} with no timeout&lt;/li&gt;
+</span><span style=color:#75715e>     *   &lt;li&gt;{@link #join() Thread.join} with no timeout&lt;/li&gt;
+</span><span style=color:#75715e>     *   &lt;li&gt;{@link LockSupport#park() LockSupport.park}&lt;/li&gt;
+</span><span style=color:#75715e>     * &lt;/ul&gt;
+</span><span style=color:#75715e>     *
+</span><span style=color:#75715e>     * &lt;p&gt;A thread in the waiting state is waiting for another thread to
+</span><span style=color:#75715e>     * perform a particular action.
+</span><span style=color:#75715e>     *
+</span><span style=color:#75715e>     * For example, a thread that has called {@code Object.wait()}
+</span><span style=color:#75715e>     * on an object is waiting for another thread to call
+</span><span style=color:#75715e>     * {@code Object.notify()} or {@code Object.notifyAll()} on
+</span><span style=color:#75715e>     * that object. A thread that has called {@code Thread.join()}
+</span><span style=color:#75715e>     * is waiting for a specified thread to terminate.
+</span><span style=color:#75715e>     *
+</span><span style=color:#75715e>     等待状态
+</span><span style=color:#75715e>       * 1. Object.wait()无超时的方法后且未被notify()前，如果被notify()了会进入BLOCKED状态
+</span><span style=color:#75715e>     * 2. Thread.join()无超时的方法后
+</span><span style=color:#75715e>     * 3. LockSupport.park()无超时的方法后
+</span><span style=color:#75715e>         */</span>
+    WAITING<span style=color:#f92672>,</span>
+
+    <span style=color:#75715e>/**
+</span><span style=color:#75715e>     * Thread state for a waiting thread with a specified waiting time.
+</span><span style=color:#75715e>     * A thread is in the timed waiting state due to calling one of
+</span><span style=color:#75715e>     * the following methods with a specified positive waiting time:
+</span><span style=color:#75715e>     * &lt;ul&gt;
+</span><span style=color:#75715e>     *   &lt;li&gt;{@link #sleep Thread.sleep}&lt;/li&gt;
+</span><span style=color:#75715e>     *   &lt;li&gt;{@link Object#wait(long) Object.wait} with timeout&lt;/li&gt;
+</span><span style=color:#75715e>     *   &lt;li&gt;{@link #join(long) Thread.join} with timeout&lt;/li&gt;
+</span><span style=color:#75715e>     *   &lt;li&gt;{@link LockSupport#parkNanos LockSupport.parkNanos}&lt;/li&gt;
+</span><span style=color:#75715e>     *   &lt;li&gt;{@link LockSupport#parkUntil LockSupport.parkUntil}&lt;/li&gt;
+</span><span style=color:#75715e>     * &lt;/ul&gt;
+</span><span style=color:#75715e>     *超市等待状态,调用了    
+</span><span style=color:#75715e>     * 1. Thread.sleep()方法后
+</span><span style=color:#75715e>     * 2. Object.wait(timeout)方法后且未到超时时间前，如果达到超时了或被notify()了会进入BLOCKED状态
+</span><span style=color:#75715e>     * 3. Thread.join(timeout)方法后
+</span><span style=color:#75715e>     * 4. LockSupport.parkNanos(nanos)方法后
+</span><span style=color:#75715e>     * 5. LockSupport.parkUntil(deadline)方法后
+</span><span style=color:#75715e>       /*
+</span><span style=color:#75715e>    TIMED_WAITING,
+</span><span style=color:#75715e>
+</span><span style=color:#75715e>    /**
+</span><span style=color:#75715e>     * Thread state for a terminated thread.
+</span><span style=color:#75715e>     * The thread has completed execution.
+</span><span style=color:#75715e>     */</span>
+  <span style=color:#75715e>//终止状态，线程执行完毕
+</span><span style=color:#75715e></span>    TERMINATED<span style=color:#f92672>;</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><h4 id=线程可以被终止吗怎么终止>线程可以被终止吗，怎么终止<a hidden class=anchor aria-hidden=true href=#线程可以被终止吗怎么终止>#</a></h4>
 <h4 id=aqs是什么>AQS是什么？<a hidden class=anchor aria-hidden=true href=#aqs是什么>#</a></h4>
 <h4 id=waitnotifysleepyieldjoin这几个方法的作用>wait()、notify()、sleep()、yield()、join()这几个方法的作用<a hidden class=anchor aria-hidden=true href=#waitnotifysleepyieldjoin这几个方法的作用>#</a></h4>
 <h4 id=实现线程安全的方法>实现线程安全的方法<a hidden class=anchor aria-hidden=true href=#实现线程安全的方法>#</a></h4>
@@ -694,13 +1000,147 @@ private final AtomicInteger cur = new AtomicInteger(0); private Long startTime; 
 <h4 id=平时如何调优>平时如何调优<a hidden class=anchor aria-hidden=true href=#平时如何调优>#</a></h4>
 <h4 id=一个对象到底有多大对象在内存中长什么样子>一个对象到底有多大，“对象在内存中长什么样子”<a hidden class=anchor aria-hidden=true href=#一个对象到底有多大对象在内存中长什么样子>#</a></h4>
 <h1 id=网络>网络<a hidden class=anchor aria-hidden=true href=#网络>#</a></h1>
-<h4 id=讲一下tcpip>讲一下TCP/IP<a hidden class=anchor aria-hidden=true href=#讲一下tcpip>#</a></h4>
-<h4 id=讲一下http>讲一下HTTP<a hidden class=anchor aria-hidden=true href=#讲一下http>#</a></h4>
+<h4 id=讲一下tcpip它和http的关系>讲一下TCP/IP，它和HTTP的关系<a hidden class=anchor aria-hidden=true href=#讲一下tcpip它和http的关系>#</a></h4>
 <h4 id=netty干什么的用过吗>Netty干什么的，用过吗<a hidden class=anchor aria-hidden=true href=#netty干什么的用过吗>#</a></h4>
 <h4 id=你知道哪些网络模型>你知道哪些网络模型？<a hidden class=anchor aria-hidden=true href=#你知道哪些网络模型>#</a></h4>
-<h4 id=bionioaio都是什么>BIO、NIO、AIO都是什么<a hidden class=anchor aria-hidden=true href=#bionioaio都是什么>#</a></h4>
-<h4 id=讲一下https>讲一下Https<a hidden class=anchor aria-hidden=true href=#讲一下https>#</a></h4>
+<ul>
+<li>
+<p>OSI网络7层模型</p>
+<ul>
+<li>应用层：各种web应用</li>
+<li>表示层：数据格式标识，基本加解密</li>
+<li>会话层：控制各个程序之间的会话能力，软件数据分发给其他不同的软件</li>
+<li>传输层：TCP UDP协议</li>
+<li>网络层：定义IP地址，定义路由的基本功能，实现设备之间的数据转发</li>
+<li>数据链路层：定义数据的基本格式，如何传输、如何标识，例如网卡的MAC地址</li>
+<li>物理层：物理设备的传输，例如网卡标准、网线标准</li>
+</ul>
+</li>
+<li>
+<p>TCP/IP模型</p>
+<ul>
+<li>应用层：各种基于TCP/IP的协议，例如HTTP、FTP、SMTP</li>
+<li>传输层：TCP或者UDP协议</li>
+<li>网络层：它负责为两台主机提供通信服务，并通过选择合适的路由将数据传递到目标主机。</li>
+<li>网络接口层：物理设备的环境</li>
+</ul>
+</li>
+<li>
+<p>五层网络模型</p>
+<p>由OSI7层模型演变而来</p>
+</li>
+</ul>
+<h4 id=你知道哪些io模型bionioaio都是什么他们的使用场景是什么>你知道哪些IO模型，BIO、NIO、AIO都是什么，他们的使用场景是什么<a hidden class=anchor aria-hidden=true href=#你知道哪些io模型bionioaio都是什么他们的使用场景是什么>#</a></h4>
+<ul>
+<li>
+<p>java中的IO模型</p>
+<ul>
+<li>
+<p>BIO</p>
+<p>Blocking IO，传统的同步阻塞IO，对应着java.io，例如文件的读取，输入输出流，Socket的网络编程</p>
+</li>
+<li>
+<p>NIO</p>
+<p>No Blocking IO/New IO，同步非阻塞IO，对应着jdk1.4之后进入的nio，对于java.nio，提供了Channel，Buffer，Selector等抽象</p>
+</li>
+<li>
+<p>AIO</p>
+<p>Async IO ，异步非阻塞IO，在 Java 7 中引入了 NIO 的改进版 NIO 2,它是异步非阻塞的IO模型</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>java中的io操作最终还是依赖于操作系统的io实现的，如在Linux 2.6以后，Java中的NIO和AIO都是通过 epoll</strong></p>
+<ul>
+<li>
+<p>Linux中的IO模型</p>
+<ul>
+<li>
+<p>BIO</p>
+<blockquote>
+<p>一个输入操作通常包括两个不同的阶段:</p>
+<ul>
+<li>等待数据准备好</li>
+<li>从内核向进程复制数据</li>
+</ul>
+<p>对于一个套接字上的输入操作，第一步通常涉及等待数据从网络中到达，当所等待分组到达时，它被复制到内核中的某个缓冲区，第二步就是把数据从内核缓冲区复制到应用进程缓冲区。</p>
+<p>从上图可以看出，<strong>应用进程通过 系统调用 <code>recvfrom</code> 去接收数据，而由于内核数据没有准备好，应用进程就会阻塞，直到内核准备好数据并将其从内核复制到应用进程的缓冲区中或者发生错误才返回</strong>。最常见的错误就是系统调用被信号中断。进程从调用recvfrom开始到它返回的整段时间内是被阻塞的。</p>
+<p>Linux下的阻塞式I/O模型就对应了Java下的BIO模型，BIO的底层实现是调用操作系统的API去执行的，也就是调用操作系统的Socket套接字。</p>
+</blockquote>
+</li>
+<li>
+<p>NIO</p>
+<blockquote>
+<p>应用进程通过系统调用 <code>recvfrom</code> 不断的去和内核交互，直到内核数据报准备好，而如果内核无数据准备好，转而立即返回一个 <code>EWOULDBLOCK</code>的错误，过一段时间再次发送 <code>recvfrom</code>请求，在此期间进程可以做其他事情，不用一直等待，这就是非阻塞。</p>
+<p>当一个应用进程循环调用 <code>recvfrom</code>时，我们称之为<strong>轮询(polling)</strong>，应用进程持续轮询内核，以查看某个操作是否就绪。Java的NIO映射到Linux操作系统就是如上图所示的非阻塞I/O模型</p>
+</blockquote>
+</li>
+<li>
+<p>I/O复用模型</p>
+<blockquote>
+<p>IO多路复用使用<code>select/poll/epoll</code>函数，多个进程的IO都可以注册在同一个 <code>select</code> 上，当用户进程调用该 <code>select</code>时，<code>select</code>去监听所有注册好的IO,<strong>如果所有被监听的IO需要的数据都没有准备好，那么 <code>select</code>调用进程会被阻塞</strong>，只要任意一个IO的数据报套接字变为可读，即数据报已经准备好，<code>select</code> 就返回套接字可读这一条件，然后调用 <code>recvfrom</code>把所读数据报复制到应用进程缓冲区。</p>
+<p><strong>强调一点就是，IO多路复用模型并没有涉及到非阻塞</strong>，进程在发出<code>select</code>后，要一直阻塞等待其监听的所有IO操作至少有一个数据准备好才返回，强调阻塞状态，不存在非阻塞。</p>
+<p>而在 Java NIO中也可以实现多路复用，主要是利用多路复用器 <strong>Selector</strong>，与这里的 <code>select</code>函数类型，<strong>Selector</strong>会不断轮询注册在其上的通道Channel，如果有某一个Channel上面发生读或写事件，这个Channel处于就绪状态，就会被Selector轮询出来。</p>
+</blockquote>
+</li>
+<li>
+<p>信号驱动式/io模型</p>
+<blockquote>
+<p>应用进程预先向内核安装一个信号处理函数，然后立即返回，进程继续工作，不阻塞，当数据报准备好读取时，内核就为该进程产生一个信号通知进程，然后进程再调用recvfrom读取数据报。</p>
+<p>信号驱动式IO在数据准备阶段是异步的，当内核中有数据报准备后再通知进程，但是在调用 recvfrom操作进行数据拷贝时是同步的，所以总体来说，整个IO过程不能是异步的。</p>
+</blockquote>
+</li>
+<li>
+<p>异步IO模型，AIO</p>
+<blockquote>
+<p>应用进程调用<code>aio_read</code>函数，给内核传递描述符，缓存区指针，缓存区大小和文件偏移，并告诉内核当整个操作完成时如何通知进程，然后该系统调用立即返回，而且在等待I/O完成期间，我们的进程不被阻塞，进程可以去干其他事情，然后内核开始等待数据准备，数据准备好以后再拷贝数据到进程缓冲区，最后通知整个IO操作已完成。</p>
+<p>Java的AIO提供了异步通道API，其操作系统底层实现就是这个异步I/O模型</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li>
+<p>使用场景</p>
+<blockquote>
+<p>BIO方式适用于连接数目比较小且固定的架构，这种方式对服务器资源要求比较高，并发局限于应用中，JDK1.4以前的唯一选择，但程序直观简单易理解。</p>
+<p>NIO方式适用于连接数目多且连接比较短（轻操作）的架构，比如聊天服务器，并发局限于应用中，编程比较复杂，JDK1.4开始支持。</p>
+<p>AIO方式适用于连接数目多且连接比较长（重操作）的架构，比如相册服务器，充分调用OS参与并发操作，编程比较复杂，JDK7开始支持。</p>
+</blockquote>
+</li>
+</ul>
+<h4 id=讲一下httpshttphttp10http11http2>讲一下Https、Http、Http1.0、Http1.1、Http2<a hidden class=anchor aria-hidden=true href=#讲一下httpshttphttp10http11http2>#</a></h4>
 <h4 id=什么是多路复用>什么是多路复用<a hidden class=anchor aria-hidden=true href=#什么是多路复用>#</a></h4>
+<ul>
+<li>
+<p>IO多路复用是一种同步IO模型，实现一个线程可以监视多个文件句柄；一旦某个文件句柄就绪，就能够通知应用程序进行相应的读写操作；没有文件句柄就绪时会阻塞应用程序，交出cpu。多路是指多个网络连接多个句柄，复用指的是同一个线程（结合上图），实际上在代码中，一个线程去调用select方法，当没有连接准备好的时候，select阻塞。select返回连接列表，进行处理</p>
+<pre tabindex=0><code>fds = [listen_fd]
+// 伪代码描述
+while(1) {
+  // 通过内核获取有读写事件发生的fd，只要有一个则返回，无则阻塞
+  // 整个过程只在调用select、poll、epoll这些调用的时候才会阻塞，accept/recv是不会阻塞
+  for (fd in select(fds)) {
+    if (fd == listen_fd) {
+        client_fd = accept(listen_fd)
+        fds.append(client_fd)
+    } elseif (len = recv(fd) &amp;&amp; len != -1) { 
+      // logic
+    }
+  }  
+}
+</code></pre></li>
+<li>
+<p>linux实现多路复用的方式</p>
+</li>
+<li>
+<p>epoll的et和lt的区别</p>
+<p>epoll LT 与 ET模式的区别</p>
+<ul>
+<li>epoll有EPOLLLT和EPOLLET两种触发模式，LT是默认的模式，ET是“高速”模式。</li>
+<li>LT模式下，只要这个fd还有数据可读，每次 epoll_wait都会返回它的事件，提醒用户程序去操作</li>
+<li>ET模式下，它只会提示一次，直到下次再有数据流入之前都不会再提示了，无论fd中是否还有数据可读。所以在ET模式下，read一个fd的时候一定要把它的buffer读完，或者遇到EAGAIN错误</li>
+</ul>
+</li>
+</ul>
 <h1 id=代码书写>代码书写<a hidden class=anchor aria-hidden=true href=#代码书写>#</a></h1>
 <h4 id=聊聊设计模式你知道哪些用过哪些为什么要用设计模式>聊聊设计模式，你知道哪些，用过哪些，为什么要用设计模式<a hidden class=anchor aria-hidden=true href=#聊聊设计模式你知道哪些用过哪些为什么要用设计模式>#</a></h4>
 <h1 id=数据结构>数据结构<a hidden class=anchor aria-hidden=true href=#数据结构>#</a></h1>

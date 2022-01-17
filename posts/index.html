@@ -71,14 +71,26 @@
 </h2>
 </header>
 <section class=entry-content>
-<p>Redis redis如何做到限流的 限流的几个方式
-计数器
-计数器即是计算在单位时间窗口内请求访问的次数是否超过阀值。
-窗口分为：固定窗口、滑动窗口
-固定窗口java实现：
-private final AtomicInteger cur = new AtomicInteger(0); private Long startTime; public boolean isAllowed(int maxCount, int interval) { //如果没有第一次时间，则当下为第一次时间 if (startTime == null) startTime = System.currentTimeMillis(); //新增一次 cur.addAndGet(1); //如果当前时间减去开始时间，大于间隙了，说明进入新一轮计算 if (System.currentTimeMillis() - interval * 1000L > startTime) { //重置开始时间 startTime = System.currentTimeMillis(); //重置计数 cur.set(1); return true; } //还在时间内 return cur.get() &lt;= maxCount; } 固定窗口解决了在单位时间内流量次数不会超过阀值，但是在临界点会出现问题。...</p>
+<p>Redis redis有哪些数据结构，你用过哪些，做过什么事情 String
+最简单的数据结构，用于存放字符串，实际上在redis中存放的是字符数组，类似java中的arrayList，**Redis 为了对内存做极致的优化，不同长度的字符串使用不同的结构体来表示。**Redis 规定了字符串的长度不得超过 512 MB
+List
+底层用的双向列表，类似java中的LinkedList，因为是链表所有，插入删除都是O(1)，查询是O(n)
+常见的命令
+lpush从头添加元素，rpush从尾添加
+lpop拿出头部的元素，rpop从尾部拿元素
+索引，lpush+lpop即可实现栈，rpush+lpop可以实现队列
+Hash
+对应着java中的hashMap
+Set
+Redis 的集合相当于 Java 语言中的 HashSet，它内部的键值对是无序、唯一的。它的内部实现相当于一个特殊的字典，字典中所有的 value 都是一个值 NULL。
+Zset
+它类似于 Java 中 SortedSet 和 HashMap 的结合体，一方面它是一个 set，保证了内部 value 的唯一性，另一方面它可以为每个 value 赋予一个 score 值，用来代表排序的权重。
+使用场景：
+排行榜，key是用户id，value是访问次数。 限流，key是用户id+接口id，value是时间戳，每次进方法之前，拿当前时间戳-interval，删除小于now-interval的元素，算出加入当前这次请求set中的个数是否大于max，大于则限流。 BloomFilter
+redis如何做到限流的 限流的几个方式
+计数器...</p>
 </section>
-<footer class=entry-footer><span title="2022-01-11 14:43:18 +0800 CST">January 11, 2022</span>&nbsp;·&nbsp;3 min&nbsp;·&nbsp;Hao Sun</footer>
+<footer class=entry-footer><span title="2022-01-11 14:43:18 +0800 CST">January 11, 2022</span>&nbsp;·&nbsp;6 min&nbsp;·&nbsp;Hao Sun</footer>
 <a class=entry-link aria-label="post link to 八股文" href=https://sunhao1256.github.io/posts/%E5%85%AB%E8%82%A1%E6%96%87/></a>
 </article>
 <article class=post-entry>
