@@ -21,8 +21,10 @@ Redis 的集合相当于 Java 语言中的 HashSet，它内部的键值对是无
 它类似于 Java 中 SortedSet 和 HashMap 的结合体，一方面它是一个 set，保证了内部 value 的唯一性，另一方面它可以为每个 value 赋予一个 score 值，用来代表排序的权重。
 使用场景：
  排行榜，key是用户id，value是访问次数。 限流，key是用户id+接口id，value是时间戳，每次进方法之前，拿当前时间戳-interval，删除小于now-interval的元素，算出加入当前这次请求set中的个数是否大于max，大于则限流。    BloomFilter
-  redis如何做到限流的 限流的几个方式
-  计数器">
+使用高效的数据结构解决是否存在的问题，可以解决穿透的问题
+  HyperLogLog
+可以用于基数的统计，例如UV统计
+  redis如何做到限流的 限流的几个方式">
 <meta name=author content="Hao Sun">
 <link rel=canonical href=https://sunhao1256.github.io/posts/%E5%85%AB%E8%82%A1%E6%96%87/>
 <link crossorigin=anonymous href=/assets/css/stylesheet.min.c88963fe2d79462000fd0fb1b3737783c32855d340583e4523343f8735c787f0.css integrity="sha256-yIlj/i15RiAA/Q+xs3N3g8MoVdNAWD5FIzQ/hzXHh/A=" rel="preload stylesheet" as=style>
@@ -55,8 +57,10 @@ Redis 的集合相当于 Java 语言中的 HashSet，它内部的键值对是无
 它类似于 Java 中 SortedSet 和 HashMap 的结合体，一方面它是一个 set，保证了内部 value 的唯一性，另一方面它可以为每个 value 赋予一个 score 值，用来代表排序的权重。
 使用场景：
  排行榜，key是用户id，value是访问次数。 限流，key是用户id+接口id，value是时间戳，每次进方法之前，拿当前时间戳-interval，删除小于now-interval的元素，算出加入当前这次请求set中的个数是否大于max，大于则限流。    BloomFilter
-  redis如何做到限流的 限流的几个方式
-  计数器">
+使用高效的数据结构解决是否存在的问题，可以解决穿透的问题
+  HyperLogLog
+可以用于基数的统计，例如UV统计
+  redis如何做到限流的 限流的几个方式">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://sunhao1256.github.io/posts/%E5%85%AB%E8%82%A1%E6%96%87/"><meta property="og:image" content="https://sunhao1256.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta property="article:section" content="posts">
 <meta property="article:published_time" content="2022-01-11T14:43:18+08:00">
@@ -80,10 +84,12 @@ Redis 的集合相当于 Java 语言中的 HashSet，它内部的键值对是无
 它类似于 Java 中 SortedSet 和 HashMap 的结合体，一方面它是一个 set，保证了内部 value 的唯一性，另一方面它可以为每个 value 赋予一个 score 值，用来代表排序的权重。
 使用场景：
  排行榜，key是用户id，value是访问次数。 限流，key是用户id+接口id，value是时间戳，每次进方法之前，拿当前时间戳-interval，删除小于now-interval的元素，算出加入当前这次请求set中的个数是否大于max，大于则限流。    BloomFilter
-  redis如何做到限流的 限流的几个方式
-  计数器">
+使用高效的数据结构解决是否存在的问题，可以解决穿透的问题
+  HyperLogLog
+可以用于基数的统计，例如UV统计
+  redis如何做到限流的 限流的几个方式">
 <script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://sunhao1256.github.io/posts/"},{"@type":"ListItem","position":2,"name":"八股文","item":"https://sunhao1256.github.io/posts/%E5%85%AB%E8%82%A1%E6%96%87/"}]}</script>
-<script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"八股文","name":"八股文","description":"Redis redis有哪些数据结构，你用过哪些，做过什么事情   String\n最简单的数据结构，用于存放字符串，实际上在redis中存放的是字符数组，类似java中的arrayList，**Redis 为了对内存做极致的优化，不同长度的字符串使用不同的结构体来表示。**Redis 规定了字符串的长度不得超过 512 MB\n  List\n底层用的双向列表，类似java中的LinkedList，因为是链表所有，插入删除都是O(1)，查询是O(n)\n常见的命令\n  lpush从头添加元素，rpush从尾添加\n  lpop拿出头部的元素，rpop从尾部拿元素\n索引，lpush+lpop即可实现栈，rpush+lpop可以实现队列\n    Hash\n对应着java中的hashMap\n  Set\nRedis 的集合相当于 Java 语言中的 HashSet，它内部的键值对是无序、唯一的。它的内部实现相当于一个特殊的字典，字典中所有的 value 都是一个值 NULL。\n  Zset\n它类似于 Java 中 SortedSet 和 HashMap 的结合体，一方面它是一个 set，保证了内部 value 的唯一性，另一方面它可以为每个 value 赋予一个 score 值，用来代表排序的权重。\n使用场景：\n 排行榜，key是用户id，value是访问次数。 限流，key是用户id+接口id，value是时间戳，每次进方法之前，拿当前时间戳-interval，删除小于now-interval的元素，算出加入当前这次请求set中的个数是否大于max，大于则限流。    BloomFilter\n  redis如何做到限流的 限流的几个方式\n  计数器","keywords":["面试"],"articleBody":"Redis redis有哪些数据结构，你用过哪些，做过什么事情   String\n最简单的数据结构，用于存放字符串，实际上在redis中存放的是字符数组，类似java中的arrayList，**Redis 为了对内存做极致的优化，不同长度的字符串使用不同的结构体来表示。**Redis 规定了字符串的长度不得超过 512 MB\n  List\n底层用的双向列表，类似java中的LinkedList，因为是链表所有，插入删除都是O(1)，查询是O(n)\n常见的命令\n  lpush从头添加元素，rpush从尾添加\n  lpop拿出头部的元素，rpop从尾部拿元素\n索引，lpush+lpop即可实现栈，rpush+lpop可以实现队列\n    Hash\n对应着java中的hashMap\n  Set\nRedis 的集合相当于 Java 语言中的 HashSet，它内部的键值对是无序、唯一的。它的内部实现相当于一个特殊的字典，字典中所有的 value 都是一个值 NULL。\n  Zset\n它类似于 Java 中 SortedSet 和 HashMap 的结合体，一方面它是一个 set，保证了内部 value 的唯一性，另一方面它可以为每个 value 赋予一个 score 值，用来代表排序的权重。\n使用场景：\n 排行榜，key是用户id，value是访问次数。 限流，key是用户id+接口id，value是时间戳，每次进方法之前，拿当前时间戳-interval，删除小于now-interval的元素，算出加入当前这次请求set中的个数是否大于max，大于则限流。    BloomFilter\n  redis如何做到限流的 限流的几个方式\n  计数器\n计数器即是计算在单位时间窗口内请求访问的次数是否超过阀值。\n窗口分为：固定窗口、滑动窗口\n  固定窗口java实现：\nprivate final AtomicInteger cur = new AtomicInteger(0); private Long startTime; public boolean isAllowed(int maxCount, int interval) { //如果没有第一次时间，则当下为第一次时间  if (startTime == null) startTime = System.currentTimeMillis(); //新增一次  cur.addAndGet(1); //如果当前时间减去开始时间，大于间隙了，说明进入新一轮计算  if (System.currentTimeMillis() - interval * 1000L  startTime) { //重置开始时间  startTime = System.currentTimeMillis(); //重置计数  cur.set(1); return true; } //还在时间内  return cur.get()  maxCount; } 固定窗口解决了在单位时间内流量次数不会超过阀值，但是在临界点会出现问题。\n在前一个一秒内，0.8秒到1秒，访问了5次，没有超过阀值，1秒到1.2秒访问了5次，没有超过阀值。0.8秒到1.2秒之间的0.4秒访问了10次，超过了阀值。没有达到目的。这样的问题原因是窗口没有“滑动”。\n  滑动窗口\n滑动窗口是一种算法思想\n 滑动窗口算法（Sliding Window Algorithm）\n  Sliding window algorithm is used to perform required operation on specific window size of given large buffer or array.\n滑动窗口算法是在给定特定窗口大小的数组或字符串上执行要求的操作。\n  This technique shows how a nested for loop in few problems can be converted to single for loop and hence reducing the time complexity.\n该技术可以将一部分问题中的嵌套循环转变为一个单循环，因此它可以减少时间复杂度。\n 简而言之，滑动窗口算法在一个特定大小的字符串或数组上进行操作，而不在整个字符串和数组上操作，这样就降低了问题的复杂度，从而也达到降低了循环的嵌套深度。其实这里就可以看出来滑动窗口主要应用在数组和字符串上。\n常见的算法题，找到A字符串中，包含T个字符的最小覆盖子串\n//找到字符串EBBANCF中包含ABC三个字符的最小子串  //往往类似于“ 请找到满足 xx 的最 x 的区间（子串、子数组）的 xx ”这类问题都可以使用该方法进行解决。  public String noFixed(String str,String target){ String[] s = str.split(\"\"); String[] t = target.split(\"\"); //定义两个指针，在s上滑动  int left=0,right=0; String res=null; List window=new ArrayList(); //一直滑动，直到右指针到头了  while (rights.length){ //移动右指针，一直到包含了所有的目标元素  window.add(s[right]); right++; //如果window满足要求了，就移动左指针  while (window.containsAll(Arrays.asList(t))){ if(res==null){ //第一次得到结果  res=String.join(\"\",window); }else{ //比较当前的长度大小和目前最小的结果  res=(window.size()res.length())?String.join(\"\",window):res; } //移动左指针,直至窗口不满足  window.remove(s[left]); left++; } } return res; } /** * 固定窗口大小为f */ public String fixed(Integer f, String str) { String result = null; int right = 0; //寻找字符串中长度为f的包含最多元音字母的子串  String[] s = str.split(\"\"); List window = new ArrayList(); while (right  s.length) { //滑动右指针  window.add(s[right]); right++; //达到目标窗口的大小  if (right = f) { //检查条件  String cur = String.join(\"\", window); if (result == null) { //满足条件的话  if (countOfVowel(cur)  0) result = cur; } else { int i = countOfVowel(result); int j = countOfVowel(cur); result = i  j ? result : cur; } //移动左指针，因为窗口固定，删除左边right-f个字符  window.remove(s[right-f]); } } return result; } private int countOfVowel(String s) { String[] split = s.split(\"\"); ListString vowels = Arrays.asList(\"A\", \"E\", \"I\", \"O\", \"U\"); int res = 0; for (int i = 0; i  split.length; i++) { if (vowels.contains(split[i].toUpperCase())) { res++; } } return res; } 滑动窗口解决了临界的问题，但是当在窗口内达到了阀值，剩余的请求都会被拒绝，这样处理不好。\n    漏桶\npublic class LeakBucketLimit { /** * 出水率 */ private final long rate=5L;//1秒出水5个请求  /** * 桶的容量 */ private final long capacity=10L; /** * 当前水量 */ private long currentWater; /** * 最后刷新时间 */ private long refreshTime; public boolean tryAcquire(){ /** * 获取当前时间 */ long currentTime = System.currentTimeMillis(); /** * 流出去的水 */ long outWater = (currentTime-refreshTime)/1000*rate; /** * 当前 */ currentWater = Math.max(0,currentWater-outWater); System.out.println(currentWater); refreshTime=currentTime; if(currentWater=capacity){ //不够流了  return false; } //加水  currentWater++; return true; } } 缺陷：不管是什么流量，桶都会按照rate一点一点消费，如果来了爆炸的流量，依然一点一点消费，实际情况中，我们希望能快速消费。而平时就按照rate消费。\n  令牌桶\n令牌桶就是为了解决漏桶的缺点。\n  有一个令牌管理员，根据限流大小，定速往令牌桶里放令牌。 如果令牌数量满了，超过令牌桶容量的限制，那就丢弃。 系统在接受到一个用户请求时，都会先去令牌桶要一个令牌。如果拿到令牌，那么就处理这个请求的业务逻辑； 如果拿不到令牌，就直接拒绝这个请求。   /** * 令牌桶发放速度 */ private final long tokenRate=5L; /** * 桶的容量 */ private final long capacity=10; /** * 上一次刷新的时间 */ private long refreshTime; /** * 当前桶里的令牌 */ private long currentToken; public boolean tryAcquire(){ //当前时间  long currentTime=System.currentTimeMillis(); //更新当前桶里的令牌个数  //当前token个数=原来当前个数+间隙之间生产出来的token个数（可能为0）  currentToken =Math.min (capacity,(currentToken+currentTime - refreshTime) / 1000 * tokenRate); refreshTime=currentTime; if(currentToken0){ //还有令牌  currentToken--; return true; } return false; }   redis是单线程的吗，它为什么这么快？   是“单线程”也不是“单线程”\n在redis6.0后，推出了多线程的概念。这里的单线程或者多线程，是对于整个redis来说的。并不是针对一个缓存的读取而言。\n说redis是单线程的，并不是说redis的所有操作模块都是单线程的。redis单线程指的是，用单个线程进行网络io和键值读取。\nRedis中只有网络请求模块和数据操作模块是单线程的。而其他的如持久化存储模块、集群支撑模块等是多线程的\n在redis6.0之前一直是这样处理的，为什么对于网络的io不用多线程呢。\n 首先使用多线程的目的是为了提高IO利用率和CPU利用率，而redis的是io密集型软件。CPU并不是它的瓶颈。可以使用多线程来提高IO\n利用率，但是提高IO利用率的方法并非只有多线程一种方式\n 对线程带来的弊端：内存模型，锁，CAS操作保证并发。\n虽然，采用多线程可以帮助我们提升CPU和I/O的利用率，但是多线程带来的并发问题也给这些语言和框架带来了更多的复杂性。而且，多线程模型中，多个线程的互相切换也会带来一定的性能开销。\n所以，在提升I/O利用率这个方面上，Redis并没有采用多线程技术，而是选择了多路复用 I/O技术。\n多路复用即redis使用单线程，去接收并发下的网络套接字。redis没有使用多线程，减少线程之前切换的开销，以及多线程带来的共享对象的并发问题。因此大家称redis是单线程的\n由于多路复用的IO模型本质上仍然是同步阻塞型IO模型。\n在多路复用的IO模型中，在处理网络请求时，调用 select （其他函数同理）的过程是阻塞的，也就是说这个过程会阻塞线程，如果并发量很高，此处可能会成为瓶颈。\n如果能采用多线程，使得网络处理的请求并发进行，就可以大大的提升性能。多线程除了可以减少由于网络 I/O 等待造成的影响，还可以充分利用 CPU 的多核优势。\nRedis 6.0采用多个IO线程来处理网络请求，网络请求的解析可以由其他线程完成，然后把解析后的请求交由主线程进行实际的内存读写。提升网络请求处理的并行度，进而提升整体性能。\n但是，Redis 的多 IO 线程只是用来处理网络请求的，对于读写命令，Redis 仍然使用单线程来处理。因此不会数据上的并发安全问题\n  为什么快？\n 完全基于内存 数据结构简单，对数据操作也简单，如哈希表、跳表都有很高的性能 采用单线程，避免了不必要的上下文切换和竞争条件，也不存在多进程或者多线程导致的切换而消耗 CPU 使用多路I/O复用模型    redis的高可用 redis的持久化 Redis提供了2中持久化方式AOF，RDB\n AOF RDB  redis布隆过滤器 布隆过滤器可以使用高效的数据结构，存放大量的数据。布隆过滤器说存在，则不一定存在，但是布隆过滤器说不存在，则一定不存在。常用于缓存穿透的问题。\n特点\n 空间效率高 多次hash，时间效率高 存在误判，所以不好做删除  使用场景\n 黑名单 URL去重 ID校验 防止穿透  原理：\n 布隆过滤器本质上是一个位数组，每个元素只占1个bit，只会有0和1，通过n次hash，减少hash碰撞。当一个key过来的时候，进行n次hash，得出n次结果，将n次结果的位值在数组中查找，如果发现有一个值为0，则key一定不在过滤器中。如果都为1可能在过滤器中，因为hash值会碰撞。hash的次数和数组的大小决定了布隆过滤器的准确度。  使用：\n google在guava中封装好的BloomFilter redis 4.0后可以加入module BloomFilter  redis分布式锁 redis为什么选用跳表 redis防击穿、雪崩、穿透   击穿\n和雪崩有一点像。击穿是大量请求，打一个key，这个key突然失效，导致打挂了库。而雪崩是大量key一起失效\n  穿透\n访问一个不可能存在的key，一直打到数据库，导致数据库挂了\n解决方案：\n 代码中针对查key的逻辑需要注意，在逻辑上就处理掉这些不会出现的key 对于不存在的key，依然存缓存，value设为null，或者提示语句。例如“稍后再试，请求不正确”。并且给他一个过期时间 使用布隆过滤器 通过nginx做ip的限制，加黑名单。    雪崩\n大批量的key在同时一时刻失效，导致大批量的请求全部打到数据上。数据库承受不住挂了。\n解决方案：\n 设置过期时间的时候加上随机数，保证同一时间不会有大量的key失效 设置这种热点数据用不过期。需要更新的时候，顺手更新一下缓存就可以了    redis是先删缓存还是先写库，怎么解决缓存一致性   先删缓存，再更新数据库\n缓存删除完成后，数据库更新操作还没好，此时请求过来，读缓存，读不到，读数据库，得到的是旧数据\n解决方案：延时双删\n 流程如下：\n 线程1删除缓存，然后去更新数据库 线程2来读缓存，发现缓存已经被删除，所以直接从数据库中读取，这时候由于线程1还没有更新完成，所以读到的是旧值，然后把旧值写入缓存 线程1，根据估算的时间，sleep，由于sleep的时间大于线程2读数据+写缓存的时间，所以缓存被再次删除 如果还有其他线程来读取缓存的话，就会再次从数据库中读取到最新值     先更新库，再删除缓存\n更新数据库成功，如果删除缓存失败或者还没有来得及删除，那么，其他线程从缓存中读取到的就是旧值，还是会发生不一致。\n解决方案：先更新数据库，成功后往消息队列发消息，消费到消息后再删除缓存，借助消息队列的重试机制来实现，达到最终一致性的效果。进阶一点，使用数据的binlog通知到消息队列，然后更新缓存。无代码入侵\n 缺陷：\n 引入消息中间件之后，问题更复杂了，怎么保证消息不丢失更麻烦 就算更新数据库和删除缓存都没有发生问题，消息的延迟也会带来短暂的不一致性，不过这个延迟相对来说还是可以接受的     设置过期时间\n 每次放入缓存的时候，设置一个过期时间，比如5分钟，以后的操作只修改数据库，不操作缓存，等待缓存超时后从数据库重新读取。\n如果对于一致性要求不是很高的情况，可以采用这种方案。\n这个方案还会有另外一个问题，就是如果数据更新的特别频繁，不一致性的问题就很大了。\n在实际生产中，我们有一些活动的缓存数据是使用这种方式处理的。\n因为活动并不频繁发生改变，而且对于活动来说，短暂的不一致性并不会有什么大的问题。\n   总结\n首先，我们要明确一点，缓存不是更新，而应该是删除。\n删除缓存有两种方式：\n 先删除缓存，再更新数据库。解决方案是使用延迟双删。 先更新数据库，再删除缓存。解决方案是消息队列或者其他binlog同步，引入消息队列会带来更多的问题，并不推荐直接使用。  针对缓存一致性要求不是很高的场景，那么只通过设置超时时间就可以了。\n其实，如果不是很高的并发，无论你选择先删缓存还是后删缓存的方式，都几乎很少能产生这种问题，但是在高并发下，你应该知道怎么解决问题。\n  问题排查 arthas jdk自带命令 Kafka Kafka的推还是拉 Kafka如何做到消息不丢失的 Kafka为什么可以有这么大的吞吐量 MySql mysql的索引数据结构为什么用B+树 最左匹配原则是什么 说出你如何调优的 常见的优化手段 MVVC 事务特性，隔离级别，怎么解决幻读？ 为什么要分库分表，有什么方案 Mybatis Spring Spring的Bean注入过程讲一下 Spring中常见的设计模式说一说 Spring是怎么解决Bean之间的循环依赖问题 SpringMvc的流程 SpringBoot的启动原理 SpringCloud了解多少 AOP怎么实现的 微服务 为什么要用dubbo，和SpringCloud的区别是什么 分布式事务、分布式锁、分布式链路追踪解决方案 ES 为什么ES能查询的这么快 Zookeeper Zookeeper是干什么的，你使用过吗，用它做过什么事情吗 Java并发 异步、同步；阻塞、非阻塞；线程、进程他们的关系   异步和同步\n同步与异步最大的区别就是被调用方的执行方式和返回时机，同步指的是被调用方做完事情之后再返回，异步指的是被调用方先返回，然后再做事情，做完之后再想办法通知调用方\n  阻塞和非阻塞\n阻塞就是发起一个请求，调用者一直等待请求结果返回，也就是当前线程会被挂起，无法从事其他任务，只有当条件就绪才能继续。\n非阻塞就是发起一个请求，调用者不用一直等着结果返回，可以先去干其他事情。\n   阻塞和同步不是一回事，同步，异步与阻塞，非阻塞针对的对象是不一样的，阻塞,非阻塞是说的调用者，同步，异步说的是被调用者\n 你知道哪几种锁 讲一下线程的生命周期 java.lang.Thread.State中定义了线程的状态\npublic enum State { /** * Thread state for a thread which has not yet started. */ //新建状态,线程还未开始  NEW, /** * Thread state for a runnable thread. A thread in the runnable * state is executing in the Java virtual machine but it may * be waiting for other resources from the operating system * such as processor. */ //可以运行状态，已经在jvm虚拟机中了，正在等待操作系统分配资源  RUNNABLE, /** * Thread state for a thread blocked waiting for a monitor lock. * A thread in the blocked state is waiting for a monitor lock * to enter a synchronized block/method or * reenter a synchronized block/method after calling * {@link Object#wait() Object.wait}. */ //阻塞状态，正在等待一个monitor锁，就是我们平时用的synchronized的关键字。  //或者在调用了Object.wait()方法且被notify()之后也会进入BLOCKED状态  BLOCKED, /** * Thread state for a waiting thread. * A thread is in the waiting state due to calling one of the * following methods: *  * {@link Object#wait() Object.wait} with no timeout * {@link #join() Thread.join} with no timeout * {@link LockSupport#park() LockSupport.park} *  * * A thread in the waiting state is waiting for another thread to * perform a particular action. * * For example, a thread that has called {@code Object.wait()} * on an object is waiting for another thread to call * {@code Object.notify()} or {@code Object.notifyAll()} on * that object. A thread that has called {@code Thread.join()} * is waiting for a specified thread to terminate. * 等待状态 * 1. Object.wait()无超时的方法后且未被notify()前，如果被notify()了会进入BLOCKED状态 * 2. Thread.join()无超时的方法后 * 3. LockSupport.park()无超时的方法后 */ WAITING, /** * Thread state for a waiting thread with a specified waiting time. * A thread is in the timed waiting state due to calling one of * the following methods with a specified positive waiting time: *  * {@link #sleep Thread.sleep} * {@link Object#wait(long) Object.wait} with timeout * {@link #join(long) Thread.join} with timeout * {@link LockSupport#parkNanos LockSupport.parkNanos} * {@link LockSupport#parkUntil LockSupport.parkUntil} *  *超市等待状态,调用了 * 1. Thread.sleep()方法后 * 2. Object.wait(timeout)方法后且未到超时时间前，如果达到超时了或被notify()了会进入BLOCKED状态 * 3. Thread.join(timeout)方法后 * 4. LockSupport.parkNanos(nanos)方法后 * 5. LockSupport.parkUntil(deadline)方法后 /* TIMED_WAITING, /** * Thread state for a terminated thread. * The thread has completed execution. */ //终止状态，线程执行完毕  TERMINATED; } 线程可以被终止吗，怎么终止 AQS是什么？ wait()、notify()、sleep()、yield()、join()这几个方法的作用 实现线程安全的方法 公平锁和非公平锁的区别,ReentrantLock是怎么实现的 CAS是什么，怎么解决ABA问题 ConcurrentHashMap的分段锁 你用过哪些Java.util.concurrent下的类 讲一下线程池的几个参数含义 synchronized关键字，怎么优化的，膨胀的流程 volatile关键字 Java内存模型 ThreadLocal Java基础 说一说你理解的多态 来个简单的，Java作用域有哪些，为什么要考虑作用域 讲一下泛型和注解 讲一下反射和动态代理 Java的几种引用，你用过几种 说说进程和线程的区别 Java集合 讲一讲集合类，常用的集合，以及在多线程下你是如何保集合安全的 讲讲HashMap JVM JVM是什么 JVM内存模型 Java编译到执行的过程 双亲委派机制是干什么的 JVM是怎么进行垃圾回收的，垃圾回收机制是如何的，怎么判断是不是垃圾 平时如何调优 一个对象到底有多大，“对象在内存中长什么样子” 网络 讲一下TCP/IP，它和HTTP的关系 Netty干什么的，用过吗 你知道哪些网络模型？   OSI网络7层模型\n 应用层：各种web应用 表示层：数据格式标识，基本加解密 会话层：控制各个程序之间的会话能力，软件数据分发给其他不同的软件 传输层：TCP UDP协议 网络层：定义IP地址，定义路由的基本功能，实现设备之间的数据转发 数据链路层：定义数据的基本格式，如何传输、如何标识，例如网卡的MAC地址 物理层：物理设备的传输，例如网卡标准、网线标准    TCP/IP模型\n 应用层：各种基于TCP/IP的协议，例如HTTP、FTP、SMTP 传输层：TCP或者UDP协议 网络层：它负责为两台主机提供通信服务，并通过选择合适的路由将数据传递到目标主机。 网络接口层：物理设备的环境    五层网络模型\n由OSI7层模型演变而来\n  你知道哪些IO模型，BIO、NIO、AIO都是什么，他们的使用场景是什么   java中的IO模型\n  BIO\nBlocking IO，传统的同步阻塞IO，对应着java.io，例如文件的读取，输入输出流，Socket的网络编程\n  NIO\nNo Blocking IO/New IO，同步非阻塞IO，对应着jdk1.4之后进入的nio，对于java.nio，提供了Channel，Buffer，Selector等抽象\n  AIO\nAsync IO ，异步非阻塞IO，在 Java 7 中引入了 NIO 的改进版 NIO 2,它是异步非阻塞的IO模型\n    java中的io操作最终还是依赖于操作系统的io实现的，如在Linux 2.6以后，Java中的NIO和AIO都是通过 epoll\n  Linux中的IO模型\n  BIO\n 一个输入操作通常包括两个不同的阶段:\n 等待数据准备好 从内核向进程复制数据  对于一个套接字上的输入操作，第一步通常涉及等待数据从网络中到达，当所等待分组到达时，它被复制到内核中的某个缓冲区，第二步就是把数据从内核缓冲区复制到应用进程缓冲区。\n从上图可以看出，应用进程通过 系统调用 recvfrom 去接收数据，而由于内核数据没有准备好，应用进程就会阻塞，直到内核准备好数据并将其从内核复制到应用进程的缓冲区中或者发生错误才返回。最常见的错误就是系统调用被信号中断。进程从调用recvfrom开始到它返回的整段时间内是被阻塞的。\nLinux下的阻塞式I/O模型就对应了Java下的BIO模型，BIO的底层实现是调用操作系统的API去执行的，也就是调用操作系统的Socket套接字。\n   NIO\n 应用进程通过系统调用 recvfrom 不断的去和内核交互，直到内核数据报准备好，而如果内核无数据准备好，转而立即返回一个 EWOULDBLOCK的错误，过一段时间再次发送 recvfrom请求，在此期间进程可以做其他事情，不用一直等待，这就是非阻塞。\n当一个应用进程循环调用 recvfrom时，我们称之为轮询(polling)，应用进程持续轮询内核，以查看某个操作是否就绪。Java的NIO映射到Linux操作系统就是如上图所示的非阻塞I/O模型\n   I/O复用模型\n IO多路复用使用select/poll/epoll函数，多个进程的IO都可以注册在同一个 select 上，当用户进程调用该 select时，select去监听所有注册好的IO,如果所有被监听的IO需要的数据都没有准备好，那么 select调用进程会被阻塞，只要任意一个IO的数据报套接字变为可读，即数据报已经准备好，select 就返回套接字可读这一条件，然后调用 recvfrom把所读数据报复制到应用进程缓冲区。\n强调一点就是，IO多路复用模型并没有涉及到非阻塞，进程在发出select后，要一直阻塞等待其监听的所有IO操作至少有一个数据准备好才返回，强调阻塞状态，不存在非阻塞。\n而在 Java NIO中也可以实现多路复用，主要是利用多路复用器 Selector，与这里的 select函数类型，Selector会不断轮询注册在其上的通道Channel，如果有某一个Channel上面发生读或写事件，这个Channel处于就绪状态，就会被Selector轮询出来。\n   信号驱动式/io模型\n 应用进程预先向内核安装一个信号处理函数，然后立即返回，进程继续工作，不阻塞，当数据报准备好读取时，内核就为该进程产生一个信号通知进程，然后进程再调用recvfrom读取数据报。\n信号驱动式IO在数据准备阶段是异步的，当内核中有数据报准备后再通知进程，但是在调用 recvfrom操作进行数据拷贝时是同步的，所以总体来说，整个IO过程不能是异步的。\n   异步IO模型，AIO\n 应用进程调用aio_read函数，给内核传递描述符，缓存区指针，缓存区大小和文件偏移，并告诉内核当整个操作完成时如何通知进程，然后该系统调用立即返回，而且在等待I/O完成期间，我们的进程不被阻塞，进程可以去干其他事情，然后内核开始等待数据准备，数据准备好以后再拷贝数据到进程缓冲区，最后通知整个IO操作已完成。\nJava的AIO提供了异步通道API，其操作系统底层实现就是这个异步I/O模型\n     使用场景\n BIO方式适用于连接数目比较小且固定的架构，这种方式对服务器资源要求比较高，并发局限于应用中，JDK1.4以前的唯一选择，但程序直观简单易理解。\nNIO方式适用于连接数目多且连接比较短（轻操作）的架构，比如聊天服务器，并发局限于应用中，编程比较复杂，JDK1.4开始支持。\nAIO方式适用于连接数目多且连接比较长（重操作）的架构，比如相册服务器，充分调用OS参与并发操作，编程比较复杂，JDK7开始支持。\n   讲一下Https、Http、Http1.0、Http1.1、Http2 什么是多路复用   IO多路复用是一种同步IO模型，实现一个线程可以监视多个文件句柄；一旦某个文件句柄就绪，就能够通知应用程序进行相应的读写操作；没有文件句柄就绪时会阻塞应用程序，交出cpu。多路是指多个网络连接多个句柄，复用指的是同一个线程（结合上图），实际上在代码中，一个线程去调用select方法，当没有连接准备好的时候，select阻塞。select返回连接列表，进行处理\nfds = [listen_fd] // 伪代码描述 while(1) { // 通过内核获取有读写事件发生的fd，只要有一个则返回，无则阻塞 // 整个过程只在调用select、poll、epoll这些调用的时候才会阻塞，accept/recv是不会阻塞 for (fd in select(fds)) { if (fd == listen_fd) { client_fd = accept(listen_fd) fds.append(client_fd) } elseif (len = recv(fd) \u0026\u0026 len != -1) { // logic } } }   linux实现多路复用的方式\n  epoll的et和lt的区别\nepoll LT 与 ET模式的区别\n epoll有EPOLLLT和EPOLLET两种触发模式，LT是默认的模式，ET是“高速”模式。 LT模式下，只要这个fd还有数据可读，每次 epoll_wait都会返回它的事件，提醒用户程序去操作 ET模式下，它只会提示一次，直到下次再有数据流入之前都不会再提示了，无论fd中是否还有数据可读。所以在ET模式下，read一个fd的时候一定要把它的buffer读完，或者遇到EAGAIN错误    代码书写 聊聊设计模式，你知道哪些，用过哪些，为什么要用设计模式 数据结构 你知道哪些数据结构 红黑树、B树、B+树、二叉树、完全平衡二叉树 手写一个链表，实现正向输出，反向输出，找到最中间的元素 算法 常见的8个排序算法，你能写出几个 操作系统 零拷贝是什么 ","wordCount":"1143","inLanguage":"en","datePublished":"2022-01-11T14:43:18+08:00","dateModified":"2022-01-11T14:43:18+08:00","author":{"@type":"Person","name":"Hao Sun"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://sunhao1256.github.io/posts/%E5%85%AB%E8%82%A1%E6%96%87/"},"publisher":{"@type":"Organization","name":"Hao Sun","logo":{"@type":"ImageObject","url":"https://sunhao1256.github.io/%3Clink%20/%20abs%20url%3E"}}}</script>
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"八股文","name":"八股文","description":"Redis redis有哪些数据结构，你用过哪些，做过什么事情   String\n最简单的数据结构，用于存放字符串，实际上在redis中存放的是字符数组，类似java中的arrayList，**Redis 为了对内存做极致的优化，不同长度的字符串使用不同的结构体来表示。**Redis 规定了字符串的长度不得超过 512 MB\n  List\n底层用的双向列表，类似java中的LinkedList，因为是链表所有，插入删除都是O(1)，查询是O(n)\n常见的命令\n  lpush从头添加元素，rpush从尾添加\n  lpop拿出头部的元素，rpop从尾部拿元素\n索引，lpush+lpop即可实现栈，rpush+lpop可以实现队列\n    Hash\n对应着java中的hashMap\n  Set\nRedis 的集合相当于 Java 语言中的 HashSet，它内部的键值对是无序、唯一的。它的内部实现相当于一个特殊的字典，字典中所有的 value 都是一个值 NULL。\n  Zset\n它类似于 Java 中 SortedSet 和 HashMap 的结合体，一方面它是一个 set，保证了内部 value 的唯一性，另一方面它可以为每个 value 赋予一个 score 值，用来代表排序的权重。\n使用场景：\n 排行榜，key是用户id，value是访问次数。 限流，key是用户id+接口id，value是时间戳，每次进方法之前，拿当前时间戳-interval，删除小于now-interval的元素，算出加入当前这次请求set中的个数是否大于max，大于则限流。    BloomFilter\n使用高效的数据结构解决是否存在的问题，可以解决穿透的问题\n  HyperLogLog\n可以用于基数的统计，例如UV统计\n  redis如何做到限流的 限流的几个方式","keywords":["面试"],"articleBody":"Redis redis有哪些数据结构，你用过哪些，做过什么事情   String\n最简单的数据结构，用于存放字符串，实际上在redis中存放的是字符数组，类似java中的arrayList，**Redis 为了对内存做极致的优化，不同长度的字符串使用不同的结构体来表示。**Redis 规定了字符串的长度不得超过 512 MB\n  List\n底层用的双向列表，类似java中的LinkedList，因为是链表所有，插入删除都是O(1)，查询是O(n)\n常见的命令\n  lpush从头添加元素，rpush从尾添加\n  lpop拿出头部的元素，rpop从尾部拿元素\n索引，lpush+lpop即可实现栈，rpush+lpop可以实现队列\n    Hash\n对应着java中的hashMap\n  Set\nRedis 的集合相当于 Java 语言中的 HashSet，它内部的键值对是无序、唯一的。它的内部实现相当于一个特殊的字典，字典中所有的 value 都是一个值 NULL。\n  Zset\n它类似于 Java 中 SortedSet 和 HashMap 的结合体，一方面它是一个 set，保证了内部 value 的唯一性，另一方面它可以为每个 value 赋予一个 score 值，用来代表排序的权重。\n使用场景：\n 排行榜，key是用户id，value是访问次数。 限流，key是用户id+接口id，value是时间戳，每次进方法之前，拿当前时间戳-interval，删除小于now-interval的元素，算出加入当前这次请求set中的个数是否大于max，大于则限流。    BloomFilter\n使用高效的数据结构解决是否存在的问题，可以解决穿透的问题\n  HyperLogLog\n可以用于基数的统计，例如UV统计\n  redis如何做到限流的 限流的几个方式\n  计数器\n计数器即是计算在单位时间窗口内请求访问的次数是否超过阀值。\n窗口分为：固定窗口、滑动窗口\n  固定窗口java实现：\nprivate final AtomicInteger cur = new AtomicInteger(0); private Long startTime; public boolean isAllowed(int maxCount, int interval) { //如果没有第一次时间，则当下为第一次时间  if (startTime == null) startTime = System.currentTimeMillis(); //新增一次  cur.addAndGet(1); //如果当前时间减去开始时间，大于间隙了，说明进入新一轮计算  if (System.currentTimeMillis() - interval * 1000L  startTime) { //重置开始时间  startTime = System.currentTimeMillis(); //重置计数  cur.set(1); return true; } //还在时间内  return cur.get()  maxCount; } 固定窗口解决了在单位时间内流量次数不会超过阀值，但是在临界点会出现问题。\n在前一个一秒内，0.8秒到1秒，访问了5次，没有超过阀值，1秒到1.2秒访问了5次，没有超过阀值。0.8秒到1.2秒之间的0.4秒访问了10次，超过了阀值。没有达到目的。这样的问题原因是窗口没有“滑动”。\n  滑动窗口\n滑动窗口是一种算法思想\n 滑动窗口算法（Sliding Window Algorithm）\n  Sliding window algorithm is used to perform required operation on specific window size of given large buffer or array.\n滑动窗口算法是在给定特定窗口大小的数组或字符串上执行要求的操作。\n  This technique shows how a nested for loop in few problems can be converted to single for loop and hence reducing the time complexity.\n该技术可以将一部分问题中的嵌套循环转变为一个单循环，因此它可以减少时间复杂度。\n 简而言之，滑动窗口算法在一个特定大小的字符串或数组上进行操作，而不在整个字符串和数组上操作，这样就降低了问题的复杂度，从而也达到降低了循环的嵌套深度。其实这里就可以看出来滑动窗口主要应用在数组和字符串上。\n常见的算法题，找到A字符串中，包含T个字符的最小覆盖子串\n//找到字符串EBBANCF中包含ABC三个字符的最小子串  //往往类似于“ 请找到满足 xx 的最 x 的区间（子串、子数组）的 xx ”这类问题都可以使用该方法进行解决。  public String noFixed(String str,String target){ String[] s = str.split(\"\"); String[] t = target.split(\"\"); //定义两个指针，在s上滑动  int left=0,right=0; String res=null; List window=new ArrayList(); //一直滑动，直到右指针到头了  while (rights.length){ //移动右指针，一直到包含了所有的目标元素  window.add(s[right]); right++; //如果window满足要求了，就移动左指针  while (window.containsAll(Arrays.asList(t))){ if(res==null){ //第一次得到结果  res=String.join(\"\",window); }else{ //比较当前的长度大小和目前最小的结果  res=(window.size()res.length())?String.join(\"\",window):res; } //移动左指针,直至窗口不满足  window.remove(s[left]); left++; } } return res; } /** * 固定窗口大小为f */ public String fixed(Integer f, String str) { String result = null; int right = 0; //寻找字符串中长度为f的包含最多元音字母的子串  String[] s = str.split(\"\"); List window = new ArrayList(); while (right  s.length) { //滑动右指针  window.add(s[right]); right++; //达到目标窗口的大小  if (right = f) { //检查条件  String cur = String.join(\"\", window); if (result == null) { //满足条件的话  if (countOfVowel(cur)  0) result = cur; } else { int i = countOfVowel(result); int j = countOfVowel(cur); result = i  j ? result : cur; } //移动左指针，因为窗口固定，删除左边right-f个字符  window.remove(s[right-f]); } } return result; } private int countOfVowel(String s) { String[] split = s.split(\"\"); ListString vowels = Arrays.asList(\"A\", \"E\", \"I\", \"O\", \"U\"); int res = 0; for (int i = 0; i  split.length; i++) { if (vowels.contains(split[i].toUpperCase())) { res++; } } return res; } 滑动窗口解决了临界的问题，但是当在窗口内达到了阀值，剩余的请求都会被拒绝，这样处理不好。\n    漏桶\npublic class LeakBucketLimit { /** * 出水率 */ private final long rate=5L;//1秒出水5个请求  /** * 桶的容量 */ private final long capacity=10L; /** * 当前水量 */ private long currentWater; /** * 最后刷新时间 */ private long refreshTime; public boolean tryAcquire(){ /** * 获取当前时间 */ long currentTime = System.currentTimeMillis(); /** * 流出去的水 */ long outWater = (currentTime-refreshTime)/1000*rate; /** * 当前 */ currentWater = Math.max(0,currentWater-outWater); System.out.println(currentWater); refreshTime=currentTime; if(currentWater=capacity){ //不够流了  return false; } //加水  currentWater++; return true; } } 缺陷：不管是什么流量，桶都会按照rate一点一点消费，如果来了爆炸的流量，依然一点一点消费，实际情况中，我们希望能快速消费。而平时就按照rate消费。\n  令牌桶\n令牌桶就是为了解决漏桶的缺点。\n  有一个令牌管理员，根据限流大小，定速往令牌桶里放令牌。 如果令牌数量满了，超过令牌桶容量的限制，那就丢弃。 系统在接受到一个用户请求时，都会先去令牌桶要一个令牌。如果拿到令牌，那么就处理这个请求的业务逻辑； 如果拿不到令牌，就直接拒绝这个请求。   /** * 令牌桶发放速度 */ private final long tokenRate=5L; /** * 桶的容量 */ private final long capacity=10; /** * 上一次刷新的时间 */ private long refreshTime; /** * 当前桶里的令牌 */ private long currentToken; public boolean tryAcquire(){ //当前时间  long currentTime=System.currentTimeMillis(); //更新当前桶里的令牌个数  //当前token个数=原来当前个数+间隙之间生产出来的token个数（可能为0）  currentToken =Math.min (capacity,(currentToken+currentTime - refreshTime) / 1000 * tokenRate); refreshTime=currentTime; if(currentToken0){ //还有令牌  currentToken--; return true; } return false; }   redis是单线程的吗，它为什么这么快？   是“单线程”也不是“单线程”\n在redis6.0后，推出了多线程的概念。这里的单线程或者多线程，是对于整个redis来说的。并不是针对一个缓存的读取而言。\n说redis是单线程的，并不是说redis的所有操作模块都是单线程的。redis单线程指的是，用单个线程进行网络io和键值读取。\nRedis中只有网络请求模块和数据操作模块是单线程的。而其他的如持久化存储模块、集群支撑模块等是多线程的\n在redis6.0之前一直是这样处理的，为什么对于网络的io不用多线程呢。\n 首先使用多线程的目的是为了提高IO利用率和CPU利用率，而redis的是io密集型软件。CPU并不是它的瓶颈。可以使用多线程来提高IO\n利用率，但是提高IO利用率的方法并非只有多线程一种方式\n 对线程带来的弊端：内存模型，锁，CAS操作保证并发。\n虽然，采用多线程可以帮助我们提升CPU和I/O的利用率，但是多线程带来的并发问题也给这些语言和框架带来了更多的复杂性。而且，多线程模型中，多个线程的互相切换也会带来一定的性能开销。\n所以，在提升I/O利用率这个方面上，Redis并没有采用多线程技术，而是选择了多路复用 I/O技术。\n多路复用即redis使用单线程，去接收并发下的网络套接字。redis没有使用多线程，减少线程之前切换的开销，以及多线程带来的共享对象的并发问题。因此大家称redis是单线程的\n由于多路复用的IO模型本质上仍然是同步阻塞型IO模型。\n在多路复用的IO模型中，在处理网络请求时，调用 select （其他函数同理）的过程是阻塞的，也就是说这个过程会阻塞线程，如果并发量很高，此处可能会成为瓶颈。\n如果能采用多线程，使得网络处理的请求并发进行，就可以大大的提升性能。多线程除了可以减少由于网络 I/O 等待造成的影响，还可以充分利用 CPU 的多核优势。\nRedis 6.0采用多个IO线程来处理网络请求，网络请求的解析可以由其他线程完成，然后把解析后的请求交由主线程进行实际的内存读写。提升网络请求处理的并行度，进而提升整体性能。\n但是，Redis 的多 IO 线程只是用来处理网络请求的，对于读写命令，Redis 仍然使用单线程来处理。因此不会数据上的并发安全问题\n  为什么快？\n  完全基于内存\n  数据结构简单，对数据操作也简单，如哈希表、跳表都有很高的性能\n  采用单线程，避免了不必要的上下文切换和竞争条件，也不存在多进程或者多线程导致的切换而消耗 CPU\n  使用多路I/O复用模型，非阻塞，即reactor模型\nIO多路复用，即单个线程处理多个socket请求，非阻塞只socket设置为非阻塞，发送请求后不会继续等待，而是可以继续再发信息或者收信息。epoll监听哪些socket上有事件到达，当 accept、read、write 和 close 文件事件产生时，就会回调 FD 绑定的事件处理器\n    Redis在主从复制的和故障转移的过程中会导致数据丢失吗   异步数据丢失：\n显然是会的，从上面的「主从复制」流程来看，这个过程是异步的（在复制的过程中：主服务器会一直接收请求，然后把修改命令发给从服务器），\n假如主服务器的命令还没发完给从服务器，自己就挂掉了。这时候想要让从服务器顶上主服务器，但从服务器的数据是不全的\n  脑裂\n还有另一种情况就是：有可能哨兵认为主服务器挂了，但真实是主服务器并没有挂( 网络抖动)，而哨兵已经选举了一台从服务器当做是主服务器了，此时「客户端」还没反应过来，还继续写向旧主服务器写数据\n  redis的高可用和持久化 高可用：\n  哨兵：\n哨兵」干的事情主要就是：监控（监控主服务器的状态）、选主（主服务器挂了，在从服务器选出一个作为主服务器）、通知（故障发送消息给管理员）和配置（作为配置中心，提供当前主服务器的信息），可以把「哨兵」当做是运行在「特殊」模式下的Redis服务器，为了「高可用」，哨兵也是集群架构的。\n 哨兵可以理解为特殊的Redis服务器，一般会组成哨兵集群 哨兵主要工作是监控、告警、配置以及选主 当主服务器发生故障时，会「选出」一台从服务器来顶上「客观下线」的服务器，由「领头哨兵」进行切换    主从备份：和mysql类似，主节点只处理写的请求，而从节点处理读的请求，他们之间是通过psync同步\n 你启动一台slave 的时候，他会发送一个psync命令给master ，如果是这个slave第一次连接到master，他会触发一个全量复制。master就会启动一个线程，生成RDB快照，还会把新的写请求都缓存在内存中，RDB文件生成后，master会将这个RDB发送给slave的，slave拿到之后做的第一件事情就是写进本地的磁盘，然后加载进内存，然后master会把内存里面缓存的那些新命名都发给slave。\n  PSYNC命令两种模式：完全重同步、部分重同步 完全重同步：主从服务器建立连接、主服务器生成RDB文件发给从服务器、主服务器不阻塞（相关修改命令记录至buffer）、将修改命令发给从服务器 部分重同步：从服务器断线重连，发送RunId和offset给主服务器，主服务器判断offset和runId，将还未同步给从服务器的offset相关指令进行发送    redis cluster：\n分片集群：用于解决主从复制、脑裂的问题。类似es\n  redis的持久化：\n​\tRedis提供了2中持久化方式AOF，RDB\n 根据我们自己配置的时间或者手动去执行BGSAVE或SAVE命令，Redis就会去生成RDB文件，这个RDB文件实际上就是一个经过压缩的二进制文件，Redis可以通过这个文件在启动的时候来还原我们的数据\n而AOF则是把Redis服务器接收到的所有写命令都记录到日志中\nRedis重跑一遍这个记录下的日志文件，就相当于还原了数据\n   RDB：RDB 持久化机制，是对 Redis 中的数据执行周期性的持久化。\n 优点： 他会生成多个数据文件，每个数据文件分别都代表了某一时刻Redis里面的数据，这种方式，有没有觉得很适合做冷备，完整的数据运维设置定时任务，定时同步到远端的服务器，比如阿里的云服务，这样一旦线上挂了，你想恢复多少分钟之前的数据，就去远端拷贝一份之前的数据就好了。\nRDB对Redis的性能影响非常小，是因为在同步数据的时候他只是fork了一个子进程去做持久化的，而且他在数据恢复的时候速度比AOF来的快。\n缺点： RDB都是快照文件，都是默认五分钟甚至更久的时间才会生成一次，这意味着你这次同步到下次同步这中间五分钟的数据都很可能全部丢失掉。AOF则最多丢一秒的数据，数据完整性上高下立判。\n还有就是RDB在生成数据快照的时候，如果文件很大，客户端可能会暂停几毫秒甚至几秒，你公司在做秒杀的时候他刚好在这个时候fork了一个子进程去生成一个大快照，哦豁，出大问题。\n   AOF：AOF 机制对每条写入命令作为日志，以 append-only 的模式写入一个日志文件中，因为这个模式是只追加的方式，所以没有任何磁盘寻址的开销，所以很快，有点像Mysql中的binlog。\n 优点： 上面提到了，RDB五分钟一次生成快照，但是AOF是一秒一次去通过一个后台的线程fsync操作，那最多丢这一秒的数据。\nAOF在对日志文件进行操作的时候是以append-only的方式去写的，他只是追加的方式写数据，自然就少了很多磁盘寻址的开销了，写入性能惊人，文件也不容易破损。\n缺点： 一样的数据，AOF文件比RDB还要大。\nAOF开启后，Redis支持写的QPS会比RDB支持写的要低，他不是每秒都要去异步刷新一次日志嘛fsync，当然即使这样性能还是很高.\n   实际上：\n使用RDB先恢复数据，速度快，然后通过AOF进行补全\n  redis布隆过滤器 布隆过滤器可以使用高效的数据结构，存放大量的数据。布隆过滤器说存在，则不一定存在，但是布隆过滤器说不存在，则一定不存在。常用于缓存穿透的问题。\n特点\n 空间效率高 多次hash，时间效率高 存在误判，所以不好做删除  使用场景\n 黑名单 URL去重 ID校验 防止穿透  原理：\n 布隆过滤器本质上是一个位数组，每个元素只占1个bit，只会有0和1，通过n次hash，减少hash碰撞。当一个key过来的时候，进行n次hash，得出n次结果，将n次结果的位值在数组中查找，如果发现有一个值为0，则key一定不在过滤器中。如果都为1可能在过滤器中，因为hash值会碰撞。hash的次数和数组的大小决定了布隆过滤器的准确度。  使用：\n google在guava中封装好的BloomFilter redis 4.0后可以加入module BloomFilter  redis分布式锁 SETNX + EXPIRE\nredis为什么选用跳表   跳表是一种进阶型的链表，具有二分查找的功能参考\n Redis只在两个地方用到了跳跃表，一个是实现有序集合键(zset)，另一个是在集群节点中用作内部数据结构，除此之外，跳表在Redis里面没有其他用途。\n但是为什么用跳表而不用红黑树呢？猜想如下： 1）在做范围查找的时候，平衡树比skiplist操作要复杂。在平衡树上，我们找到指定范围的小值之后，还需要以中序遍历的顺序继续寻找其它不超过大值的节点。如果不对平衡树进行一定的改造，这里的中序遍历并不容易实现。而在skiplist上进行范围查找就非常简单，只需要在找到小值之后，对第1层链表进行若干步的遍历就可以实现。 2）平衡树的插入和删除操作可能引发子树的调整，逻辑复杂，而skiplist的插入和删除只需要修改相邻节点的指针，操作简单又快速。 3）从内存占用上来说，skiplist比平衡树更灵活一些。一般来说，平衡树每个节点包含2个指针（分别指向左右子树），而skiplist每个节点包含的指针数目平均为1/(1-p)，具体取决于参数p的大小。如果像Redis里的实现一样，取p=1/4，那么平均每个节点包含1.33个指针，比平衡树更有优势。 4）查找单个key，skiplist和平衡树的时间复杂度都为O(log n)，大体相当；而哈希表在保持较低的哈希值冲突概率的前提下，查找时间复杂度接近O(1)，性能更高一些。所以我们平常使用的各种Map或dictionary结构，大都是基于哈希表实现的。 5）从算法实现难度上来比较，skiplist比平衡树要简单得多。\n   redis防击穿、雪崩、穿透   击穿\n和雪崩有一点像。击穿是大量请求，打一个key，这个key突然失效，导致打挂了库。而雪崩是大量key一起失效\n  穿透\n访问一个不可能存在的key，一直打到数据库，导致数据库挂了\n解决方案：\n 代码中针对查key的逻辑需要注意，在逻辑上就处理掉这些不会出现的key 对于不存在的key，依然存缓存，value设为null，或者提示语句。例如“稍后再试，请求不正确”。并且给他一个过期时间 使用布隆过滤器 通过nginx做ip的限制，加黑名单。    雪崩\n大批量的key在同时一时刻失效，导致大批量的请求全部打到数据上。数据库承受不住挂了。\n解决方案：\n 设置过期时间的时候加上随机数，保证同一时间不会有大量的key失效 设置这种热点数据用不过期。需要更新的时候，顺手更新一下缓存就可以了    redis是先删缓存还是先写库，怎么解决缓存一致性   先删缓存，再更新数据库\n缓存删除完成后，数据库更新操作还没好，此时请求过来，读缓存，读不到，读数据库，得到的是旧数据\n解决方案：延时双删\n 流程如下：\n 线程1删除缓存，然后去更新数据库 线程2来读缓存，发现缓存已经被删除，所以直接从数据库中读取，这时候由于线程1还没有更新完成，所以读到的是旧值，然后把旧值写入缓存 线程1，根据估算的时间，sleep，由于sleep的时间大于线程2读数据+写缓存的时间，所以缓存被再次删除 如果还有其他线程来读取缓存的话，就会再次从数据库中读取到最新值     先更新库，再删除缓存\n更新数据库成功，如果删除缓存失败或者还没有来得及删除，那么，其他线程从缓存中读取到的就是旧值，还是会发生不一致。\n解决方案：先更新数据库，成功后往消息队列发消息，消费到消息后再删除缓存，借助消息队列的重试机制来实现，达到最终一致性的效果。进阶一点，使用数据的binlog通知到消息队列，然后更新缓存。无代码入侵\n 缺陷：\n 引入消息中间件之后，问题更复杂了，怎么保证消息不丢失更麻烦 就算更新数据库和删除缓存都没有发生问题，消息的延迟也会带来短暂的不一致性，不过这个延迟相对来说还是可以接受的     设置过期时间\n 每次放入缓存的时候，设置一个过期时间，比如5分钟，以后的操作只修改数据库，不操作缓存，等待缓存超时后从数据库重新读取。\n如果对于一致性要求不是很高的情况，可以采用这种方案。\n这个方案还会有另外一个问题，就是如果数据更新的特别频繁，不一致性的问题就很大了。\n在实际生产中，我们有一些活动的缓存数据是使用这种方式处理的。\n因为活动并不频繁发生改变，而且对于活动来说，短暂的不一致性并不会有什么大的问题。\n   总结\n首先，我们要明确一点，缓存不是更新，而应该是删除。\n删除缓存有两种方式：\n 先删除缓存，再更新数据库。解决方案是使用延迟双删。 先更新数据库，再删除缓存。解决方案是消息队列或者其他binlog同步，引入消息队列会带来更多的问题，并不推荐直接使用。  针对缓存一致性要求不是很高的场景，那么只通过设置超时时间就可以了。\n其实，如果不是很高的并发，无论你选择先删缓存还是后删缓存的方式，都几乎很少能产生这种问题，但是在高并发下，你应该知道怎么解决问题。\n  redis的淘汰策略 官网上给到的内存淘汰机制是以下几个：\n  noeviction:返回错误当内存限制达到并且客户端尝试执行会让更多内存被使用的命令（大部分的写入指令，但DEL和几个例外）\n  allkeys-lru: 尝试回收最少使用的键（LRU），使得新添加的数据有空间存放。\n  volatile-lru: 尝试回收最少使用的键（LRU），但仅限于在过期集合的键,使得新添加的数据有空间存放。\n  allkeys-random: 回收随机的键使得新添加的数据有空间存放。\n  volatile-random: 回收随机的键使得新添加的数据有空间存放，但仅限于在过期集合的键。\n  volatile-ttl: 回收在过期集合的键，并且优先回收存活时间（TTL）较短的键,使得新添加的数据有空间存放。\n如果没有键满足回收的前提条件的话，策略volatile-lru, volatile-random以及volatile-ttl就和noeviction 差不多了。\n  问题排查 arthas jdk自带命令 Kafka Kafka的推还是拉 Kafka如何做到消息不丢失的 Kafka为什么可以有这么大的吞吐量 MySql 推荐文章\n https://www.cnblogs.com/lianzhilei/p/11250589.html https://mp.weixin.qq.com/s/BFuA-59Fpue2r6dt8YBbrQ  一条语句的执行过程  客户端请求 连接器（验证用户身份，给予权限） 查询缓存（存在缓存则直接返回，不存在则执行后续操作） 分析器（对SQL进行词法分析和语法分析操作） 优化器（主要对执行的sql优化选择最优的执行方案方法） 执行器（执行时会先看用户是否有执行权限，有才去使用这个引擎提供的接口） 去引擎层获取数据返回（如果开启查询缓存则会缓存查询结果）  常见的存储引擎 使用哪一种引擎可以灵活选择，一个数据库中多个表可以使用不同引擎以满足各种性能和实际需求，使用合适的存储引擎，将会提高整个数据库的性能 。\nMysql的Data目录下都会存放每个表的元数据信息，包括表的定义与数据库引擎没有关系，文件为**.frm**结尾，例如user.frm存放的是user表的元数据信息\n InnoDB  .frm文件：与表相关的元数据信息都存放在frm文件，包括表结构的定义信息等 .MYD (MYData) 文件：MyISAM 存储引擎专用，用于存储MyISAM 表的数据 .MYI (MYIndex)文件：MyISAM 存储引擎专用，用于存储MyISAM 表的索引相关信息   MyISAM  .frm 文件：与表相关的元数据信息都存放在frm文件，包括表结构的定义信息等 .ibd 文件或 .ibdata 文件：这两种文件都是存放 InnoDB 数据的文件，之所以有两种文件形式存放 InnoDB 的数据，是因为 InnoDB 的数据存储方式能够通过配置来决定是使用共享表空间存放存储数据，还是用独享表空间存放存储数据。   对比  InnoDB 支持事务，MyISAM 不支持事务。这是 MySQL 将默认存储引擎从 MyISAM 变成 InnoDB 的重要原因之一； InnoDB 支持外键，而 MyISAM 不支持。对一个包含外键的 InnoDB 表转为 MYISAM 会失败； InnoDB 是聚簇索引，MyISAM 是非聚簇索引。聚簇索引的文件存放在主键索引的叶子节点上，因此 InnoDB 必须要有主键，通过主键索引效率很高。但是辅助索引需要两次查询，先查询到主键，然后再通过主键查询到数据。因此，主键不应该过大，因为主键太大，其他索引也都会很大。而 MyISAM 是非聚集索引，数据文件是分离的，索引保存的是数据文件的指针。主键索引和辅助索引是独立的。 InnoDB 不保存表的具体行数，执行select count(*) from table 时需要全表扫描。而 MyISAM 用一个变量保存了整个表的行数，执行上述语句时只需要读出该变量即可，速度很快； InnoDB 最小的锁粒度是行锁，MyISAM 最小的锁粒度是表锁。一个更新语句会锁住整张表，导致其他查询和更新都会被阻塞，因此并发访问受限。这也是 MySQL 将默认存储引擎从 MyISAM 变成 InnoDB 的重要原因之一；       对比项 MyISAM InnoDB     主外键 不支持 支持   事务 不支持 支持   行表锁 表锁，即使操作一条记录也会锁住整个表，不适合高并发的操作 行锁,操作时只锁某一行，不对其它行有影响，适合高并发的操作   缓存 只缓存索引，不缓存真实数据 不仅缓存索引还要缓存真实数据，对内存要求较高，而且内存大小对性能有决定性的影响   表空间 小 大   关注点 性能 事务   默认安装 是 是    一张表，里面有ID自增主键，当insert了17条记录之后，删除了第15,16,17条记录，再把Mysql重启，再insert一条记录，这条记录的ID是18还是15 ？ 如果表的类型是MyISAM，那么是18。因为MyISAM表会把自增主键的最大ID 记录到数据文件中，重启MySQL自增主键的最大ID也不会丢失；\n如果表的类型是InnoDB，那么是15。因为InnoDB 表只是把自增主键的最大ID记录到内存中，所以重启数据库或对表进行OPTION操作，都会导致最大ID丢失。\n自增主键用完了怎么办 会报重复主键错误，2亿了，早就开始分库分表了\nmysql的索引数据结构为什么用B+树，讲一讲mysql索引的数据结构是什么样的   索引是帮助mysql更快获得数据的一种数据结构\n  索引分类\n数据结构角度\n B+树索引 Hash索引 Full-Text全文索引  从物理存储角度\n  根据数据与索引的存储关联性，可以分为聚簇索引和非聚簇索引（也叫聚集索引和非聚集索引）。聚簇索引也叫簇类索引，是一种对磁盘上实际数据重新组织以按指定的一个或多个列的值排序。整个简洁的说法，这俩的区别就是索引的存储顺序和数据的存储顺序是否是关系的，有关就是聚簇索引，无关就是非聚簇索引。具体实现方式根据索引的数据结构不同会有所不同。下面以B+树实现的索引为例，举例来说明聚簇索引和非聚簇索引。\n  聚集索引（clustered index）,InnoDb 的主键索引就是聚集索引\n  非聚集索引（non-clustered index），也叫辅助索引（secondary index），也叫二级索引\n如果不是主键索引，则就可以称之为非主键索引，又可以称之为辅助索引或者二级索引。主键索引的叶子节点存储了完整的数据行，而非主键索引的叶子节点存储的则是主键索引值，通过非主键索引查询数据时，会先查找到主键索引，然后再到主键索引上去查找对应的数据。\n 在这里假设我们有张表user，具有三列：ID，age，name，create_time，id是主键，（age，create_time,，name）建立辅助索引。执行如下sql语句：\nselect name from user where age2 order by create_time desc。\n正常的话，查询分两步：\n1.按照辅助索引，查找到记录的主键，\n2.按照主键主键索引里查找记录，返回name。\n但实际上，我们可以看到，辅助索引节点是按照age，create_time，name建立的，索引信息里完全包含我们所要的信息，如果能从辅助索引里返回name信息，则第二步是完全没有必要的，可以极大提升查询速度。\n按照这种思想Innodb里针对使用辅助索引的查询场景做了优化，叫覆盖索引\n 聚集索引和非聚集索引都是B+树结构\n  从逻辑角度\n  主键索引：主键索引是一种特殊的唯一索引，不允许有空值\nMySQL中是根据主键来组织数据的，所以每张表都必须有主键索引，主键索引只能有一个，不能为null同时必须保证唯一性。建表时如果没有指定主键索引，则会自动生成一个隐藏的字段作为主键索引。\n  普通索引或者单列索引：每个索引只包含单个列，一个表可以有多个单列索引\n  多列索引（复合索引、联合索引）：复合索引指多个字段上创建的索引，只有在查询条件中使用了创建索引时的第一个字段，索引才会被使用。使用复合索引时遵循最左前缀集合\n  唯一索引或者非唯一索引\n  空间索引：空间索引是对空间数据类型的字段建立的索引，MYSQL中的空间数据类型有4种，分别是GEOMETRY、POINT、LINESTRING、POLYGON。MYSQL使用SPATIAL关键字进行扩展，使得能够用于创建正规索引类型的语法创建空间索引。创建空间索引的列，必须将其声明为NOT NULL，空间索引只能在存储引擎为MYISAM的表中创建\n    B-树和B+树\n  B-树\nB-树就是平时说的B树，和二叉树的区别在于，可以存在多个子树。从而达到深度低的效果。通常用于操作系统的文件查询，因为一次深度就是一次磁盘的IO。B-树的节点，除了子节点的指针信息，和索引信息(主键)，还存放了数据\n  B+树\nB+Tree 是在 B-Tree 基础上的一种优化，使其更适合实现外存储索引结构，InnoDB 存储引擎就是用 B+Tree 实现其索引结构。\n从上一节中的B-Tree结构图中可以看到每个节点中不仅包含数据的key值，还有data值。而每一个页的存储空间是有限的，如果data数据较大时将会导致每个节点（即一个页）能存储的key的数量很小，当存储的数据量很大时同样会导致B-Tree的深度较大，增大查询时的磁盘I/O次数，进而影响查询效率。在B+Tree中，所有数据记录节点都是按照键值大小顺序存放在同一层的叶子节点上，而非叶子节点上只存储key值信息，这样可以大大加大每个节点存储的key值数量，降低B+Tree的高度。\n    正因为InnoDB的数据和聚集索引是存放在一起的，所以默认建表的时候推荐创建主键索引，如果没有建立的话，mysql会自动创建一个隐藏的列作为主键并且这个字段长度为6个字节，类型为整型。\n最左匹配原则是什么 B+Tree性质\n 通过上面的分析，我们知道IO次数取决于b+数的高度h，假设当前数据表的数据为N，每个磁盘块的数据项的数量是m，则有h=㏒(m+1)N，当数据量N一定的情况下，m越大，h越小；而m = 磁盘块的大小 / 数据项的大小，磁盘块的大小也就是一个数据页的大小，是固定的，如果数据项占的空间越小，数据项的数量越多，树的高度越低。这就是为什么每个数据项，即索引字段要尽量的小，比如int占4字节，要比bigint8字节少一半。这也是为什么b+树要求把真实的数据放到叶子节点而不是内层节点，一旦放到内层节点，磁盘块的数据项会大幅度下降，导致树增高。当数据项等于1时将会退化成线性表。 当b+树的数据项是复合的数据结构，比如(name,age,sex)的时候，b+数是按照从左到右的顺序来建立搜索树的，比如当(张三,20,F)这样的数据来检索的时候，b+树会优先比较name来确定下一步的所搜方向，如果name相同再依次比较age和sex，最后得到检索的数据；但当(20,F)这样的没有name的数据来的时候，b+树就不知道下一步该查哪个节点，因为建立搜索树的时候name就是第一个比较因子，必须要先根据name来搜索才能知道下一步去哪里查询。比如当(张三,F)这样的数据来检索时，b+树可以用name来指定搜索方向，但下一个字段age的缺失，所以只能把名字等于张三的数据都找到，然后再匹配性别是F的数据了， 这个是非常重要的性质，即索引的最左匹配特性。  Explain Explain + SQL语句即可,如下:\nexplain select * from tbl_dept;  1执行结果如下:  **\nEXPLAIN结果参数含义\n1.id: id代表执行select子句或操作表的顺序,例如,上述的执行结果代表只有一次执行而且执行顺序是第一(因为只有一个id为1的执行结果),id分别有三种不同的执行结果,分别如下:\n id相同,执行顺序由上至下  \n id不同,如果是子查询,id的序号会递增,id值越大,优先级越高,越先被执行  \n id相同和不同,同时存在,遵从优先级高的优先执行,优先级相同的按照由上至下的顺序执行  \n2.select_type 查询的类型,主要用于区别普通查询,联合查询,子查询等复杂查询\n simple: 简单的select查询,查询中不包含子查询或union查询 primary: 查询中若包含任何复杂的子部分,最外层查询则被标记为primary subquery 在select 或where 列表中包含了子查询 derived 在from列表中包含的子查询被标记为derived,mysql会递归这些子查询,把结果放在临时表里 union 做第二个select出现在union之后,则被标记为union,若union包含在from子句的子查询中,外层select将被标记为derived union result 从union表获取结果的select  3.table 显示一行的数据时关于哪张表的 4.type 查询类型从最好到最差依次是:systemconsteq_refrefrangeindexAll,一般情况下,得至少保证达到range级别,最好能达到ref\n system:表只有一行记录,这是const类型的特例,平时不会出现 const:表示通过索引一次就找到了,const即常量,它用于比较primary key或unique索引,因为只匹配一行数据,所以效率很快,如将主键置于where条件中,mysql就能将该查询转换为一个常量  \n eq_ref:唯一性索引扫描,对于每个索引键,表中只有一条记录与之匹配,常见于主键或唯一索引扫描 ref:非唯一性索引扫描,返回匹配某个单独值的行,它可能会找到多个符合条件的行,所以他应该属于查找和扫描的混合体 range:只检索给定范围的行,使用一个索引来选择行,如where语句中出现了between,,in等查询,这种范围扫描索引比全表扫描要好，因为它只需要开始于索引的某一点，而结束于另一点，不用扫描全部索引。 index:index类型只遍历索引树,这通常比All快,因为索引文件通常比数据文件小,index是从索引中读取,all从硬盘中读取 all:全表扫描,是最差的一种查询类型  5.possible_keys 显示可能应用在这张表中的索引,一个或多个,查询到的索引不一定是真正被用到的\n6.key 实际使用的索引,如果为null,则没有使用索引,因此会出现possible_keys列有可能被用到的索引,但是key列为null,表示实际没用索引。\n7.key_len 表示索引中使用的字节数,而通过该列计算查询中使用的 索引长度,在不损失精确性的情况下,长度越短越好,key_len显示的值为索引字段的最大可能长度,并非实际使用长度,即,key_len是根据表定义计算而得么不是通过表内检索出的\n8.ref 显示索引的哪一列被使用了,如果可能的话是一个常数,哪些列或常量被用于查找索引列上的值\n9.rows 根据表统计信息及索引选用情况,大只估算出找到所需的记录所需要读取的行数\n10.Extra\n Using filesort:说明mysql会对数据使用一个外部的索引排序,而不是按照表内的索引顺序进行读取,mysql中无法利用索引完成的排序操作称为\"文件排序\" Using temporary :使用了临时表保存中间结果,mysql在对查询结果排序时使用临时表,常见于order by和分组查询group by Using index:表示相应的select操作中使用了覆盖索引（Covering Index），避免访问了表的数据行，效率不错。如果同时出现using where，表明索引被用来执行索引键值的查找；如果没有同时出现using where，表明索引用来读取数据而非执行查找动作。 其中的覆盖索引含义是所查询的列是和建立的索引字段和个数是一一对应的 Using where:表明使用了where过滤 Using join buffer:表明使用了连接缓存,如在查询的时候会有多次join,则可能会产生临时表 impossible where:表示where子句的值总是false,不能用来获取任何元祖。如下例：  select * from t1 where id='1' and id='2';  select tables optimized away  在没有GROUPBY子句的情况下，基于索引优化MIN/MAX操作或者对于MyISAM存储引擎优化COUNT(*)操作，不必等到执行阶段再进行计算，查询执行计划生成的阶段即完成优化。\n distinct：优化distinct操作，在找到第一匹配的元组后即停止找同样值的动作，即一旦MySQL找到了与行相联合匹配的行，就不再搜索了。  重点：\n　type：访问类型，查看SQL到底是以何种类型访问数据的。\n　key：使用的索引，MySQL用了哪个索引，有时候MySQL用的索引不是最好的，需要force index()。\n　rows：最大扫描的列数。\n　extra：重要的额外信息，特别注意损耗性能的两个情况，using filesort和using temporary。\n说出你如何调优的 直接explain\n常见的优化手段  使用覆盖索引解决回表，提高查询效率 使用explain检查sql语句执行的情况 where语句时，字段类型一定要一直，否则索引失效 使用函数索引不走 OR导致索引是在特定情况下的，并不是所有的OR都是使索引失效，如果OR连接的是同一个字段，那么索引不会失效，反之索引失效。 模糊匹配，like 中%不能写在前面 IS NULL走索引，IS NOT NULL走索引 开启慢日志，查看哪些sql执行太慢  MVVC MySQL的大多数事务型存储引擎实现都不是简单的行级锁。基于提升并发性考虑，一般都同时实现了多版本并发控制（MVCC），包括Oracle、PostgreSQL。只是实现机制各不相同。\n可以认为 MVCC 是行级锁的一个变种，但它在很多情况下避免了加锁操作，因此开销更低。虽然实现机制有所不同，但大都实现了非阻塞的读操作，写操作也只是锁定必要的行。\nMVCC 的实现是通过保存数据在某个时间点的快照来实现的。也就是说不管需要执行多长时间，每个事物看到的数据都是一致的。\n典型的MVCC实现方式，分为乐观（optimistic）并发控制和悲观（pressimistic）并发控制。下边通过 InnoDB的简化版行为来说明 MVCC 是如何工作的。\nInnoDB 的 MVCC，是通过在每行记录后面保存两个隐藏的列来实现。这两个列，一个保存了行的创建时间，一个保存行的过期时间（删除时间）。当然存储的并不是真实的时间，而是系统版本号（system version number）。每开始一个新的事务，系统版本号都会自动递增。事务开始时刻的系统版本号会作为事务的版本号，用来和查询到的每行记录的版本号进行比较。\nREPEATABLE READ（可重读）隔离级别下MVCC如何工作：\n  SELECT\nInnoDB会根据以下两个条件检查每行记录：\n只有符合上述两个条件的才会被查询出来\n   InnoDB只查找版本早于当前事务版本的数据行，这样可以确保事务读取的行，要么是在开始事务之前已经存在要么是事务自身插入或者修改过的 行的删除版本号要么未定义，要么大于当前事务版本号，这样可以确保事务读取到的行在事务开始之前未被删除    INSERT：InnoDB为新插入的每一行保存当前系统版本号作为行版本号\n  DELETE：InnoDB为删除的每一行保存当前系统版本号作为行删除标识\n  UPDATE：InnoDB为插入的一行新纪录保存当前系统版本号作为行版本号，同时保存当前系统版本号到原来的行作为删除标识\n  保存这两个额外系统版本号，使大多数操作都不用加锁。使数据操作简单，性能很好，并且也能保证只会读取到符合要求的行。不足之处是每行记录都需要额外的存储空间，需要做更多的行检查工作和一些额外的维护工作。\nMVCC 只在 COMMITTED READ（读提交）和REPEATABLE READ（可重复读）两种隔离级别下工作。\n事务特性，隔离级别，怎么解决幻读？ 特性：ACID\n  原子性\n整个事务要么全部执行，要么全部不执行，不会停在中间。事务在执行过程中发生错误，会被回滚（Rollback）到事务开始前的状态，就像这个事务从来没有执行过一样\n  一致性\n一致性，这个是大家误解最深的，很多博客都喜欢用银行转账的例子来讲一直性，所谓的一致性是基于原子性。\n原子性只保证了一个事物内的所有操作同一性，大家同生死，不会出现你死了，我还活着。但是，原子性并没有保证大家同一时刻一起生，一起死。计算机指令是有先后顺序的，这样就决定了一个事物的提交，会经历一个时间过程，那么如果事物提交进行到了一半，我读取了数据库，会不会读到中间结果？\n为了防止这样的情况，数据库事物的一致性就规定了事物提交前后，永远只可能存在事物提交前的状态和事物提交后的状态，从一个一致性的状态到另一个一致性状态，而不可能出现中间的过程态。也就是说事物的执行结果是量子化状态，而不是线性状态。\n数据库提交事物会有一个过程，如果提交的时候，存在一个时间差，在提交的第一秒，一个删除过程还没完成到了第三秒才完成，会不会第一秒访问的人和第三秒访问的人得到不同的结果？出现不一致，状态的混沌？这就是一致性得保证的只会有前状态和后状态，绝不会出现中间态。\n  隔离性\n一个事务的执行不能其它事务干扰。即一个事务内部的操作及使用的数据对其它并发事务是隔离的，并发执行的各个事务之间不能互相干扰\n  持久性\n在事务完成以后，该事务所对数据库所作的更改便持久的保存在数据库之中，并不会被回滚\n  隔离级别：\n  读未提交\n脏读，事务A读取了事务B更新的数据，然后B回滚操作，那么A读取到的数据是脏数据\n  读已提交\n不可重复读，一个事务读2次，2次读的结果不一样，务 A 多次读取同一数据，事务B在事务A多次读取的过程中，对数据作了更新并提交，导致事务A多次读取同一数据时，结果不一致。\n  可重复读\n会造成幻读\n 幻读是事务非独立执行时发生的一种现象。例如事务T1对一个表中所有的行的某个数据项做了从“1”修改为“2”的操作，这时事务T2又对这个表中插入了一行数据项，而这个数据项的数值还是为“1”并且提交给数据库。而操作事务T1的用户如果再查看刚刚修改的数据，会发现还有一行没有修改，其实这行是从事务T2中添加的，就好像产生幻觉一样，这就是发生了幻读。 幻读和不可重复读都是读取了另一条已经提交的事务（这点就脏读不同），所不同的是不可重复读查询的都是同一个数据项，而幻读针对的是一批数据整体（比如数据的个数）。\n   SERIALIZABLE(可串行化)： 最高的隔离级别，完全服从ACID的隔离级别。所有的事务依次逐个执行，这样事务之间就完全不可能产生干扰，也就是说，该级别可以防止脏读、不可重复读以及幻读。\n  三范式  第一范式：列不能再拆分了 第二范式：每一条数据必须能够被区分，主键存在，而且能保证唯一 第三范式：不要有冗余 反范式：冗余一些字段，避免查询  为什么要分库分表，有什么方案 分库\n 垂直分库，每个业务有自己单独的库  分表\n 垂直分表：单表分成多表，扩展开来 水平分表：数据分开来，例如用户表，通过id分为user-10000,user-20000，通过hash，让数据散列到不同的库不同表，不至于单库压力大  缺点：\n 分布式事务：Seata 连表查询：尽量避免，实在不行只能分开查询，再汇总 分页排序等：查完内存分页排序 分布式ID，唯一主键：雪花算法  什么是回表 指非聚集索引在查找数据的时候，会先查找到聚集索引，再通过聚集索引找到最终的数据。这就是回表\nMySQL覆盖索引 覆盖索引（Covering Index）,或者叫索引覆盖， 也就是平时所说的不需要回表操作\n  就是select的数据列只用从索引中就能够取得，不必读取数据行，MySQL可以利用索引返回select列表中的字段，而不必根据索引再次读取数据文件，换句话说查询列要被所建的索引覆盖。\n  索引是高效找到行的一个方法，但是一般数据库也能使用索引找到一个列的数据，因此它不必读取整个行。毕竟索引叶子节点存储了它们索引的数据，当能通过读取索引就可以得到想要的数据，那就不需要读取行了。一个索引包含（覆盖）满足查询结果的数据就叫做覆盖索引。\n  判断标准\n使用explain，可以通过输出的extra列来判断，对于一个索引覆盖查询，显示为using index，MySQL查询优化器在执行查询前会决定是否有索引覆盖查询\n  为什么非主键索引结构叶子节点存储的是主键值？  保证数据一致性和节省存储空间，可以这么理解：商城系统订单表会存储一个用户ID作为关联外键，而不推荐存储完整的用户信息，因为当我们用户表中的信息（真实名称、手机号、收货地址···）修改后，不需要再次维护订单表的用户数据，同时也节省了存储空间\n 为什么Mysql索引要用B+树不是B树？  用B+树不用B树考虑的是IO对性能的影响，B树的每个节点都存储数据，而B+树只有叶子节点才存储数据，所以查找相同数据量的情况下，B树的高度更高，IO更频繁。数据库索引是存储在磁盘上的，当数据量大时，就不能把整个索引全部加载到内存了，只能逐一加载每一个磁盘页（对应索引树的节点）。其中在MySQL底层对B+树进行进一步优化：在叶子节点中是双向链表，且在链表的头结点和尾节点也是循环指向的。\n 为何不采用Hash创建索引方式？  因为Hash索引底层是哈希表，哈希表是一种以key-value存储数据的结构，所以多个数据在存储关系上是完全没有任何顺序关系的，所以，对于区间查询是无法直接通过索引查询的，就需要全表扫描。所以，哈希索引只适用于等值查询的场景。而B+ Tree是一种多路平衡查询树，所以他的节点是天然有序的（左子节点小于父节点、父节点小于右子节点），所以对于范围查询的时候不需要做全表扫描。\n哈希索引不支持多列联合索引的最左匹配规则，如果有大量重复键值得情况下，哈希索引的效率会很低，因为存在哈希碰撞问题。\n 什么时候需要建立索引，什么时候不需要建立索引  创建索引\n 主键自动建立唯一索引 频繁作为查询条件的字段 查询中与其他表关联的字段，外键关系建立索引 单键/组合索引的选择问题，高并发下倾向创建组合索引 查询中排序的字段，排序字段通过索引访问大幅提高排序速度 查询中统计或分组字段  不建立索引\n 表记录太少 经常增删改的表 数据重复且分布均匀的表字段，只应该为最经常查询和最经常排序的数据列建立索引（如果某个数据类包含太多的重复数据，建立索引没有太大意义） 频繁更新的字段不适合创建索引（会加重IO负担） where条件里用不到的字段不创建索引   count(1)，count(*)，count(列名)  count(*)包括了所有的列，相当于行数，在统计结果的时候，不会忽略列值为NULL count(1)包括了所有列，用1代表代码行，在统计结果的时候，不会忽略列值为NULL count(列名)只包括列名那一列，在统计结果的时候，会忽略列值为空（这里的空不是只空字符串或者0，而是表示null）的计数，即某个字段值为NULL时，不统计。 执行效率上：  列名为主键，count(列名)会比count(1)快 列名不为主键，count(1)会比count(列名)快 如果表多个列并且没有主键，则 count(1) 的执行效率优于 count(*) 如果有主键，则 select count（主键）的执行效率是最优的 如果表只有一个字段，则 select count(*) 最优。    Mybatis 讲一讲mybatis 的工作原理 Spring Spring的Bean注入过程讲一下 Spring中常见的设计模式说一说 Spring是怎么解决Bean之间的循环依赖问题 SpringMvc的流程 SpringBoot的启动原理 SpringCloud了解多少 AOP怎么实现的 分布式 为什么要用dubbo，和SpringCloud的区别是什么 分布式事务、分布式锁、分布式链路追踪解决方案   分布式锁  基于 MySQL 中的锁：MySQL 本身有自带的悲观锁 for update 关键字，也可以自己实现悲观/乐观锁来达到目的；\n  基于 Zookeeper 有序节点：Zookeeper 允许临时创建有序的子节点，这样客户端获取节点列表时，就能够当前子节点列表中的序号判断是否能够获得锁；\n  基于 Redis 的单线程：由于 Redis 是单线程，所以命令会以串行的方式执行，并且本身提供了像 SETNX(set if not exists) 这样的指令，本身具有互斥性；\n  锁超时：如果某服务获取到锁，挂了，那么锁就永远得不到了。因此需要设置超时时间\n但是另一个问题随即而来：如果在加锁和释放锁之间的逻辑执行得太长，以至于超出了锁的超时限制，也会出现问题。因为这时候第一个线程持有锁过期了，而临界区的逻辑还没有执行完，与此同时第二个线程就提前拥有了这把锁，导致临界区的代码不能得到严格的串行执行。\n为了避免这个问题，Redis 分布式锁不要用于较长时间的任务。如果真的偶尔出现了问题，造成的数据小错乱可能就需要人工的干预。\n有一个稍微安全一点的方案是 将锁的 value 值设置为一个随机数，释放锁时先匹配随机数是否一致，然后再删除 key，这是为了 确保当前线程占有的锁不会被其他线程释放，除非这个锁是因为过期了而被服务器自动释放的。\n但是匹配 value 和删除 key 在 Redis 中并不是一个原子性的操作，也没有类似保证原子性的指令，所以可能需要使用像 Lua 这样的脚本来处理了，因为 Lua 脚本可以 保证多个指令的原子性执行。\n  RedLock：解决多节点redis时，发生获取锁后，主节点掉线，导致其他服务获取到了锁\n      ES 为什么ES能查询的这么快 Zookeeper Zookeeper是干什么的，你使用过吗，用它做过什么事情吗 Java并发 你知道UnSafe类吗，为什么他是“UnSafe”的，它能做什么   UnSafe的获取方式\nField f = Unsafe.class.getDeclaredField(\"theUnsafe\"); f.setAccessible(true); Unsafe unsafe = (Unsafe) f.get(null);   可以做什么\n  实例化一个类\nUnsafe.allocateInstance()只会给对象分配内存，并不会调用构造方法\n  使用Unsafe的putXXX()方法，我们可以修改任意私有字段的值。\n    抛出check异常\n我们知道如果代码抛出了checked异常，要不就使用try…catch捕获它，要不就在方法签名上定义这个异常，但是，通过Unsafe我们可以抛出一个checked异常，同时却不用捕获或在方法签名上定义它。\n// 使用正常方式抛出IOException需要定义在方法签名上往外抛 public static void readFile() throws IOException { throw new IOException(); } // 使用Unsafe抛出异常不需要定义在方法签名上往外抛 public static void readFileUnsafe() { unsafe.throwException(new IOException()); }   使用堆外内存\n如果进程在运行过程中JVM上的内存不足了，会导致频繁的进行GC。理想情况下，我们可以考虑使用堆外内存，这是一块不受JVM管理的内存。\n使用Unsafe的allocateMemory()我们可以直接在堆外分配内存，这可能非常有用，但我们要记住，这个内存不受JVM管理，因此我们要调用freeMemory()方法手动释放它。\n  CompareAndSwap操作\nJUC下面大量使用了CAS操作，它们的底层是调用的Unsafe的CompareAndSwapXXX()方法。这种方式广泛运用于无锁算法，与java中标准的悲观锁机制相比，它可以利用CAS处理器指令提供极大的加速。\n  park/unpark\nJVM在上下文切换的时候使用了Unsafe中的两个非常牛逼的方法park()和unpark()。\n当一个线程正在等待某个操作时，JVM调用Unsafe的park()方法来阻塞此线程。\n当阻塞中的线程需要再次运行时，JVM调用Unsafe的unpark()方法来唤醒此线程。\n我们之前在分析java中的集合时看到了大量的LockSupport.park()/unpark()，它们底层都是调用的Unsafe的这两个方法。\n  异步、同步；阻塞、非阻塞；线程、进程他们的关系   异步和同步\n同步与异步最大的区别就是被调用方的执行方式和返回时机，同步指的是被调用方做完事情之后再返回，异步指的是被调用方先返回，然后再做事情，做完之后再想办法通知调用方\n  阻塞和非阻塞\n阻塞就是发起一个请求，调用者一直等待请求结果返回，也就是当前线程会被挂起，无法从事其他任务，只有当条件就绪才能继续。\n非阻塞就是发起一个请求，调用者不用一直等着结果返回，可以先去干其他事情。\n   阻塞和同步不是一回事，同步，异步与阻塞，非阻塞针对的对象是不一样的，阻塞,非阻塞是说的调用者，同步，异步说的是被调用者\n 你知道哪几种锁 讲一下线程的生命周期 java.lang.Thread.State中定义了线程的状态\npublic enum State { /** * Thread state for a thread which has not yet started. */ //新建状态,线程还未开始  NEW, /** * Thread state for a runnable thread. A thread in the runnable * state is executing in the Java virtual machine but it may * be waiting for other resources from the operating system * such as processor. */ //可以运行状态，已经在jvm虚拟机中了，正在等待操作系统分配资源  RUNNABLE, /** * Thread state for a thread blocked waiting for a monitor lock. * A thread in the blocked state is waiting for a monitor lock * to enter a synchronized block/method or * reenter a synchronized block/method after calling * {@link Object#wait() Object.wait}. */ //阻塞状态，正在等待一个monitor锁，就是我们平时用的synchronized的关键字。  //或者在调用了Object.wait()方法且被notify()之后也会进入BLOCKED状态  BLOCKED, /** * Thread state for a waiting thread. * A thread is in the waiting state due to calling one of the * following methods: *  * {@link Object#wait() Object.wait} with no timeout * {@link #join() Thread.join} with no timeout * {@link LockSupport#park() LockSupport.park} *  * * A thread in the waiting state is waiting for another thread to * perform a particular action. * * For example, a thread that has called {@code Object.wait()} * on an object is waiting for another thread to call * {@code Object.notify()} or {@code Object.notifyAll()} on * that object. A thread that has called {@code Thread.join()} * is waiting for a specified thread to terminate. * 等待状态 * 1. Object.wait()无超时的方法后且未被notify()前，如果被notify()了会进入BLOCKED状态 * 2. Thread.join()无超时的方法后 * 3. LockSupport.park()无超时的方法后 */ WAITING, /** * Thread state for a waiting thread with a specified waiting time. * A thread is in the timed waiting state due to calling one of * the following methods with a specified positive waiting time: *  * {@link #sleep Thread.sleep} * {@link Object#wait(long) Object.wait} with timeout * {@link #join(long) Thread.join} with timeout * {@link LockSupport#parkNanos LockSupport.parkNanos} * {@link LockSupport#parkUntil LockSupport.parkUntil} *  *超市等待状态,调用了 * 1. Thread.sleep()方法后 * 2. Object.wait(timeout)方法后且未到超时时间前，如果达到超时了或被notify()了会进入BLOCKED状态 * 3. Thread.join(timeout)方法后 * 4. LockSupport.parkNanos(nanos)方法后 * 5. LockSupport.parkUntil(deadline)方法后 /* TIMED_WAITING, /** * Thread state for a terminated thread. * The thread has completed execution. */ //终止状态，线程执行完毕  TERMINATED; } 线程可以被终止吗，怎么终止 AQS是什么？ wait()、notify()、sleep()、yield()、join()这几个方法的作用 实现线程安全的方法 公平锁和非公平锁的区别,ReentrantLock是怎么实现的 CAS是什么，怎么解决ABA问题 CAS是CPU的原子指令器，通过自选的方式，属于乐观锁，与java的悲观锁相比效率更高。\nABA，只的是多个线程同时在更新的时候，例如A线程要把target变为1，目前是2，A读到了2，然后修改成1后，又修改成2，然后B读到了2。\n解决方式\n  版本号：\nAtomicStampedReference：维护了一个版本号\nAtomicMarkableReference：维护了一个Boolean，标记是否更改过\n  ConcurrentHashMap的分段锁 你用过哪些Java.util.concurrent下的类 讲一下线程池的几个参数含义 synchronized关键字，怎么优化的，膨胀的流程 volatile关键字 我们说过可见性是指当一个线程修改了共享变量的值，其它线程能立即感知到这种变化。而普通变量无法做到立即感知这一点，变量的值在线程之间的传递均需要通过主内存来完成，比如，线程A修改了一个普通变量的值，然后向主内存回写，另外一条线程B只有在线程A的回写完成之后再从主内存中读取变量的值，才能够读取到新变量的值，也就是新变量才能对线程B可见。\njava内存模型规定，volatile变量的每次修改都必须立即回写到主内存中，volatile变量的每次使用都必须从主内存刷新最新的值。\n volatile可以禁止cpu语意重排  Java内存模型 Java内存模型规定了所有的变量都存储在主内存中，这里的主内存跟介绍硬件时所用的名字一样，两者可以类比，但此处仅指虚拟机中内存的一部分。\n除了主内存，每条线程还有自己的工作内存，此处可与CPU的高速缓存进行类比。工作内存中保存着该线程使用到的变量的主内存副本的拷贝，线程对变量的操作都必须在工作内存中进行，包括读取和赋值等，而不能直接读写主内存中的变量，不同的线程之间也无法直接访问对方工作内存中的变量，线程间变量值的传递必须通过主内存来完成。\nThreadLocal Java基础 说一说你理解的多态 来个简单的，Java作用域有哪些，为什么要考虑作用域 讲一下泛型和注解 讲一下反射和动态代理 Java的几种引用，你用过几种 说说进程和线程的区别 Java集合 讲一讲集合类，常用的集合，以及在多线程下你是如何保集合安全的 讲讲HashMap JVM JVM是什么 java虚拟机\nJava内存模型 Java内存模型是跟「并发」相关的，它是为了屏蔽底层细节而提出的规范，希望在上层(Java层面上)在操作内存时在不同的平台上也有相同的效果\nJava编译到执行的过程   编译\n将源码文件编译成JVM可以解释的class文件。\n编译过程会对源代码程序做 「语法分析」「语义分析」「注解处理」等等处理，最后才生成字节码文件。\n比如对泛型的擦除和我们经常用的Lombok就是在编译阶段干的。\n  加载\n  装载\n【装载时机】为了节省内存的开销，并不会一次性把所有的类都装载至JVM，而是等到「有需要」的时候才进行装载（比如new和反射等等）\n【装载发生】class文件是通过「类加载器」装载到jvm中的，为了防止内存中出现多份同样的字节码，使用了双亲委派机制（它不会自己去尝试加载这个类，而是把请求委托给父加载器去完成，依次向上）\n【装载规则】JDK 中的本地方法类一般由根加载器（Bootstrp loader）装载，JDK 中内部实现的扩展类一般由扩展加载器（ExtClassLoader ）实现装载，而程序中的类文件则由系统加载器（AppClassLoader ）实现装载。\n装载这个阶段它做的事情可以总结为：查找并加载类的二进制数据，在JVM「堆」中创建一个java.lang.Class类的对象，并将类相关的信息存储在JVM「方法区」中，\n通过「装载」这个步骤后，现在已经把class文件装载到JVM中了，并创建出对应的Class对象以及类信息存储至方法区了。\n  连接\n 验证：验证类是否符合 Java 规范和 JVM 规范 准备：为类的静态变量分配内存，初始化为系统的初始值 解析：将符号引用转为直接引用的过程  通过「连接」这个步骤后，现在已经对class信息做校验并分配了内存空间和默认值了。\n  初始化\n收集class的静态变量、静态代码块、静态方法至()方法，随后从上往下开始执行。\n    解释\n把字节码转换为操作系统识别的指令\n  执行\n操作系统把解释器解析出来的指令码，调用系统的硬件执行最终的程序指令。\n  双亲委派机制是干什么的   **前置知识：**JDK中默认类加载器有三个：AppClassLoader、Ext ClassLoader、BootStrap ClassLoader。AppClassLoader的父加载器为Ext ClassLoader、Ext ClassLoader的父加载器为BootStrap ClassLoader。这里的父子关系并不是通过继承实现的，而是组合。\n  **什么是双亲委派机制：**加载器在加载过程中，先把类交由父类加载器进行加载，父类加载器没找到才由自身加载。\n  **双亲委派机制目的：**为了防止内存中存在多份同样的字节码（安全）\n  **类加载规则：**如果一个类由类加载器A加载，那么这个类的依赖类也是由「相同的类加载器」加载。\n  **如何打破双亲委派机制：**自定义ClassLoader，重写loadClass方法（只要不依次往上交给父加载器进行加载，就算是打破双亲委派机制）\n  **打破双亲委派机制案例：**Tomcat\n 为了Web应用程序类之间隔离，为每个应用程序创建WebAppClassLoader类加载器 为了Web应用程序类之间共享，把ShareClassLoader作为WebAppClassLoader的父类加载器，如果WebAppClassLoader加载器找不到，则尝试用ShareClassLoader进行加载 为了Tomcat本身与Web应用程序类隔离，用CatalinaClassLoader类加载器进行隔离，CatalinaClassLoader加载Tomcat本身的类 为了Tomcat与Web应用程序类共享，用CommonClassLoader作为CatalinaClassLoader和ShareClassLoader的父类加载器 ShareClassLoader、CatalinaClassLoader、CommonClassLoader的目录可以在Tomcat的catalina.properties进行配置    **线程上下文加载器：**由于类加载的规则，很可能导致父加载器加载时依赖子加载器的类，导致无法加载成功（BootStrap ClassLoader无法加载第三方库的类），所以存在「线程上下文加载器」来进行加载。\n  JVM内存结构 其中：堆和方法区是线程共享的，其他地方是线程隔离的\n  堆：\n嗯，「堆」是线程共享的区域，几乎类的实例和数组分配的内存都来自于它\n堆又可以细分为以下几个区域\n 伊甸园区 生存者区1，生存者区2 老年区    虚拟机栈：每个线程在创建的时候都会创建一个「虚拟机栈」，每次方法调用都会创建一个「栈帧」。每个「栈帧」会包含几块内容：局部变量表、操作数栈、动态连接和返回地址，了解了「虚拟机栈」的组成后，也不难猜出它的作用了：它保存方法了局部变量、部分变量的计算并参与了方法的调用和返回。\n就是保存了方法的局部变量表，方法的调用和返回都在里面\n  本地方法栈：本地方法栈跟虚拟机栈的功能类似，虚拟机栈用于管理 Java 函数的调用，而本地方法栈则用于管理本地方法的调用。这里的「本地方法」指的是「非Java方法」，一般本地方法是使用C语言实现的。和虚拟机栈保存的东西一样，只不过不是java方法\n  方法区：\nHotSpot虚拟机中，在JDK8中，已经用「元空间」来替代了「永久代」作为「方法区」的实现了。方法区主要是用来存放已被虚拟机加载的「类相关信息」：包括类信息、常量池。\n  类信息又包括了类的版本、字段、方法、接口和父类等信息\n  常量池又可以分「静态常量池」和「运行时常量池」\n静态常量池主要存储的是「字面量」以及「符号引用」等信息，静态常量池也包括了我们说的「字符串常量池」。\n「运行时常量池」存储的是「类加载」时生成的「直接引用」等信息。\n 又值得注意的是：从「逻辑分区」的角度而言「常量池」是属于「方法区」的，但自从在「JDK7」以后，就已经把「运行时常量池」和「静态常量池」转移到了「堆」内存中进行存储（对于「物理分区」来说「运行时常量池」和「静态常量池』就属于堆）\n 元空间和永久代最主要的区别就是：「元空间」存储不在虚拟机中，而是使用本地内存，JVM 不会再出现方法区的内存溢出，以往「永久代」经常因为内存不够用导致跑出OOM异常。\n    程序计数器：Java是多线程的语言，我们知道假设线程数大于CPU数，就很有可能有「线程切换」现象，切换意味着「中断」和「恢复」，那自然就需要有一块区域来保存「当前线程的执行信息」，所以，程序计数器就是用于记录各个线程执行的字节码的地址（分支、循环、跳转、异常、线程恢复等都依赖于计数器），简单点说就是记录线程中代码走到哪了\n  垃圾回收   如何判断是否是一个垃圾呢\n  引用计数法：\n引用计数法思路很简单：当对象被引用则+1，但对象引用失败则-1。当计数器为0时，说明对象不再被引用，可以被可回收，\n引用计数法最明显的缺点就是：如果对象存在循环依赖，那就无法定位该对象是否应该被回收（A依赖B，B依赖A）\n  可达性算法\n判断对象与GCROOT之间是否可达，不可达即是垃圾\nGCROOT\n「GC Roots」是一组必须「活跃」的引用。从「GC Root」出发，程序通过直接引用或者间接引用，能够找到可能正在被使用的对象\n  当前活跃的栈帧指向堆里的对象引用就可以是「GC Roots」\n 比如我们上次不是聊到JVM内存结构中的虚拟机栈吗，虚拟机栈里不是有栈帧吗，栈帧不是有局部变量吗？局部变量不就存储着引用嘛。\n那如果栈帧位于虚拟机栈的栈顶，是不是就可以说明这个栈帧是活跃的（换言之，是线程正在被调用的）\n既然是线程正在调用的，那栈帧里的指向「堆」的对象引用，是不是一定是「活跃」的引用？\n所以，当前活跃的栈帧指向堆里的对象引用就可以是「GC Roots」\n   比如类的静态变量引用是「GC Roots」，被「Java本地方法」所引用的对象也是「GC Roots」\n      回收过程\n  标记\n  清除\n直接清除会有「内存碎片」的问题：可能我有10M的空余内存，但程序申请9M内存空间却申请不下来（10M的内存空间是垃圾清除后的，不连续的）\n我把「标记」存活的对象「复制」到另一块空间，复制完了之后，直接把原有的整块空间给干掉！这样就没有内存碎片的问题了\n这种做法缺点又很明显：内存利用率低，得有一块新的区域给我复制(移动)过去\n还有一种「折中」的办法，我未必要有一块「大的完整空间」才能解决内存碎片的问题，我只要能在「当前区域」内进行移动\n把存活的对象移到一边，把垃圾移到一边，那再将垃圾一起删除掉，不就没有内存碎片了嘛\n这种专业的术语就叫做「整理」\n    STW：stop the world\n回收垃圾的时候，程序是有短暂的时间不能正常继续运作啊。不然JVM在回收的时候，用户线程还继续分配修改引用，JVM怎么搞\n  年轻代的垃圾收集器使用的都是「标记复制算法」\n所以在「堆内存」划分中，将年轻代划分出Survivor区（Survivor From 和Survivor To），目的就是为了有一块完整的内存空间供垃圾回收器进行拷贝(移动)\n  什么时候会从新生代进入老年代\n 如果对象太大了，就会直接进入老年代（对象创建时就很大 || Survivor区没办法存下该对象） 如果对象太老了，那就会晋升至老年代（每发生一次Minor GC ，存活的对象年龄+1，达到默认值15则晋升老年代 || 动态对象年龄判定 可以进入老年代）    当Eden区空间不足时，就会触发Minor GC\n  平时如何调优 一般调优JVM我们认为会有几种指标可以参考：『吞吐量』、『停顿时间』和『垃圾回收频率』\n 内存区域大小以及相关策略（比如整块堆内存占多少、新生代占多少、老年代占多少、Survivor占多少、晋升老年代的条件等等）  比如（-Xmx：设置堆的最大值、-Xms：设置堆的初始值、-Xmn：表示年轻代的大小、-XX:SurvivorRatio：伊甸区和幸存区的比例等等）\n（按经验来说：IO密集型的可以稍微把「年轻代」空间加大些，因为大多数对象都是在年轻代就会灭亡。内存计算密集型的可以稍微把「老年代」空间加大些，对象存活时间会更长些）\n  通过jps命令查看Java进程「基础」信息（进程号、主类）。这个命令很常用的就是用来看当前服务器有多少Java进程在运行，它们的进程号和加载主类是啥\n  jps -l 查看主类，进程\n  jps -v 查看jvm参数\n  通过jstat命令查看Java进程「统计类」相关的信息（类加载、编译相关信息统计，各个内存区域GC概况和统计）。这个命令很常用于看GC的情况\n  gc回收统计 jstat -gc pid\n  堆内存统计 jstat -gccapacity pid\n  jmap -dump:live,format=b,file=/home/tess.dump\n产生一个HeapDump文件\n  XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp/heapdump.hprof\n增加oom的时候，自动导出当前堆的dump\n这个命令很常用于把JVM内存信息dump到文件，然后再用MAT( Memory Analyzer tool 内存解析工具)把文件进行分析\n  通过jinfo命令来查看和调整Java进程的「运行参数」。\n  通过jstack命令来查看JVM「线程信息」。这个命令用常用语排查死锁相关的问题\n  一个对象到底有多大，“对象在内存中长什么样子” 1.对象头中的Mark Word（标记字）主要用来表示对象的线程锁状态，另外还可以用来配合GC、存放该对象的hashCode；\n2.Klass Word是一个指向方法区中Class信息的指针，意味着该对象可随时知道自己是哪个Class的实例；\n3.数组长度也是占用64位（8字节）的空间，这是可选的，只有当本对象是一个数组对象时才会有这个部分；\n4.对象体是用于保存对象属性和值的主体部分，占用内存空间取决于对象的属性数量和类型；\n5.对齐字是为了减少堆内存的碎片空间（不一定准确）。\n网络 讲一下TCP/IP，它和HTTP的关系 Netty干什么的，用过吗 你知道哪些网络模型？   OSI网络7层模型\n 应用层：各种web应用 表示层：数据格式标识，基本加解密 会话层：控制各个程序之间的会话能力，软件数据分发给其他不同的软件 传输层：TCP UDP协议 网络层：定义IP地址，定义路由的基本功能，实现设备之间的数据转发 数据链路层：定义数据的基本格式，如何传输、如何标识，例如网卡的MAC地址 物理层：物理设备的传输，例如网卡标准、网线标准    TCP/IP模型\n 应用层：各种基于TCP/IP的协议，例如HTTP、FTP、SMTP 传输层：TCP或者UDP协议 网络层：它负责为两台主机提供通信服务，并通过选择合适的路由将数据传递到目标主机。 网络接口层：物理设备的环境    五层网络模型\n由OSI7层模型演变而来\n  你知道哪些IO模型，BIO、NIO、AIO都是什么，他们的使用场景是什么   java中的IO模型\n  BIO\nBlocking IO，传统的同步阻塞IO，对应着java.io，例如文件的读取，输入输出流，Socket的网络编程\n  NIO\nNo Blocking IO/New IO，同步非阻塞IO，对应着jdk1.4之后进入的nio，对于java.nio，提供了Channel，Buffer，Selector等抽象\n  AIO\nAsync IO ，异步非阻塞IO，在 Java 7 中引入了 NIO 的改进版 NIO 2,它是异步非阻塞的IO模型\n    java中的io操作最终还是依赖于操作系统的io实现的，如在Linux 2.6以后，Java中的NIO和AIO都是通过 epoll\n  Linux中的IO模型\n  BIO\n 一个输入操作通常包括两个不同的阶段:\n 等待数据准备好 从内核向进程复制数据  对于一个套接字上的输入操作，第一步通常涉及等待数据从网络中到达，当所等待分组到达时，它被复制到内核中的某个缓冲区，第二步就是把数据从内核缓冲区复制到应用进程缓冲区。\n从上图可以看出，应用进程通过 系统调用 recvfrom 去接收数据，而由于内核数据没有准备好，应用进程就会阻塞，直到内核准备好数据并将其从内核复制到应用进程的缓冲区中或者发生错误才返回。最常见的错误就是系统调用被信号中断。进程从调用recvfrom开始到它返回的整段时间内是被阻塞的。\nLinux下的阻塞式I/O模型就对应了Java下的BIO模型，BIO的底层实现是调用操作系统的API去执行的，也就是调用操作系统的Socket套接字。\n   NIO\n 应用进程通过系统调用 recvfrom 不断的去和内核交互，直到内核数据报准备好，而如果内核无数据准备好，转而立即返回一个 EWOULDBLOCK的错误，过一段时间再次发送 recvfrom请求，在此期间进程可以做其他事情，不用一直等待，这就是非阻塞。\n当一个应用进程循环调用 recvfrom时，我们称之为轮询(polling)，应用进程持续轮询内核，以查看某个操作是否就绪。Java的NIO映射到Linux操作系统就是如上图所示的非阻塞I/O模型\n   I/O复用模型\n IO多路复用使用select/poll/epoll函数，多个进程的IO都可以注册在同一个 select 上，当用户进程调用该 select时，select去监听所有注册好的IO,如果所有被监听的IO需要的数据都没有准备好，那么 select调用进程会被阻塞，只要任意一个IO的数据报套接字变为可读，即数据报已经准备好，select 就返回套接字可读这一条件，然后调用 recvfrom把所读数据报复制到应用进程缓冲区。\n强调一点就是，IO多路复用模型并没有涉及到非阻塞，进程在发出select后，要一直阻塞等待其监听的所有IO操作至少有一个数据准备好才返回，强调阻塞状态，不存在非阻塞。\n而在 Java NIO中也可以实现多路复用，主要是利用多路复用器 Selector，与这里的 select函数类型，Selector会不断轮询注册在其上的通道Channel，如果有某一个Channel上面发生读或写事件，这个Channel处于就绪状态，就会被Selector轮询出来。\n   信号驱动式/io模型\n 应用进程预先向内核安装一个信号处理函数，然后立即返回，进程继续工作，不阻塞，当数据报准备好读取时，内核就为该进程产生一个信号通知进程，然后进程再调用recvfrom读取数据报。\n信号驱动式IO在数据准备阶段是异步的，当内核中有数据报准备后再通知进程，但是在调用 recvfrom操作进行数据拷贝时是同步的，所以总体来说，整个IO过程不能是异步的。\n   异步IO模型，AIO\n 应用进程调用aio_read函数，给内核传递描述符，缓存区指针，缓存区大小和文件偏移，并告诉内核当整个操作完成时如何通知进程，然后该系统调用立即返回，而且在等待I/O完成期间，我们的进程不被阻塞，进程可以去干其他事情，然后内核开始等待数据准备，数据准备好以后再拷贝数据到进程缓冲区，最后通知整个IO操作已完成。\nJava的AIO提供了异步通道API，其操作系统底层实现就是这个异步I/O模型\n     使用场景\n BIO方式适用于连接数目比较小且固定的架构，这种方式对服务器资源要求比较高，并发局限于应用中，JDK1.4以前的唯一选择，但程序直观简单易理解。\nNIO方式适用于连接数目多且连接比较短（轻操作）的架构，比如聊天服务器，并发局限于应用中，编程比较复杂，JDK1.4开始支持。\nAIO方式适用于连接数目多且连接比较长（重操作）的架构，比如相册服务器，充分调用OS参与并发操作，编程比较复杂，JDK7开始支持。\n   讲一下Https、Http、Http1.0、Http1.1、Http2 什么是多路复用   IO多路复用是一种同步IO模型，实现一个线程可以监视多个文件句柄；一旦某个文件句柄就绪，就能够通知应用程序进行相应的读写操作；没有文件句柄就绪时会阻塞应用程序，交出cpu。多路是指多个网络连接多个句柄，复用指的是同一个线程（结合上图），实际上在代码中，一个线程去调用select方法，当没有连接准备好的时候，select阻塞。select返回连接列表，进行处理\nfds = [listen_fd] // 伪代码描述 while(1) { // 通过内核获取有读写事件发生的fd，只要有一个则返回，无则阻塞 // 整个过程只在调用select、poll、epoll这些调用的时候才会阻塞，accept/recv是不会阻塞 for (fd in select(fds)) { if (fd == listen_fd) { client_fd = accept(listen_fd) fds.append(client_fd) } elseif (len = recv(fd) \u0026\u0026 len != -1) { // logic } } }   linux实现多路复用的方式\n  epoll的et和lt的区别\nepoll LT 与 ET模式的区别\n epoll有EPOLLLT和EPOLLET两种触发模式，LT是默认的模式，ET是“高速”模式。 LT模式下，只要这个fd还有数据可读，每次 epoll_wait都会返回它的事件，提醒用户程序去操作 ET模式下，它只会提示一次，直到下次再有数据流入之前都不会再提示了，无论fd中是否还有数据可读。所以在ET模式下，read一个fd的时候一定要把它的buffer读完，或者遇到EAGAIN错误    代码书写 聊聊设计模式，你知道哪些，用过哪些，为什么要用设计模式 数据结构 你知道哪些数据结构  树 线性表（数组和链表实现） 堆 图 字典（hashMap）  红黑树、B树、B+树、二叉树、完全平衡二叉树   树\n一种数据结构，每个元素可以有子树\n  二叉树\n一种“树”数据结构，满足每个元素最多只有2个子树。\n  遍历方式\n 前序遍历：中左右逐渐遍历，可以得到一条搜索路径，用于搜索。 中序遍历：左中右，可以得到一个有序列表。 后序遍历：用来计算一颗树算术表达式    满二叉树，所有除了叶子结点的节点都有2个节点\n  完全二叉树，叶子结点只会存在于倒数第一和倒数第二层，并且叶子结点都都偏左\n完全二叉树由于他的定义，可以使用数组来存放，而不用链表来存储，可以节省左右两个指针的大小空间。例如根节点是下标i，左节点下标就是2i，右节点下标就是2i+1\n  二叉搜索树(BST)\n根节点的值大于其左子树中任意一个节点的值，小于其右节点中任意一节点的值，这一规则适用于二叉查找树中的每一个节点。\n最好的时间复杂度是O(logn)，最快的情况会退化为链表\n  平衡二叉树(AVL)\n通过平衡的动作左旋和右旋，解决二叉搜索树退化为链表的问题。完全平衡二叉树是只保证左右子树的深度不会超过1\n  红黑树\n由于完全平衡二叉树要求左右子树深度不能超过1，导致每次插入一个新节点时都会带来平衡的动作。因为1特别苛刻，几乎每次都要平衡。最后平衡所花费的时间代价过高。\n解决，完全平衡二叉树平衡频率过于频繁。\n时间复杂度log(n)\n 二叉搜索树：也称二叉查找树，或二叉排序树。定义也比较简单，要么是一颗空树，要么就是具有如下性质的二叉树： （1）若任意节点的左子树不空，则左子树上所有结点的值均小于它的根结点的 值； （2）若任意节点的右子树不空，则右子树上所有结点的值均大于它的根结点的 值； （3）任意节点的左、右子树也分别为二叉查找树； （4）没有键值相等的节点。\n平衡二叉树：在二叉搜索树的基础上多了两个重要的特点： （1）左右两子树的高度差的绝对值不能超过 1； （2）左右两子树也是一颗平衡二叉树。\n红黑树：红黑树是在普通二叉树上，对每个节点添加一个颜色属性形成的，需要同时满足一下五条性质： （1）节点是红色或者是黑色； （2）根节点是黑色； （3）每个叶节点（NIL 或空节点）是黑色； （4）每个红色节点的两个子节点都是黑色的（也就是说不存在两个连续的红色节 点）； （5）从任一节点到其没个叶节点的所有路径都包含相同数目的黑色节点。\n区别：AVL 树需要保持平衡，但它的旋转太耗时，而红黑树就是一个没有 AVL 树 那样平衡，因此插入、删除效率会高于 AVL 树，而 AVL 树的查找效率显然高于红黑树。\n   如果插入一个node引起了树的不平衡，AVL和RB-Tree(红黑树)都是最多只需要2次旋转操作，即两者都是O(1)；但是在删除node引起树的不平衡时，最坏情况下，AVL需要维护从被删node到root这条路径上所有node的平衡性，因此需要旋转的量级O(logN)，而RB-Tree最多只需3次(因为不需要严格的平衡，从根到叶子的最长的可能路径不多于最短的可能路径的两倍长)旋转以及修改节点的颜色，只需要O(1)的复杂度。\n  其次，AVL的结构相较RB-Tree来说更为平衡，在插入和删除node更容易引起Tree的unbalance，因此在大量数据需要插入或者删除时，AVL需要rebalance的频率会更高。因此，RB-Tree在需要大量插入和删除node的场景下，效率更高。自然，由于AVL高度平衡，因此AVL的search效率更高。\n  使用场景：IO多路复用epoll的实现采用红黑树组织管理sockfd，以支持快速的增删改查. ngnix中,用红黑树管理timer,因为红黑树是有序的,可以很快的得到距离当前最小的定时器. java中TreeMap，jdk1.8的hashmap的实现.\n      B树和B+树\nB树也是平时说的“B-”树，又叫平衡多路树。和二叉树不同，二叉树每个节点只会有2个子树。而B树有多个子树。M阶的B树是只最多子树是M个的B树。\n和二叉树一样，也是左小右大。\n B树节点存放数据，并且叶子节点不需要使用链表串联    手写一个链表，实现正向输出，反向输出，找到最中间的元素 什么是堆 堆是一种非线性结构，可以把堆看作一个数组，也可以被看作一个完全二叉树，通俗来讲堆其实就是利用完全二叉树的结构来维护的一维数组但堆并不一定是完全二叉树\n按照堆的特点可以把堆分为大顶堆和小顶堆 大顶堆：每个结点的值都大于或等于其左右孩子结点的值 小顶堆：每个结点的值都小于或等于其左右孩子结点的值\n使用堆的原因？ 如果仅仅是需要得到一个有序的序列，使用排序就可以很快完成，并不需要去组织一个新的数据结构。但是如果我们的需求是对于一个随时会有更新的序列，我要随时知道这个序列的最小值或最大值是什么。显然如果是线性结构，每次插入之后，假设原数组是有序的，那使用二分把它放在正确的位置也未尝不可，但是插入的时候从数组中留出空位就需要O(n)的时间复杂度，删除的时候亦然。\n时间复杂度\n插入和删除的时间复杂度是O(logn)\n场景：\njava中的Timer，就是通过堆来找到当前最小的时间戳，进行任务执行的\n环形队列   普通队列\n普通队列，数组实现时，出队后，原来的空间就浪费了。\n​\t环形队列，数组实现时，下标用模取运算，例如最大空间为5，模取后只会有0，1，2，3，4下标，组成了循环。\n front 变量的含义做一个调整： front 就指向队列的第一个元素, 也就是说 arr[front] 就是队列的第一个元素 front 的初始值 = 0 rear 变量的含义做一个调整：rear 指向队列的最后一个元素的后一个位置. 因为希望空出一个空间做为约定. rear 的初始值 = 0 当队列满时，条件是 (rear + 1) % maxSize == front 【满】 对队列为空的条件， rear == front 空 当我们这样分析， 队列中有效的数据的个数 (rear + maxSize - front) % maxSize // rear = 1 front = 0    时间轮\n使用场景，处理大批量的定时任务\n利用环形队列，队列的每个空间里存放的是任务的集合。\n例如以60秒为一个轮，70秒后执行一个任务。只需要一个timer按秒去旋转时间轮，70%60=10，到达第10个槽的时候，执行内部的所有任务即可。\n为了解决10秒和70秒落在同一个槽上，可以在任务身上加一个属性，圈数，例如10秒的任务圈数是0，70秒的任务是1，只有达到槽位置，并且圈数为0的任务才会被执行。\nkafaka的做法是，再做一个分钟轮，先转分钟轮。再转秒的轮。\n  算法 常见的8个排序算法，你能写出几个 LRU 操作系统 零拷贝是什么 ","wordCount":"2045","inLanguage":"en","datePublished":"2022-01-11T14:43:18+08:00","dateModified":"2022-01-11T14:43:18+08:00","author":{"@type":"Person","name":"Hao Sun"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://sunhao1256.github.io/posts/%E5%85%AB%E8%82%A1%E6%96%87/"},"publisher":{"@type":"Organization","name":"Hao Sun","logo":{"@type":"ImageObject","url":"https://sunhao1256.github.io/%3Clink%20/%20abs%20url%3E"}}}</script>
 </head>
 <body id=top>
 <script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add('dark'):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove('dark'):window.matchMedia('(prefers-color-scheme: dark)').matches&&document.body.classList.add('dark')</script>
@@ -122,7 +128,7 @@ Redis 的集合相当于 Java 语言中的 HashSet，它内部的键值对是无
 <h1 class=post-title>
 八股文
 </h1>
-<div class=post-meta><span title="2022-01-11 14:43:18 +0800 CST">January 11, 2022</span>&nbsp;·&nbsp;6 min&nbsp;·&nbsp;Hao Sun
+<div class=post-meta><span title="2022-01-11 14:43:18 +0800 CST">January 11, 2022</span>&nbsp;·&nbsp;10 min&nbsp;·&nbsp;Hao Sun
 </div>
 </header> <div class=toc>
 <details>
@@ -141,9 +147,17 @@ Redis 的集合相当于 Java 语言中的 HashSet，它内部的键值对是无
 <li>
 <a href=#redis%e6%98%af%e5%8d%95%e7%ba%bf%e7%a8%8b%e7%9a%84%e5%90%97%e5%ae%83%e4%b8%ba%e4%bb%80%e4%b9%88%e8%bf%99%e4%b9%88%e5%bf%ab aria-label=redis是单线程的吗，它为什么这么快？>redis是单线程的吗，它为什么这么快？</a></li>
 <li>
-<a href=#redis%e7%9a%84%e9%ab%98%e5%8f%af%e7%94%a8 aria-label=redis的高可用>redis的高可用</a></li>
+<a href=#redis%e5%9c%a8%e4%b8%bb%e4%bb%8e%e5%a4%8d%e5%88%b6%e7%9a%84%e5%92%8c%e6%95%85%e9%9a%9c%e8%bd%ac%e7%a7%bb%e7%9a%84%e8%bf%87%e7%a8%8b%e4%b8%ad%e4%bc%9a%e5%af%bc%e8%87%b4%e6%95%b0%e6%8d%ae%e4%b8%a2%e5%a4%b1%e5%90%97 aria-label=Redis在主从复制的和故障转移的过程中会导致数据丢失吗><strong>Redis在主从复制的和故障转移的过程中会导致数据丢失吗</strong></a></li>
 <li>
-<a href=#redis%e7%9a%84%e6%8c%81%e4%b9%85%e5%8c%96 aria-label=redis的持久化>redis的持久化</a></li>
+<a href=#redis%e7%9a%84%e9%ab%98%e5%8f%af%e7%94%a8%e5%92%8c%e6%8c%81%e4%b9%85%e5%8c%96 aria-label=redis的高可用和持久化>redis的高可用和持久化</a></li>
+<li>
+<a href=#%e4%bc%98%e7%82%b9 aria-label=优点：>优点：</a></li>
+<li>
+<a href=#%e7%bc%ba%e7%82%b9 aria-label=缺点：>缺点：</a></li>
+<li>
+<a href=#%e4%bc%98%e7%82%b9-1 aria-label=优点：>优点：</a></li>
+<li>
+<a href=#%e7%bc%ba%e7%82%b9-1 aria-label=缺点：>缺点：</a></li>
 <li>
 <a href=#redis%e5%b8%83%e9%9a%86%e8%bf%87%e6%bb%a4%e5%99%a8 aria-label=redis布隆过滤器>redis布隆过滤器</a></li>
 <li>
@@ -153,7 +167,9 @@ Redis 的集合相当于 Java 语言中的 HashSet，它内部的键值对是无
 <li>
 <a href=#redis%e9%98%b2%e5%87%bb%e7%a9%bf%e9%9b%aa%e5%b4%a9%e7%a9%bf%e9%80%8f aria-label=redis防击穿、雪崩、穿透>redis防击穿、雪崩、穿透</a></li>
 <li>
-<a href=#redis%e6%98%af%e5%85%88%e5%88%a0%e7%bc%93%e5%ad%98%e8%bf%98%e6%98%af%e5%85%88%e5%86%99%e5%ba%93%e6%80%8e%e4%b9%88%e8%a7%a3%e5%86%b3%e7%bc%93%e5%ad%98%e4%b8%80%e8%87%b4%e6%80%a7 aria-label=redis是先删缓存还是先写库，怎么解决缓存一致性>redis是先删缓存还是先写库，怎么解决缓存一致性</a></li></ul>
+<a href=#redis%e6%98%af%e5%85%88%e5%88%a0%e7%bc%93%e5%ad%98%e8%bf%98%e6%98%af%e5%85%88%e5%86%99%e5%ba%93%e6%80%8e%e4%b9%88%e8%a7%a3%e5%86%b3%e7%bc%93%e5%ad%98%e4%b8%80%e8%87%b4%e6%80%a7 aria-label=redis是先删缓存还是先写库，怎么解决缓存一致性>redis是先删缓存还是先写库，怎么解决缓存一致性</a></li>
+<li>
+<a href=#redis%e7%9a%84%e6%b7%98%e6%b1%b0%e7%ad%96%e7%95%a5 aria-label=redis的淘汰策略>redis的淘汰策略</a></li></ul>
 </ul>
 </ul>
 </li>
@@ -186,9 +202,19 @@ Redis 的集合相当于 Java 语言中的 HashSet，它内部的键值对是无
 <ul>
 <ul>
 <li>
-<a href=#mysql%e7%9a%84%e7%b4%a2%e5%bc%95%e6%95%b0%e6%8d%ae%e7%bb%93%e6%9e%84%e4%b8%ba%e4%bb%80%e4%b9%88%e7%94%a8b%e6%a0%91 aria-label=mysql的索引数据结构为什么用B+树>mysql的索引数据结构为什么用B+树</a></li>
+<a href=#%e4%b8%80%e6%9d%a1%e8%af%ad%e5%8f%a5%e7%9a%84%e6%89%a7%e8%a1%8c%e8%bf%87%e7%a8%8b aria-label=一条语句的执行过程>一条语句的执行过程</a></li>
+<li>
+<a href=#%e5%b8%b8%e8%a7%81%e7%9a%84%e5%ad%98%e5%82%a8%e5%bc%95%e6%93%8e aria-label=常见的存储引擎>常见的存储引擎</a></li>
+<li>
+<a href=#%e4%b8%80%e5%bc%a0%e8%a1%a8%e9%87%8c%e9%9d%a2%e6%9c%89id%e8%87%aa%e5%a2%9e%e4%b8%bb%e9%94%ae%e5%bd%93insert%e4%ba%8617%e6%9d%a1%e8%ae%b0%e5%bd%95%e4%b9%8b%e5%90%8e%e5%88%a0%e9%99%a4%e4%ba%86%e7%ac%ac151617%e6%9d%a1%e8%ae%b0%e5%bd%95%e5%86%8d%e6%8a%8amysql%e9%87%8d%e5%90%af%e5%86%8dinsert%e4%b8%80%e6%9d%a1%e8%ae%b0%e5%bd%95%e8%bf%99%e6%9d%a1%e8%ae%b0%e5%bd%95%e7%9a%84id%e6%98%af18%e8%bf%98%e6%98%af15- aria-label="一张表，里面有ID自增主键，当insert了17条记录之后，删除了第15,16,17条记录，再把Mysql重启，再insert一条记录，这条记录的ID是18还是15 ？">一张表，里面有ID自增主键，当insert了17条记录之后，删除了第15,16,17条记录，再把Mysql重启，再insert一条记录，这条记录的ID是18还是15 ？</a></li>
+<li>
+<a href=#%e8%87%aa%e5%a2%9e%e4%b8%bb%e9%94%ae%e7%94%a8%e5%ae%8c%e4%ba%86%e6%80%8e%e4%b9%88%e5%8a%9e aria-label=自增主键用完了怎么办>自增主键用完了怎么办</a></li>
+<li>
+<a href=#mysql%e7%9a%84%e7%b4%a2%e5%bc%95%e6%95%b0%e6%8d%ae%e7%bb%93%e6%9e%84%e4%b8%ba%e4%bb%80%e4%b9%88%e7%94%a8b%e6%a0%91%e8%ae%b2%e4%b8%80%e8%ae%b2mysql%e7%b4%a2%e5%bc%95%e7%9a%84%e6%95%b0%e6%8d%ae%e7%bb%93%e6%9e%84%e6%98%af%e4%bb%80%e4%b9%88%e6%a0%b7%e7%9a%84 aria-label=mysql的索引数据结构为什么用B+树，讲一讲mysql索引的数据结构是什么样的>mysql的索引数据结构为什么用B+树，讲一讲mysql索引的数据结构是什么样的</a></li>
 <li>
 <a href=#%e6%9c%80%e5%b7%a6%e5%8c%b9%e9%85%8d%e5%8e%9f%e5%88%99%e6%98%af%e4%bb%80%e4%b9%88 aria-label=最左匹配原则是什么>最左匹配原则是什么</a></li>
+<li>
+<a href=#explain aria-label=Explain>Explain</a></li>
 <li>
 <a href=#%e8%af%b4%e5%87%ba%e4%bd%a0%e5%a6%82%e4%bd%95%e8%b0%83%e4%bc%98%e7%9a%84 aria-label=说出你如何调优的>说出你如何调优的</a></li>
 <li>
@@ -198,12 +224,35 @@ Redis 的集合相当于 Java 语言中的 HashSet，它内部的键值对是无
 <li>
 <a href=#%e4%ba%8b%e5%8a%a1%e7%89%b9%e6%80%a7%e9%9a%94%e7%a6%bb%e7%ba%a7%e5%88%ab%e6%80%8e%e4%b9%88%e8%a7%a3%e5%86%b3%e5%b9%bb%e8%af%bb aria-label=事务特性，隔离级别，怎么解决幻读？>事务特性，隔离级别，怎么解决幻读？</a></li>
 <li>
-<a href=#%e4%b8%ba%e4%bb%80%e4%b9%88%e8%a6%81%e5%88%86%e5%ba%93%e5%88%86%e8%a1%a8%e6%9c%89%e4%bb%80%e4%b9%88%e6%96%b9%e6%a1%88 aria-label=为什么要分库分表，有什么方案>为什么要分库分表，有什么方案</a></li></ul>
+<a href=#%e4%b8%89%e8%8c%83%e5%bc%8f aria-label=三范式>三范式</a></li>
+<li>
+<a href=#%e4%b8%ba%e4%bb%80%e4%b9%88%e8%a6%81%e5%88%86%e5%ba%93%e5%88%86%e8%a1%a8%e6%9c%89%e4%bb%80%e4%b9%88%e6%96%b9%e6%a1%88 aria-label=为什么要分库分表，有什么方案>为什么要分库分表，有什么方案</a></li>
+<li>
+<a href=#%e4%bb%80%e4%b9%88%e6%98%af%e5%9b%9e%e8%a1%a8 aria-label=什么是回表>什么是回表</a></li>
+<li>
+<a href=#mysql%e8%a6%86%e7%9b%96%e7%b4%a2%e5%bc%95 aria-label=MySQL覆盖索引>MySQL覆盖索引</a></li>
+<li>
+<a href=#%e4%b8%ba%e4%bb%80%e4%b9%88%e9%9d%9e%e4%b8%bb%e9%94%ae%e7%b4%a2%e5%bc%95%e7%bb%93%e6%9e%84%e5%8f%b6%e5%ad%90%e8%8a%82%e7%82%b9%e5%ad%98%e5%82%a8%e7%9a%84%e6%98%af%e4%b8%bb%e9%94%ae%e5%80%bc aria-label=为什么非主键索引结构叶子节点存储的是主键值？>为什么非主键索引结构叶子节点存储的是主键值？</a></li>
+<li>
+<a href=#%e4%b8%ba%e4%bb%80%e4%b9%88mysql%e7%b4%a2%e5%bc%95%e8%a6%81%e7%94%a8b%e6%a0%91%e4%b8%8d%e6%98%afb%e6%a0%91 aria-label=为什么Mysql索引要用B+树不是B树？>为什么Mysql索引要用B+树不是B树？</a></li>
+<li>
+<a href=#%e4%b8%ba%e4%bd%95%e4%b8%8d%e9%87%87%e7%94%a8hash%e5%88%9b%e5%bb%ba%e7%b4%a2%e5%bc%95%e6%96%b9%e5%bc%8f aria-label=为何不采用Hash创建索引方式？>为何不采用Hash创建索引方式？</a></li>
+<li>
+<a href=#%e4%bb%80%e4%b9%88%e6%97%b6%e5%80%99%e9%9c%80%e8%a6%81%e5%bb%ba%e7%ab%8b%e7%b4%a2%e5%bc%95%e4%bb%80%e4%b9%88%e6%97%b6%e5%80%99%e4%b8%8d%e9%9c%80%e8%a6%81%e5%bb%ba%e7%ab%8b%e7%b4%a2%e5%bc%95 aria-label=什么时候需要建立索引，什么时候不需要建立索引>什么时候需要建立索引，什么时候不需要建立索引</a></li>
+<li>
+<a href=#count1countcount%e5%88%97%e5%90%8d aria-label=count(1)，count(*)，count(列名)>count(1)，count(*)，count(列名)</a></li></ul>
 </ul>
 </ul>
 </li>
 <li>
-<a href=#mybatis aria-label=Mybatis>Mybatis</a></li>
+<a href=#mybatis aria-label=Mybatis>Mybatis</a><ul>
+<ul>
+<ul>
+<li>
+<a href=#%e8%ae%b2%e4%b8%80%e8%ae%b2mybatis-%e7%9a%84%e5%b7%a5%e4%bd%9c%e5%8e%9f%e7%90%86 aria-label="讲一讲mybatis 的工作原理">讲一讲mybatis 的工作原理</a></li></ul>
+</ul>
+</ul>
+</li>
 <li>
 <a href=#spring aria-label=Spring>Spring</a><ul>
 <ul>
@@ -226,7 +275,7 @@ Redis 的集合相当于 Java 语言中的 HashSet，它内部的键值对是无
 </ul>
 </li>
 <li>
-<a href=#%e5%be%ae%e6%9c%8d%e5%8a%a1 aria-label=微服务>微服务</a><ul>
+<a href=#%e5%88%86%e5%b8%83%e5%bc%8f aria-label=分布式>分布式</a><ul>
 <ul>
 <ul>
 <li>
@@ -258,6 +307,8 @@ Redis 的集合相当于 Java 语言中的 HashSet，它内部的键值对是无
 <a href=#java%e5%b9%b6%e5%8f%91 aria-label=Java并发>Java并发</a><ul>
 <ul>
 <ul>
+<li>
+<a href=#%e4%bd%a0%e7%9f%a5%e9%81%93unsafe%e7%b1%bb%e5%90%97%e4%b8%ba%e4%bb%80%e4%b9%88%e4%bb%96%e6%98%afunsafe%e7%9a%84%e5%ae%83%e8%83%bd%e5%81%9a%e4%bb%80%e4%b9%88 aria-label=你知道UnSafe类吗，为什么他是“UnSafe”的，它能做什么>你知道UnSafe类吗，为什么他是“UnSafe”的，它能做什么</a></li>
 <li>
 <a href=#%e5%bc%82%e6%ad%a5%e5%90%8c%e6%ad%a5%e9%98%bb%e5%a1%9e%e9%9d%9e%e9%98%bb%e5%a1%9e%e7%ba%bf%e7%a8%8b%e8%bf%9b%e7%a8%8b%e4%bb%96%e4%bb%ac%e7%9a%84%e5%85%b3%e7%b3%bb aria-label=异步、同步；阻塞、非阻塞；线程、进程他们的关系>异步、同步；阻塞、非阻塞；线程、进程他们的关系</a></li>
 <li>
@@ -330,13 +381,15 @@ Redis 的集合相当于 Java 语言中的 HashSet，它内部的键值对是无
 <li>
 <a href=#jvm%e6%98%af%e4%bb%80%e4%b9%88 aria-label=JVM是什么>JVM是什么</a></li>
 <li>
-<a href=#jvm%e5%86%85%e5%ad%98%e6%a8%a1%e5%9e%8b aria-label=JVM内存模型>JVM内存模型</a></li>
+<a href=#java%e5%86%85%e5%ad%98%e6%a8%a1%e5%9e%8b-1 aria-label=Java内存模型>Java内存模型</a></li>
 <li>
 <a href=#java%e7%bc%96%e8%af%91%e5%88%b0%e6%89%a7%e8%a1%8c%e7%9a%84%e8%bf%87%e7%a8%8b aria-label=Java编译到执行的过程>Java编译到执行的过程</a></li>
 <li>
 <a href=#%e5%8f%8c%e4%ba%b2%e5%a7%94%e6%b4%be%e6%9c%ba%e5%88%b6%e6%98%af%e5%b9%b2%e4%bb%80%e4%b9%88%e7%9a%84 aria-label=双亲委派机制是干什么的>双亲委派机制是干什么的</a></li>
 <li>
-<a href=#jvm%e6%98%af%e6%80%8e%e4%b9%88%e8%bf%9b%e8%a1%8c%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e7%9a%84%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e6%9c%ba%e5%88%b6%e6%98%af%e5%a6%82%e4%bd%95%e7%9a%84%e6%80%8e%e4%b9%88%e5%88%a4%e6%96%ad%e6%98%af%e4%b8%8d%e6%98%af%e5%9e%83%e5%9c%be aria-label=JVM是怎么进行垃圾回收的，垃圾回收机制是如何的，怎么判断是不是垃圾>JVM是怎么进行垃圾回收的，垃圾回收机制是如何的，怎么判断是不是垃圾</a></li>
+<a href=#jvm%e5%86%85%e5%ad%98%e7%bb%93%e6%9e%84 aria-label=JVM内存结构>JVM内存结构</a></li>
+<li>
+<a href=#%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6 aria-label=垃圾回收>垃圾回收</a></li>
 <li>
 <a href=#%e5%b9%b3%e6%97%b6%e5%a6%82%e4%bd%95%e8%b0%83%e4%bc%98 aria-label=平时如何调优>平时如何调优</a></li>
 <li>
@@ -381,7 +434,13 @@ Redis 的集合相当于 Java 语言中的 HashSet，它内部的键值对是无
 <li>
 <a href=#%e7%ba%a2%e9%bb%91%e6%a0%91b%e6%a0%91b%e6%a0%91%e4%ba%8c%e5%8f%89%e6%a0%91%e5%ae%8c%e5%85%a8%e5%b9%b3%e8%a1%a1%e4%ba%8c%e5%8f%89%e6%a0%91 aria-label=红黑树、B树、B+树、二叉树、完全平衡二叉树>红黑树、B树、B+树、二叉树、完全平衡二叉树</a></li>
 <li>
-<a href=#%e6%89%8b%e5%86%99%e4%b8%80%e4%b8%aa%e9%93%be%e8%a1%a8%e5%ae%9e%e7%8e%b0%e6%ad%a3%e5%90%91%e8%be%93%e5%87%ba%e5%8f%8d%e5%90%91%e8%be%93%e5%87%ba%e6%89%be%e5%88%b0%e6%9c%80%e4%b8%ad%e9%97%b4%e7%9a%84%e5%85%83%e7%b4%a0 aria-label=手写一个链表，实现正向输出，反向输出，找到最中间的元素>手写一个链表，实现正向输出，反向输出，找到最中间的元素</a></li></ul>
+<a href=#%e6%89%8b%e5%86%99%e4%b8%80%e4%b8%aa%e9%93%be%e8%a1%a8%e5%ae%9e%e7%8e%b0%e6%ad%a3%e5%90%91%e8%be%93%e5%87%ba%e5%8f%8d%e5%90%91%e8%be%93%e5%87%ba%e6%89%be%e5%88%b0%e6%9c%80%e4%b8%ad%e9%97%b4%e7%9a%84%e5%85%83%e7%b4%a0 aria-label=手写一个链表，实现正向输出，反向输出，找到最中间的元素>手写一个链表，实现正向输出，反向输出，找到最中间的元素</a></li>
+<li>
+<a href=#%e4%bb%80%e4%b9%88%e6%98%af%e5%a0%86 aria-label=什么是堆>什么是堆</a></li>
+<li>
+<a href=#%e4%bd%bf%e7%94%a8%e5%a0%86%e7%9a%84%e5%8e%9f%e5%9b%a0 aria-label=使用堆的原因？>使用堆的原因？</a></li>
+<li>
+<a href=#%e7%8e%af%e5%bd%a2%e9%98%9f%e5%88%97 aria-label=环形队列>环形队列</a></li></ul>
 </ul>
 </ul>
 </li>
@@ -390,7 +449,9 @@ Redis 的集合相当于 Java 语言中的 HashSet，它内部的键值对是无
 <ul>
 <ul>
 <li>
-<a href=#%e5%b8%b8%e8%a7%81%e7%9a%848%e4%b8%aa%e6%8e%92%e5%ba%8f%e7%ae%97%e6%b3%95%e4%bd%a0%e8%83%bd%e5%86%99%e5%87%ba%e5%87%a0%e4%b8%aa aria-label=常见的8个排序算法，你能写出几个>常见的8个排序算法，你能写出几个</a></li></ul>
+<a href=#%e5%b8%b8%e8%a7%81%e7%9a%848%e4%b8%aa%e6%8e%92%e5%ba%8f%e7%ae%97%e6%b3%95%e4%bd%a0%e8%83%bd%e5%86%99%e5%87%ba%e5%87%a0%e4%b8%aa aria-label=常见的8个排序算法，你能写出几个>常见的8个排序算法，你能写出几个</a></li>
+<li>
+<a href=#lru aria-label=LRU>LRU</a></li></ul>
 </ul>
 </ul>
 </li>
@@ -449,6 +510,11 @@ Redis 的集合相当于 Java 语言中的 HashSet，它内部的键值对是无
 </li>
 <li>
 <p>BloomFilter</p>
+<p>使用高效的数据结构解决是否存在的问题，可以解决穿透的问题</p>
+</li>
+<li>
+<p>HyperLogLog</p>
+<p>可以用于基数的统计，例如UV统计</p>
 </li>
 </ul>
 <h4 id=redis如何做到限流的>redis如何做到限流的<a hidden class=anchor aria-hidden=true href=#redis如何做到限流的>#</a></h4>
@@ -721,19 +787,96 @@ Redis 的集合相当于 Java 语言中的 HashSet，它内部的键值对是无
 <li>
 <p>为什么快？</p>
 <ul>
-<li>完全基于内存</li>
-<li>数据结构简单，对数据操作也简单，如哈希表、跳表都有很高的性能</li>
-<li>采用单线程，避免了不必要的上下文切换和竞争条件，也不存在多进程或者多线程导致的切换而消耗 CPU</li>
-<li>使用多路I/O复用模型</li>
+<li>
+<p>完全基于内存</p>
+</li>
+<li>
+<p>数据结构简单，对数据操作也简单，如哈希表、跳表都有很高的性能</p>
+</li>
+<li>
+<p>采用单线程，避免了不必要的上下文切换和竞争条件，也不存在多进程或者多线程导致的切换而消耗 CPU</p>
+</li>
+<li>
+<p>使用多路I/O复用模型，非阻塞，即reactor模型</p>
+<p>IO多路复用，即单个线程处理多个socket请求，非阻塞只socket设置为非阻塞，发送请求后不会继续等待，而是可以继续再发信息或者收信息。<strong>epoll监听哪些socket上有事件到达，当 accept、read、write 和 close 文件事件产生时，就会回调 FD 绑定的事件处理器</strong></p>
+</li>
 </ul>
 </li>
 </ul>
-<h4 id=redis的高可用>redis的高可用<a hidden class=anchor aria-hidden=true href=#redis的高可用>#</a></h4>
-<h4 id=redis的持久化>redis的持久化<a hidden class=anchor aria-hidden=true href=#redis的持久化>#</a></h4>
-<p>Redis提供了2中持久化方式AOF，RDB</p>
+<h4 id=redis在主从复制的和故障转移的过程中会导致数据丢失吗><strong>Redis在主从复制的和故障转移的过程中会导致数据丢失吗</strong><a hidden class=anchor aria-hidden=true href=#redis在主从复制的和故障转移的过程中会导致数据丢失吗>#</a></h4>
 <ul>
-<li>AOF</li>
-<li>RDB</li>
+<li>
+<p>异步数据丢失：</p>
+<p>显然是会的，从上面的「主从复制」流程来看，这个过程是异步的（在复制的过程中：主服务器会一直接收请求，然后把修改命令发给从服务器），</p>
+<p>假如主服务器的命令还没发完给从服务器，自己就挂掉了。这时候想要让从服务器顶上主服务器，但从服务器的数据是不全的</p>
+</li>
+<li>
+<p>脑裂</p>
+<p>还有另一种情况就是：有可能哨兵认为主服务器挂了，但真实是主服务器并没有挂( 网络抖动)，而哨兵已经选举了一台从服务器当做是主服务器了，此时「客户端」还没反应过来，还继续写向旧主服务器写数据</p>
+</li>
+</ul>
+<h4 id=redis的高可用和持久化>redis的高可用和持久化<a hidden class=anchor aria-hidden=true href=#redis的高可用和持久化>#</a></h4>
+<p>高可用：</p>
+<ul>
+<li>
+<p>哨兵：</p>
+<p>哨兵」干的事情主要就是：监控（监控主服务器的状态）、选主（主服务器挂了，在从服务器选出一个作为主服务器）、通知（故障发送消息给管理员）和配置（作为配置中心，提供当前主服务器的信息），可以把「哨兵」当做是运行在「特殊」模式下的Redis服务器，为了「高可用」，哨兵也是集群架构的。</p>
+<ul>
+<li>哨兵可以理解为特殊的Redis服务器，一般会组成哨兵集群</li>
+<li>哨兵主要工作是监控、告警、配置以及选主</li>
+<li>当主服务器发生故障时，会「选出」一台从服务器来顶上「客观下线」的服务器，由「领头哨兵」进行切换</li>
+</ul>
+</li>
+<li>
+<p>主从备份：和mysql类似，主节点只处理写的请求，而从节点处理读的请求，他们之间是通过psync同步</p>
+<blockquote>
+<p>你启动一台slave 的时候，他会发送一个<strong>psync</strong>命令给master ，如果是这个slave第一次连接到master，他会触发一个全量复制。master就会启动一个线程，生成<strong>RDB</strong>快照，还会把新的写请求都缓存在内存中，<strong>RDB</strong>文件生成后，master会将这个<strong>RDB</strong>发送给slave的，slave拿到之后做的第一件事情就是写进本地的磁盘，然后加载进内存，然后master会把内存里面缓存的那些新命名都发给slave。</p>
+</blockquote>
+<ul>
+<li>PSYNC命令两种模式：完全重同步、部分重同步</li>
+<li>完全重同步：主从服务器建立连接、主服务器生成RDB文件发给从服务器、主服务器不阻塞（相关修改命令记录至buffer）、将修改命令发给从服务器</li>
+<li>部分重同步：从服务器断线重连，发送RunId和offset给主服务器，主服务器判断offset和runId，将还未同步给从服务器的offset相关指令进行发送</li>
+</ul>
+</li>
+<li>
+<p>redis cluster：</p>
+<p>分片集群：用于解决主从复制、脑裂的问题。类似es</p>
+</li>
+</ul>
+<p>redis的持久化：</p>
+<p>​ Redis提供了2中持久化方式AOF，RDB</p>
+<blockquote>
+<p>根据我们自己配置的时间或者手动去执行BGSAVE或SAVE命令，Redis就会去生成RDB文件，这个RDB文件实际上就是一个经过压缩的二进制文件，Redis可以通过这个文件在启动的时候来还原我们的数据</p>
+<p>而AOF则是把Redis服务器接收到的所有写命令都记录到日志中</p>
+<p>Redis重跑一遍这个记录下的日志文件，就相当于还原了数据</p>
+</blockquote>
+<ul>
+<li>
+<p>RDB：<strong>RDB</strong> 持久化机制，是对 <strong>Redis</strong> 中的数据执行<strong>周期性</strong>的持久化。</p>
+<blockquote>
+<h4 id=优点>优点：<a hidden class=anchor aria-hidden=true href=#优点>#</a></h4>
+<p>他会生成多个数据文件，每个数据文件分别都代表了某一时刻<strong>Redis</strong>里面的数据，这种方式，有没有觉得很适合做<strong>冷备</strong>，完整的数据运维设置定时任务，定时同步到远端的服务器，比如阿里的云服务，这样一旦线上挂了，你想恢复多少分钟之前的数据，就去远端拷贝一份之前的数据就好了。</p>
+<p><strong>RDB</strong>对<strong>Redis</strong>的性能影响非常小，是因为在同步数据的时候他只是<strong>fork</strong>了一个子进程去做持久化的，而且他在数据恢复的时候速度比<strong>AOF</strong>来的快。</p>
+<h4 id=缺点>缺点：<a hidden class=anchor aria-hidden=true href=#缺点>#</a></h4>
+<p><strong>RDB</strong>都是快照文件，都是默认五分钟甚至更久的时间才会生成一次，这意味着你这次同步到下次同步这中间五分钟的数据都很可能全部丢失掉。<strong>AOF</strong>则最多丢一秒的数据，<strong>数据完整性</strong>上高下立判。</p>
+<p>还有就是<strong>RDB</strong>在生成数据快照的时候，如果文件很大，客户端可能会暂停几毫秒甚至几秒，你公司在做秒杀的时候他刚好在这个时候<strong>fork</strong>了一个子进程去生成一个大快照，哦豁，出大问题。</p>
+</blockquote>
+</li>
+<li>
+<p>AOF：<strong>AOF</strong> 机制对每条写入命令作为日志，以 <strong>append-only</strong> 的模式写入一个日志文件中，因为这个模式是只追加的方式，所以没有任何磁盘寻址的开销，所以很快，有点像Mysql中的<strong>binlog</strong>。</p>
+<blockquote>
+<h4 id=优点-1>优点：<a hidden class=anchor aria-hidden=true href=#优点-1>#</a></h4>
+<p>上面提到了，<strong>RDB</strong>五分钟一次生成快照，但是<strong>AOF</strong>是一秒一次去通过一个后台的线程<code>fsync</code>操作，那最多丢这一秒的数据。</p>
+<p><strong>AOF</strong>在对日志文件进行操作的时候是以<code>append-only</code>的方式去写的，他只是追加的方式写数据，自然就少了很多磁盘寻址的开销了，写入性能惊人，文件也不容易破损。</p>
+<h4 id=缺点-1>缺点：<a hidden class=anchor aria-hidden=true href=#缺点-1>#</a></h4>
+<p>一样的数据，<strong>AOF</strong>文件比<strong>RDB</strong>还要大。</p>
+<p><strong>AOF</strong>开启后，<strong>Redis</strong>支持写的<strong>QPS</strong>会比<strong>RDB</strong>支持写的要低，他不是每秒都要去异步刷新一次日志嘛<strong>fsync</strong>，当然即使这样性能还是很高.</p>
+</blockquote>
+</li>
+<li>
+<p>实际上：</p>
+<p>使用RDB先恢复数据，速度快，然后通过AOF进行补全</p>
+</li>
 </ul>
 <h4 id=redis布隆过滤器>redis布隆过滤器<a hidden class=anchor aria-hidden=true href=#redis布隆过滤器>#</a></h4>
 <p>布隆过滤器可以使用高效的数据结构，存放大量的数据。布隆过滤器说存在，则不一定存在，但是布隆过滤器说不存在，则一定不存在。常用于缓存穿透的问题。</p>
@@ -760,7 +903,22 @@ Redis 的集合相当于 Java 语言中的 HashSet，它内部的键值对是无
 <li>redis 4.0后可以加入module BloomFilter</li>
 </ul>
 <h4 id=redis分布式锁>redis分布式锁<a hidden class=anchor aria-hidden=true href=#redis分布式锁>#</a></h4>
+<p>SETNX + EXPIRE</p>
 <h4 id=redis为什么选用跳表>redis为什么选用跳表<a hidden class=anchor aria-hidden=true href=#redis为什么选用跳表>#</a></h4>
+<ul>
+<li>
+<p>跳表是一种进阶型的链表，具有二分查找的功能<a href=https://juejin.cn/post/6844903847521976327>参考</a></p>
+<blockquote>
+<p>Redis只在两个地方用到了跳跃表，一个是实现有序集合键(zset)，另一个是在集群节点中用作内部数据结构，除此之外，跳表在Redis里面没有其他用途。</p>
+<p>但是为什么用跳表而不用红黑树呢？猜想如下：
+1）在做范围查找的时候，平衡树比skiplist操作要复杂。在平衡树上，我们找到指定范围的小值之后，还需要以中序遍历的顺序继续寻找其它不超过大值的节点。如果不对平衡树进行一定的改造，这里的中序遍历并不容易实现。而在skiplist上进行范围查找就非常简单，只需要在找到小值之后，对第1层链表进行若干步的遍历就可以实现。
+2）平衡树的插入和删除操作可能引发子树的调整，逻辑复杂，而skiplist的插入和删除只需要修改相邻节点的指针，操作简单又快速。
+3）从内存占用上来说，skiplist比平衡树更灵活一些。一般来说，平衡树每个节点包含2个指针（分别指向左右子树），而skiplist每个节点包含的指针数目平均为1/(1-p)，具体取决于参数p的大小。如果像Redis里的实现一样，取p=1/4，那么平均每个节点包含1.33个指针，比平衡树更有优势。
+4）查找单个key，skiplist和平衡树的时间复杂度都为O(log n)，大体相当；而哈希表在保持较低的哈希值冲突概率的前提下，查找时间复杂度接近O(1)，性能更高一些。所以我们平常使用的各种Map或dictionary结构，大都是基于哈希表实现的。
+5）从算法实现难度上来比较，skiplist比平衡树要简单得多。</p>
+</blockquote>
+</li>
+</ul>
 <h4 id=redis防击穿雪崩穿透>redis防击穿、雪崩、穿透<a hidden class=anchor aria-hidden=true href=#redis防击穿雪崩穿透>#</a></h4>
 <ul>
 <li>
@@ -838,6 +996,29 @@ Redis 的集合相当于 Java 语言中的 HashSet，它内部的键值对是无
 <p>其实，如果不是很高的并发，无论你选择先删缓存还是后删缓存的方式，都几乎很少能产生这种问题，但是在高并发下，你应该知道怎么解决问题。</p>
 </li>
 </ul>
+<h4 id=redis的淘汰策略>redis的淘汰策略<a hidden class=anchor aria-hidden=true href=#redis的淘汰策略>#</a></h4>
+<p>官网上给到的内存淘汰机制是以下几个：</p>
+<ul>
+<li>
+<p><strong>noeviction</strong>:返回错误当内存限制达到并且客户端尝试执行会让更多内存被使用的命令（大部分的写入指令，但DEL和几个例外）</p>
+</li>
+<li>
+<p><strong>allkeys-lru</strong>: 尝试回收最少使用的键（LRU），使得新添加的数据有空间存放。</p>
+</li>
+<li>
+<p><strong>volatile-lru</strong>: 尝试回收最少使用的键（LRU），但仅限于在过期集合的键,使得新添加的数据有空间存放。</p>
+</li>
+<li>
+<p><strong>allkeys-random</strong>: 回收随机的键使得新添加的数据有空间存放。</p>
+</li>
+<li>
+<p><strong>volatile-random</strong>: 回收随机的键使得新添加的数据有空间存放，但仅限于在过期集合的键。</p>
+</li>
+<li>
+<p><strong>volatile-ttl</strong>: 回收在过期集合的键，并且优先回收存活时间（TTL）较短的键,使得新添加的数据有空间存放。</p>
+<p>如果没有键满足回收的前提条件的话，策略<strong>volatile-lru</strong>, <strong>volatile-random</strong>以及<strong>volatile-ttl</strong>就和noeviction 差不多了。</p>
+</li>
+</ul>
 <h1 id=问题排查>问题排查<a hidden class=anchor aria-hidden=true href=#问题排查>#</a></h1>
 <h4 id=arthas>arthas<a hidden class=anchor aria-hidden=true href=#arthas>#</a></h4>
 <h4 id=jdk自带命令>jdk自带命令<a hidden class=anchor aria-hidden=true href=#jdk自带命令>#</a></h4>
@@ -846,14 +1027,439 @@ Redis 的集合相当于 Java 语言中的 HashSet，它内部的键值对是无
 <h4 id=kafka如何做到消息不丢失的>Kafka如何做到消息不丢失的<a hidden class=anchor aria-hidden=true href=#kafka如何做到消息不丢失的>#</a></h4>
 <h4 id=kafka为什么可以有这么大的吞吐量>Kafka为什么可以有这么大的吞吐量<a hidden class=anchor aria-hidden=true href=#kafka为什么可以有这么大的吞吐量>#</a></h4>
 <h1 id=mysql>MySql<a hidden class=anchor aria-hidden=true href=#mysql>#</a></h1>
-<h4 id=mysql的索引数据结构为什么用b树>mysql的索引数据结构为什么用B+树<a hidden class=anchor aria-hidden=true href=#mysql的索引数据结构为什么用b树>#</a></h4>
+<p>推荐文章</p>
+<ul>
+<li><a href=https://www.cnblogs.com/lianzhilei/p/11250589.html>https://www.cnblogs.com/lianzhilei/p/11250589.html</a></li>
+<li><a href=https://mp.weixin.qq.com/s/BFuA-59Fpue2r6dt8YBbrQ>https://mp.weixin.qq.com/s/BFuA-59Fpue2r6dt8YBbrQ</a></li>
+</ul>
+<h4 id=一条语句的执行过程>一条语句的执行过程<a hidden class=anchor aria-hidden=true href=#一条语句的执行过程>#</a></h4>
+<ul>
+<li>客户端请求</li>
+<li>连接器（验证用户身份，给予权限）</li>
+<li>查询缓存（存在缓存则直接返回，不存在则执行后续操作）</li>
+<li>分析器（对SQL进行词法分析和语法分析操作）</li>
+<li>优化器（主要对执行的sql优化选择最优的执行方案方法）</li>
+<li>执行器（执行时会先看用户是否有执行权限，有才去使用这个引擎提供的接口）</li>
+<li>去引擎层获取数据返回（如果开启查询缓存则会缓存查询结果）</li>
+</ul>
+<h4 id=常见的存储引擎>常见的存储引擎<a hidden class=anchor aria-hidden=true href=#常见的存储引擎>#</a></h4>
+<p>使用哪一种引擎可以灵活选择，<strong>一个数据库中多个表可以使用不同引擎以满足各种性能和实际需求</strong>，使用合适的存储引擎，将会提高整个数据库的性能 。</p>
+<p>Mysql的Data目录下都会存放每个表的元数据信息，包括表的定义与数据库引擎没有关系，文件为**.frm**结尾，例如user.frm存放的是user表的元数据信息</p>
+<ul>
+<li>InnoDB
+<ul>
+<li><code>.frm</code>文件：与表相关的元数据信息都存放在frm文件，包括表结构的定义信息等</li>
+<li><code>.MYD</code> (<code>MYData</code>) 文件：MyISAM 存储引擎专用，用于存储MyISAM 表的数据</li>
+<li><code>.MYI</code> (<code>MYIndex</code>)文件：MyISAM 存储引擎专用，用于存储MyISAM 表的索引相关信息</li>
+</ul>
+</li>
+<li>MyISAM
+<ul>
+<li><code>.frm</code> 文件：与表相关的元数据信息都存放在frm文件，包括表结构的定义信息等</li>
+<li><code>.ibd</code> 文件或 <code>.ibdata</code> 文件：这两种文件都是存放 InnoDB 数据的文件，之所以有两种文件形式存放 InnoDB 的数据，是因为 InnoDB 的数据存储方式能够通过配置来决定是使用<strong>共享表空间</strong>存放存储数据，还是用<strong>独享表空间</strong>存放存储数据。</li>
+</ul>
+</li>
+<li>对比
+<ol>
+<li>InnoDB 支持事务，MyISAM 不支持事务。这是 MySQL 将默认存储引擎从 MyISAM 变成 InnoDB 的重要原因之一；</li>
+<li>InnoDB 支持外键，而 MyISAM 不支持。对一个包含外键的 InnoDB 表转为 MYISAM 会失败；</li>
+<li>InnoDB 是聚簇索引，MyISAM 是非聚簇索引。聚簇索引的文件存放在主键索引的叶子节点上，因此 InnoDB 必须要有主键，通过主键索引效率很高。但是辅助索引需要两次查询，先查询到主键，然后再通过主键查询到数据。因此，主键不应该过大，因为主键太大，其他索引也都会很大。而 MyISAM 是非聚集索引，数据文件是分离的，索引保存的是数据文件的指针。主键索引和辅助索引是独立的。</li>
+<li>InnoDB 不保存表的具体行数，执行<code>select count(*) from table</code> 时需要全表扫描。而 MyISAM 用一个变量保存了整个表的行数，执行上述语句时只需要读出该变量即可，速度很快；</li>
+<li>InnoDB 最小的锁粒度是行锁，MyISAM 最小的锁粒度是表锁。一个更新语句会锁住整张表，导致其他查询和更新都会被阻塞，因此并发访问受限。这也是 MySQL 将默认存储引擎从 MyISAM 变成 InnoDB 的重要原因之一；</li>
+</ol>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style=text-align:left>对比项</th>
+<th style=text-align:left>MyISAM</th>
+<th style=text-align:left>InnoDB</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style=text-align:left>主外键</td>
+<td style=text-align:left>不支持</td>
+<td style=text-align:left>支持</td>
+</tr>
+<tr>
+<td style=text-align:left>事务</td>
+<td style=text-align:left>不支持</td>
+<td style=text-align:left>支持</td>
+</tr>
+<tr>
+<td style=text-align:left>行表锁</td>
+<td style=text-align:left>表锁，即使操作一条记录也会锁住整个表，不适合高并发的操作</td>
+<td style=text-align:left>行锁,操作时只锁某一行，不对其它行有影响，适合高并发的操作</td>
+</tr>
+<tr>
+<td style=text-align:left>缓存</td>
+<td style=text-align:left>只缓存索引，不缓存真实数据</td>
+<td style=text-align:left>不仅缓存索引还要缓存真实数据，对内存要求较高，而且内存大小对性能有决定性的影响</td>
+</tr>
+<tr>
+<td style=text-align:left>表空间</td>
+<td style=text-align:left>小</td>
+<td style=text-align:left>大</td>
+</tr>
+<tr>
+<td style=text-align:left>关注点</td>
+<td style=text-align:left>性能</td>
+<td style=text-align:left>事务</td>
+</tr>
+<tr>
+<td style=text-align:left>默认安装</td>
+<td style=text-align:left>是</td>
+<td style=text-align:left>是</td>
+</tr>
+</tbody>
+</table>
+<h4 id=一张表里面有id自增主键当insert了17条记录之后删除了第151617条记录再把mysql重启再insert一条记录这条记录的id是18还是15->一张表，里面有ID自增主键，当insert了17条记录之后，删除了第15,16,17条记录，再把Mysql重启，再insert一条记录，这条记录的ID是18还是15 ？<a hidden class=anchor aria-hidden=true href=#一张表里面有id自增主键当insert了17条记录之后删除了第151617条记录再把mysql重启再insert一条记录这条记录的id是18还是15->#</a></h4>
+<p>如果表的类型是MyISAM，那么是18。因为MyISAM表会把自增主键的最大ID 记录到数据文件中，重启MySQL自增主键的最大ID也不会丢失；</p>
+<p>如果表的类型是InnoDB，那么是15。因为InnoDB 表只是把自增主键的最大ID记录到内存中，所以重启数据库或对表进行OPTION操作，都会导致最大ID丢失。</p>
+<h4 id=自增主键用完了怎么办>自增主键用完了怎么办<a hidden class=anchor aria-hidden=true href=#自增主键用完了怎么办>#</a></h4>
+<p>会报重复主键错误，2亿了，早就开始分库分表了</p>
+<h4 id=mysql的索引数据结构为什么用b树讲一讲mysql索引的数据结构是什么样的>mysql的索引数据结构为什么用B+树，讲一讲mysql索引的数据结构是什么样的<a hidden class=anchor aria-hidden=true href=#mysql的索引数据结构为什么用b树讲一讲mysql索引的数据结构是什么样的>#</a></h4>
+<ul>
+<li>
+<p>索引是帮助mysql更快获得数据的一种数据结构</p>
+</li>
+<li>
+<p>索引分类</p>
+<p><strong>数据结构角度</strong></p>
+<ul>
+<li>B+树索引</li>
+<li>Hash索引</li>
+<li>Full-Text全文索引</li>
+</ul>
+<p><strong>从物理存储角度</strong></p>
+<ul>
+<li>
+<p><code>根据数据与索引的存储关联性，可以分为聚簇索引和非聚簇索引（也叫聚集索引和非聚集索引）。聚簇索引也叫簇类索引，是一种对磁盘上实际数据重新组织以按指定的一个或多个列的值排序。整个简洁的说法，这俩的区别就是索引的存储顺序和数据的存储顺序是否是关系的，有关就是聚簇索引，无关就是非聚簇索引。具体实现方式根据索引的数据结构不同会有所不同。下面以B+树实现的索引为例，举例来说明聚簇索引和非聚簇索引。</code></p>
+</li>
+<li>
+<p>聚集索引（clustered index）,InnoDb 的主键索引就是聚集索引</p>
+</li>
+<li>
+<p>非聚集索引（non-clustered index），也叫辅助索引（secondary index），也叫二级索引</p>
+<p>如果不是主键索引，则就可以称之为非主键索引，又可以称之为辅助索引或者二级索引。主键索引的叶子节点存储了完整的数据行，而非主键索引的叶子节点存储的则是主键索引值，通过非主键索引查询数据时，会先查找到主键索引，然后再到主键索引上去查找对应的数据。</p>
+<blockquote>
+<p>在这里假设我们有张表user，具有三列：ID，age，name，create_time，id是主键，（age，create_time,，name）建立辅助索引。执行如下sql语句：</p>
+<p>select name from user where age>2 order by create_time desc。</p>
+<p>正常的话，查询分两步：</p>
+<p>1.按照辅助索引，查找到记录的主键，</p>
+<p>2.按照主键主键索引里查找记录，返回name。</p>
+<p>但实际上，我们可以看到，辅助索引节点是按照age，create_time，name建立的，索引信息里完全包含我们所要的信息，如果能从辅助索引里返回name信息，则第二步是完全没有必要的，可以极大提升查询速度。</p>
+<p>按照这种思想Innodb里针对使用辅助索引的查询场景做了优化，叫覆盖索引</p>
+</blockquote>
+<p>聚集索引和非聚集索引都是B+树结构</p>
+</li>
+</ul>
+<p><strong>从逻辑角度</strong></p>
+<ul>
+<li>
+<p>主键索引：主键索引是一种特殊的唯一索引，不允许有空值</p>
+<p>MySQL中是根据主键来组织数据的，所以每张表都必须有主键索引，主键索引只能有一个，不能为null同时必须保证唯一性。建表时如果没有指定主键索引，则会自动生成一个隐藏的字段作为主键索引。</p>
+</li>
+<li>
+<p>普通索引或者单列索引：每个索引只包含单个列，一个表可以有多个单列索引</p>
+</li>
+<li>
+<p>多列索引（复合索引、联合索引）：复合索引指多个字段上创建的索引，只有在查询条件中使用了创建索引时的第一个字段，索引才会被使用。使用复合索引时遵循最左前缀集合</p>
+</li>
+<li>
+<p>唯一索引或者非唯一索引</p>
+</li>
+<li>
+<p>空间索引：空间索引是对空间数据类型的字段建立的索引，MYSQL中的空间数据类型有4种，分别是GEOMETRY、POINT、LINESTRING、POLYGON。MYSQL使用SPATIAL关键字进行扩展，使得能够用于创建正规索引类型的语法创建空间索引。创建空间索引的列，必须将其声明为NOT NULL，空间索引只能在存储引擎为MYISAM的表中创建</p>
+</li>
+</ul>
+</li>
+<li>
+<p>B-树和B+树</p>
+<ul>
+<li>
+<p>B-树</p>
+<p>B-树就是平时说的B树，和二叉树的区别在于，可以存在多个子树。从而达到深度低的效果。通常用于操作系统的文件查询，因为一次深度就是一次磁盘的IO。B-树的节点，除了子节点的指针信息，和索引信息(主键)，还存放了数据</p>
+</li>
+<li>
+<p>B+树</p>
+<p>B+Tree 是在 B-Tree 基础上的一种优化，使其更适合实现外存储索引结构，InnoDB 存储引擎就是用 B+Tree 实现其索引结构。</p>
+<p>从上一节中的B-Tree结构图中可以看到每个节点中不仅包含数据的key值，还有data值。而每一个页的存储空间是有限的，如果data数据较大时将会导致每个节点（即一个页）能存储的key的数量很小，当存储的数据量很大时同样会导致B-Tree的深度较大，增大查询时的磁盘I/O次数，进而影响查询效率。在B+Tree中，<strong>所有数据记录节点都是按照键值大小顺序存放在同一层的叶子节点上</strong>，而非叶子节点上只存储key值信息，这样可以大大加大每个节点存储的key值数量，降低B+Tree的高度。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>正因为InnoDB的数据和聚集索引是存放在一起的，所以默认建表的时候推荐创建主键索引，如果没有建立的话，mysql会自动创建一个隐藏的列作为主键并且这个字段长度为6个字节，类型为整型。</strong></p>
 <h4 id=最左匹配原则是什么>最左匹配原则是什么<a hidden class=anchor aria-hidden=true href=#最左匹配原则是什么>#</a></h4>
+<p>B+Tree性质</p>
+<ol>
+<li>通过上面的分析，我们知道IO次数取决于b+数的高度h，假设当前数据表的数据为N，每个磁盘块的数据项的数量是m，则有h=㏒(m+1)N，当数据量N一定的情况下，m越大，h越小；而m = 磁盘块的大小 / 数据项的大小，磁盘块的大小也就是一个数据页的大小，是固定的，如果数据项占的空间越小，数据项的数量越多，树的高度越低。这就是为什么每个数据项，即索引字段要尽量的小，比如int占4字节，要比bigint8字节少一半。这也是为什么b+树要求把真实的数据放到叶子节点而不是内层节点，一旦放到内层节点，磁盘块的数据项会大幅度下降，导致树增高。当数据项等于1时将会退化成线性表。</li>
+<li>当b+树的数据项是复合的数据结构，比如(name,age,sex)的时候，b+数是按照从左到右的顺序来建立搜索树的，比如当(张三,20,F)这样的数据来检索的时候，b+树会优先比较name来确定下一步的所搜方向，如果name相同再依次比较age和sex，最后得到检索的数据；但当(20,F)这样的没有name的数据来的时候，b+树就不知道下一步该查哪个节点，因为建立搜索树的时候name就是第一个比较因子，必须要先根据name来搜索才能知道下一步去哪里查询。比如当(张三,F)这样的数据来检索时，b+树可以用name来指定搜索方向，但下一个字段age的缺失，所以只能把名字等于张三的数据都找到，然后再匹配性别是F的数据了， 这个是非常重要的性质，即<strong>索引的最左匹配特性</strong>。</li>
+</ol>
+<h4 id=explain>Explain<a hidden class=anchor aria-hidden=true href=#explain>#</a></h4>
+<p>Explain + SQL语句即可,如下:</p>
+<pre tabindex=0><code>explain select * from tbl_dept;
+</code></pre><ul>
+<li>1执行结果如下:</li>
+</ul>
+<p>*<a href="https://img-blog.csdn.net/20180521155012377?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3poMTU3MzI2MjE2Nzk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70"><img loading=lazy src="https://img-blog.csdn.net/20180521155012377?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3poMTU3MzI2MjE2Nzk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt=这里写图片描述>
+</a>*</p>
+<p><strong>EXPLAIN结果参数含义</strong></p>
+<p>1.id: id代表执行select子句或操作表的顺序,例如,上述的执行结果代表只有一次执行而且执行顺序是第一(因为只有一个id为1的执行结果),id分别有三种不同的执行结果,分别如下:</p>
+<ul>
+<li>id相同,执行顺序由上至下</li>
+</ul>
+<p><a href=https://img2018.cnblogs.com/blog/885859/201904/885859-20190419152720756-229903142.png><img loading=lazy src=https://img2018.cnblogs.com/blog/885859/201904/885859-20190419152720756-229903142.png alt=img>
+</a></p>
+<ul>
+<li>id不同,如果是子查询,id的序号会递增,id值越大,优先级越高,越先被执行</li>
+</ul>
+<p><a href=https://img2018.cnblogs.com/blog/885859/201904/885859-20190419152812436-124187623.png><img loading=lazy src=https://img2018.cnblogs.com/blog/885859/201904/885859-20190419152812436-124187623.png alt=img>
+</a></p>
+<ul>
+<li>id相同和不同,同时存在,遵从优先级高的优先执行,优先级相同的按照由上至下的顺序执行</li>
+</ul>
+<p><a href=https://img2018.cnblogs.com/blog/885859/201904/885859-20190419152835637-1233280197.png><img loading=lazy src=https://img2018.cnblogs.com/blog/885859/201904/885859-20190419152835637-1233280197.png alt=img>
+</a></p>
+<p><strong>2.select_type</strong>
+　　查询的类型,主要用于区别普通查询,联合查询,子查询等复杂查询</p>
+<ul>
+<li>simple: 简单的select查询,查询中不包含子查询或union查询</li>
+<li>primary: 查询中若包含任何复杂的子部分,最外层查询则被标记为primary</li>
+<li>subquery 在select 或where 列表中包含了子查询</li>
+<li>derived 在from列表中包含的子查询被标记为derived,mysql会递归这些子查询,把结果放在临时表里</li>
+<li>union 做第二个select出现在union之后,则被标记为union,若union包含在from子句的子查询中,外层select将被标记为derived</li>
+<li>union result 从union表获取结果的select</li>
+</ul>
+<p><strong>3.table</strong>
+　　显示一行的数据时关于哪张表的
+<strong>4.type</strong>
+　　查询类型从最好到最差依次是:system>const>eq_ref>ref>range>index>All,一般情况下,得至少保证达到range级别,最好能达到ref</p>
+<ul>
+<li><strong>system</strong>:表只有一行记录,这是const类型的特例,平时不会出现</li>
+<li><strong>const</strong>:表示通过索引一次就找到了,const即常量,它用于比较primary key或unique索引,因为只匹配一行数据,所以效率很快,如将主键置于where条件中,mysql就能将该查询转换为一个常量</li>
+</ul>
+<p><a href=https://img2018.cnblogs.com/blog/885859/201904/885859-20190419153049676-1370075656.png><img loading=lazy src=https://img2018.cnblogs.com/blog/885859/201904/885859-20190419153049676-1370075656.png alt=img>
+</a></p>
+<ul>
+<li><strong>eq_ref</strong>:唯一性索引扫描,对于每个索引键,表中只有一条记录与之匹配,常见于主键或唯一索引扫描</li>
+<li><strong>ref</strong>:非唯一性索引扫描,返回匹配某个单独值的行,它可能会找到多个符合条件的行,所以他应该属于查找和扫描的混合体</li>
+<li><strong>range</strong>:只检索给定范围的行,使用一个索引来选择行,如where语句中出现了between,&lt;,>,in等查询,这种范围扫描索引比全表扫描要好，因为它只需要开始于索引的某一点，而结束于另一点，不用扫描全部索引。</li>
+<li><strong>index</strong>:index类型只遍历索引树,这通常比All快,因为索引文件通常比数据文件小,index是从索引中读取,all从硬盘中读取</li>
+<li><strong>all</strong>:全表扫描,是最差的一种查询类型</li>
+</ul>
+<p><strong>5.possible_keys</strong>
+　　显示可能应用在这张表中的索引,一个或多个,查询到的索引不一定是真正被用到的</p>
+<p><strong>6.key</strong>
+　　实际使用的索引,如果为null,则没有使用索引,因此会出现possible_keys列有可能被用到的索引,但是key列为null,表示实际没用索引。</p>
+<p><strong>7.key_len</strong>
+　　表示索引中使用的字节数,而通过该列计算查询中使用的 索引长度,在不损失精确性的情况下,长度越短越好,key_len显示的值为索引字段的最大可能长度,并非实际使用长度,即,key_len是根据表定义计算而得么不是通过表内检索出的</p>
+<p><strong>8.ref</strong>
+　　显示索引的哪一列被使用了,如果可能的话是一个常数,哪些列或常量被用于查找索引列上的值</p>
+<p><strong>9.rows</strong>
+　　根据表统计信息及索引选用情况,大只估算出找到所需的记录所需要读取的行数</p>
+<p><strong>10.Extra</strong></p>
+<ul>
+<li><strong>Using filesort</strong>:说明mysql会对数据使用一个外部的索引排序,而不是按照表内的索引顺序进行读取,mysql中无法利用索引完成的排序操作称为"文件排序"</li>
+<li><strong>Using temporary</strong> :使用了临时表保存中间结果,mysql在对查询结果排序时使用临时表,常见于order by和分组查询group by</li>
+<li><strong>Using index</strong>:表示相应的select操作中使用了覆盖索引（Covering Index），避免访问了表的数据行，效率不错。如果同时出现using where，表明索引被用来执行索引键值的查找；如果没有同时出现using where，表明索引用来读取数据而非执行查找动作。 其中的覆盖索引含义是所查询的列是和建立的索引字段和个数是一一对应的</li>
+<li><strong>Using where</strong>:表明使用了where过滤</li>
+<li><strong>Using join buffer</strong>:表明使用了连接缓存,如在查询的时候会有多次join,则可能会产生临时表</li>
+<li><strong>impossible where</strong>:表示where子句的值总是false,不能用来获取任何元祖。如下例：</li>
+</ul>
+<pre tabindex=0><code>select * from t1 where id='1' and id='2';
+</code></pre><ul>
+<li>select tables optimized away</li>
+</ul>
+<p>在没有GROUPBY子句的情况下，基于索引优化MIN/MAX操作或者对于MyISAM存储引擎优化COUNT(*)操作，不必等到执行阶段再进行计算，查询执行计划生成的阶段即完成优化。</p>
+<ul>
+<li>distinct：优化distinct操作，在找到第一匹配的元组后即停止找同样值的动作，即一旦MySQL找到了与行相联合匹配的行，就不再搜索了。</li>
+</ul>
+<p><strong>重点：</strong></p>
+<p>　　<strong>type</strong>：访问类型，查看SQL到底是以何种类型访问数据的。</p>
+<p>　　<strong>key</strong>：使用的索引，MySQL用了哪个索引，有时候MySQL用的索引不是最好的，需要force index()。</p>
+<p>　　<strong>rows</strong>：最大扫描的列数。</p>
+<p>　　<strong>extra</strong>：重要的额外信息，特别注意损耗性能的两个情况，using filesort和using temporary。</p>
 <h4 id=说出你如何调优的>说出你如何调优的<a hidden class=anchor aria-hidden=true href=#说出你如何调优的>#</a></h4>
+<p>直接explain</p>
 <h4 id=常见的优化手段>常见的优化手段<a hidden class=anchor aria-hidden=true href=#常见的优化手段>#</a></h4>
+<ul>
+<li>使用覆盖索引解决回表，提高查询效率</li>
+<li>使用explain检查sql语句执行的情况</li>
+<li>where语句时，字段类型一定要一直，否则索引失效</li>
+<li>使用函数索引不走</li>
+<li>OR导致索引是在特定情况下的，并不是所有的OR都是使索引失效，如果OR连接的是同一个字段，那么索引不会失效，反之索引失效。</li>
+<li>模糊匹配，like 中%不能写在前面</li>
+<li>IS NULL走索引，IS NOT NULL走索引</li>
+<li>开启慢日志，查看哪些sql执行太慢</li>
+</ul>
 <h4 id=mvvc>MVVC<a hidden class=anchor aria-hidden=true href=#mvvc>#</a></h4>
+<p>MySQL的大多数事务型存储引擎实现都不是简单的行级锁。基于提升并发性考虑，一般都同时实现了多版本并发控制（MVCC），包括Oracle、PostgreSQL。只是实现机制各不相同。</p>
+<p>可以认为 MVCC 是行级锁的一个变种，但它在很多情况下避免了加锁操作，因此开销更低。虽然实现机制有所不同，但大都实现了非阻塞的读操作，写操作也只是锁定必要的行。</p>
+<p>MVCC 的实现是通过保存数据在某个时间点的快照来实现的。也就是说不管需要执行多长时间，每个事物看到的数据都是一致的。</p>
+<p>典型的MVCC实现方式，分为<strong>乐观（optimistic）并发控制和悲观（pressimistic）并发控制</strong>。下边通过 InnoDB的简化版行为来说明 MVCC 是如何工作的。</p>
+<p>InnoDB 的 MVCC，是通过在每行记录后面保存两个隐藏的列来实现。这两个列，一个保存了行的创建时间，一个保存行的过期时间（删除时间）。当然存储的并不是真实的时间，而是系统版本号（system version number）。每开始一个新的事务，系统版本号都会自动递增。事务开始时刻的系统版本号会作为事务的版本号，用来和查询到的每行记录的版本号进行比较。</p>
+<p><strong>REPEATABLE READ（可重读）隔离级别下MVCC如何工作：</strong></p>
+<ul>
+<li>
+<p>SELECT</p>
+<p>InnoDB会根据以下两个条件检查每行记录：</p>
+<p>只有符合上述两个条件的才会被查询出来</p>
+</li>
+<li>
+<ul>
+<li>InnoDB只查找版本早于当前事务版本的数据行，这样可以确保事务读取的行，要么是在开始事务之前已经存在要么是事务自身插入或者修改过的</li>
+<li>行的删除版本号要么未定义，要么大于当前事务版本号，这样可以确保事务读取到的行在事务开始之前未被删除</li>
+</ul>
+</li>
+<li>
+<p>INSERT：InnoDB为新插入的每一行保存当前系统版本号作为行版本号</p>
+</li>
+<li>
+<p>DELETE：InnoDB为删除的每一行保存当前系统版本号作为行删除标识</p>
+</li>
+<li>
+<p>UPDATE：InnoDB为插入的一行新纪录保存当前系统版本号作为行版本号，同时保存当前系统版本号到原来的行作为删除标识</p>
+</li>
+</ul>
+<p>保存这两个额外系统版本号，使大多数操作都不用加锁。使数据操作简单，性能很好，并且也能保证只会读取到符合要求的行。不足之处是每行记录都需要额外的存储空间，需要做更多的行检查工作和一些额外的维护工作。</p>
+<p>MVCC 只在 COMMITTED READ（读提交）和REPEATABLE READ（可重复读）两种隔离级别下工作。</p>
 <h4 id=事务特性隔离级别怎么解决幻读>事务特性，隔离级别，怎么解决幻读？<a hidden class=anchor aria-hidden=true href=#事务特性隔离级别怎么解决幻读>#</a></h4>
+<p>特性：ACID</p>
+<ul>
+<li>
+<p>原子性</p>
+<p>整个事务要么全部执行，要么全部不执行，不会停在中间。事务在执行过程中发生错误，会被回滚（Rollback）到事务开始前的状态，就像这个事务从来没有执行过一样</p>
+</li>
+<li>
+<p>一致性</p>
+<p>一致性，这个是大家误解最深的，很多博客都喜欢用银行转账的例子来讲一直性，所谓的一致性是基于原子性。</p>
+<p>原子性只保证了一个事物内的所有操作同一性，大家同生死，不会出现你死了，我还活着。但是，原子性并没有保证大家同一时刻一起生，一起死。计算机指令是有先后顺序的，这样就决定了一个事物的提交，会经历一个时间过程，那么如果事物提交进行到了一半，我读取了数据库，会不会读到中间结果？</p>
+<p>为了防止这样的情况，数据库事物的一致性就规定了事物提交前后，永远只可能存在事物提交前的状态和事物提交后的状态，从一个一致性的状态到另一个一致性状态，而不可能出现中间的过程态。也就是说事物的执行结果是量子化状态，而不是线性状态。</p>
+<p>数据库提交事物会有一个过程，如果提交的时候，存在一个时间差，在提交的第一秒，一个删除过程还没完成到了第三秒才完成，会不会第一秒访问的人和第三秒访问的人得到不同的结果？出现不一致，状态的混沌？这就是一致性得保证的只会有前状态和后状态，绝不会出现中间态。</p>
+</li>
+<li>
+<p>隔离性</p>
+<p>一个事务的执行不能其它事务干扰。即一个事务内部的操作及使用的数据对其它并发事务是隔离的，并发执行的各个事务之间不能互相干扰</p>
+</li>
+<li>
+<p>持久性</p>
+<p>在事务完成以后，该事务所对数据库所作的更改便持久的保存在数据库之中，并不会被回滚</p>
+</li>
+</ul>
+<p>隔离级别：</p>
+<ul>
+<li>
+<p>读未提交</p>
+<p>脏读，事务A读取了事务B更新的数据，然后B回滚操作，那么A读取到的数据是脏数据</p>
+</li>
+<li>
+<p>读已提交</p>
+<p>不可重复读，一个事务读2次，2次读的结果不一样，务 A 多次读取同一数据，事务B在事务A多次读取的过程中，对数据作了更新并提交，导致事务A多次读取同一数据时，结果不一致。</p>
+</li>
+<li>
+<p>可重复读</p>
+<p>会造成幻读</p>
+<blockquote>
+<p>幻读是事务非独立执行时发生的一种现象。例如事务T1对一个表中所有的行的某个数据项做了从“1”修改为“2”的操作，这时事务T2又对这个表中插入了一行数据项，而这个数据项的数值还是为“1”并且提交给数据库。而操作事务T1的用户如果再查看刚刚修改的数据，会发现还有一行没有修改，其实这行是从事务T2中添加的，就好像产生幻觉一样，这就是发生了幻读。   幻读和不可重复读都是读取了另一条已经提交的事务（这点就脏读不同），所不同的是不可重复读查询的都是同一个数据项，而幻读针对的是一批数据整体（比如数据的个数）。</p>
+</blockquote>
+</li>
+<li>
+<p><strong>SERIALIZABLE(可串行化)：</strong> 最高的隔离级别，完全服从ACID的隔离级别。所有的事务依次逐个执行，这样事务之间就完全不可能产生干扰，也就是说，<strong>该级别可以防止脏读、不可重复读以及幻读</strong>。</p>
+</li>
+</ul>
+<h4 id=三范式>三范式<a hidden class=anchor aria-hidden=true href=#三范式>#</a></h4>
+<ul>
+<li>第一范式：列不能再拆分了</li>
+<li>第二范式：每一条数据必须能够被区分，主键存在，而且能保证唯一</li>
+<li>第三范式：不要有冗余</li>
+<li>反范式：冗余一些字段，避免查询</li>
+</ul>
 <h4 id=为什么要分库分表有什么方案>为什么要分库分表，有什么方案<a hidden class=anchor aria-hidden=true href=#为什么要分库分表有什么方案>#</a></h4>
+<p>分库</p>
+<ul>
+<li>垂直分库，每个业务有自己单独的库</li>
+</ul>
+<p>分表</p>
+<ul>
+<li>垂直分表：单表分成多表，扩展开来</li>
+<li>水平分表：数据分开来，例如用户表，通过id分为user-10000,user-20000，通过hash，让数据散列到不同的库不同表，不至于单库压力大</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>分布式事务：Seata</li>
+<li>连表查询：尽量避免，实在不行只能分开查询，再汇总</li>
+<li>分页排序等：查完内存分页排序</li>
+<li>分布式ID，唯一主键：雪花算法</li>
+</ul>
+<h4 id=什么是回表>什么是回表<a hidden class=anchor aria-hidden=true href=#什么是回表>#</a></h4>
+<p>指非聚集索引在查找数据的时候，会先查找到聚集索引，再通过聚集索引找到最终的数据。这就是回表</p>
+<h4 id=mysql覆盖索引>MySQL覆盖索引<a hidden class=anchor aria-hidden=true href=#mysql覆盖索引>#</a></h4>
+<p><strong>覆盖索引</strong>（Covering Index）,或者叫索引覆盖， 也就是平时所说的不需要回表操作</p>
+<ul>
+<li>
+<p>就是select的数据列只用从索引中就能够取得，不必读取数据行，MySQL可以利用索引返回select列表中的字段，而不必根据索引再次读取数据文件，换句话说<strong>查询列要被所建的索引覆盖</strong>。</p>
+</li>
+<li>
+<p>索引是高效找到行的一个方法，但是一般数据库也能使用索引找到一个列的数据，因此它不必读取整个行。毕竟索引叶子节点存储了它们索引的数据，当能通过读取索引就可以得到想要的数据，那就不需要读取行了。一个索引包含（覆盖）满足查询结果的数据就叫做覆盖索引。</p>
+</li>
+<li>
+<p><strong>判断标准</strong></p>
+<p>使用explain，可以通过输出的extra列来判断，对于一个索引覆盖查询，显示为<strong>using index</strong>，MySQL查询优化器在执行查询前会决定是否有索引覆盖查询</p>
+</li>
+</ul>
+<h4 id=为什么非主键索引结构叶子节点存储的是主键值>为什么非主键索引结构叶子节点存储的是主键值？<a hidden class=anchor aria-hidden=true href=#为什么非主键索引结构叶子节点存储的是主键值>#</a></h4>
+<blockquote>
+<p>保证数据一致性和节省存储空间，可以这么理解：商城系统订单表会存储一个用户ID作为关联外键，而不推荐存储完整的用户信息，因为当我们用户表中的信息（真实名称、手机号、收货地址···）修改后，不需要再次维护订单表的用户数据，同时也节省了存储空间</p>
+</blockquote>
+<h4 id=为什么mysql索引要用b树不是b树>为什么Mysql索引要用B+树不是B树？<a hidden class=anchor aria-hidden=true href=#为什么mysql索引要用b树不是b树>#</a></h4>
+<blockquote>
+<p>用B+树不用B树考虑的是IO对性能的影响，B树的每个节点都存储数据，而B+树只有叶子节点才存储数据，所以查找相同数据量的情况下，B树的高度更高，IO更频繁。数据库索引是存储在磁盘上的，当数据量大时，就不能把整个索引全部加载到内存了，只能逐一加载每一个磁盘页（对应索引树的节点）。其中在MySQL底层对B+树进行进一步优化：在叶子节点中是双向链表，且在链表的头结点和尾节点也是循环指向的。</p>
+</blockquote>
+<h4 id=为何不采用hash创建索引方式>为何不采用Hash创建索引方式？<a hidden class=anchor aria-hidden=true href=#为何不采用hash创建索引方式>#</a></h4>
+<blockquote>
+<p>因为Hash索引底层是哈希表，哈希表是一种以key-value存储数据的结构，所以多个数据在存储关系上是完全没有任何顺序关系的，所以，对于区间查询是无法直接通过索引查询的，就需要全表扫描。所以，哈希索引只适用于等值查询的场景。而B+ Tree是一种多路平衡查询树，所以他的节点是天然有序的（左子节点小于父节点、父节点小于右子节点），所以对于范围查询的时候不需要做全表扫描。</p>
+<p>哈希索引不支持多列联合索引的最左匹配规则，如果有大量重复键值得情况下，哈希索引的效率会很低，因为存在哈希碰撞问题。</p>
+</blockquote>
+<h4 id=什么时候需要建立索引什么时候不需要建立索引>什么时候需要建立索引，什么时候不需要建立索引<a hidden class=anchor aria-hidden=true href=#什么时候需要建立索引什么时候不需要建立索引>#</a></h4>
+<blockquote>
+<p>创建索引</p>
+<ol>
+<li>主键自动建立唯一索引</li>
+<li>频繁作为查询条件的字段</li>
+<li>查询中与其他表关联的字段，外键关系建立索引</li>
+<li>单键/组合索引的选择问题，高并发下倾向创建组合索引</li>
+<li>查询中排序的字段，排序字段通过索引访问大幅提高排序速度</li>
+<li>查询中统计或分组字段</li>
+</ol>
+<p>不建立索引</p>
+<ol>
+<li>表记录太少</li>
+<li>经常增删改的表</li>
+<li>数据重复且分布均匀的表字段，只应该为最经常查询和最经常排序的数据列建立索引（如果某个数据类包含太多的重复数据，建立索引没有太大意义）</li>
+<li>频繁更新的字段不适合创建索引（会加重IO负担）</li>
+<li>where条件里用不到的字段不创建索引</li>
+</ol>
+</blockquote>
+<h4 id=count1countcount列名>count(1)，count(*)，count(列名)<a hidden class=anchor aria-hidden=true href=#count1countcount列名>#</a></h4>
+<ul>
+<li>count(*)包括了所有的列，相当于行数，在统计结果的时候，不会忽略列值为NULL</li>
+<li>count(1)包括了所有列，用1代表代码行，在统计结果的时候，不会忽略列值为NULL</li>
+<li>count(列名)只包括列名那一列，在统计结果的时候，会忽略列值为空（这里的空不是只空字符串或者0，而是表示null）的计数，即某个字段值为NULL时，不统计。</li>
+<li>执行效率上：
+<ul>
+<li>列名为主键，count(列名)会比count(1)快</li>
+<li>列名不为主键，count(1)会比count(列名)快</li>
+<li>如果表多个列并且没有主键，则 count(1) 的执行效率优于 count(*)</li>
+<li>如果有主键，则 select count（主键）的执行效率是最优的</li>
+<li>如果表只有一个字段，则 select count(*) 最优。</li>
+</ul>
+</li>
+</ul>
 <h1 id=mybatis>Mybatis<a hidden class=anchor aria-hidden=true href=#mybatis>#</a></h1>
+<h4 id=讲一讲mybatis-的工作原理>讲一讲mybatis 的工作原理<a hidden class=anchor aria-hidden=true href=#讲一讲mybatis-的工作原理>#</a></h4>
 <h1 id=spring>Spring<a hidden class=anchor aria-hidden=true href=#spring>#</a></h1>
 <h4 id=spring的bean注入过程讲一下>Spring的Bean注入过程讲一下<a hidden class=anchor aria-hidden=true href=#spring的bean注入过程讲一下>#</a></h4>
 <h4 id=spring中常见的设计模式说一说>Spring中常见的设计模式说一说<a hidden class=anchor aria-hidden=true href=#spring中常见的设计模式说一说>#</a></h4>
@@ -862,14 +1468,91 @@ Redis 的集合相当于 Java 语言中的 HashSet，它内部的键值对是无
 <h4 id=springboot的启动原理>SpringBoot的启动原理<a hidden class=anchor aria-hidden=true href=#springboot的启动原理>#</a></h4>
 <h4 id=springcloud了解多少>SpringCloud了解多少<a hidden class=anchor aria-hidden=true href=#springcloud了解多少>#</a></h4>
 <h4 id=aop怎么实现的>AOP怎么实现的<a hidden class=anchor aria-hidden=true href=#aop怎么实现的>#</a></h4>
-<h1 id=微服务>微服务<a hidden class=anchor aria-hidden=true href=#微服务>#</a></h1>
+<h1 id=分布式>分布式<a hidden class=anchor aria-hidden=true href=#分布式>#</a></h1>
 <h4 id=为什么要用dubbo和springcloud的区别是什么>为什么要用dubbo，和SpringCloud的区别是什么<a hidden class=anchor aria-hidden=true href=#为什么要用dubbo和springcloud的区别是什么>#</a></h4>
 <h4 id=分布式事务分布式锁分布式链路追踪解决方案>分布式事务、分布式锁、分布式链路追踪解决方案<a hidden class=anchor aria-hidden=true href=#分布式事务分布式锁分布式链路追踪解决方案>#</a></h4>
+<ul>
+<li>
+<p>分布式锁</p>
+<ol>
+<li>
+<p><strong>基于 MySQL 中的锁</strong>：MySQL 本身有自带的悲观锁 <code>for update</code> 关键字，也可以自己实现悲观/乐观锁来达到目的；</p>
+</li>
+<li>
+<p><strong>基于 Zookeeper 有序节点</strong>：Zookeeper 允许临时创建有序的子节点，这样客户端获取节点列表时，就能够当前子节点列表中的序号判断是否能够获得锁；</p>
+</li>
+<li>
+<p><strong>基于 Redis 的单线程</strong>：由于 Redis 是单线程，所以命令会以串行的方式执行，并且本身提供了像 <code>SETNX(set if not exists)</code> 这样的指令，本身具有互斥性；</p>
+<ul>
+<li>
+<p>锁超时：如果某服务获取到锁，挂了，那么锁就永远得不到了。因此需要设置超时时间</p>
+<p>但是另一个问题随即而来：<strong>如果在加锁和释放锁之间的逻辑执行得太长，以至于超出了锁的超时限制</strong>，也会出现问题。因为这时候第一个线程持有锁过期了，而临界区的逻辑还没有执行完，与此同时第二个线程就提前拥有了这把锁，导致临界区的代码不能得到严格的串行执行。</p>
+<p>为了避免这个问题，<strong>Redis 分布式锁不要用于较长时间的任务</strong>。如果真的偶尔出现了问题，造成的数据小错乱可能就需要人工的干预。</p>
+<p>有一个稍微安全一点的方案是 <strong>将锁的 <code>value</code> 值设置为一个随机数</strong>，释放锁时先匹配随机数是否一致，然后再删除 key，这是为了 <strong>确保当前线程占有的锁不会被其他线程释放</strong>，除非这个锁是因为过期了而被服务器自动释放的。</p>
+<p>但是匹配 <code>value</code> 和删除 <code>key</code> 在 Redis 中并不是一个原子性的操作，也没有类似保证原子性的指令，所以可能需要使用像 Lua 这样的脚本来处理了，因为 Lua 脚本可以 <strong>保证多个指令的原子性执行</strong>。</p>
+</li>
+<li>
+<p><strong>RedLock</strong>：解决多节点redis时，发生获取锁后，主节点掉线，导致其他服务获取到了锁</p>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
 <h1 id=es>ES<a hidden class=anchor aria-hidden=true href=#es>#</a></h1>
 <h4 id=为什么es能查询的这么快>为什么ES能查询的这么快<a hidden class=anchor aria-hidden=true href=#为什么es能查询的这么快>#</a></h4>
 <h1 id=zookeeper>Zookeeper<a hidden class=anchor aria-hidden=true href=#zookeeper>#</a></h1>
 <h4 id=zookeeper是干什么的你使用过吗用它做过什么事情吗>Zookeeper是干什么的，你使用过吗，用它做过什么事情吗<a hidden class=anchor aria-hidden=true href=#zookeeper是干什么的你使用过吗用它做过什么事情吗>#</a></h4>
 <h1 id=java并发>Java并发<a hidden class=anchor aria-hidden=true href=#java并发>#</a></h1>
+<h4 id=你知道unsafe类吗为什么他是unsafe的它能做什么>你知道UnSafe类吗，为什么他是“UnSafe”的，它能做什么<a hidden class=anchor aria-hidden=true href=#你知道unsafe类吗为什么他是unsafe的它能做什么>#</a></h4>
+<ul>
+<li>
+<p>UnSafe的获取方式</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java>Field f <span style=color:#f92672>=</span> Unsafe<span style=color:#f92672>.</span><span style=color:#a6e22e>class</span><span style=color:#f92672>.</span><span style=color:#a6e22e>getDeclaredField</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;theUnsafe&#34;</span><span style=color:#f92672>);</span>
+        f<span style=color:#f92672>.</span><span style=color:#a6e22e>setAccessible</span><span style=color:#f92672>(</span><span style=color:#66d9ef>true</span><span style=color:#f92672>);</span>
+        Unsafe unsafe <span style=color:#f92672>=</span> <span style=color:#f92672>(</span>Unsafe<span style=color:#f92672>)</span> f<span style=color:#f92672>.</span><span style=color:#a6e22e>get</span><span style=color:#f92672>(</span><span style=color:#66d9ef>null</span><span style=color:#f92672>);</span>
+</code></pre></div></li>
+<li>
+<p>可以做什么</p>
+<ul>
+<li>
+<p>实例化一个类</p>
+<p><code>Unsafe.allocateInstance()</code>只会给对象分配内存，并不会调用构造方法</p>
+</li>
+<li>
+<p>使用Unsafe的putXXX()方法，我们可以修改任意私有字段的值。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>抛出check异常</p>
+<p>我们知道如果代码抛出了checked异常，要不就使用try&mldr;catch捕获它，要不就在方法签名上定义这个异常，但是，通过Unsafe我们可以抛出一个checked异常，同时却不用捕获或在方法签名上定义它。</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#75715e>// 使用正常方式抛出IOException需要定义在方法签名上往外抛
+</span><span style=color:#75715e></span><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>readFile</span><span style=color:#f92672>()</span> <span style=color:#66d9ef>throws</span> IOException <span style=color:#f92672>{</span>
+    <span style=color:#66d9ef>throw</span> <span style=color:#66d9ef>new</span> IOException<span style=color:#f92672>();</span>
+<span style=color:#f92672>}</span>
+<span style=color:#75715e>// 使用Unsafe抛出异常不需要定义在方法签名上往外抛
+</span><span style=color:#75715e></span><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>readFileUnsafe</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+    unsafe<span style=color:#f92672>.</span><span style=color:#a6e22e>throwException</span><span style=color:#f92672>(</span><span style=color:#66d9ef>new</span> IOException<span style=color:#f92672>());</span>
+<span style=color:#f92672>}</span>
+</code></pre></div></li>
+<li>
+<p>使用堆外内存</p>
+<p>如果进程在运行过程中JVM上的内存不足了，会导致频繁的进行GC。理想情况下，我们可以考虑使用堆外内存，这是一块不受JVM管理的内存。</p>
+<p>使用Unsafe的allocateMemory()我们可以直接在堆外分配内存，这可能非常有用，但我们要记住，这个内存不受JVM管理，因此我们要调用freeMemory()方法手动释放它。</p>
+</li>
+<li>
+<p>CompareAndSwap操作</p>
+<p>JUC下面大量使用了CAS操作，它们的底层是调用的Unsafe的CompareAndSwapXXX()方法。这种方式广泛运用于无锁算法，与java中标准的悲观锁机制相比，它可以利用CAS处理器指令提供极大的加速。</p>
+</li>
+<li>
+<p>park/unpark</p>
+<p>JVM在上下文切换的时候使用了Unsafe中的两个非常牛逼的方法park()和unpark()。</p>
+<p>当一个线程正在等待某个操作时，JVM调用Unsafe的park()方法来阻塞此线程。</p>
+<p>当阻塞中的线程需要再次运行时，JVM调用Unsafe的unpark()方法来唤醒此线程。</p>
+<p>我们之前在分析java中的集合时看到了大量的LockSupport.park()/unpark()，它们底层都是调用的Unsafe的这两个方法。</p>
+</li>
+</ul>
 <h4 id=异步同步阻塞非阻塞线程进程他们的关系>异步、同步；阻塞、非阻塞；线程、进程他们的关系<a hidden class=anchor aria-hidden=true href=#异步同步阻塞非阻塞线程进程他们的关系>#</a></h4>
 <ul>
 <li>
@@ -974,12 +1657,29 @@ Redis 的集合相当于 Java 语言中的 HashSet，它内部的键值对是无
 <h4 id=实现线程安全的方法>实现线程安全的方法<a hidden class=anchor aria-hidden=true href=#实现线程安全的方法>#</a></h4>
 <h4 id=公平锁和非公平锁的区别reentrantlock是怎么实现的>公平锁和非公平锁的区别,ReentrantLock是怎么实现的<a hidden class=anchor aria-hidden=true href=#公平锁和非公平锁的区别reentrantlock是怎么实现的>#</a></h4>
 <h4 id=cas是什么怎么解决aba问题>CAS是什么，怎么解决ABA问题<a hidden class=anchor aria-hidden=true href=#cas是什么怎么解决aba问题>#</a></h4>
+<p>CAS是CPU的原子指令器，通过自选的方式，属于乐观锁，与java的悲观锁相比效率更高。</p>
+<p>ABA，只的是多个线程同时在更新的时候，例如A线程要把target变为1，目前是2，A读到了2，然后修改成1后，又修改成2，然后B读到了2。</p>
+<p>解决方式</p>
+<ul>
+<li>
+<p>版本号：</p>
+<p>AtomicStampedReference：维护了一个版本号</p>
+<p>AtomicMarkableReference：维护了一个Boolean，标记是否更改过</p>
+</li>
+</ul>
 <h4 id=concurrenthashmap的分段锁>ConcurrentHashMap的分段锁<a hidden class=anchor aria-hidden=true href=#concurrenthashmap的分段锁>#</a></h4>
 <h4 id=你用过哪些javautilconcurrent下的类>你用过哪些Java.util.concurrent下的类<a hidden class=anchor aria-hidden=true href=#你用过哪些javautilconcurrent下的类>#</a></h4>
 <h4 id=讲一下线程池的几个参数含义>讲一下线程池的几个参数含义<a hidden class=anchor aria-hidden=true href=#讲一下线程池的几个参数含义>#</a></h4>
 <h4 id=synchronized关键字怎么优化的膨胀的流程>synchronized关键字，怎么优化的，膨胀的流程<a hidden class=anchor aria-hidden=true href=#synchronized关键字怎么优化的膨胀的流程>#</a></h4>
 <h4 id=volatile关键字>volatile关键字<a hidden class=anchor aria-hidden=true href=#volatile关键字>#</a></h4>
+<p>我们说过可见性是指当一个线程修改了共享变量的值，其它线程能立即感知到这种变化。而普通变量无法做到立即感知这一点，变量的值在线程之间的传递均需要通过主内存来完成，比如，线程A修改了一个普通变量的值，然后向主内存回写，另外一条线程B只有在线程A的回写完成之后再从主内存中读取变量的值，才能够读取到新变量的值，也就是新变量才能对线程B可见。</p>
+<p><strong>java内存模型规定，volatile变量的每次修改都必须立即回写到主内存中，volatile变量的每次使用都必须从主内存刷新最新的值。</strong></p>
+<ul>
+<li>volatile可以禁止cpu语意重排</li>
+</ul>
 <h4 id=java内存模型>Java内存模型<a hidden class=anchor aria-hidden=true href=#java内存模型>#</a></h4>
+<p>Java内存模型规定了所有的变量都存储在主内存中，这里的主内存跟介绍硬件时所用的名字一样，两者可以类比，但此处仅指虚拟机中内存的一部分。</p>
+<p>除了主内存，每条线程还有自己的工作内存，此处可与CPU的高速缓存进行类比。工作内存中保存着该线程使用到的变量的主内存副本的拷贝，线程对变量的操作都必须在工作内存中进行，包括读取和赋值等，而不能直接读写主内存中的变量，不同的线程之间也无法直接访问对方工作内存中的变量，线程间变量值的传递必须通过主内存来完成。</p>
 <h4 id=threadlocal>ThreadLocal<a hidden class=anchor aria-hidden=true href=#threadlocal>#</a></h4>
 <h1 id=java基础>Java基础<a hidden class=anchor aria-hidden=true href=#java基础>#</a></h1>
 <h4 id=说一说你理解的多态>说一说你理解的多态<a hidden class=anchor aria-hidden=true href=#说一说你理解的多态>#</a></h4>
@@ -993,12 +1693,241 @@ Redis 的集合相当于 Java 语言中的 HashSet，它内部的键值对是无
 <h4 id=讲讲hashmap>讲讲HashMap<a hidden class=anchor aria-hidden=true href=#讲讲hashmap>#</a></h4>
 <h1 id=jvm>JVM<a hidden class=anchor aria-hidden=true href=#jvm>#</a></h1>
 <h4 id=jvm是什么>JVM是什么<a hidden class=anchor aria-hidden=true href=#jvm是什么>#</a></h4>
-<h4 id=jvm内存模型>JVM内存模型<a hidden class=anchor aria-hidden=true href=#jvm内存模型>#</a></h4>
+<p>java虚拟机</p>
+<h4 id=java内存模型-1>Java内存模型<a hidden class=anchor aria-hidden=true href=#java内存模型-1>#</a></h4>
+<p>Java内存模型是跟「并发」相关的，它是为了屏蔽底层细节而提出的规范，希望在上层(Java层面上)在操作内存时在不同的平台上也有相同的效果</p>
 <h4 id=java编译到执行的过程>Java编译到执行的过程<a hidden class=anchor aria-hidden=true href=#java编译到执行的过程>#</a></h4>
+<ul>
+<li>
+<p>编译</p>
+<p>将源码文件编译成JVM可以解释的class文件。</p>
+<p>编译过程会对源代码程序做 「语法分析」「语义分析」「注解处理」等等处理，最后才生成字节码文件。</p>
+<p>比如对泛型的擦除和我们经常用的Lombok就是在编译阶段干的。</p>
+</li>
+<li>
+<p>加载</p>
+<ul>
+<li>
+<p>装载</p>
+<p>【装载时机】为了节省内存的开销，并不会一次性把所有的类都装载至JVM，而是等到「有需要」的时候才进行装载（比如new和反射等等）</p>
+<p>【装载发生】class文件是通过「类加载器」装载到jvm中的，为了防止内存中出现多份同样的字节码，使用了双亲委派机制（它不会自己去尝试加载这个类，而是把请求委托给父加载器去完成，依次向上）</p>
+<p>【装载规则】JDK 中的本地方法类一般由根加载器（Bootstrp loader）装载，JDK 中内部实现的扩展类一般由扩展加载器（ExtClassLoader ）实现装载，而程序中的类文件则由系统加载器（AppClassLoader ）实现装载。</p>
+<p>装载这个阶段它做的事情可以总结为：查找并加载类的二进制数据，在JVM「堆」中创建一个java.lang.Class类的对象，并将类相关的信息存储在JVM「方法区」中，</p>
+<p>通过「装载」这个步骤后，现在已经把class文件装载到JVM中了，并创建出对应的Class对象以及类信息存储至方法区了。</p>
+</li>
+<li>
+<p>连接</p>
+<ul>
+<li>验证：验证类是否符合 Java 规范和 JVM 规范</li>
+<li>准备：为类的静态变量分配内存，初始化为系统的初始值</li>
+<li>解析：将符号引用转为直接引用的过程</li>
+</ul>
+<p>通过「连接」这个步骤后，现在已经对class信息做校验并分配了内存空间和默认值了。</p>
+</li>
+<li>
+<p>初始化</p>
+<p>收集class的静态变量、静态代码块、静态方法至()方法，随后从上往下开始执行。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>解释</p>
+<p>把字节码转换为操作系统识别的指令</p>
+</li>
+<li>
+<p>执行</p>
+<p>操作系统把解释器解析出来的指令码，调用系统的硬件执行最终的程序指令。</p>
+</li>
+</ul>
 <h4 id=双亲委派机制是干什么的>双亲委派机制是干什么的<a hidden class=anchor aria-hidden=true href=#双亲委派机制是干什么的>#</a></h4>
-<h4 id=jvm是怎么进行垃圾回收的垃圾回收机制是如何的怎么判断是不是垃圾>JVM是怎么进行垃圾回收的，垃圾回收机制是如何的，怎么判断是不是垃圾<a hidden class=anchor aria-hidden=true href=#jvm是怎么进行垃圾回收的垃圾回收机制是如何的怎么判断是不是垃圾>#</a></h4>
+<ul>
+<li>
+<p>**前置知识：**JDK中默认类加载器有三个：AppClassLoader、Ext ClassLoader、BootStrap ClassLoader。AppClassLoader的父加载器为Ext ClassLoader、Ext ClassLoader的父加载器为BootStrap ClassLoader。这里的父子关系并不是通过继承实现的，而是组合。</p>
+</li>
+<li>
+<p>**什么是双亲委派机制：**加载器在加载过程中，先把类交由父类加载器进行加载，父类加载器没找到才由自身加载。</p>
+</li>
+<li>
+<p>**双亲委派机制目的：**为了防止内存中存在多份同样的字节码（安全）</p>
+</li>
+<li>
+<p>**类加载规则：**如果一个类由类加载器A加载，那么这个类的依赖类也是由「相同的类加载器」加载。</p>
+</li>
+<li>
+<p>**如何打破双亲委派机制：**自定义ClassLoader，重写loadClass方法（只要不依次往上交给父加载器进行加载，就算是打破双亲委派机制）</p>
+</li>
+<li>
+<p>**打破双亲委派机制案例：**Tomcat</p>
+<ul>
+<li>为了Web应用程序类之间隔离，为每个应用程序创建WebAppClassLoader类加载器</li>
+<li>为了Web应用程序类之间共享，把ShareClassLoader作为WebAppClassLoader的父类加载器，如果WebAppClassLoader加载器找不到，则尝试用ShareClassLoader进行加载</li>
+<li>为了Tomcat本身与Web应用程序类隔离，用CatalinaClassLoader类加载器进行隔离，CatalinaClassLoader加载Tomcat本身的类</li>
+<li>为了Tomcat与Web应用程序类共享，用CommonClassLoader作为CatalinaClassLoader和ShareClassLoader的父类加载器</li>
+<li>ShareClassLoader、CatalinaClassLoader、CommonClassLoader的目录可以在Tomcat的catalina.properties进行配置</li>
+</ul>
+</li>
+<li>
+<p>**线程上下文加载器：**由于类加载的规则，很可能导致父加载器加载时依赖子加载器的类，导致无法加载成功（BootStrap ClassLoader无法加载第三方库的类），所以存在「线程上下文加载器」来进行加载。</p>
+</li>
+</ul>
+<h4 id=jvm内存结构>JVM内存结构<a hidden class=anchor aria-hidden=true href=#jvm内存结构>#</a></h4>
+<p><code>其中：堆和方法区是线程共享的，其他地方是线程隔离的</code></p>
+<ul>
+<li>
+<p>堆：</p>
+<p>嗯，「堆」是线程共享的区域，几乎类的实例和数组分配的内存都来自于它</p>
+<p>堆又可以细分为以下几个区域</p>
+<ul>
+<li>伊甸园区</li>
+<li>生存者区1，生存者区2</li>
+<li>老年区</li>
+</ul>
+</li>
+<li>
+<p>虚拟机栈：每个线程在创建的时候都会创建一个「虚拟机栈」，每次方法调用都会创建一个「栈帧」。每个「栈帧」会包含几块内容：局部变量表、操作数栈、动态连接和返回地址，了解了「虚拟机栈」的组成后，也不难猜出它的作用了：它保存方法了局部变量、部分变量的计算并参与了方法的调用和返回。</p>
+<p><strong>就是保存了方法的局部变量表，方法的调用和返回都在里面</strong></p>
+</li>
+<li>
+<p>本地方法栈：本地方法栈跟虚拟机栈的功能类似，虚拟机栈用于管理 Java 函数的调用，而本地方法栈则用于管理本地方法的调用。这里的「本地方法」指的是「非Java方法」，一般本地方法是使用C语言实现的。<strong>和虚拟机栈保存的东西一样，只不过不是java方法</strong></p>
+</li>
+<li>
+<p>方法区：</p>
+<p>HotSpot虚拟机中，在JDK8中，已经用「元空间」来替代了「永久代」作为「方法区」的实现了。方法区主要是用来存放已被虚拟机加载的「类相关信息」：包括类信息、常量池。</p>
+<ul>
+<li>
+<p>类信息又包括了类的版本、字段、方法、接口和父类等信息</p>
+</li>
+<li>
+<p>常量池又可以分「静态常量池」和「运行时常量池」</p>
+<p>静态常量池主要存储的是「字面量」以及「符号引用」等信息，静态常量池也包括了我们说的「字符串常量池」。</p>
+<p>「运行时常量池」存储的是「类加载」时生成的「直接引用」等信息。</p>
+<blockquote>
+<p>又值得注意的是：从「逻辑分区」的角度而言「常量池」是属于「方法区」的，但自从在「JDK7」以后，就已经把「运行时常量池」和「静态常量池」转移到了「堆」内存中进行存储（对于「物理分区」来说「运行时常量池」和「静态常量池』就属于堆）</p>
+</blockquote>
+<p>元空间和永久代最主要的区别就是：「元空间」存储不在虚拟机中，而是使用本地内存，JVM 不会再出现方法区的内存溢出，以往「永久代」经常因为内存不够用导致跑出OOM异常。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>程序计数器：Java是多线程的语言，我们知道假设线程数大于CPU数，就很有可能有「线程切换」现象，切换意味着「中断」和「恢复」，那自然就需要有一块区域来保存「当前线程的执行信息」，所以，程序计数器就是用于记录各个线程执行的字节码的地址（分支、循环、跳转、异常、线程恢复等都依赖于计数器），<strong>简单点说就是记录线程中代码走到哪了</strong></p>
+</li>
+</ul>
+<h4 id=垃圾回收>垃圾回收<a hidden class=anchor aria-hidden=true href=#垃圾回收>#</a></h4>
+<ul>
+<li>
+<p>如何判断是否是一个垃圾呢</p>
+<ul>
+<li>
+<p>引用计数法：</p>
+<p>引用计数法思路很简单：当对象被引用则+1，但对象引用失败则-1。当计数器为0时，说明对象不再被引用，可以被可回收，</p>
+<p>引用计数法最明显的缺点就是：如果对象存在循环依赖，那就无法定位该对象是否应该被回收（A依赖B，B依赖A）</p>
+</li>
+<li>
+<p>可达性算法</p>
+<p>判断对象与GCROOT之间是否可达，不可达即是垃圾</p>
+<p><strong>GCROOT</strong></p>
+<p>「GC Roots」是一组必须「活跃」的引用。从「GC Root」出发，程序通过直接引用或者间接引用，能够找到可能正在被使用的对象</p>
+<ul>
+<li>
+<p>当前活跃的栈帧指向堆里的对象引用就可以是「GC Roots」</p>
+<blockquote>
+<p>比如我们上次不是聊到JVM内存结构中的虚拟机栈吗，虚拟机栈里不是有栈帧吗，栈帧不是有局部变量吗？局部变量不就存储着引用嘛。</p>
+<p>那如果栈帧位于虚拟机栈的栈顶，是不是就可以说明这个栈帧是活跃的（换言之，是线程正在被调用的）</p>
+<p>既然是线程正在调用的，那栈帧里的指向「堆」的对象引用，是不是一定是「活跃」的引用？</p>
+<p>所以，当前活跃的栈帧指向堆里的对象引用就可以是「GC Roots」</p>
+</blockquote>
+</li>
+<li>
+<p>比如类的静态变量引用是「GC Roots」，被「Java本地方法」所引用的对象也是「GC Roots」</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>回收过程</p>
+<ul>
+<li>
+<p>标记</p>
+</li>
+<li>
+<p>清除</p>
+<p>直接清除会有「内存碎片」的问题：可能我有10M的空余内存，但程序申请9M内存空间却申请不下来（10M的内存空间是垃圾清除后的，不连续的）</p>
+<p>我把「标记」存活的对象「复制」到另一块空间，复制完了之后，直接把原有的整块空间给干掉！这样就没有内存碎片的问题了</p>
+<p>这种做法缺点又很明显：内存利用率低，得有一块新的区域给我复制(移动)过去</p>
+<p>还有一种「折中」的办法，我未必要有一块「大的完整空间」才能解决内存碎片的问题，我只要能在「当前区域」内进行移动</p>
+<p>把存活的对象移到一边，把垃圾移到一边，那再将垃圾一起删除掉，不就没有内存碎片了嘛</p>
+<p>这种专业的术语就叫做「整理」</p>
+</li>
+</ul>
+</li>
+<li>
+<p>STW：stop the world</p>
+<p>回收垃圾的时候，程序是有短暂的时间不能正常继续运作啊。不然JVM在回收的时候，用户线程还继续分配修改引用，JVM怎么搞</p>
+</li>
+<li>
+<p>年轻代的垃圾收集器使用的都是「标记复制算法」</p>
+<p>所以在「堆内存」划分中，将年轻代划分出Survivor区（Survivor From 和Survivor To），目的就是为了有一块完整的内存空间供垃圾回收器进行拷贝(移动)</p>
+</li>
+<li>
+<p>什么时候会从新生代进入老年代</p>
+<ul>
+<li>如果对象太大了，就会直接进入老年代（对象创建时就很大 || Survivor区没办法存下该对象）</li>
+<li>如果对象太老了，那就会晋升至老年代（每发生一次Minor GC ，存活的对象年龄+1，达到默认值15则晋升老年代 || 动态对象年龄判定 可以进入老年代）</li>
+</ul>
+</li>
+<li>
+<p>当Eden区空间不足时，就会触发Minor GC</p>
+</li>
+</ul>
 <h4 id=平时如何调优>平时如何调优<a hidden class=anchor aria-hidden=true href=#平时如何调优>#</a></h4>
+<p>一般调优JVM我们认为会有几种指标可以参考：『吞吐量』、『停顿时间』和『垃圾回收频率』</p>
+<ul>
+<li>内存区域大小以及相关策略（比如整块堆内存占多少、新生代占多少、老年代占多少、Survivor占多少、晋升老年代的条件等等）</li>
+</ul>
+<p>比如（-Xmx：设置堆的最大值、-Xms：设置堆的初始值、-Xmn：表示年轻代的大小、-XX:SurvivorRatio：伊甸区和幸存区的比例等等）</p>
+<p>（按经验来说：IO密集型的可以稍微把「年轻代」空间加大些，因为大多数对象都是在年轻代就会灭亡。内存计算密集型的可以稍微把「老年代」空间加大些，对象存活时间会更长些）</p>
+<ul>
+<li>
+<p>通过jps命令查看Java进程「基础」信息（进程号、主类）。这个命令很常用的就是用来看当前服务器有多少Java进程在运行，它们的进程号和加载主类是啥</p>
+</li>
+<li>
+<p>jps -l 查看主类，进程</p>
+</li>
+<li>
+<p>jps -v 查看jvm参数</p>
+</li>
+<li>
+<p>通过jstat命令查看Java进程「统计类」相关的信息（类加载、编译相关信息统计，各个内存区域GC概况和统计）。这个命令很常用于看GC的情况</p>
+</li>
+<li>
+<p>gc回收统计 jstat -gc pid</p>
+</li>
+<li>
+<p>堆内存统计 jstat -gccapacity pid</p>
+</li>
+<li>
+<p>jmap -dump:live,format=b,file=/home/tess.dump</p>
+<p>产生一个HeapDump文件</p>
+</li>
+<li>
+<p>XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp/heapdump.hprof</p>
+<p>增加oom的时候，自动导出当前堆的dump</p>
+<p>这个命令很常用于把JVM内存信息dump到文件，然后再用MAT( Memory Analyzer tool 内存解析工具)把文件进行分析</p>
+</li>
+<li>
+<p>通过jinfo命令来查看和调整Java进程的「运行参数」。</p>
+</li>
+<li>
+<p>通过jstack命令来查看JVM「线程信息」。这个命令用常用语排查死锁相关的问题</p>
+</li>
+</ul>
 <h4 id=一个对象到底有多大对象在内存中长什么样子>一个对象到底有多大，“对象在内存中长什么样子”<a hidden class=anchor aria-hidden=true href=#一个对象到底有多大对象在内存中长什么样子>#</a></h4>
+<p>1.对象头中的Mark Word（标记字）主要用来表示对象的线程锁状态，另外还可以用来配合GC、存放该对象的hashCode；</p>
+<p>2.Klass Word是一个指向方法区中Class信息的指针，意味着该对象可随时知道自己是哪个Class的实例；</p>
+<p>3.数组长度也是占用64位（8字节）的空间，这是可选的，只有当本对象是一个数组对象时才会有这个部分；</p>
+<p>4.对象体是用于保存对象属性和值的主体部分，占用内存空间取决于对象的属性数量和类型；</p>
+<p>5.对齐字是为了减少堆内存的碎片空间（不一定准确）。</p>
 <h1 id=网络>网络<a hidden class=anchor aria-hidden=true href=#网络>#</a></h1>
 <h4 id=讲一下tcpip它和http的关系>讲一下TCP/IP，它和HTTP的关系<a hidden class=anchor aria-hidden=true href=#讲一下tcpip它和http的关系>#</a></h4>
 <h4 id=netty干什么的用过吗>Netty干什么的，用过吗<a hidden class=anchor aria-hidden=true href=#netty干什么的用过吗>#</a></h4>
@@ -1145,10 +2074,138 @@ while(1) {
 <h4 id=聊聊设计模式你知道哪些用过哪些为什么要用设计模式>聊聊设计模式，你知道哪些，用过哪些，为什么要用设计模式<a hidden class=anchor aria-hidden=true href=#聊聊设计模式你知道哪些用过哪些为什么要用设计模式>#</a></h4>
 <h1 id=数据结构>数据结构<a hidden class=anchor aria-hidden=true href=#数据结构>#</a></h1>
 <h4 id=你知道哪些数据结构>你知道哪些数据结构<a hidden class=anchor aria-hidden=true href=#你知道哪些数据结构>#</a></h4>
+<ul>
+<li>树</li>
+<li>线性表（数组和链表实现）</li>
+<li>堆</li>
+<li>图</li>
+<li>字典（hashMap）</li>
+</ul>
 <h4 id=红黑树b树b树二叉树完全平衡二叉树>红黑树、B树、B+树、二叉树、完全平衡二叉树<a hidden class=anchor aria-hidden=true href=#红黑树b树b树二叉树完全平衡二叉树>#</a></h4>
+<ul>
+<li>
+<p>树</p>
+<p>一种数据结构，每个元素可以有子树</p>
+</li>
+<li>
+<p>二叉树</p>
+<p>一种“树”数据结构，满足每个元素最多只有2个子树。</p>
+<ul>
+<li>
+<p>遍历方式</p>
+<ul>
+<li>前序遍历：中左右逐渐遍历，可以得到一条搜索路径，用于搜索。</li>
+<li>中序遍历：左中右，可以得到一个有序列表。</li>
+<li>后序遍历：用来计算一颗树算术表达式</li>
+</ul>
+</li>
+<li>
+<p>满二叉树，所有除了叶子结点的节点都有2个节点</p>
+</li>
+<li>
+<p>完全二叉树，叶子结点只会存在于倒数第一和倒数第二层，并且叶子结点都都偏左</p>
+<p>完全二叉树由于他的定义，可以使用数组来存放，而不用链表来存储，可以节省左右两个指针的大小空间。例如根节点是下标i，左节点下标就是2i，右节点下标就是2i+1</p>
+</li>
+<li>
+<p>二叉搜索树(BST)</p>
+<p>根节点的值大于其左子树中任意一个节点的值，小于其右节点中任意一节点的值，这一规则适用于二叉查找树中的每一个节点。</p>
+<p>最好的时间复杂度是O(logn)，最快的情况会退化为链表</p>
+</li>
+<li>
+<p>平衡二叉树(AVL)</p>
+<p>通过平衡的动作左旋和右旋，解决二叉搜索树退化为链表的问题。<strong>完全平衡二叉树是只保证左右子树的深度不会超过1</strong></p>
+</li>
+<li>
+<p>红黑树</p>
+<p>由于完全平衡二叉树要求左右子树深度不能超过1，导致每次插入一个新节点时都会带来平衡的动作。因为1特别苛刻，几乎每次都要平衡。最后平衡所花费的时间代价过高。</p>
+<p>解决，完全平衡二叉树平衡频率过于频繁。</p>
+<p>时间复杂度<em>l<strong>o</strong>g</em>(<em>n</em>)</p>
+<blockquote>
+<p>二叉搜索树：也称二叉查找树，或二叉排序树。定义也比较简单，要么是一颗空树，要么就是具有如下性质的二叉树：
+（1）若任意节点的左子树不空，则左子树上所有结点的值均小于它的根结点的
+值；
+（2）若任意节点的右子树不空，则右子树上所有结点的值均大于它的根结点的
+值；
+（3）任意节点的左、右子树也分别为二叉查找树；
+（4）没有键值相等的节点。</p>
+<p>平衡二叉树：在二叉搜索树的基础上多了两个重要的特点：
+（1）左右两子树的高度差的绝对值不能超过 1；
+（2）左右两子树也是一颗平衡二叉树。</p>
+<p>红黑树：红黑树是在普通二叉树上，对每个节点添加一个颜色属性形成的，需要同时满足一下五条性质：
+（1）节点是红色或者是黑色；
+（2）根节点是黑色；
+（3）每个叶节点（NIL 或空节点）是黑色；
+（4）每个红色节点的两个子节点都是黑色的（也就是说不存在两个连续的红色节
+点）；
+（5）从任一节点到其没个叶节点的所有路径都包含相同数目的黑色节点。</p>
+<p>区别：AVL 树需要保持平衡，但它的旋转太耗时，而红黑树就是一个没有 AVL 树 那样平衡，因此插入、删除效率会高于 AVL 树，而 AVL
+树的查找效率显然高于红黑树。</p>
+</blockquote>
+<ul>
+<li>
+<p>如果插入一个node引起了树的不平衡，AVL和RB-Tree(红黑树)都是最多只需要2次旋转操作，即两者都是O(1)；但是在删除node引起树的不平衡时，最坏情况下，AVL需要维护从被删node到root这条路径上所有node的平衡性，因此需要旋转的量级O(logN)，而RB-Tree最多只需3次(因为不需要严格的平衡，从根到叶子的最长的可能路径不多于最短的可能路径的两倍长)旋转以及修改节点的颜色，只需要O(1)的复杂度。</p>
+</li>
+<li>
+<p>其次，AVL的结构相较RB-Tree来说更为平衡，在插入和删除node更容易引起Tree的unbalance，因此在大量数据需要插入或者删除时，AVL需要rebalance的频率会更高。因此，RB-Tree在需要大量插入和删除node的场景下，效率更高。自然，由于AVL高度平衡，因此AVL的search效率更高。</p>
+</li>
+<li>
+<p>使用场景：IO多路复用epoll的实现采用红黑树组织管理sockfd，以支持快速的增删改查.
+ngnix中,用红黑树管理timer,因为红黑树是有序的,可以很快的得到距离当前最小的定时器.
+java中TreeMap，jdk1.8的hashmap的实现.</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>B树和B+树</p>
+<p>B树也是平时说的“B-”树，又叫平衡多路树。和二叉树不同，二叉树每个节点只会有2个子树。而B树有多个子树。M阶的B树是只最多子树是M个的B树。</p>
+<p>和二叉树一样，也是左小右大。</p>
+<ul>
+<li>B树节点存放数据，并且叶子节点不需要使用链表串联</li>
+</ul>
+</li>
+</ul>
 <h4 id=手写一个链表实现正向输出反向输出找到最中间的元素>手写一个链表，实现正向输出，反向输出，找到最中间的元素<a hidden class=anchor aria-hidden=true href=#手写一个链表实现正向输出反向输出找到最中间的元素>#</a></h4>
+<h4 id=什么是堆>什么是堆<a hidden class=anchor aria-hidden=true href=#什么是堆>#</a></h4>
+<p>堆是一种非线性结构，<strong>可以</strong>把堆看作一个数组，<strong>也可以</strong>被看作一个完全二叉树，通俗来讲堆其实就是<strong>利用完全二叉树的结构来维护的一维数组</strong><code>但堆并不一定是完全二叉树</code></p>
+<p>按照堆的特点可以把堆分为大顶堆和小顶堆
+大顶堆：每个结点的值都大于或等于其左右孩子结点的值
+小顶堆：每个结点的值都小于或等于其左右孩子结点的值</p>
+<h4 id=使用堆的原因>使用堆的原因？<a hidden class=anchor aria-hidden=true href=#使用堆的原因>#</a></h4>
+<p>如果仅仅是需要得到一个有序的序列，使用排序就可以很快完成，并不需要去组织一个新的数据结构。但是如果我们的需求是对于一个随时会有更新的序列，我要随时知道这个序列的最小值或最大值是什么。显然如果是线性结构，每次插入之后，假设原数组是有序的，那使用二分把它放在正确的位置也未尝不可，但是插入的时候从数组中留出空位就需要O(n)的时间复杂度，删除的时候亦然。</p>
+<p><strong>时间复杂度</strong></p>
+<p><strong>插入和删除的时间复杂度是O(logn)</strong></p>
+<p>场景：</p>
+<p>java中的Timer，就是通过堆来找到当前最小的时间戳，进行任务执行的</p>
+<h4 id=环形队列>环形队列<a hidden class=anchor aria-hidden=true href=#环形队列>#</a></h4>
+<ul>
+<li>
+<p>普通队列</p>
+<p>普通队列，数组实现时，出队后，原来的空间就浪费了。</p>
+<p>​ 环形队列，数组实现时，下标用模取运算，例如最大空间为5，模取后只会有0，1，2，3，4下标，组成了循环。</p>
+<ol>
+<li><code>front</code> 变量的含义做一个调整： <code>front</code> 就指向队列的第一个元素, 也就是说 <code>arr[front]</code> 就是队列的第一个元素
+<code>front</code> 的初始值 = 0</li>
+<li><code>rear</code> 变量的含义做一个调整：<code>rear</code> 指向队列的最后一个元素的后一个位置. 因为希望空出一个空间做为约定.
+<code>rear</code> 的初始值 = 0</li>
+<li>当队列满时，条件是 <code>(rear + 1) % maxSize == front</code> 【满】</li>
+<li>对队列为空的条件， <code>rear == front</code> 空</li>
+<li>当我们这样分析， 队列中有效的数据的个数 <code>(rear + maxSize - front) % maxSize</code> // rear = 1 front = 0</li>
+</ol>
+</li>
+<li>
+<p>时间轮</p>
+<p>使用场景，处理大批量的定时任务</p>
+<p>利用环形队列，队列的每个空间里存放的是任务的集合。</p>
+<p>例如以60秒为一个轮，70秒后执行一个任务。只需要一个timer按秒去旋转时间轮，70%60=10，到达第10个槽的时候，执行内部的所有任务即可。</p>
+<p>为了解决10秒和70秒落在同一个槽上，可以在任务身上加一个属性，圈数，例如10秒的任务圈数是0，70秒的任务是1，只有达到槽位置，并且圈数为0的任务才会被执行。</p>
+<p>kafaka的做法是，再做一个分钟轮，先转分钟轮。再转秒的轮。</p>
+</li>
+</ul>
 <h1 id=算法>算法<a hidden class=anchor aria-hidden=true href=#算法>#</a></h1>
 <h4 id=常见的8个排序算法你能写出几个>常见的8个排序算法，你能写出几个<a hidden class=anchor aria-hidden=true href=#常见的8个排序算法你能写出几个>#</a></h4>
+<h4 id=lru>LRU<a hidden class=anchor aria-hidden=true href=#lru>#</a></h4>
 <h1 id=操作系统>操作系统<a hidden class=anchor aria-hidden=true href=#操作系统>#</a></h1>
 <h4 id=零拷贝是什么>零拷贝是什么<a hidden class=anchor aria-hidden=true href=#零拷贝是什么>#</a></h4>
 </div>

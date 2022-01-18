@@ -87,10 +87,12 @@ Zset
 它类似于 Java 中 SortedSet 和 HashMap 的结合体，一方面它是一个 set，保证了内部 value 的唯一性，另一方面它可以为每个 value 赋予一个 score 值，用来代表排序的权重。
 使用场景：
 排行榜，key是用户id，value是访问次数。 限流，key是用户id+接口id，value是时间戳，每次进方法之前，拿当前时间戳-interval，删除小于now-interval的元素，算出加入当前这次请求set中的个数是否大于max，大于则限流。 BloomFilter
-redis如何做到限流的 限流的几个方式
-计数器...</p>
+使用高效的数据结构解决是否存在的问题，可以解决穿透的问题
+HyperLogLog
+可以用于基数的统计，例如UV统计
+redis如何做到限流的 限流的几个方式...</p>
 </section>
-<footer class=entry-footer><span title="2022-01-11 14:43:18 +0800 CST">January 11, 2022</span>&nbsp;·&nbsp;6 min&nbsp;·&nbsp;Hao Sun</footer>
+<footer class=entry-footer><span title="2022-01-11 14:43:18 +0800 CST">January 11, 2022</span>&nbsp;·&nbsp;10 min&nbsp;·&nbsp;Hao Sun</footer>
 <a class=entry-link aria-label="post link to 八股文" href=https://sunhao1256.github.io/posts/%E5%85%AB%E8%82%A1%E6%96%87/></a>
 </article>
 <article class=post-entry>
