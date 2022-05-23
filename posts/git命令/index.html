@@ -7,14 +7,14 @@
 <meta name=keywords content="Git">
 <meta name=description content="Git常用命令 git init # 初始化本地git仓库（创建新仓库） git config --global user.name &#34;xxx&#34; # 配置用户名 git config --global user.email &#34;xxx@xxx.com&#34; # 配置邮件 git config --global color.ui true # git status等命令自动着色 git config --global color.status auto git config --global color.diff auto git config --global color.branch auto git config --global color.interactive auto git config --global --unset http.proxy # remove proxy configuration on git git clone git+ssh://git@192.168.53.168/VT.git # clone远程仓库 git status # 查看当前版本状态（是否修改） git add xyz # 添加xyz文件至index git add .">
 <meta name=author content="Hao Sun">
-<link rel=canonical href=https://sunhao1256.github.io/posts/git%E5%91%BD%E4%BB%A4/>
+<link rel=canonical href=https://luluhome.site:8101/posts/git%E5%91%BD%E4%BB%A4/>
 <link crossorigin=anonymous href=/assets/css/stylesheet.min.c88963fe2d79462000fd0fb1b3737783c32855d340583e4523343f8735c787f0.css integrity="sha256-yIlj/i15RiAA/Q+xs3N3g8MoVdNAWD5FIzQ/hzXHh/A=" rel="preload stylesheet" as=style>
 <script defer crossorigin=anonymous src=/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5+kdJvBz5iKbt6B5PJI=" onload=hljs.initHighlightingOnLoad()></script>
-<link rel=icon href=https://sunhao1256.github.io/%3Clink%20/%20abs%20url%3E>
-<link rel=icon type=image/png sizes=16x16 href=https://sunhao1256.github.io/%3Clink%20/%20abs%20url%3E>
-<link rel=icon type=image/png sizes=32x32 href=https://sunhao1256.github.io/%3Clink%20/%20abs%20url%3E>
-<link rel=apple-touch-icon href=https://sunhao1256.github.io/%3Clink%20/%20abs%20url%3E>
-<link rel=mask-icon href=https://sunhao1256.github.io/%3Clink%20/%20abs%20url%3E>
+<link rel=icon href=https://luluhome.site:8101/%3Clink%20/%20abs%20url%3E>
+<link rel=icon type=image/png sizes=16x16 href=https://luluhome.site:8101/%3Clink%20/%20abs%20url%3E>
+<link rel=icon type=image/png sizes=32x32 href=https://luluhome.site:8101/%3Clink%20/%20abs%20url%3E>
+<link rel=apple-touch-icon href=https://luluhome.site:8101/%3Clink%20/%20abs%20url%3E>
+<link rel=mask-icon href=https://luluhome.site:8101/%3Clink%20/%20abs%20url%3E>
 <meta name=theme-color content="#2e2e33">
 <meta name=msapplication-TileColor content="#2e2e33">
 <meta name=generator content="Hugo 0.89.0">
@@ -24,22 +24,22 @@
 </noscript><meta property="og:title" content="Git命令">
 <meta property="og:description" content="Git常用命令 git init # 初始化本地git仓库（创建新仓库） git config --global user.name &#34;xxx&#34; # 配置用户名 git config --global user.email &#34;xxx@xxx.com&#34; # 配置邮件 git config --global color.ui true # git status等命令自动着色 git config --global color.status auto git config --global color.diff auto git config --global color.branch auto git config --global color.interactive auto git config --global --unset http.proxy # remove proxy configuration on git git clone git+ssh://git@192.168.53.168/VT.git # clone远程仓库 git status # 查看当前版本状态（是否修改） git add xyz # 添加xyz文件至index git add .">
 <meta property="og:type" content="article">
-<meta property="og:url" content="https://sunhao1256.github.io/posts/git%E5%91%BD%E4%BB%A4/"><meta property="og:image" content="https://sunhao1256.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta property="article:section" content="posts">
+<meta property="og:url" content="https://luluhome.site:8101/posts/git%E5%91%BD%E4%BB%A4/"><meta property="og:image" content="https://luluhome.site:8101/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta property="article:section" content="posts">
 <meta property="article:published_time" content="2022-02-21T16:57:01+08:00">
 <meta property="article:modified_time" content="2022-02-21T16:57:01+08:00"><meta property="og:site_name" content="Hao Sun">
 <meta name=twitter:card content="summary_large_image">
-<meta name=twitter:image content="https://sunhao1256.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E">
+<meta name=twitter:image content="https://luluhome.site:8101/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E">
 <meta name=twitter:title content="Git命令">
 <meta name=twitter:description content="Git常用命令 git init # 初始化本地git仓库（创建新仓库） git config --global user.name &#34;xxx&#34; # 配置用户名 git config --global user.email &#34;xxx@xxx.com&#34; # 配置邮件 git config --global color.ui true # git status等命令自动着色 git config --global color.status auto git config --global color.diff auto git config --global color.branch auto git config --global color.interactive auto git config --global --unset http.proxy # remove proxy configuration on git git clone git+ssh://git@192.168.53.168/VT.git # clone远程仓库 git status # 查看当前版本状态（是否修改） git add xyz # 添加xyz文件至index git add .">
-<script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://sunhao1256.github.io/posts/"},{"@type":"ListItem","position":2,"name":"Git命令","item":"https://sunhao1256.github.io/posts/git%E5%91%BD%E4%BB%A4/"}]}</script>
-<script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Git命令","name":"Git命令","description":"Git常用命令 git init # 初始化本地git仓库（创建新仓库） git config --global user.name \u0026quot;xxx\u0026quot; # 配置用户名 git config --global user.email \u0026quot;xxx@xxx.com\u0026quot; # 配置邮件 git config --global color.ui true # git status等命令自动着色 git config --global color.status auto git config --global color.diff auto git config --global color.branch auto git config --global color.interactive auto git config --global --unset http.proxy # remove proxy configuration on git git clone git+ssh://git@192.168.53.168/VT.git # clone远程仓库 git status # 查看当前版本状态（是否修改） git add xyz # 添加xyz文件至index git add .","keywords":["Git"],"articleBody":"Git常用命令 git init # 初始化本地git仓库（创建新仓库） git config --global user.name \"xxx\" # 配置用户名 git config --global user.email \"xxx@xxx.com\" # 配置邮件 git config --global color.ui true # git status等命令自动着色 git config --global color.status auto git config --global color.diff auto git config --global color.branch auto git config --global color.interactive auto git config --global --unset http.proxy # remove proxy configuration on git git clone git+ssh://git@192.168.53.168/VT.git # clone远程仓库 git status # 查看当前版本状态（是否修改） git add xyz # 添加xyz文件至index git add . # 增加当前子目录下所有更改过的文件至index git commit -m 'xxx' # 提交 git commit --amend -m 'xxx' # 合并上一次提交（用于反复修改） git commit -am 'xxx' # 将add和commit合为一步 git rm xxx # 删除index中的文件 git rm -r * # 递归删除 git log # 显示提交日志 git log -1 # 显示1行日志 -n为n行 git log -5 git log --stat # 显示提交日志及相关变动文件 git log -p -m git show dfb02e6e4f2f7b573337763e5c0013802e392818 # 显示某个提交的详细内容 git show dfb02 # 可只用commitid的前几位 git show HEAD # 显示HEAD提交日志 git show HEAD^ # 显示HEAD的父（上一个版本）的提交日志 ^^为上两个版本 ^5为上5个版本 git tag # 显示已存在的tag git tag -a v2.0 -m 'xxx' # 增加v2.0的tag git show v2.0 # 显示v2.0的日志及详细内容 git log v2.0 # 显示v2.0的日志 git diff # 显示所有未添加至index的变更 git diff --cached # 显示所有已添加index但还未commit的变更 git diff HEAD^ # 比较与上一个版本的差异 git diff HEAD -- ./lib # 比较与HEAD版本lib目录的差异 git diff origin/master..master # 比较远程分支master上有本地分支master上没有的 git diff origin/master..master --stat # 只显示差异的文件，不显示具体内容 git remote add origin git+ssh://git@192.168.53.168/VT.git # 增加远程定义（用于push/pull/fetch） git branch # 显示本地分支 git branch --contains 50089 # 显示包含提交50089的分支 git branch -a # 显示所有分支 git branch -r # 显示所有原创分支 git branch --merged # 显示所有已合并到当前分支的分支 git branch --no-merged # 显示所有未合并到当前分支的分支 git branch -m master master_copy # 本地分支改名 git checkout -b master_copy # 从当前分支创建新分支master_copy并检出 git checkout -b master master_copy # 上面的完整版 git checkout features/performance # 检出已存在的features/performance分支 git checkout --track hotfixes/BJVEP933 # 检出远程分支hotfixes/BJVEP933并创建本地跟踪分支 git checkout v2.0 # 检出版本v2.0 git checkout -b devel origin/develop # 从远程分支develop创建新本地分支devel并检出 git checkout -- README # 检出head版本的README文件（可用于修改错误回退） git merge origin/master # 合并远程master分支至当前分支 git cherry-pick ff44785404a8e # 合并提交ff44785404a8e的修改 git push origin master # 将当前分支push到远程master分支 git push origin :hotfixes/BJVEP933 # 删除远程仓库的hotfixes/BJVEP933分支 git push --tags # 把所有tag推送到远程仓库 git fetch # 获取所有远程分支（不更新本地分支，另需merge） git fetch --prune # 获取所有原创分支并清除服务器上已删掉的分支 git pull origin master # 获取远程分支master并merge到当前分支 git mv README README2 # 重命名文件README为README2 git reset --hard HEAD # 将当前版本重置为HEAD（通常用于merge失败回退） git rebase git branch -d hotfixes/BJVEP933 # 删除分支hotfixes/BJVEP933（本分支修改已合并到其他分支） git branch -D hotfixes/BJVEP933 # 强制删除分支hotfixes/BJVEP933 git ls-files # 列出git index包含的文件 git show-branch # 图示当前分支历史 git show-branch --all # 图示所有分支历史 git whatchanged # 显示提交历史对应的文件修改 git revert dfb02e6e4f2f7b573337763e5c0013802e392818 # 撤销提交dfb02e6e4f2f7b573337763e5c0013802e392818 git ls-tree HEAD # 内部命令：显示某个git对象 git rev-parse v2.0 # 内部命令：显示某个ref对于的SHA1 HASH git reflog # 显示所有提交，包括孤立节点 git show HEAD@{5} git show master@{yesterday} # 显示master分支昨天的状态 git log --pretty=format:'%h %s' --graph # 图示提交日志 git show HEAD~3 git show -s --pretty=raw 2be7fcb476 git stash # 暂存当前修改，将所有至为HEAD状态 git stash list # 查看所有暂存 git stash show -p stash@{0} # 参考第一次暂存 git stash apply stash@{0} # 应用第一次暂存 git grep \"delete from\" # 文件中搜索文本“delete from” git grep -e '#define' --and -e SORT_DIRENT git gc git fsck Git多个账户   通过ssh命令生成多个公私钥\nssh-keygen -t rsa -f ~/.ssh/demo.pub   在.ssh下创建config配置\n# github主账号 Host sunhao1256 HostName github.com User git IdentityFile ~/.ssh/sunhao1256_github_rsa # github frank1256账号 Host frank1256 HostName github.com User git IdentityFile ~/.ssh/frank1256_github_rsa # gitee主账号 Host sunhao1256 HostName gitee.com User git IdentityFile ~/.ssh/sunhao1256_gitee_rsa   命令测试\nssh -T user@host ssh -T git@frank1256 Hi frank1256! You've successfully authenticated, but GitHub does not provide shell access.   注意！！使用仓库的时候，需要更换HostName为Host，例如\ngit@github.com:sunhao1256/test-git-pr.git 更换为 git@sunhao1256:sunhao1256/test-git-pr.git 如果不进行更换，默认使用当前缓存中的账号，默认第一个\n  ","wordCount":"523","inLanguage":"en","datePublished":"2022-02-21T16:57:01+08:00","dateModified":"2022-02-21T16:57:01+08:00","author":{"@type":"Person","name":"Hao Sun"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://sunhao1256.github.io/posts/git%E5%91%BD%E4%BB%A4/"},"publisher":{"@type":"Organization","name":"Hao Sun","logo":{"@type":"ImageObject","url":"https://sunhao1256.github.io/%3Clink%20/%20abs%20url%3E"}}}</script>
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://luluhome.site:8101/posts/"},{"@type":"ListItem","position":2,"name":"Git命令","item":"https://luluhome.site:8101/posts/git%E5%91%BD%E4%BB%A4/"}]}</script>
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Git命令","name":"Git命令","description":"Git常用命令 git init # 初始化本地git仓库（创建新仓库） git config --global user.name \u0026quot;xxx\u0026quot; # 配置用户名 git config --global user.email \u0026quot;xxx@xxx.com\u0026quot; # 配置邮件 git config --global color.ui true # git status等命令自动着色 git config --global color.status auto git config --global color.diff auto git config --global color.branch auto git config --global color.interactive auto git config --global --unset http.proxy # remove proxy configuration on git git clone git+ssh://git@192.168.53.168/VT.git # clone远程仓库 git status # 查看当前版本状态（是否修改） git add xyz # 添加xyz文件至index git add .","keywords":["Git"],"articleBody":"Git常用命令 git init # 初始化本地git仓库（创建新仓库） git config --global user.name \"xxx\" # 配置用户名 git config --global user.email \"xxx@xxx.com\" # 配置邮件 git config --global color.ui true # git status等命令自动着色 git config --global color.status auto git config --global color.diff auto git config --global color.branch auto git config --global color.interactive auto git config --global --unset http.proxy # remove proxy configuration on git git clone git+ssh://git@192.168.53.168/VT.git # clone远程仓库 git status # 查看当前版本状态（是否修改） git add xyz # 添加xyz文件至index git add . # 增加当前子目录下所有更改过的文件至index git commit -m 'xxx' # 提交 git commit --amend -m 'xxx' # 合并上一次提交（用于反复修改） git commit -am 'xxx' # 将add和commit合为一步 git rm xxx # 删除index中的文件 git rm -r * # 递归删除 git log # 显示提交日志 git log -1 # 显示1行日志 -n为n行 git log -5 git log --stat # 显示提交日志及相关变动文件 git log -p -m git show dfb02e6e4f2f7b573337763e5c0013802e392818 # 显示某个提交的详细内容 git show dfb02 # 可只用commitid的前几位 git show HEAD # 显示HEAD提交日志 git show HEAD^ # 显示HEAD的父（上一个版本）的提交日志 ^^为上两个版本 ^5为上5个版本 git tag # 显示已存在的tag git tag -a v2.0 -m 'xxx' # 增加v2.0的tag git show v2.0 # 显示v2.0的日志及详细内容 git log v2.0 # 显示v2.0的日志 git diff # 显示所有未添加至index的变更 git diff --cached # 显示所有已添加index但还未commit的变更 git diff HEAD^ # 比较与上一个版本的差异 git diff HEAD -- ./lib # 比较与HEAD版本lib目录的差异 git diff origin/master..master # 比较远程分支master上有本地分支master上没有的 git diff origin/master..master --stat # 只显示差异的文件，不显示具体内容 git remote add origin git+ssh://git@192.168.53.168/VT.git # 增加远程定义（用于push/pull/fetch） git branch # 显示本地分支 git branch --contains 50089 # 显示包含提交50089的分支 git branch -a # 显示所有分支 git branch -r # 显示所有原创分支 git branch --merged # 显示所有已合并到当前分支的分支 git branch --no-merged # 显示所有未合并到当前分支的分支 git branch -m master master_copy # 本地分支改名 git checkout -b master_copy # 从当前分支创建新分支master_copy并检出 git checkout -b master master_copy # 上面的完整版 git checkout features/performance # 检出已存在的features/performance分支 git checkout --track hotfixes/BJVEP933 # 检出远程分支hotfixes/BJVEP933并创建本地跟踪分支 git checkout v2.0 # 检出版本v2.0 git checkout -b devel origin/develop # 从远程分支develop创建新本地分支devel并检出 git checkout -- README # 检出head版本的README文件（可用于修改错误回退） git merge origin/master # 合并远程master分支至当前分支 git cherry-pick ff44785404a8e # 合并提交ff44785404a8e的修改 git push origin master # 将当前分支push到远程master分支 git push origin :hotfixes/BJVEP933 # 删除远程仓库的hotfixes/BJVEP933分支 git push --tags # 把所有tag推送到远程仓库 git fetch # 获取所有远程分支（不更新本地分支，另需merge） git fetch --prune # 获取所有原创分支并清除服务器上已删掉的分支 git pull origin master # 获取远程分支master并merge到当前分支 git mv README README2 # 重命名文件README为README2 git reset --hard HEAD # 将当前版本重置为HEAD（通常用于merge失败回退） git rebase git branch -d hotfixes/BJVEP933 # 删除分支hotfixes/BJVEP933（本分支修改已合并到其他分支） git branch -D hotfixes/BJVEP933 # 强制删除分支hotfixes/BJVEP933 git ls-files # 列出git index包含的文件 git show-branch # 图示当前分支历史 git show-branch --all # 图示所有分支历史 git whatchanged # 显示提交历史对应的文件修改 git revert dfb02e6e4f2f7b573337763e5c0013802e392818 # 撤销提交dfb02e6e4f2f7b573337763e5c0013802e392818 git ls-tree HEAD # 内部命令：显示某个git对象 git rev-parse v2.0 # 内部命令：显示某个ref对于的SHA1 HASH git reflog # 显示所有提交，包括孤立节点 git show HEAD@{5} git show master@{yesterday} # 显示master分支昨天的状态 git log --pretty=format:'%h %s' --graph # 图示提交日志 git show HEAD~3 git show -s --pretty=raw 2be7fcb476 git stash # 暂存当前修改，将所有至为HEAD状态 git stash list # 查看所有暂存 git stash show -p stash@{0} # 参考第一次暂存 git stash apply stash@{0} # 应用第一次暂存 git grep \"delete from\" # 文件中搜索文本“delete from” git grep -e '#define' --and -e SORT_DIRENT git gc git fsck Git多个账户   通过ssh命令生成多个公私钥\nssh-keygen -t rsa -f ~/.ssh/demo.pub   在.ssh下创建config配置\n# github主账号 Host sunhao1256 HostName github.com User git IdentityFile ~/.ssh/sunhao1256_github_rsa # github frank1256账号 Host frank1256 HostName github.com User git IdentityFile ~/.ssh/frank1256_github_rsa # gitee主账号 Host sunhao1256 HostName gitee.com User git IdentityFile ~/.ssh/sunhao1256_gitee_rsa   添加key到ssh中\nssh-add huayun_rsa   命令测试\nssh -T user@host ssh -T git@frank1256 Hi frank1256! You've successfully authenticated, but GitHub does not provide shell access.   错误\n如果出现too many failure times，可能是你配置的ssh 太多了。\n需要添加IdentityFileOnly yes\nIdentitiesOnly yes   注意！！使用仓库的时候，需要更换HostName为Host，例如\ngit@github.com:sunhao1256/test-git-pr.git 更换为 git@sunhao1256:sunhao1256/test-git-pr.git 如果不进行更换，默认使用当前缓存中的账号，默认第一个\n  ","wordCount":"536","inLanguage":"en","datePublished":"2022-02-21T16:57:01+08:00","dateModified":"2022-02-21T16:57:01+08:00","author":{"@type":"Person","name":"Hao Sun"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://luluhome.site:8101/posts/git%E5%91%BD%E4%BB%A4/"},"publisher":{"@type":"Organization","name":"Hao Sun","logo":{"@type":"ImageObject","url":"https://luluhome.site:8101/%3Clink%20/%20abs%20url%3E"}}}</script>
 </head>
 <body id=top>
 <script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add('dark'):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove('dark'):window.matchMedia('(prefers-color-scheme: dark)').matches&&document.body.classList.add('dark')</script>
 <header class=header>
 <nav class=nav>
 <div class=logo>
-<a href=https://sunhao1256.github.io/ accesskey=h title="Hao Sun (Alt + H)">Hao Sun</a>
+<a href=https://luluhome.site:8101/ accesskey=h title="Hao Sun (Alt + H)">Hao Sun</a>
 <span class=logo-switches>
 <button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
 </button>
@@ -47,17 +47,17 @@
 </div>
 <ul id=menu>
 <li>
-<a href=https://sunhao1256.github.io/archives/ title=Archive>
+<a href=https://luluhome.site:8101/archives/ title=Archive>
 <span>Archive</span>
 </a>
 </li>
 <li>
-<a href=https://sunhao1256.github.io/search/ title="Search (Alt + /)" accesskey=/>
+<a href=https://luluhome.site:8101/search/ title="Search (Alt + /)" accesskey=/>
 <span>Search</span>
 </a>
 </li>
 <li>
-<a href=https://sunhao1256.github.io/tags/ title=Tags>
+<a href=https://luluhome.site:8101/tags/ title=Tags>
 <span>Tags</span>
 </a>
 </li>
@@ -67,7 +67,7 @@
 <main class=main>
 <article class=post-single>
 <header class=post-header>
-<div class=breadcrumbs><a href=https://sunhao1256.github.io/>Home</a>&nbsp;»&nbsp;<a href=https://sunhao1256.github.io/posts/>Posts</a></div>
+<div class=breadcrumbs><a href=https://luluhome.site:8101/>Home</a>&nbsp;»&nbsp;<a href=https://luluhome.site:8101/posts/>Posts</a></div>
 <h1 class=post-title>
 Git命令
 </h1>
@@ -200,11 +200,21 @@ Host sunhao1256
      IdentityFile ~/.ssh/sunhao1256_gitee_rsa
 </code></pre></div></li>
 <li>
+<p>添加key到ssh中</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>ssh-add huayun_rsa
+</code></pre></div></li>
+<li>
 <p>命令测试</p>
 <pre tabindex=0><code class=language-shel data-lang=shel>ssh -T user@host
 
 ssh -T git@frank1256
 Hi frank1256! You've successfully authenticated, but GitHub does not provide shell access.
+</code></pre></li>
+<li>
+<p>错误</p>
+<p>如果出现too many failure times，可能是你配置的ssh 太多了。</p>
+<p>需要添加IdentityFileOnly yes</p>
+<pre tabindex=0><code>IdentitiesOnly yes
 </code></pre></li>
 <li>
 <p>注意！！</p>
@@ -218,10 +228,10 @@ git@sunhao1256:sunhao1256/test-git-pr.git
 </div>
 <footer class=post-footer>
 <ul class=post-tags>
-<li><a href=https://sunhao1256.github.io/tags/git/>Git</a></li>
+<li><a href=https://luluhome.site:8101/tags/git/>Git</a></li>
 </ul>
 <nav class=paginav>
-<a class=next href=https://sunhao1256.github.io/posts/%E5%85%AB%E8%82%A1%E6%96%87/>
+<a class=next href=https://luluhome.site:8101/posts/%E5%85%AB%E8%82%A1%E6%96%87/>
 <span class=title>Next Page »</span>
 <br>
 <span>八股文</span>
@@ -231,7 +241,7 @@ git@sunhao1256:sunhao1256/test-git-pr.git
 </article>
 </main>
 <footer class=footer>
-<span>&copy; 2022 <a href=https://sunhao1256.github.io/>Hao Sun</a></span>
+<span>&copy; 2022 <a href=https://luluhome.site:8101/>Hao Sun</a></span>
 <span>
 Powered by
 <a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
