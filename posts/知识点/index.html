@@ -1,0 +1,735 @@
+<!doctype html><html lang=en dir=auto>
+<head><meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no">
+<meta name=robots content="index, follow">
+<title>Hao Sun</title>
+<meta name=keywords content>
+<meta name=description content="Redis redis如何做到限流的 限流的几个方式
+  计数器
+计数器即是计算在单位时间窗口内请求访问的次数是否超过阀值。
+窗口分为：固定窗口、滑动窗口
+ 固定窗口java实现：  private final AtomicInteger cur = new AtomicInteger(0); private Long startTime; public boolean isAllowed(int maxCount, int interval) { //如果没有第一次时间，则当下为第一次时间  if (startTime == null) startTime = System.currentTimeMillis(); //新增一次  cur.addAndGet(1); //如果当前时间减去开始时间，大于间隙了，说明进入新一轮计算  if (System.currentTimeMillis() - interval * 1000L > startTime) { //重置开始时间  startTime = System.currentTimeMillis(); //重置计数  cur.set(1); return true; } //还在时间内  return cur.get() <= maxCount; } 固定窗口解决了在单位时间内流量次数不会超过阀值，但是在临界点会出现问题。">
+<meta name=author content="Hao Sun">
+<link rel=canonical href=https://luluhome.site:8101/posts/%E7%9F%A5%E8%AF%86%E7%82%B9/>
+<link crossorigin=anonymous href=/assets/css/stylesheet.min.c88963fe2d79462000fd0fb1b3737783c32855d340583e4523343f8735c787f0.css integrity="sha256-yIlj/i15RiAA/Q+xs3N3g8MoVdNAWD5FIzQ/hzXHh/A=" rel="preload stylesheet" as=style>
+<script defer crossorigin=anonymous src=/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5+kdJvBz5iKbt6B5PJI=" onload=hljs.initHighlightingOnLoad()></script>
+<link rel=icon href=https://luluhome.site:8101/%3Clink%20/%20abs%20url%3E>
+<link rel=icon type=image/png sizes=16x16 href=https://luluhome.site:8101/%3Clink%20/%20abs%20url%3E>
+<link rel=icon type=image/png sizes=32x32 href=https://luluhome.site:8101/%3Clink%20/%20abs%20url%3E>
+<link rel=apple-touch-icon href=https://luluhome.site:8101/%3Clink%20/%20abs%20url%3E>
+<link rel=mask-icon href=https://luluhome.site:8101/%3Clink%20/%20abs%20url%3E>
+<meta name=theme-color content="#2e2e33">
+<meta name=msapplication-TileColor content="#2e2e33">
+<meta name=generator content="Hugo 0.89.0">
+<noscript>
+<style>#theme-toggle,.top-link{display:none}</style>
+<style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style>
+</noscript><meta property="og:title" content>
+<meta property="og:description" content="Redis redis如何做到限流的 限流的几个方式
+  计数器
+计数器即是计算在单位时间窗口内请求访问的次数是否超过阀值。
+窗口分为：固定窗口、滑动窗口
+ 固定窗口java实现：  private final AtomicInteger cur = new AtomicInteger(0); private Long startTime; public boolean isAllowed(int maxCount, int interval) { //如果没有第一次时间，则当下为第一次时间  if (startTime == null) startTime = System.currentTimeMillis(); //新增一次  cur.addAndGet(1); //如果当前时间减去开始时间，大于间隙了，说明进入新一轮计算  if (System.currentTimeMillis() - interval * 1000L > startTime) { //重置开始时间  startTime = System.currentTimeMillis(); //重置计数  cur.set(1); return true; } //还在时间内  return cur.get() <= maxCount; } 固定窗口解决了在单位时间内流量次数不会超过阀值，但是在临界点会出现问题。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://luluhome.site:8101/posts/%E7%9F%A5%E8%AF%86%E7%82%B9/"><meta property="og:image" content="https://luluhome.site:8101/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta property="article:section" content="posts">
+<meta property="og:site_name" content="Hao Sun">
+<meta name=twitter:card content="summary_large_image">
+<meta name=twitter:image content="https://luluhome.site:8101/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E">
+<meta name=twitter:title content>
+<meta name=twitter:description content="Redis redis如何做到限流的 限流的几个方式
+  计数器
+计数器即是计算在单位时间窗口内请求访问的次数是否超过阀值。
+窗口分为：固定窗口、滑动窗口
+ 固定窗口java实现：  private final AtomicInteger cur = new AtomicInteger(0); private Long startTime; public boolean isAllowed(int maxCount, int interval) { //如果没有第一次时间，则当下为第一次时间  if (startTime == null) startTime = System.currentTimeMillis(); //新增一次  cur.addAndGet(1); //如果当前时间减去开始时间，大于间隙了，说明进入新一轮计算  if (System.currentTimeMillis() - interval * 1000L > startTime) { //重置开始时间  startTime = System.currentTimeMillis(); //重置计数  cur.set(1); return true; } //还在时间内  return cur.get() <= maxCount; } 固定窗口解决了在单位时间内流量次数不会超过阀值，但是在临界点会出现问题。">
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://luluhome.site:8101/posts/"},{"@type":"ListItem","position":2,"name":"","item":"https://luluhome.site:8101/posts/%E7%9F%A5%E8%AF%86%E7%82%B9/"}]}</script>
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"","name":"","description":"Redis redis如何做到限流的 限流的几个方式\n  计数器\n计数器即是计算在单位时间窗口内请求访问的次数是否超过阀值。\n窗口分为：固定窗口、滑动窗口\n 固定窗口java实现：  private final AtomicInteger cur = new AtomicInteger(0); private Long startTime; public boolean isAllowed(int maxCount, int interval) { //如果没有第一次时间，则当下为第一次时间  if (startTime == null) startTime = System.currentTimeMillis(); //新增一次  cur.addAndGet(1); //如果当前时间减去开始时间，大于间隙了，说明进入新一轮计算  if (System.currentTimeMillis() - interval * 1000L \u0026gt; startTime) { //重置开始时间  startTime = System.currentTimeMillis(); //重置计数  cur.set(1); return true; } //还在时间内  return cur.get() \u0026lt;= maxCount; } 固定窗口解决了在单位时间内流量次数不会超过阀值，但是在临界点会出现问题。","keywords":[],"articleBody":"Redis redis如何做到限流的 限流的几个方式\n  计数器\n计数器即是计算在单位时间窗口内请求访问的次数是否超过阀值。\n窗口分为：固定窗口、滑动窗口\n 固定窗口java实现：  private final AtomicInteger cur = new AtomicInteger(0); private Long startTime; public boolean isAllowed(int maxCount, int interval) { //如果没有第一次时间，则当下为第一次时间  if (startTime == null) startTime = System.currentTimeMillis(); //新增一次  cur.addAndGet(1); //如果当前时间减去开始时间，大于间隙了，说明进入新一轮计算  if (System.currentTimeMillis() - interval * 1000L  startTime) { //重置开始时间  startTime = System.currentTimeMillis(); //重置计数  cur.set(1); return true; } //还在时间内  return cur.get()  maxCount; } 固定窗口解决了在单位时间内流量次数不会超过阀值，但是在临界点会出现问题。\n在前一个一秒内，0.8秒到1秒，访问了5次，没有超过阀值，1秒到1.2秒访问了5次，没有超过阀值。0.8秒到1.2秒之间的0.4秒访问了10次，超过了阀值。没有达到目的。这样的问题原因是窗口没有“滑动”。\n  滑动窗口\n滑动窗口是一种算法思想\n 滑动窗口算法（Sliding Window Algorithm）\n  Sliding window algorithm is used to perform required operation on specific window size of given large buffer or array.\n滑动窗口算法是在给定特定窗口大小的数组或字符串上执行要求的操作。\n  This technique shows how a nested for loop in few problems can be converted to single for loop and hence reducing the time complexity.\n该技术可以将一部分问题中的嵌套循环转变为一个单循环，因此它可以减少时间复杂度。\n 简而言之，滑动窗口算法在一个特定大小的字符串或数组上进行操作，而不在整个字符串和数组上操作，这样就降低了问题的复杂度，从而也达到降低了循环的嵌套深度。其实这里就可以看出来滑动窗口主要应用在数组和字符串上。\n常见的算法题，找到A字符串中，包含T个字符的最小覆盖子串\n//找到字符串EBBANCF中包含ABC三个字符的最小子串  //往往类似于“ 请找到满足 xx 的最 x 的区间（子串、子数组）的 xx ”这类问题都可以使用该方法进行解决。  public String noFixed(String str,String target){ String[] s = str.split(\"\"); String[] t = target.split(\"\"); //定义两个指针，在s上滑动  int left=0,right=0; String res=null; List window=new ArrayList(); //一直滑动，直到右指针到头了  while (rights.length){ //移动右指针，一直到包含了所有的目标元素  window.add(s[right]); right++; //如果window满足要求了，就移动左指针  while (window.containsAll(Arrays.asList(t))){ if(res==null){ //第一次得到结果  res=String.join(\"\",window); }else{ //比较当前的长度大小和目前最小的结果  res=(window.size()res.length())?String.join(\"\",window):res; } //移动左指针,直至窗口不满足  window.remove(s[left]); left++; } } return res; } /** * 固定窗口大小为f */ public String fixed(Integer f, String str) { String result = null; int right = 0; //寻找字符串中长度为f的包含最多元音字母的子串  String[] s = str.split(\"\"); List window = new ArrayList(); while (right  s.length) { //滑动右指针  window.add(s[right]); right++; //达到目标窗口的大小  if (right = f) { //检查条件  String cur = String.join(\"\", window); if (result == null) { //满足条件的话  if (countOfVowel(cur)  0) result = cur; } else { int i = countOfVowel(result); int j = countOfVowel(cur); result = i  j ? result : cur; } //移动左指针，因为窗口固定，删除左边right-f个字符  window.remove(s[right-f]); } } return result; } private int countOfVowel(String s) { String[] split = s.split(\"\"); ListString vowels = Arrays.asList(\"A\", \"E\", \"I\", \"O\", \"U\"); int res = 0; for (int i = 0; i  split.length; i++) { if (vowels.contains(split[i].toUpperCase())) { res++; } } return res; } 滑动窗口解决了临界的问题，但是当在窗口内达到了阀值，剩余的请求都会被拒绝，这样处理不好。\n    漏桶\npublic class LeakBucketLimit { /** * 出水率 */ private final long rate=5L;//1秒出水5个请求  /** * 桶的容量 */ private final long capacity=10L; /** * 当前水量 */ private long currentWater; /** * 最后刷新时间 */ private long refreshTime; public boolean tryAcquire(){ /** * 获取当前时间 */ long currentTime = System.currentTimeMillis(); /** * 流出去的水 */ long outWater = (currentTime-refreshTime)/1000*rate; /** * 当前 */ currentWater = Math.max(0,currentWater-outWater); System.out.println(currentWater); refreshTime=currentTime; if(currentWater=capacity){ //不够流了  return false; } //加水  currentWater++; return true; } } 缺陷：不管是什么流量，桶都会按照rate一点一点消费，如果来了爆炸的流量，依然一点一点消费，实际情况中，我们希望能快速消费。而平时就按照rate消费。\n  令牌桶\n令牌桶就是为了解决漏桶的缺点。\n  有一个令牌管理员，根据限流大小，定速往令牌桶里放令牌。 如果令牌数量满了，超过令牌桶容量的限制，那就丢弃。 系统在接受到一个用户请求时，都会先去令牌桶要一个令牌。如果拿到令牌，那么就处理这个请求的业务逻辑； 如果拿不到令牌，就直接拒绝这个请求。   /** * 令牌桶发放速度 */ private final long tokenRate=5L; /** * 桶的容量 */ private final long capacity=10; /** * 上一次刷新的时间 */ private long refreshTime; /** * 当前桶里的令牌 */ private long currentToken; public boolean tryAcquire(){ //当前时间  long currentTime=System.currentTimeMillis(); //更新当前桶里的令牌个数  //当前token个数=原来当前个数+间隙之间生产出来的token个数（可能为0）  currentToken =Math.min (capacity,(currentToken+currentTime - refreshTime) / 1000 * tokenRate); refreshTime=currentTime; if(currentToken0){ //还有令牌  currentToken--; return true; } return false; }   redis是单线程的吗 redis为什么这么块 redis的持久化 redis布隆过滤器 redis分布式锁 redis为什么选用跳表 redis防击穿、雪崩、穿透 redis是先删缓存还是先写库，怎么解决缓存一致性 问题排查 arthas jdk自带命令 Kafka Kafka的推还是拉 Kafka如何做到消息不丢失的 Kafka为什么可以有这么大的吞吐量 MySql mysql的索引数据结构为什么用B+树 最左匹配原则是什么 说出你如何调优的 常见的优化手段 MVVC 事务特性，隔离级别，怎么解决幻读？ 为什么要分库分表，有什么方案 Mybatis Spring Spring的Bean注入过程讲一下 Spring中常见的设计模式说一说 Spring是怎么解决Bean之间的循环依赖问题 SpringMvc的流程 SpringBoot的启动原理 SpringCloud了解多少 AOP怎么实现的 微服务 为什么要用dubbo 分布式事务、分布式锁 ES 为什么ES能查询的这么快 Zookeeper Zookeeper是干什么的 Java并发 你知道哪几种锁 讲一下线程的生命周期 AQS是什么？ wait()、notify()、sleep()、yield()、join()这几个方法的作用 实现线程安全的方法 公平锁和非公平锁的区别,ReentrantLock是怎么实现的 CAS是什么，怎么解决ABA问题 ConcurrentHashMap的分段锁 你用过哪些Java.util.concurrent下的类 讲一下线程池的几个参数含义 synchronized关键字，怎么优化的，膨胀的流程 volatile关键字 Java内存模型 ThreadLocal Java基础 说一说你理解的多态 来个简单的，Java作用域有哪些，为什么要考虑作用域 讲一下泛型和注解 讲一下反射和动态代理 Java的几种引用，你用过几种 说说进程和线程的区别 Java集合 讲一讲集合类，常用的集合，以及在多线程下你是如何保集合安全的 讲讲HashMap JVM JVM是什么 JVM内存模型 Java编译到执行的过程 双亲委派机制是干什么的 JVM是怎么进行垃圾回收的，垃圾回收机制是如何的，怎么判断是不是垃圾 平时如何调优 一个对象到底有多大，“对象在内存中长什么样子” 网络 讲一下TCP/IP 讲一下HTTP Netty干什么的，用过吗 你知道哪些网络模型？ BIO、NIO、AIO都是什么 讲一下Https 什么是多路复用 代码书写 聊聊设计模式，你知道哪些，用过哪些，为什么要用设计模式 数据结构 你知道哪些数据结构 红黑树、B树、B+树、二叉树、完全平衡二叉树 手写一个链表，实现正向输出，反向输出，找到最中间的元素 算法 常见的8个排序算法，你能写出几个 操作系统 零拷贝是什么 ","wordCount":"526","inLanguage":"en","datePublished":"0001-01-01T00:00:00Z","dateModified":"0001-01-01T00:00:00Z","author":{"@type":"Person","name":"Hao Sun"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://luluhome.site:8101/posts/%E7%9F%A5%E8%AF%86%E7%82%B9/"},"publisher":{"@type":"Organization","name":"Hao Sun","logo":{"@type":"ImageObject","url":"https://luluhome.site:8101/%3Clink%20/%20abs%20url%3E"}}}</script>
+</head>
+<body id=top>
+<script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add('dark'):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove('dark'):window.matchMedia('(prefers-color-scheme: dark)').matches&&document.body.classList.add('dark')</script>
+<header class=header>
+<nav class=nav>
+<div class=logo>
+<a href=https://luluhome.site:8101/ accesskey=h title="Hao Sun (Alt + H)">Hao Sun</a>
+<span class=logo-switches>
+<button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+</button>
+</span>
+</div>
+<ul id=menu>
+<li>
+<a href=https://luluhome.site:8101/archives/ title=Archive>
+<span>Archive</span>
+</a>
+</li>
+<li>
+<a href=https://luluhome.site:8101/search/ title="Search (Alt + /)" accesskey=/>
+<span>Search</span>
+</a>
+</li>
+<li>
+<a href=https://luluhome.site:8101/tags/ title=Tags>
+<span>Tags</span>
+</a>
+</li>
+</ul>
+</nav>
+</header>
+<main class=main>
+<article class=post-single>
+<header class=post-header>
+<div class=breadcrumbs><a href=https://luluhome.site:8101/>Home</a>&nbsp;»&nbsp;<a href=https://luluhome.site:8101/posts/>Posts</a></div>
+<h1 class=post-title>
+</h1>
+<div class=post-meta>3 min&nbsp;·&nbsp;Hao Sun
+</div>
+</header> <div class=toc>
+<details>
+<summary accesskey=c title="(Alt + C)">
+<span class=details>Table of Contents</span>
+</summary>
+<div class=inner><ul>
+<li>
+<a href=#redis aria-label=Redis>Redis</a><ul>
+<ul>
+<ul>
+<li>
+<a href=#redis%e5%a6%82%e4%bd%95%e5%81%9a%e5%88%b0%e9%99%90%e6%b5%81%e7%9a%84 aria-label=redis如何做到限流的>redis如何做到限流的</a></li>
+<li>
+<a href=#redis%e6%98%af%e5%8d%95%e7%ba%bf%e7%a8%8b%e7%9a%84%e5%90%97 aria-label=redis是单线程的吗>redis是单线程的吗</a></li>
+<li>
+<a href=#redis%e4%b8%ba%e4%bb%80%e4%b9%88%e8%bf%99%e4%b9%88%e5%9d%97 aria-label=redis为什么这么块>redis为什么这么块</a></li>
+<li>
+<a href=#redis%e7%9a%84%e6%8c%81%e4%b9%85%e5%8c%96 aria-label=redis的持久化>redis的持久化</a></li>
+<li>
+<a href=#redis%e5%b8%83%e9%9a%86%e8%bf%87%e6%bb%a4%e5%99%a8 aria-label=redis布隆过滤器>redis布隆过滤器</a></li>
+<li>
+<a href=#redis%e5%88%86%e5%b8%83%e5%bc%8f%e9%94%81 aria-label=redis分布式锁>redis分布式锁</a></li>
+<li>
+<a href=#redis%e4%b8%ba%e4%bb%80%e4%b9%88%e9%80%89%e7%94%a8%e8%b7%b3%e8%a1%a8 aria-label=redis为什么选用跳表>redis为什么选用跳表</a></li>
+<li>
+<a href=#redis%e9%98%b2%e5%87%bb%e7%a9%bf%e9%9b%aa%e5%b4%a9%e7%a9%bf%e9%80%8f aria-label=redis防击穿、雪崩、穿透>redis防击穿、雪崩、穿透</a></li>
+<li>
+<a href=#redis%e6%98%af%e5%85%88%e5%88%a0%e7%bc%93%e5%ad%98%e8%bf%98%e6%98%af%e5%85%88%e5%86%99%e5%ba%93%e6%80%8e%e4%b9%88%e8%a7%a3%e5%86%b3%e7%bc%93%e5%ad%98%e4%b8%80%e8%87%b4%e6%80%a7 aria-label=redis是先删缓存还是先写库，怎么解决缓存一致性>redis是先删缓存还是先写库，怎么解决缓存一致性</a></li></ul>
+</ul>
+</ul>
+</li>
+<li>
+<a href=#%e9%97%ae%e9%a2%98%e6%8e%92%e6%9f%a5 aria-label=问题排查>问题排查</a><ul>
+<ul>
+<ul>
+<li>
+<a href=#arthas aria-label=arthas>arthas</a></li>
+<li>
+<a href=#jdk%e8%87%aa%e5%b8%a6%e5%91%bd%e4%bb%a4 aria-label=jdk自带命令>jdk自带命令</a></li></ul>
+</ul>
+</ul>
+</li>
+<li>
+<a href=#kafka aria-label=Kafka>Kafka</a><ul>
+<ul>
+<ul>
+<li>
+<a href=#kafka%e7%9a%84%e6%8e%a8%e8%bf%98%e6%98%af%e6%8b%89 aria-label=Kafka的推还是拉>Kafka的推还是拉</a></li>
+<li>
+<a href=#kafka%e5%a6%82%e4%bd%95%e5%81%9a%e5%88%b0%e6%b6%88%e6%81%af%e4%b8%8d%e4%b8%a2%e5%a4%b1%e7%9a%84 aria-label=Kafka如何做到消息不丢失的>Kafka如何做到消息不丢失的</a></li>
+<li>
+<a href=#kafka%e4%b8%ba%e4%bb%80%e4%b9%88%e5%8f%af%e4%bb%a5%e6%9c%89%e8%bf%99%e4%b9%88%e5%a4%a7%e7%9a%84%e5%90%9e%e5%90%90%e9%87%8f aria-label=Kafka为什么可以有这么大的吞吐量>Kafka为什么可以有这么大的吞吐量</a></li></ul>
+</ul>
+</ul>
+</li>
+<li>
+<a href=#mysql aria-label=MySql>MySql</a><ul>
+<ul>
+<ul>
+<li>
+<a href=#mysql%e7%9a%84%e7%b4%a2%e5%bc%95%e6%95%b0%e6%8d%ae%e7%bb%93%e6%9e%84%e4%b8%ba%e4%bb%80%e4%b9%88%e7%94%a8b%e6%a0%91 aria-label=mysql的索引数据结构为什么用B+树>mysql的索引数据结构为什么用B+树</a></li>
+<li>
+<a href=#%e6%9c%80%e5%b7%a6%e5%8c%b9%e9%85%8d%e5%8e%9f%e5%88%99%e6%98%af%e4%bb%80%e4%b9%88 aria-label=最左匹配原则是什么>最左匹配原则是什么</a></li>
+<li>
+<a href=#%e8%af%b4%e5%87%ba%e4%bd%a0%e5%a6%82%e4%bd%95%e8%b0%83%e4%bc%98%e7%9a%84 aria-label=说出你如何调优的>说出你如何调优的</a></li>
+<li>
+<a href=#%e5%b8%b8%e8%a7%81%e7%9a%84%e4%bc%98%e5%8c%96%e6%89%8b%e6%ae%b5 aria-label=常见的优化手段>常见的优化手段</a></li>
+<li>
+<a href=#mvvc aria-label=MVVC>MVVC</a></li>
+<li>
+<a href=#%e4%ba%8b%e5%8a%a1%e7%89%b9%e6%80%a7%e9%9a%94%e7%a6%bb%e7%ba%a7%e5%88%ab%e6%80%8e%e4%b9%88%e8%a7%a3%e5%86%b3%e5%b9%bb%e8%af%bb aria-label=事务特性，隔离级别，怎么解决幻读？>事务特性，隔离级别，怎么解决幻读？</a></li>
+<li>
+<a href=#%e4%b8%ba%e4%bb%80%e4%b9%88%e8%a6%81%e5%88%86%e5%ba%93%e5%88%86%e8%a1%a8%e6%9c%89%e4%bb%80%e4%b9%88%e6%96%b9%e6%a1%88 aria-label=为什么要分库分表，有什么方案>为什么要分库分表，有什么方案</a></li></ul>
+</ul>
+</ul>
+</li>
+<li>
+<a href=#mybatis aria-label=Mybatis>Mybatis</a></li>
+<li>
+<a href=#spring aria-label=Spring>Spring</a><ul>
+<ul>
+<ul>
+<li>
+<a href=#spring%e7%9a%84bean%e6%b3%a8%e5%85%a5%e8%bf%87%e7%a8%8b%e8%ae%b2%e4%b8%80%e4%b8%8b aria-label=Spring的Bean注入过程讲一下>Spring的Bean注入过程讲一下</a></li>
+<li>
+<a href=#spring%e4%b8%ad%e5%b8%b8%e8%a7%81%e7%9a%84%e8%ae%be%e8%ae%a1%e6%a8%a1%e5%bc%8f%e8%af%b4%e4%b8%80%e8%af%b4 aria-label=Spring中常见的设计模式说一说>Spring中常见的设计模式说一说</a></li>
+<li>
+<a href=#spring%e6%98%af%e6%80%8e%e4%b9%88%e8%a7%a3%e5%86%b3bean%e4%b9%8b%e9%97%b4%e7%9a%84%e5%be%aa%e7%8e%af%e4%be%9d%e8%b5%96%e9%97%ae%e9%a2%98 aria-label=Spring是怎么解决Bean之间的循环依赖问题>Spring是怎么解决Bean之间的循环依赖问题</a></li>
+<li>
+<a href=#springmvc%e7%9a%84%e6%b5%81%e7%a8%8b aria-label=SpringMvc的流程>SpringMvc的流程</a></li>
+<li>
+<a href=#springboot%e7%9a%84%e5%90%af%e5%8a%a8%e5%8e%9f%e7%90%86 aria-label=SpringBoot的启动原理>SpringBoot的启动原理</a></li>
+<li>
+<a href=#springcloud%e4%ba%86%e8%a7%a3%e5%a4%9a%e5%b0%91 aria-label=SpringCloud了解多少>SpringCloud了解多少</a></li>
+<li>
+<a href=#aop%e6%80%8e%e4%b9%88%e5%ae%9e%e7%8e%b0%e7%9a%84 aria-label=AOP怎么实现的>AOP怎么实现的</a></li></ul>
+</ul>
+</ul>
+</li>
+<li>
+<a href=#%e5%be%ae%e6%9c%8d%e5%8a%a1 aria-label=微服务>微服务</a><ul>
+<ul>
+<ul>
+<li>
+<a href=#%e4%b8%ba%e4%bb%80%e4%b9%88%e8%a6%81%e7%94%a8dubbo aria-label=为什么要用dubbo>为什么要用dubbo</a></li>
+<li>
+<a href=#%e5%88%86%e5%b8%83%e5%bc%8f%e4%ba%8b%e5%8a%a1%e5%88%86%e5%b8%83%e5%bc%8f%e9%94%81 aria-label=分布式事务、分布式锁>分布式事务、分布式锁</a></li></ul>
+</ul>
+</ul>
+</li>
+<li>
+<a href=#es aria-label=ES>ES</a><ul>
+<ul>
+<ul>
+<li>
+<a href=#%e4%b8%ba%e4%bb%80%e4%b9%88es%e8%83%bd%e6%9f%a5%e8%af%a2%e7%9a%84%e8%bf%99%e4%b9%88%e5%bf%ab aria-label=为什么ES能查询的这么快>为什么ES能查询的这么快</a></li></ul>
+</ul>
+</ul>
+</li>
+<li>
+<a href=#zookeeper aria-label=Zookeeper>Zookeeper</a><ul>
+<ul>
+<ul>
+<li>
+<a href=#zookeeper%e6%98%af%e5%b9%b2%e4%bb%80%e4%b9%88%e7%9a%84 aria-label=Zookeeper是干什么的>Zookeeper是干什么的</a></li></ul>
+</ul>
+</ul>
+</li>
+<li>
+<a href=#java%e5%b9%b6%e5%8f%91 aria-label=Java并发>Java并发</a><ul>
+<ul>
+<ul>
+<li>
+<a href=#%e4%bd%a0%e7%9f%a5%e9%81%93%e5%93%aa%e5%87%a0%e7%a7%8d%e9%94%81 aria-label=你知道哪几种锁>你知道哪几种锁</a></li>
+<li>
+<a href=#%e8%ae%b2%e4%b8%80%e4%b8%8b%e7%ba%bf%e7%a8%8b%e7%9a%84%e7%94%9f%e5%91%bd%e5%91%a8%e6%9c%9f aria-label=讲一下线程的生命周期>讲一下线程的生命周期</a></li>
+<li>
+<a href=#aqs%e6%98%af%e4%bb%80%e4%b9%88 aria-label=AQS是什么？>AQS是什么？</a></li>
+<li>
+<a href=#waitnotifysleepyieldjoin%e8%bf%99%e5%87%a0%e4%b8%aa%e6%96%b9%e6%b3%95%e7%9a%84%e4%bd%9c%e7%94%a8 aria-label=wait()、notify()、sleep()、yield()、join()这几个方法的作用>wait()、notify()、sleep()、yield()、join()这几个方法的作用</a></li>
+<li>
+<a href=#%e5%ae%9e%e7%8e%b0%e7%ba%bf%e7%a8%8b%e5%ae%89%e5%85%a8%e7%9a%84%e6%96%b9%e6%b3%95 aria-label=实现线程安全的方法>实现线程安全的方法</a></li>
+<li>
+<a href=#%e5%85%ac%e5%b9%b3%e9%94%81%e5%92%8c%e9%9d%9e%e5%85%ac%e5%b9%b3%e9%94%81%e7%9a%84%e5%8c%ba%e5%88%abreentrantlock%e6%98%af%e6%80%8e%e4%b9%88%e5%ae%9e%e7%8e%b0%e7%9a%84 aria-label=公平锁和非公平锁的区别,ReentrantLock是怎么实现的>公平锁和非公平锁的区别,ReentrantLock是怎么实现的</a></li>
+<li>
+<a href=#cas%e6%98%af%e4%bb%80%e4%b9%88%e6%80%8e%e4%b9%88%e8%a7%a3%e5%86%b3aba%e9%97%ae%e9%a2%98 aria-label=CAS是什么，怎么解决ABA问题>CAS是什么，怎么解决ABA问题</a></li>
+<li>
+<a href=#concurrenthashmap%e7%9a%84%e5%88%86%e6%ae%b5%e9%94%81 aria-label=ConcurrentHashMap的分段锁>ConcurrentHashMap的分段锁</a></li>
+<li>
+<a href=#%e4%bd%a0%e7%94%a8%e8%bf%87%e5%93%aa%e4%ba%9bjavautilconcurrent%e4%b8%8b%e7%9a%84%e7%b1%bb aria-label=你用过哪些Java.util.concurrent下的类>你用过哪些Java.util.concurrent下的类</a></li>
+<li>
+<a href=#%e8%ae%b2%e4%b8%80%e4%b8%8b%e7%ba%bf%e7%a8%8b%e6%b1%a0%e7%9a%84%e5%87%a0%e4%b8%aa%e5%8f%82%e6%95%b0%e5%90%ab%e4%b9%89 aria-label=讲一下线程池的几个参数含义>讲一下线程池的几个参数含义</a></li>
+<li>
+<a href=#synchronized%e5%85%b3%e9%94%ae%e5%ad%97%e6%80%8e%e4%b9%88%e4%bc%98%e5%8c%96%e7%9a%84%e8%86%a8%e8%83%80%e7%9a%84%e6%b5%81%e7%a8%8b aria-label=synchronized关键字，怎么优化的，膨胀的流程>synchronized关键字，怎么优化的，膨胀的流程</a></li>
+<li>
+<a href=#volatile%e5%85%b3%e9%94%ae%e5%ad%97 aria-label=volatile关键字>volatile关键字</a></li>
+<li>
+<a href=#java%e5%86%85%e5%ad%98%e6%a8%a1%e5%9e%8b aria-label=Java内存模型>Java内存模型</a></li>
+<li>
+<a href=#threadlocal aria-label=ThreadLocal>ThreadLocal</a></li></ul>
+</ul>
+</ul>
+</li>
+<li>
+<a href=#java%e5%9f%ba%e7%a1%80 aria-label=Java基础>Java基础</a><ul>
+<ul>
+<ul>
+<li>
+<a href=#%e8%af%b4%e4%b8%80%e8%af%b4%e4%bd%a0%e7%90%86%e8%a7%a3%e7%9a%84%e5%a4%9a%e6%80%81 aria-label=说一说你理解的多态>说一说你理解的多态</a></li>
+<li>
+<a href=#%e6%9d%a5%e4%b8%aa%e7%ae%80%e5%8d%95%e7%9a%84java%e4%bd%9c%e7%94%a8%e5%9f%9f%e6%9c%89%e5%93%aa%e4%ba%9b%e4%b8%ba%e4%bb%80%e4%b9%88%e8%a6%81%e8%80%83%e8%99%91%e4%bd%9c%e7%94%a8%e5%9f%9f aria-label=来个简单的，Java作用域有哪些，为什么要考虑作用域>来个简单的，Java作用域有哪些，为什么要考虑作用域</a></li>
+<li>
+<a href=#%e8%ae%b2%e4%b8%80%e4%b8%8b%e6%b3%9b%e5%9e%8b%e5%92%8c%e6%b3%a8%e8%a7%a3 aria-label=讲一下泛型和注解>讲一下泛型和注解</a></li>
+<li>
+<a href=#%e8%ae%b2%e4%b8%80%e4%b8%8b%e5%8f%8d%e5%b0%84%e5%92%8c%e5%8a%a8%e6%80%81%e4%bb%a3%e7%90%86 aria-label=讲一下反射和动态代理>讲一下反射和动态代理</a></li>
+<li>
+<a href=#java%e7%9a%84%e5%87%a0%e7%a7%8d%e5%bc%95%e7%94%a8%e4%bd%a0%e7%94%a8%e8%bf%87%e5%87%a0%e7%a7%8d aria-label=Java的几种引用，你用过几种>Java的几种引用，你用过几种</a></li>
+<li>
+<a href=#%e8%af%b4%e8%af%b4%e8%bf%9b%e7%a8%8b%e5%92%8c%e7%ba%bf%e7%a8%8b%e7%9a%84%e5%8c%ba%e5%88%ab aria-label=说说进程和线程的区别>说说进程和线程的区别</a></li></ul>
+</ul>
+</ul>
+</li>
+<li>
+<a href=#java%e9%9b%86%e5%90%88 aria-label=Java集合>Java集合</a><ul>
+<ul>
+<ul>
+<li>
+<a href=#%e8%ae%b2%e4%b8%80%e8%ae%b2%e9%9b%86%e5%90%88%e7%b1%bb%e5%b8%b8%e7%94%a8%e7%9a%84%e9%9b%86%e5%90%88%e4%bb%a5%e5%8f%8a%e5%9c%a8%e5%a4%9a%e7%ba%bf%e7%a8%8b%e4%b8%8b%e4%bd%a0%e6%98%af%e5%a6%82%e4%bd%95%e4%bf%9d%e9%9b%86%e5%90%88%e5%ae%89%e5%85%a8%e7%9a%84 aria-label=讲一讲集合类，常用的集合，以及在多线程下你是如何保集合安全的>讲一讲集合类，常用的集合，以及在多线程下你是如何保集合安全的</a></li>
+<li>
+<a href=#%e8%ae%b2%e8%ae%b2hashmap aria-label=讲讲HashMap>讲讲HashMap</a></li></ul>
+</ul>
+</ul>
+</li>
+<li>
+<a href=#jvm aria-label=JVM>JVM</a><ul>
+<ul>
+<ul>
+<li>
+<a href=#jvm%e6%98%af%e4%bb%80%e4%b9%88 aria-label=JVM是什么>JVM是什么</a></li>
+<li>
+<a href=#jvm%e5%86%85%e5%ad%98%e6%a8%a1%e5%9e%8b aria-label=JVM内存模型>JVM内存模型</a></li>
+<li>
+<a href=#java%e7%bc%96%e8%af%91%e5%88%b0%e6%89%a7%e8%a1%8c%e7%9a%84%e8%bf%87%e7%a8%8b aria-label=Java编译到执行的过程>Java编译到执行的过程</a></li>
+<li>
+<a href=#%e5%8f%8c%e4%ba%b2%e5%a7%94%e6%b4%be%e6%9c%ba%e5%88%b6%e6%98%af%e5%b9%b2%e4%bb%80%e4%b9%88%e7%9a%84 aria-label=双亲委派机制是干什么的>双亲委派机制是干什么的</a></li>
+<li>
+<a href=#jvm%e6%98%af%e6%80%8e%e4%b9%88%e8%bf%9b%e8%a1%8c%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e7%9a%84%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e6%9c%ba%e5%88%b6%e6%98%af%e5%a6%82%e4%bd%95%e7%9a%84%e6%80%8e%e4%b9%88%e5%88%a4%e6%96%ad%e6%98%af%e4%b8%8d%e6%98%af%e5%9e%83%e5%9c%be aria-label=JVM是怎么进行垃圾回收的，垃圾回收机制是如何的，怎么判断是不是垃圾>JVM是怎么进行垃圾回收的，垃圾回收机制是如何的，怎么判断是不是垃圾</a></li>
+<li>
+<a href=#%e5%b9%b3%e6%97%b6%e5%a6%82%e4%bd%95%e8%b0%83%e4%bc%98 aria-label=平时如何调优>平时如何调优</a></li>
+<li>
+<a href=#%e4%b8%80%e4%b8%aa%e5%af%b9%e8%b1%a1%e5%88%b0%e5%ba%95%e6%9c%89%e5%a4%9a%e5%a4%a7%e5%af%b9%e8%b1%a1%e5%9c%a8%e5%86%85%e5%ad%98%e4%b8%ad%e9%95%bf%e4%bb%80%e4%b9%88%e6%a0%b7%e5%ad%90 aria-label=一个对象到底有多大，“对象在内存中长什么样子”>一个对象到底有多大，“对象在内存中长什么样子”</a></li></ul>
+</ul>
+</ul>
+</li>
+<li>
+<a href=#%e7%bd%91%e7%bb%9c aria-label=网络>网络</a><ul>
+<ul>
+<ul>
+<li>
+<a href=#%e8%ae%b2%e4%b8%80%e4%b8%8btcpip aria-label=讲一下TCP/IP>讲一下TCP/IP</a></li>
+<li>
+<a href=#%e8%ae%b2%e4%b8%80%e4%b8%8bhttp aria-label=讲一下HTTP>讲一下HTTP</a></li>
+<li>
+<a href=#netty%e5%b9%b2%e4%bb%80%e4%b9%88%e7%9a%84%e7%94%a8%e8%bf%87%e5%90%97 aria-label=Netty干什么的，用过吗>Netty干什么的，用过吗</a></li>
+<li>
+<a href=#%e4%bd%a0%e7%9f%a5%e9%81%93%e5%93%aa%e4%ba%9b%e7%bd%91%e7%bb%9c%e6%a8%a1%e5%9e%8b aria-label=你知道哪些网络模型？>你知道哪些网络模型？</a></li>
+<li>
+<a href=#bionioaio%e9%83%bd%e6%98%af%e4%bb%80%e4%b9%88 aria-label=BIO、NIO、AIO都是什么>BIO、NIO、AIO都是什么</a></li>
+<li>
+<a href=#%e8%ae%b2%e4%b8%80%e4%b8%8bhttps aria-label=讲一下Https>讲一下Https</a></li>
+<li>
+<a href=#%e4%bb%80%e4%b9%88%e6%98%af%e5%a4%9a%e8%b7%af%e5%a4%8d%e7%94%a8 aria-label=什么是多路复用>什么是多路复用</a></li></ul>
+</ul>
+</ul>
+</li>
+<li>
+<a href=#%e4%bb%a3%e7%a0%81%e4%b9%a6%e5%86%99 aria-label=代码书写>代码书写</a><ul>
+<ul>
+<ul>
+<li>
+<a href=#%e8%81%8a%e8%81%8a%e8%ae%be%e8%ae%a1%e6%a8%a1%e5%bc%8f%e4%bd%a0%e7%9f%a5%e9%81%93%e5%93%aa%e4%ba%9b%e7%94%a8%e8%bf%87%e5%93%aa%e4%ba%9b%e4%b8%ba%e4%bb%80%e4%b9%88%e8%a6%81%e7%94%a8%e8%ae%be%e8%ae%a1%e6%a8%a1%e5%bc%8f aria-label=聊聊设计模式，你知道哪些，用过哪些，为什么要用设计模式>聊聊设计模式，你知道哪些，用过哪些，为什么要用设计模式</a></li></ul>
+</ul>
+</ul>
+</li>
+<li>
+<a href=#%e6%95%b0%e6%8d%ae%e7%bb%93%e6%9e%84 aria-label=数据结构>数据结构</a><ul>
+<ul>
+<ul>
+<li>
+<a href=#%e4%bd%a0%e7%9f%a5%e9%81%93%e5%93%aa%e4%ba%9b%e6%95%b0%e6%8d%ae%e7%bb%93%e6%9e%84 aria-label=你知道哪些数据结构>你知道哪些数据结构</a></li>
+<li>
+<a href=#%e7%ba%a2%e9%bb%91%e6%a0%91b%e6%a0%91b%e6%a0%91%e4%ba%8c%e5%8f%89%e6%a0%91%e5%ae%8c%e5%85%a8%e5%b9%b3%e8%a1%a1%e4%ba%8c%e5%8f%89%e6%a0%91 aria-label=红黑树、B树、B+树、二叉树、完全平衡二叉树>红黑树、B树、B+树、二叉树、完全平衡二叉树</a></li>
+<li>
+<a href=#%e6%89%8b%e5%86%99%e4%b8%80%e4%b8%aa%e9%93%be%e8%a1%a8%e5%ae%9e%e7%8e%b0%e6%ad%a3%e5%90%91%e8%be%93%e5%87%ba%e5%8f%8d%e5%90%91%e8%be%93%e5%87%ba%e6%89%be%e5%88%b0%e6%9c%80%e4%b8%ad%e9%97%b4%e7%9a%84%e5%85%83%e7%b4%a0 aria-label=手写一个链表，实现正向输出，反向输出，找到最中间的元素>手写一个链表，实现正向输出，反向输出，找到最中间的元素</a></li></ul>
+</ul>
+</ul>
+</li>
+<li>
+<a href=#%e7%ae%97%e6%b3%95 aria-label=算法>算法</a><ul>
+<ul>
+<ul>
+<li>
+<a href=#%e5%b8%b8%e8%a7%81%e7%9a%848%e4%b8%aa%e6%8e%92%e5%ba%8f%e7%ae%97%e6%b3%95%e4%bd%a0%e8%83%bd%e5%86%99%e5%87%ba%e5%87%a0%e4%b8%aa aria-label=常见的8个排序算法，你能写出几个>常见的8个排序算法，你能写出几个</a></li></ul>
+</ul>
+</ul>
+</li>
+<li>
+<a href=#%e6%93%8d%e4%bd%9c%e7%b3%bb%e7%bb%9f aria-label=操作系统>操作系统</a><ul>
+<ul>
+<ul>
+<li>
+<a href=#%e9%9b%b6%e6%8b%b7%e8%b4%9d%e6%98%af%e4%bb%80%e4%b9%88 aria-label=零拷贝是什么>零拷贝是什么</a>
+</li>
+</ul>
+</ul>
+</ul>
+</li>
+</ul>
+</div>
+</details>
+</div>
+<div class=post-content><h1 id=redis>Redis<a hidden class=anchor aria-hidden=true href=#redis>#</a></h1>
+<h4 id=redis如何做到限流的>redis如何做到限流的<a hidden class=anchor aria-hidden=true href=#redis如何做到限流的>#</a></h4>
+<p>限流的几个方式</p>
+<ul>
+<li>
+<p>计数器</p>
+<p>计数器即是计算在单位时间窗口内请求访问的次数是否超过阀值。</p>
+<p>窗口分为：固定窗口、滑动窗口</p>
+<ul>
+<li>固定窗口java实现：</li>
+</ul>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java>    <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>final</span> AtomicInteger cur <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> AtomicInteger<span style=color:#f92672>(</span>0<span style=color:#f92672>);</span>
+    <span style=color:#66d9ef>private</span> Long startTime<span style=color:#f92672>;</span>
+    <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>boolean</span> <span style=color:#a6e22e>isAllowed</span><span style=color:#f92672>(</span><span style=color:#66d9ef>int</span> maxCount<span style=color:#f92672>,</span> <span style=color:#66d9ef>int</span> interval<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+        <span style=color:#75715e>//如果没有第一次时间，则当下为第一次时间
+</span><span style=color:#75715e></span>        <span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>startTime <span style=color:#f92672>==</span> <span style=color:#66d9ef>null</span><span style=color:#f92672>)</span>
+            startTime <span style=color:#f92672>=</span> System<span style=color:#f92672>.</span><span style=color:#a6e22e>currentTimeMillis</span><span style=color:#f92672>();</span>
+        <span style=color:#75715e>//新增一次
+</span><span style=color:#75715e></span>        cur<span style=color:#f92672>.</span><span style=color:#a6e22e>addAndGet</span><span style=color:#f92672>(</span>1<span style=color:#f92672>);</span>
+        <span style=color:#75715e>//如果当前时间减去开始时间，大于间隙了，说明进入新一轮计算
+</span><span style=color:#75715e></span>        <span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>System<span style=color:#f92672>.</span><span style=color:#a6e22e>currentTimeMillis</span><span style=color:#f92672>()</span> <span style=color:#f92672>-</span> interval <span style=color:#f92672>*</span> 1000L <span style=color:#f92672>&gt;</span> startTime<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+            <span style=color:#75715e>//重置开始时间
+</span><span style=color:#75715e></span>            startTime <span style=color:#f92672>=</span> System<span style=color:#f92672>.</span><span style=color:#a6e22e>currentTimeMillis</span><span style=color:#f92672>();</span>
+            <span style=color:#75715e>//重置计数
+</span><span style=color:#75715e></span>            cur<span style=color:#f92672>.</span><span style=color:#a6e22e>set</span><span style=color:#f92672>(</span>1<span style=color:#f92672>);</span>
+            <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>true</span><span style=color:#f92672>;</span>
+        <span style=color:#f92672>}</span>
+        <span style=color:#75715e>//还在时间内
+</span><span style=color:#75715e></span>        <span style=color:#66d9ef>return</span> cur<span style=color:#f92672>.</span><span style=color:#a6e22e>get</span><span style=color:#f92672>()</span> <span style=color:#f92672>&lt;=</span> maxCount<span style=color:#f92672>;</span>
+    <span style=color:#f92672>}</span>
+</code></pre></div><p>固定窗口解决了在单位时间内流量次数不会超过阀值，但是在临界点会出现问题。</p>
+<p><img loading=lazy src=https://pic-frank.oss-cn-beijing.aliyuncs.com/img/202201071338226.png alt=image-20220107133811134>
+</p>
+<p>在前一个一秒内，0.8秒到1秒，访问了5次，没有超过阀值，1秒到1.2秒访问了5次，没有超过阀值。0.8秒到1.2秒之间的0.4秒访问了10次，超过了阀值。没有达到目的。这样的问题原因是窗口没有“滑动”。</p>
+<ul>
+<li>
+<p>滑动窗口</p>
+<p>滑动窗口是一种算法思想</p>
+<blockquote>
+<p>滑动窗口算法（Sliding Window Algorithm）</p>
+</blockquote>
+<blockquote>
+<p>Sliding window algorithm is used to perform required operation on specific window size of given large buffer or array.</p>
+<p>滑动窗口算法是在给定特定窗口大小的数组或字符串上执行要求的操作。</p>
+</blockquote>
+<blockquote>
+<p>This technique shows how a nested for loop in few problems can be converted to single for loop and hence reducing the time complexity.</p>
+<p>该技术可以将一部分问题中的嵌套循环转变为一个单循环，因此它可以减少时间复杂度。</p>
+</blockquote>
+<p>简而言之，滑动窗口算法在一个特定大小的字符串或数组上进行操作，而不在整个字符串和数组上操作，这样就降低了问题的复杂度，从而也达到降低了循环的嵌套深度。<strong>其实这里就可以看出来滑动窗口主要应用在数组和字符串上。</strong></p>
+<p>常见的算法题，找到A字符串中，包含T个字符的最小覆盖子串</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java>    <span style=color:#75715e>//找到字符串EBBANCF中包含ABC三个字符的最小子串
+</span><span style=color:#75715e></span>
+    <span style=color:#75715e>//往往类似于“ 请找到满足 xx 的最 x 的区间（子串、子数组）的 xx ”这类问题都可以使用该方法进行解决。
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>public</span> String <span style=color:#a6e22e>noFixed</span><span style=color:#f92672>(</span>String str<span style=color:#f92672>,</span>String target<span style=color:#f92672>){</span>
+
+        String<span style=color:#f92672>[]</span> s <span style=color:#f92672>=</span> str<span style=color:#f92672>.</span><span style=color:#a6e22e>split</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;&#34;</span><span style=color:#f92672>);</span>
+        String<span style=color:#f92672>[]</span> t <span style=color:#f92672>=</span> target<span style=color:#f92672>.</span><span style=color:#a6e22e>split</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;&#34;</span><span style=color:#f92672>);</span>
+
+        <span style=color:#75715e>//定义两个指针，在s上滑动
+</span><span style=color:#75715e></span>        <span style=color:#66d9ef>int</span> left<span style=color:#f92672>=</span>0<span style=color:#f92672>,</span>right<span style=color:#f92672>=</span>0<span style=color:#f92672>;</span>
+
+        String res<span style=color:#f92672>=</span><span style=color:#66d9ef>null</span><span style=color:#f92672>;</span>
+
+        List window<span style=color:#f92672>=</span><span style=color:#66d9ef>new</span> ArrayList<span style=color:#f92672>();</span>
+        <span style=color:#75715e>//一直滑动，直到右指针到头了
+</span><span style=color:#75715e></span>        <span style=color:#66d9ef>while</span> <span style=color:#f92672>(</span>right<span style=color:#f92672>&lt;</span>s<span style=color:#f92672>.</span><span style=color:#a6e22e>length</span><span style=color:#f92672>){</span>
+            <span style=color:#75715e>//移动右指针，一直到包含了所有的目标元素
+</span><span style=color:#75715e></span>            window<span style=color:#f92672>.</span><span style=color:#a6e22e>add</span><span style=color:#f92672>(</span>s<span style=color:#f92672>[</span>right<span style=color:#f92672>]);</span>
+            right<span style=color:#f92672>++;</span>
+            <span style=color:#75715e>//如果window满足要求了，就移动左指针
+</span><span style=color:#75715e></span>            <span style=color:#66d9ef>while</span> <span style=color:#f92672>(</span>window<span style=color:#f92672>.</span><span style=color:#a6e22e>containsAll</span><span style=color:#f92672>(</span>Arrays<span style=color:#f92672>.</span><span style=color:#a6e22e>asList</span><span style=color:#f92672>(</span>t<span style=color:#f92672>))){</span>
+                <span style=color:#66d9ef>if</span><span style=color:#f92672>(</span>res<span style=color:#f92672>==</span><span style=color:#66d9ef>null</span><span style=color:#f92672>){</span>
+                    <span style=color:#75715e>//第一次得到结果
+</span><span style=color:#75715e></span>                    res<span style=color:#f92672>=</span>String<span style=color:#f92672>.</span><span style=color:#a6e22e>join</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;&#34;</span><span style=color:#f92672>,</span>window<span style=color:#f92672>);</span>
+                <span style=color:#f92672>}</span><span style=color:#66d9ef>else</span><span style=color:#f92672>{</span>
+                    <span style=color:#75715e>//比较当前的长度大小和目前最小的结果
+</span><span style=color:#75715e></span>                    res<span style=color:#f92672>=(</span>window<span style=color:#f92672>.</span><span style=color:#a6e22e>size</span><span style=color:#f92672>()&gt;</span>res<span style=color:#f92672>.</span><span style=color:#a6e22e>length</span><span style=color:#f92672>())?</span>String<span style=color:#f92672>.</span><span style=color:#a6e22e>join</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;&#34;</span><span style=color:#f92672>,</span>window<span style=color:#f92672>):</span>res<span style=color:#f92672>;</span>
+                <span style=color:#f92672>}</span>
+                <span style=color:#75715e>//移动左指针,直至窗口不满足
+</span><span style=color:#75715e></span>                window<span style=color:#f92672>.</span><span style=color:#a6e22e>remove</span><span style=color:#f92672>(</span>s<span style=color:#f92672>[</span>left<span style=color:#f92672>]);</span>
+                left<span style=color:#f92672>++;</span>
+            <span style=color:#f92672>}</span>
+
+        <span style=color:#f92672>}</span>
+        <span style=color:#66d9ef>return</span> res<span style=color:#f92672>;</span>
+    <span style=color:#f92672>}</span>
+
+
+    <span style=color:#75715e>/**
+</span><span style=color:#75715e>     * 固定窗口大小为f
+</span><span style=color:#75715e>     */</span>
+    <span style=color:#66d9ef>public</span> String <span style=color:#a6e22e>fixed</span><span style=color:#f92672>(</span>Integer f<span style=color:#f92672>,</span> String str<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+
+        String result <span style=color:#f92672>=</span> <span style=color:#66d9ef>null</span><span style=color:#f92672>;</span>
+
+        <span style=color:#66d9ef>int</span> right <span style=color:#f92672>=</span> 0<span style=color:#f92672>;</span>
+        <span style=color:#75715e>//寻找字符串中长度为f的包含最多元音字母的子串
+</span><span style=color:#75715e></span>        String<span style=color:#f92672>[]</span> s <span style=color:#f92672>=</span> str<span style=color:#f92672>.</span><span style=color:#a6e22e>split</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;&#34;</span><span style=color:#f92672>);</span>
+
+        List window <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> ArrayList<span style=color:#f92672>();</span>
+
+        <span style=color:#66d9ef>while</span> <span style=color:#f92672>(</span>right <span style=color:#f92672>&lt;</span> s<span style=color:#f92672>.</span><span style=color:#a6e22e>length</span><span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+            <span style=color:#75715e>//滑动右指针
+</span><span style=color:#75715e></span>            window<span style=color:#f92672>.</span><span style=color:#a6e22e>add</span><span style=color:#f92672>(</span>s<span style=color:#f92672>[</span>right<span style=color:#f92672>]);</span>
+            right<span style=color:#f92672>++;</span>
+            <span style=color:#75715e>//达到目标窗口的大小
+</span><span style=color:#75715e></span>            <span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>right <span style=color:#f92672>&gt;=</span> f<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+                <span style=color:#75715e>//检查条件
+</span><span style=color:#75715e></span>                String cur <span style=color:#f92672>=</span> String<span style=color:#f92672>.</span><span style=color:#a6e22e>join</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;&#34;</span><span style=color:#f92672>,</span> window<span style=color:#f92672>);</span>
+                <span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>result <span style=color:#f92672>==</span> <span style=color:#66d9ef>null</span><span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+                    <span style=color:#75715e>//满足条件的话
+</span><span style=color:#75715e></span>                    <span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>countOfVowel<span style=color:#f92672>(</span>cur<span style=color:#f92672>)</span> <span style=color:#f92672>&gt;</span> 0<span style=color:#f92672>)</span>
+                        result <span style=color:#f92672>=</span> cur<span style=color:#f92672>;</span>
+                <span style=color:#f92672>}</span> <span style=color:#66d9ef>else</span> <span style=color:#f92672>{</span>
+                    <span style=color:#66d9ef>int</span> i <span style=color:#f92672>=</span> countOfVowel<span style=color:#f92672>(</span>result<span style=color:#f92672>);</span>
+                    <span style=color:#66d9ef>int</span> j <span style=color:#f92672>=</span> countOfVowel<span style=color:#f92672>(</span>cur<span style=color:#f92672>);</span>
+                    result <span style=color:#f92672>=</span> i <span style=color:#f92672>&gt;</span> j <span style=color:#f92672>?</span> result <span style=color:#f92672>:</span> cur<span style=color:#f92672>;</span>
+                <span style=color:#f92672>}</span>
+                <span style=color:#75715e>//移动左指针，因为窗口固定，删除左边right-f个字符
+</span><span style=color:#75715e></span>                window<span style=color:#f92672>.</span><span style=color:#a6e22e>remove</span><span style=color:#f92672>(</span>s<span style=color:#f92672>[</span>right<span style=color:#f92672>-</span>f<span style=color:#f92672>]);</span>
+            <span style=color:#f92672>}</span>
+        <span style=color:#f92672>}</span>
+        <span style=color:#66d9ef>return</span> result<span style=color:#f92672>;</span>
+
+    <span style=color:#f92672>}</span>
+    <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>int</span> <span style=color:#a6e22e>countOfVowel</span><span style=color:#f92672>(</span>String s<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+        String<span style=color:#f92672>[]</span> split <span style=color:#f92672>=</span> s<span style=color:#f92672>.</span><span style=color:#a6e22e>split</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;&#34;</span><span style=color:#f92672>);</span>
+        List<span style=color:#f92672>&lt;</span>String<span style=color:#f92672>&gt;</span> vowels <span style=color:#f92672>=</span> Arrays<span style=color:#f92672>.</span><span style=color:#a6e22e>asList</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;A&#34;</span><span style=color:#f92672>,</span> <span style=color:#e6db74>&#34;E&#34;</span><span style=color:#f92672>,</span> <span style=color:#e6db74>&#34;I&#34;</span><span style=color:#f92672>,</span> <span style=color:#e6db74>&#34;O&#34;</span><span style=color:#f92672>,</span> <span style=color:#e6db74>&#34;U&#34;</span><span style=color:#f92672>);</span>
+        <span style=color:#66d9ef>int</span> res <span style=color:#f92672>=</span> 0<span style=color:#f92672>;</span>
+        <span style=color:#66d9ef>for</span> <span style=color:#f92672>(</span><span style=color:#66d9ef>int</span> i <span style=color:#f92672>=</span> 0<span style=color:#f92672>;</span> i <span style=color:#f92672>&lt;</span> split<span style=color:#f92672>.</span><span style=color:#a6e22e>length</span><span style=color:#f92672>;</span> i<span style=color:#f92672>++)</span> <span style=color:#f92672>{</span>
+            <span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>vowels<span style=color:#f92672>.</span><span style=color:#a6e22e>contains</span><span style=color:#f92672>(</span>split<span style=color:#f92672>[</span>i<span style=color:#f92672>].</span><span style=color:#a6e22e>toUpperCase</span><span style=color:#f92672>()))</span> <span style=color:#f92672>{</span>
+                res<span style=color:#f92672>++;</span>
+            <span style=color:#f92672>}</span>
+        <span style=color:#f92672>}</span>
+        <span style=color:#66d9ef>return</span> res<span style=color:#f92672>;</span>
+    <span style=color:#f92672>}</span>
+</code></pre></div><p>滑动窗口解决了临界的问题，但是当在窗口内达到了阀值，剩余的请求都会被拒绝，这样处理不好。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>漏桶</p>
+<p><img loading=lazy src=https://pic-frank.oss-cn-beijing.aliyuncs.com/img/202201071537771.png alt=image-20220107153708735>
+</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>LeakBucketLimit</span> <span style=color:#f92672>{</span>
+
+    <span style=color:#75715e>/**
+</span><span style=color:#75715e>     * 出水率
+</span><span style=color:#75715e>     */</span>
+    <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>final</span> <span style=color:#66d9ef>long</span> rate<span style=color:#f92672>=</span>5L<span style=color:#f92672>;</span><span style=color:#75715e>//1秒出水5个请求
+</span><span style=color:#75715e></span>
+    <span style=color:#75715e>/**
+</span><span style=color:#75715e>     * 桶的容量
+</span><span style=color:#75715e>     */</span>
+    <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>final</span> <span style=color:#66d9ef>long</span> capacity<span style=color:#f92672>=</span>10L<span style=color:#f92672>;</span>
+
+    <span style=color:#75715e>/**
+</span><span style=color:#75715e>     * 当前水量
+</span><span style=color:#75715e>     */</span>
+    <span style=color:#66d9ef>private</span>  <span style=color:#66d9ef>long</span> currentWater<span style=color:#f92672>;</span>
+
+    <span style=color:#75715e>/**
+</span><span style=color:#75715e>     * 最后刷新时间
+</span><span style=color:#75715e>     */</span>
+    <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>long</span> refreshTime<span style=color:#f92672>;</span>
+
+    <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>boolean</span> <span style=color:#a6e22e>tryAcquire</span><span style=color:#f92672>(){</span>
+        <span style=color:#75715e>/**
+</span><span style=color:#75715e>         * 获取当前时间
+</span><span style=color:#75715e>         */</span>
+        <span style=color:#66d9ef>long</span> currentTime <span style=color:#f92672>=</span> System<span style=color:#f92672>.</span><span style=color:#a6e22e>currentTimeMillis</span><span style=color:#f92672>();</span>
+
+        <span style=color:#75715e>/**
+</span><span style=color:#75715e>         * 流出去的水
+</span><span style=color:#75715e>         */</span>
+        <span style=color:#66d9ef>long</span> outWater <span style=color:#f92672>=</span> <span style=color:#f92672>(</span>currentTime<span style=color:#f92672>-</span>refreshTime<span style=color:#f92672>)/</span>1000<span style=color:#f92672>*</span>rate<span style=color:#f92672>;</span>
+
+        <span style=color:#75715e>/**
+</span><span style=color:#75715e>         * 当前
+</span><span style=color:#75715e>         */</span>
+        currentWater <span style=color:#f92672>=</span> Math<span style=color:#f92672>.</span><span style=color:#a6e22e>max</span><span style=color:#f92672>(</span>0<span style=color:#f92672>,</span>currentWater<span style=color:#f92672>-</span>outWater<span style=color:#f92672>);</span>
+
+        System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span>currentWater<span style=color:#f92672>);</span>
+        refreshTime<span style=color:#f92672>=</span>currentTime<span style=color:#f92672>;</span>
+
+        <span style=color:#66d9ef>if</span><span style=color:#f92672>(</span>currentWater<span style=color:#f92672>&gt;=</span>capacity<span style=color:#f92672>){</span>
+            <span style=color:#75715e>//不够流了
+</span><span style=color:#75715e></span>            <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>false</span><span style=color:#f92672>;</span>
+        <span style=color:#f92672>}</span>
+
+        <span style=color:#75715e>//加水
+</span><span style=color:#75715e></span>        currentWater<span style=color:#f92672>++;</span>
+
+        <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>true</span><span style=color:#f92672>;</span>
+    <span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>缺陷：不管是什么流量，桶都会按照rate一点一点消费，如果来了爆炸的流量，依然一点一点消费，实际情况中，我们希望能快速消费。而平时就按照rate消费。</p>
+</li>
+<li>
+<p>令牌桶</p>
+<p>令牌桶就是为了解决漏桶的缺点。</p>
+<p><img loading=lazy src=https://pic-frank.oss-cn-beijing.aliyuncs.com/img/202201071541284.png alt=image-20220107154158252>
+</p>
+<blockquote>
+<ul>
+<li>有一个令牌管理员，根据限流大小，定速往令牌桶里放令牌。</li>
+<li>如果令牌数量满了，超过令牌桶容量的限制，那就丢弃。</li>
+<li>系统在接受到一个用户请求时，都会先去令牌桶要一个令牌。如果拿到令牌，那么就处理这个请求的业务逻辑；</li>
+<li>如果拿不到令牌，就直接拒绝这个请求。</li>
+</ul>
+</blockquote>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java>    <span style=color:#75715e>/**
+</span><span style=color:#75715e>     * 令牌桶发放速度
+</span><span style=color:#75715e>     */</span>
+    <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>final</span> <span style=color:#66d9ef>long</span> tokenRate<span style=color:#f92672>=</span>5L<span style=color:#f92672>;</span>
+
+    <span style=color:#75715e>/**
+</span><span style=color:#75715e>     * 桶的容量
+</span><span style=color:#75715e>     */</span>
+    <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>final</span> <span style=color:#66d9ef>long</span> capacity<span style=color:#f92672>=</span>10<span style=color:#f92672>;</span>
+
+    <span style=color:#75715e>/**
+</span><span style=color:#75715e>     * 上一次刷新的时间
+</span><span style=color:#75715e>     */</span>
+    <span style=color:#66d9ef>private</span>  <span style=color:#66d9ef>long</span> refreshTime<span style=color:#f92672>;</span>
+
+    <span style=color:#75715e>/**
+</span><span style=color:#75715e>     * 当前桶里的令牌
+</span><span style=color:#75715e>     */</span>
+    <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>long</span> currentToken<span style=color:#f92672>;</span>
+
+    <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>boolean</span> <span style=color:#a6e22e>tryAcquire</span><span style=color:#f92672>(){</span>
+        <span style=color:#75715e>//当前时间
+</span><span style=color:#75715e></span>        <span style=color:#66d9ef>long</span> currentTime<span style=color:#f92672>=</span>System<span style=color:#f92672>.</span><span style=color:#a6e22e>currentTimeMillis</span><span style=color:#f92672>();</span>
+
+        <span style=color:#75715e>//更新当前桶里的令牌个数
+</span><span style=color:#75715e></span>        <span style=color:#75715e>//当前token个数=原来当前个数+间隙之间生产出来的token个数（可能为0）
+</span><span style=color:#75715e></span>        currentToken <span style=color:#f92672>=</span>Math<span style=color:#f92672>.</span><span style=color:#a6e22e>min</span> <span style=color:#f92672>(</span>capacity<span style=color:#f92672>,(</span>currentToken<span style=color:#f92672>+</span>currentTime <span style=color:#f92672>-</span> refreshTime<span style=color:#f92672>)</span> <span style=color:#f92672>/</span> 1000 <span style=color:#f92672>*</span> tokenRate<span style=color:#f92672>);</span>
+
+        refreshTime<span style=color:#f92672>=</span>currentTime<span style=color:#f92672>;</span>
+
+        <span style=color:#66d9ef>if</span><span style=color:#f92672>(</span>currentToken<span style=color:#f92672>&gt;</span>0<span style=color:#f92672>){</span>
+            <span style=color:#75715e>//还有令牌
+</span><span style=color:#75715e></span>            currentToken<span style=color:#f92672>--;</span>
+            <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>true</span><span style=color:#f92672>;</span>
+        <span style=color:#f92672>}</span>
+        <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>false</span><span style=color:#f92672>;</span>
+    <span style=color:#f92672>}</span>
+
+</code></pre></div></li>
+</ul>
+<h4 id=redis是单线程的吗>redis是单线程的吗<a hidden class=anchor aria-hidden=true href=#redis是单线程的吗>#</a></h4>
+<h4 id=redis为什么这么块>redis为什么这么块<a hidden class=anchor aria-hidden=true href=#redis为什么这么块>#</a></h4>
+<h4 id=redis的持久化>redis的持久化<a hidden class=anchor aria-hidden=true href=#redis的持久化>#</a></h4>
+<h4 id=redis布隆过滤器>redis布隆过滤器<a hidden class=anchor aria-hidden=true href=#redis布隆过滤器>#</a></h4>
+<h4 id=redis分布式锁>redis分布式锁<a hidden class=anchor aria-hidden=true href=#redis分布式锁>#</a></h4>
+<h4 id=redis为什么选用跳表>redis为什么选用跳表<a hidden class=anchor aria-hidden=true href=#redis为什么选用跳表>#</a></h4>
+<h4 id=redis防击穿雪崩穿透>redis防击穿、雪崩、穿透<a hidden class=anchor aria-hidden=true href=#redis防击穿雪崩穿透>#</a></h4>
+<h4 id=redis是先删缓存还是先写库怎么解决缓存一致性>redis是先删缓存还是先写库，怎么解决缓存一致性<a hidden class=anchor aria-hidden=true href=#redis是先删缓存还是先写库怎么解决缓存一致性>#</a></h4>
+<h1 id=问题排查>问题排查<a hidden class=anchor aria-hidden=true href=#问题排查>#</a></h1>
+<h4 id=arthas>arthas<a hidden class=anchor aria-hidden=true href=#arthas>#</a></h4>
+<h4 id=jdk自带命令>jdk自带命令<a hidden class=anchor aria-hidden=true href=#jdk自带命令>#</a></h4>
+<h1 id=kafka>Kafka<a hidden class=anchor aria-hidden=true href=#kafka>#</a></h1>
+<h4 id=kafka的推还是拉>Kafka的推还是拉<a hidden class=anchor aria-hidden=true href=#kafka的推还是拉>#</a></h4>
+<h4 id=kafka如何做到消息不丢失的>Kafka如何做到消息不丢失的<a hidden class=anchor aria-hidden=true href=#kafka如何做到消息不丢失的>#</a></h4>
+<h4 id=kafka为什么可以有这么大的吞吐量>Kafka为什么可以有这么大的吞吐量<a hidden class=anchor aria-hidden=true href=#kafka为什么可以有这么大的吞吐量>#</a></h4>
+<h1 id=mysql>MySql<a hidden class=anchor aria-hidden=true href=#mysql>#</a></h1>
+<h4 id=mysql的索引数据结构为什么用b树>mysql的索引数据结构为什么用B+树<a hidden class=anchor aria-hidden=true href=#mysql的索引数据结构为什么用b树>#</a></h4>
+<h4 id=最左匹配原则是什么>最左匹配原则是什么<a hidden class=anchor aria-hidden=true href=#最左匹配原则是什么>#</a></h4>
+<h4 id=说出你如何调优的>说出你如何调优的<a hidden class=anchor aria-hidden=true href=#说出你如何调优的>#</a></h4>
+<h4 id=常见的优化手段>常见的优化手段<a hidden class=anchor aria-hidden=true href=#常见的优化手段>#</a></h4>
+<h4 id=mvvc>MVVC<a hidden class=anchor aria-hidden=true href=#mvvc>#</a></h4>
+<h4 id=事务特性隔离级别怎么解决幻读>事务特性，隔离级别，怎么解决幻读？<a hidden class=anchor aria-hidden=true href=#事务特性隔离级别怎么解决幻读>#</a></h4>
+<h4 id=为什么要分库分表有什么方案>为什么要分库分表，有什么方案<a hidden class=anchor aria-hidden=true href=#为什么要分库分表有什么方案>#</a></h4>
+<h1 id=mybatis>Mybatis<a hidden class=anchor aria-hidden=true href=#mybatis>#</a></h1>
+<h1 id=spring>Spring<a hidden class=anchor aria-hidden=true href=#spring>#</a></h1>
+<h4 id=spring的bean注入过程讲一下>Spring的Bean注入过程讲一下<a hidden class=anchor aria-hidden=true href=#spring的bean注入过程讲一下>#</a></h4>
+<h4 id=spring中常见的设计模式说一说>Spring中常见的设计模式说一说<a hidden class=anchor aria-hidden=true href=#spring中常见的设计模式说一说>#</a></h4>
+<h4 id=spring是怎么解决bean之间的循环依赖问题>Spring是怎么解决Bean之间的循环依赖问题<a hidden class=anchor aria-hidden=true href=#spring是怎么解决bean之间的循环依赖问题>#</a></h4>
+<h4 id=springmvc的流程>SpringMvc的流程<a hidden class=anchor aria-hidden=true href=#springmvc的流程>#</a></h4>
+<h4 id=springboot的启动原理>SpringBoot的启动原理<a hidden class=anchor aria-hidden=true href=#springboot的启动原理>#</a></h4>
+<h4 id=springcloud了解多少>SpringCloud了解多少<a hidden class=anchor aria-hidden=true href=#springcloud了解多少>#</a></h4>
+<h4 id=aop怎么实现的>AOP怎么实现的<a hidden class=anchor aria-hidden=true href=#aop怎么实现的>#</a></h4>
+<h1 id=微服务>微服务<a hidden class=anchor aria-hidden=true href=#微服务>#</a></h1>
+<h4 id=为什么要用dubbo>为什么要用dubbo<a hidden class=anchor aria-hidden=true href=#为什么要用dubbo>#</a></h4>
+<h4 id=分布式事务分布式锁>分布式事务、分布式锁<a hidden class=anchor aria-hidden=true href=#分布式事务分布式锁>#</a></h4>
+<h1 id=es>ES<a hidden class=anchor aria-hidden=true href=#es>#</a></h1>
+<h4 id=为什么es能查询的这么快>为什么ES能查询的这么快<a hidden class=anchor aria-hidden=true href=#为什么es能查询的这么快>#</a></h4>
+<h1 id=zookeeper>Zookeeper<a hidden class=anchor aria-hidden=true href=#zookeeper>#</a></h1>
+<h4 id=zookeeper是干什么的>Zookeeper是干什么的<a hidden class=anchor aria-hidden=true href=#zookeeper是干什么的>#</a></h4>
+<h1 id=java并发>Java并发<a hidden class=anchor aria-hidden=true href=#java并发>#</a></h1>
+<h4 id=你知道哪几种锁>你知道哪几种锁<a hidden class=anchor aria-hidden=true href=#你知道哪几种锁>#</a></h4>
+<h4 id=讲一下线程的生命周期>讲一下线程的生命周期<a hidden class=anchor aria-hidden=true href=#讲一下线程的生命周期>#</a></h4>
+<h4 id=aqs是什么>AQS是什么？<a hidden class=anchor aria-hidden=true href=#aqs是什么>#</a></h4>
+<h4 id=waitnotifysleepyieldjoin这几个方法的作用>wait()、notify()、sleep()、yield()、join()这几个方法的作用<a hidden class=anchor aria-hidden=true href=#waitnotifysleepyieldjoin这几个方法的作用>#</a></h4>
+<h4 id=实现线程安全的方法>实现线程安全的方法<a hidden class=anchor aria-hidden=true href=#实现线程安全的方法>#</a></h4>
+<h4 id=公平锁和非公平锁的区别reentrantlock是怎么实现的>公平锁和非公平锁的区别,ReentrantLock是怎么实现的<a hidden class=anchor aria-hidden=true href=#公平锁和非公平锁的区别reentrantlock是怎么实现的>#</a></h4>
+<h4 id=cas是什么怎么解决aba问题>CAS是什么，怎么解决ABA问题<a hidden class=anchor aria-hidden=true href=#cas是什么怎么解决aba问题>#</a></h4>
+<h4 id=concurrenthashmap的分段锁>ConcurrentHashMap的分段锁<a hidden class=anchor aria-hidden=true href=#concurrenthashmap的分段锁>#</a></h4>
+<h4 id=你用过哪些javautilconcurrent下的类>你用过哪些Java.util.concurrent下的类<a hidden class=anchor aria-hidden=true href=#你用过哪些javautilconcurrent下的类>#</a></h4>
+<h4 id=讲一下线程池的几个参数含义>讲一下线程池的几个参数含义<a hidden class=anchor aria-hidden=true href=#讲一下线程池的几个参数含义>#</a></h4>
+<h4 id=synchronized关键字怎么优化的膨胀的流程>synchronized关键字，怎么优化的，膨胀的流程<a hidden class=anchor aria-hidden=true href=#synchronized关键字怎么优化的膨胀的流程>#</a></h4>
+<h4 id=volatile关键字>volatile关键字<a hidden class=anchor aria-hidden=true href=#volatile关键字>#</a></h4>
+<h4 id=java内存模型>Java内存模型<a hidden class=anchor aria-hidden=true href=#java内存模型>#</a></h4>
+<h4 id=threadlocal>ThreadLocal<a hidden class=anchor aria-hidden=true href=#threadlocal>#</a></h4>
+<h1 id=java基础>Java基础<a hidden class=anchor aria-hidden=true href=#java基础>#</a></h1>
+<h4 id=说一说你理解的多态>说一说你理解的多态<a hidden class=anchor aria-hidden=true href=#说一说你理解的多态>#</a></h4>
+<h4 id=来个简单的java作用域有哪些为什么要考虑作用域>来个简单的，Java作用域有哪些，为什么要考虑作用域<a hidden class=anchor aria-hidden=true href=#来个简单的java作用域有哪些为什么要考虑作用域>#</a></h4>
+<h4 id=讲一下泛型和注解>讲一下泛型和注解<a hidden class=anchor aria-hidden=true href=#讲一下泛型和注解>#</a></h4>
+<h4 id=讲一下反射和动态代理>讲一下反射和动态代理<a hidden class=anchor aria-hidden=true href=#讲一下反射和动态代理>#</a></h4>
+<h4 id=java的几种引用你用过几种>Java的几种引用，你用过几种<a hidden class=anchor aria-hidden=true href=#java的几种引用你用过几种>#</a></h4>
+<h4 id=说说进程和线程的区别>说说进程和线程的区别<a hidden class=anchor aria-hidden=true href=#说说进程和线程的区别>#</a></h4>
+<h1 id=java集合>Java集合<a hidden class=anchor aria-hidden=true href=#java集合>#</a></h1>
+<h4 id=讲一讲集合类常用的集合以及在多线程下你是如何保集合安全的>讲一讲集合类，常用的集合，以及在多线程下你是如何保集合安全的<a hidden class=anchor aria-hidden=true href=#讲一讲集合类常用的集合以及在多线程下你是如何保集合安全的>#</a></h4>
+<h4 id=讲讲hashmap>讲讲HashMap<a hidden class=anchor aria-hidden=true href=#讲讲hashmap>#</a></h4>
+<h1 id=jvm>JVM<a hidden class=anchor aria-hidden=true href=#jvm>#</a></h1>
+<h4 id=jvm是什么>JVM是什么<a hidden class=anchor aria-hidden=true href=#jvm是什么>#</a></h4>
+<h4 id=jvm内存模型>JVM内存模型<a hidden class=anchor aria-hidden=true href=#jvm内存模型>#</a></h4>
+<h4 id=java编译到执行的过程>Java编译到执行的过程<a hidden class=anchor aria-hidden=true href=#java编译到执行的过程>#</a></h4>
+<h4 id=双亲委派机制是干什么的>双亲委派机制是干什么的<a hidden class=anchor aria-hidden=true href=#双亲委派机制是干什么的>#</a></h4>
+<h4 id=jvm是怎么进行垃圾回收的垃圾回收机制是如何的怎么判断是不是垃圾>JVM是怎么进行垃圾回收的，垃圾回收机制是如何的，怎么判断是不是垃圾<a hidden class=anchor aria-hidden=true href=#jvm是怎么进行垃圾回收的垃圾回收机制是如何的怎么判断是不是垃圾>#</a></h4>
+<h4 id=平时如何调优>平时如何调优<a hidden class=anchor aria-hidden=true href=#平时如何调优>#</a></h4>
+<h4 id=一个对象到底有多大对象在内存中长什么样子>一个对象到底有多大，“对象在内存中长什么样子”<a hidden class=anchor aria-hidden=true href=#一个对象到底有多大对象在内存中长什么样子>#</a></h4>
+<h1 id=网络>网络<a hidden class=anchor aria-hidden=true href=#网络>#</a></h1>
+<h4 id=讲一下tcpip>讲一下TCP/IP<a hidden class=anchor aria-hidden=true href=#讲一下tcpip>#</a></h4>
+<h4 id=讲一下http>讲一下HTTP<a hidden class=anchor aria-hidden=true href=#讲一下http>#</a></h4>
+<h4 id=netty干什么的用过吗>Netty干什么的，用过吗<a hidden class=anchor aria-hidden=true href=#netty干什么的用过吗>#</a></h4>
+<h4 id=你知道哪些网络模型>你知道哪些网络模型？<a hidden class=anchor aria-hidden=true href=#你知道哪些网络模型>#</a></h4>
+<h4 id=bionioaio都是什么>BIO、NIO、AIO都是什么<a hidden class=anchor aria-hidden=true href=#bionioaio都是什么>#</a></h4>
+<h4 id=讲一下https>讲一下Https<a hidden class=anchor aria-hidden=true href=#讲一下https>#</a></h4>
+<h4 id=什么是多路复用>什么是多路复用<a hidden class=anchor aria-hidden=true href=#什么是多路复用>#</a></h4>
+<h1 id=代码书写>代码书写<a hidden class=anchor aria-hidden=true href=#代码书写>#</a></h1>
+<h4 id=聊聊设计模式你知道哪些用过哪些为什么要用设计模式>聊聊设计模式，你知道哪些，用过哪些，为什么要用设计模式<a hidden class=anchor aria-hidden=true href=#聊聊设计模式你知道哪些用过哪些为什么要用设计模式>#</a></h4>
+<h1 id=数据结构>数据结构<a hidden class=anchor aria-hidden=true href=#数据结构>#</a></h1>
+<h4 id=你知道哪些数据结构>你知道哪些数据结构<a hidden class=anchor aria-hidden=true href=#你知道哪些数据结构>#</a></h4>
+<h4 id=红黑树b树b树二叉树完全平衡二叉树>红黑树、B树、B+树、二叉树、完全平衡二叉树<a hidden class=anchor aria-hidden=true href=#红黑树b树b树二叉树完全平衡二叉树>#</a></h4>
+<h4 id=手写一个链表实现正向输出反向输出找到最中间的元素>手写一个链表，实现正向输出，反向输出，找到最中间的元素<a hidden class=anchor aria-hidden=true href=#手写一个链表实现正向输出反向输出找到最中间的元素>#</a></h4>
+<h1 id=算法>算法<a hidden class=anchor aria-hidden=true href=#算法>#</a></h1>
+<h4 id=常见的8个排序算法你能写出几个>常见的8个排序算法，你能写出几个<a hidden class=anchor aria-hidden=true href=#常见的8个排序算法你能写出几个>#</a></h4>
+<h1 id=操作系统>操作系统<a hidden class=anchor aria-hidden=true href=#操作系统>#</a></h1>
+<h4 id=零拷贝是什么>零拷贝是什么<a hidden class=anchor aria-hidden=true href=#零拷贝是什么>#</a></h4>
+</div>
+<footer class=post-footer>
+<nav class=paginav>
+<a class=prev href=https://luluhome.site:8101/posts/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/>
+<span class=title>« Prev Page</span>
+<br>
+<span></span>
+</a>
+</nav>
+</footer>
+</article>
+</main>
+<footer class=footer>
+<span>&copy; 2022 <a href=https://luluhome.site:8101/>Hao Sun</a></span>
+<span>
+Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://git.io/hugopapermod rel=noopener target=_blank>PaperMod</a>
+</span>
+</footer>
+<a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
+</a>
+<script>let menu=document.getElementById('menu');menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener("click",function(b){b.preventDefault();var a=this.getAttribute("href").substr(1);window.matchMedia('(prefers-reduced-motion: reduce)').matches?document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView({behavior:"smooth"}),a==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${a}`)})})</script>
+<script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script>
+<script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove('dark'),localStorage.setItem("pref-theme",'light')):(document.body.classList.add('dark'),localStorage.setItem("pref-theme",'dark'))})</script>
+</body>
+</html>

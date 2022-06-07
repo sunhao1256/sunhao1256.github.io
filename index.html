@@ -118,19 +118,61 @@ HyperLogLog
 redis如何做到限流的 限流的几个方式...</p>
 </section>
 <footer class=entry-footer><span title="2022-01-11 14:43:18 +0800 CST">January 11, 2022</span>&nbsp;·&nbsp;31 min&nbsp;·&nbsp;Hao Sun</footer>
-<a class=entry-link aria-label="post link to 八股文" href=https://luluhome.site:8101/posts/%E5%85%AB%E8%82%A1%E6%96%87/></a>
+<a class=entry-link aria-label="post link to 八股文" href=https://luluhome.site:8101/posts/%E5%B8%B8%E8%A7%81%E9%A2%98%E7%9B%AE/></a>
 </article>
 <article class=post-entry>
 <header class=entry-header>
-<h2>测试一张壁纸
+<h2>linux
 </h2>
 </header>
 <section class=entry-content>
-<p>壁纸 </p>
+<p>终端 [root@LocalHost 桌面]# l
+root表示当前登录用户名 locahost表示当前登录的主机名 桌面 表示当前的工作目录 # 身份标识符 #表示为超级管理员 $表示为普通用户 目录结构 Bin：全称Binary，存放的都是一些二进制文件 Dev：主要存放一些外接设备，例如U盘等，在其中的设备是不能直接使用的，需要挂载（类似windows下的分盘） Etc：主要存放一些配置文件 Home：表示除了root用户以外的其他的家目录，类似windows下的user用户目录 Proc：该目录存放运行的进程文件 Root：该目录是root用户的家目录 SBin：该目录也是存放二进制文件，但是必须得有super权限的用户才能执行 Usr：用户的应用程序和文件都放在这个目录下类似于windows下的program files目录 Mnt：让用户临时挂在别的文件系统 Opt：一般存放安装软件包 Usr/local：存放安装软件后存在的软件目录 Var：存放不断变化的文件，例如日志文件 VI和VIM编辑器 所有的Linux系统都会内建VI文本编辑器，VIM具有程序编辑的能力，可以看成是VI的增强版
+VI和VIM的3种常见模式 正常模式
+在正常是模式下，可以使用快捷键来处理内容
+插入/编辑模式
+在此模式下，可以输入内容，按i，I，o，O，a，A，r，R等任何一个字母就可以进入编辑模式，一般用i
+命令行模式
+可以使用指令完成，读取，存盘，替换，离开，显示行号等动作
+注释 单行注释：#
+多行注释：:«!内容!
+快捷键的使用 行首0，行尾$
+拷贝当前行：yy，拷贝当前向下n行：nyy，例如：5yy
+粘贴：p
+删除当前行：dd，删除当前行下n行：ndd，例如：5dd
+查找：命令行模式下 / 关键字，例如：/hello，下一个n
+设置文件行号：命令行模式下 ：set nu，关闭行号：set nonu...</p>
 </section>
-<footer class=entry-footer><span title="2022-01-11 14:06:29 +0800 CST">January 11, 2022</span>&nbsp;·&nbsp;1 min&nbsp;·&nbsp;Hao Sun</footer>
-<a class=entry-link aria-label="post link to 测试一张壁纸" href=https://luluhome.site:8101/posts/%E6%B5%8B%E8%AF%95%E4%B8%80%E5%BC%A0%E5%A3%81%E7%BA%B8/></a>
+<footer class=entry-footer><span title="2020-01-31 20:50:54 +0000 UTC">January 31, 2020</span>&nbsp;·&nbsp;9 min&nbsp;·&nbsp;Hao Sun</footer>
+<a class=entry-link aria-label="post link to linux" href=https://luluhome.site:8101/posts/linux/></a>
 </article>
+<article class=post-entry>
+<header class=entry-header>
+<h2>
+</h2>
+</header>
+<section class=entry-content>
+<p>Go go mod init:初始化modules go mod download:下载modules到本地cache go mod edit:编辑go.mod文件，选项有-json、-require和-exclude，可以使用帮助go help mod edit go mod graph:以文本模式打印模块需求图 go mod tidy:检查，删除错误或者不使用的modules，下载没download的package go mod vendor:生成vendor目录 go mod verify:验证依赖是否正确 go mod why：查找依赖 ​ go test 执行一下，自动导包 ​ go list -m 主模块的打印路径 go list -m -f={{.Dir}} print主模块的根目录 go list -m all 查看当前的依赖和版本信息 </p>
+</section>
+<footer class=entry-footer>1 min&nbsp;·&nbsp;Hao Sun</footer>
+<a class=entry-link aria-label="post link to " href=https://luluhome.site:8101/posts/go/></a>
+</article>
+<article class=post-entry>
+<header class=entry-header>
+<h2>
+</h2>
+</header>
+<section class=entry-content>
+<p>Gradle </p>
+</section>
+<footer class=entry-footer>1 min&nbsp;·&nbsp;Hao Sun</footer>
+<a class=entry-link aria-label="post link to " href=https://luluhome.site:8101/posts/gradle/></a>
+</article>
+<footer class=page-footer>
+<nav class=pagination>
+<a class=next href=https://luluhome.site:8101/page/2/>Next Page »</a>
+</nav>
+</footer>
 </main>
 <footer class=footer>
 <span>&copy; 2022 <a href=https://luluhome.site:8101/>Hao Sun</a></span>

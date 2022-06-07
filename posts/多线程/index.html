@@ -1,0 +1,603 @@
+<!doctype html><html lang=en dir=auto>
+<head><meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no">
+<meta name=robots content="index, follow">
+<title>Hao Sun</title>
+<meta name=keywords content>
+<meta name=description content="Wait UnSafe UnSafe是为java底层类库使用的，不应该被用户所使用，因为他的权限太高，可以做很多事情，例如修改私有字段的值、抛出异常、使用堆外内存、CAS操作基于CPU的CAS指令，以达到原子操作。Park()阻塞线程、UnPark()唤醒线程。
+ UnSafe有一个属性静态theUnsafe，可以通过反射的方式获取到Unsafe实例
+ Field theUnsafe = Unsafe.class.getDeclaredField(&#34;theUnsafe&#34;); theUnsafe.setAccessible(true); unsafe = (Unsafe) theUnsafe.get(null);  JUC下面大量使用了CAS操作，它们的底层是调用的Unsafe的CompareAndSwapXXX()方法。这种方式广泛运用于无锁算法，与java中标准的悲观锁机制相比，它可以利用CAS处理器指令提供极大的加速。
+ AtomicInteger AtomicInteger是java提供的原子类
+ 原子操作是指不会被线程调度机制打断的操作，这种操作一旦开始，就一直运行到结束，中间不会有任何线程上下文切换。
+原子操作可以是一个步骤，也可以是多个操作步骤，但是其顺序不可以被打乱，也不可以被切割而只执行其中的一部分，将整个操作视作一个整体是原子性的核心特征。
+我们这里说的原子操作与数据库ACID中的原子性，笔者认为最大区别在于，数据库中的原子性主要运用在事务中，一个事务之内的所有更新操作要么都成功，要么都失败，事务是有回滚机制的，而我们这里说的原子操作是没有回滚的，这是最大的区别。
+ 底层其实就是用UnSafe类去操作的
+Value是volatile声明的，保证多线程的可见性，volatile只能保证可见性和禁止重排序，但并不能保证原子性，所以需要cas操作
+public class AtomicInteger extends Number implements java.io.Serializable { private static final long serialVersionUID = 6214790243416807050L; /* * This class intended to be implemented using VarHandles, but there * are unresolved cyclic startup dependencies. */ private static final jdk.internal.misc.Unsafe U = jdk.internal.misc.Unsafe.getUnsafe(); private static final long VALUE = U.">
+<meta name=author content="Hao Sun">
+<link rel=canonical href=https://luluhome.site:8101/posts/%E5%A4%9A%E7%BA%BF%E7%A8%8B/>
+<link crossorigin=anonymous href=/assets/css/stylesheet.min.c88963fe2d79462000fd0fb1b3737783c32855d340583e4523343f8735c787f0.css integrity="sha256-yIlj/i15RiAA/Q+xs3N3g8MoVdNAWD5FIzQ/hzXHh/A=" rel="preload stylesheet" as=style>
+<script defer crossorigin=anonymous src=/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5+kdJvBz5iKbt6B5PJI=" onload=hljs.initHighlightingOnLoad()></script>
+<link rel=icon href=https://luluhome.site:8101/%3Clink%20/%20abs%20url%3E>
+<link rel=icon type=image/png sizes=16x16 href=https://luluhome.site:8101/%3Clink%20/%20abs%20url%3E>
+<link rel=icon type=image/png sizes=32x32 href=https://luluhome.site:8101/%3Clink%20/%20abs%20url%3E>
+<link rel=apple-touch-icon href=https://luluhome.site:8101/%3Clink%20/%20abs%20url%3E>
+<link rel=mask-icon href=https://luluhome.site:8101/%3Clink%20/%20abs%20url%3E>
+<meta name=theme-color content="#2e2e33">
+<meta name=msapplication-TileColor content="#2e2e33">
+<meta name=generator content="Hugo 0.89.0">
+<noscript>
+<style>#theme-toggle,.top-link{display:none}</style>
+<style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style>
+</noscript><meta property="og:title" content>
+<meta property="og:description" content="Wait UnSafe UnSafe是为java底层类库使用的，不应该被用户所使用，因为他的权限太高，可以做很多事情，例如修改私有字段的值、抛出异常、使用堆外内存、CAS操作基于CPU的CAS指令，以达到原子操作。Park()阻塞线程、UnPark()唤醒线程。
+ UnSafe有一个属性静态theUnsafe，可以通过反射的方式获取到Unsafe实例
+ Field theUnsafe = Unsafe.class.getDeclaredField(&#34;theUnsafe&#34;); theUnsafe.setAccessible(true); unsafe = (Unsafe) theUnsafe.get(null);  JUC下面大量使用了CAS操作，它们的底层是调用的Unsafe的CompareAndSwapXXX()方法。这种方式广泛运用于无锁算法，与java中标准的悲观锁机制相比，它可以利用CAS处理器指令提供极大的加速。
+ AtomicInteger AtomicInteger是java提供的原子类
+ 原子操作是指不会被线程调度机制打断的操作，这种操作一旦开始，就一直运行到结束，中间不会有任何线程上下文切换。
+原子操作可以是一个步骤，也可以是多个操作步骤，但是其顺序不可以被打乱，也不可以被切割而只执行其中的一部分，将整个操作视作一个整体是原子性的核心特征。
+我们这里说的原子操作与数据库ACID中的原子性，笔者认为最大区别在于，数据库中的原子性主要运用在事务中，一个事务之内的所有更新操作要么都成功，要么都失败，事务是有回滚机制的，而我们这里说的原子操作是没有回滚的，这是最大的区别。
+ 底层其实就是用UnSafe类去操作的
+Value是volatile声明的，保证多线程的可见性，volatile只能保证可见性和禁止重排序，但并不能保证原子性，所以需要cas操作
+public class AtomicInteger extends Number implements java.io.Serializable { private static final long serialVersionUID = 6214790243416807050L; /* * This class intended to be implemented using VarHandles, but there * are unresolved cyclic startup dependencies. */ private static final jdk.internal.misc.Unsafe U = jdk.internal.misc.Unsafe.getUnsafe(); private static final long VALUE = U.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://luluhome.site:8101/posts/%E5%A4%9A%E7%BA%BF%E7%A8%8B/"><meta property="og:image" content="https://luluhome.site:8101/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta property="article:section" content="posts">
+<meta property="og:site_name" content="Hao Sun">
+<meta name=twitter:card content="summary_large_image">
+<meta name=twitter:image content="https://luluhome.site:8101/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E">
+<meta name=twitter:title content>
+<meta name=twitter:description content="Wait UnSafe UnSafe是为java底层类库使用的，不应该被用户所使用，因为他的权限太高，可以做很多事情，例如修改私有字段的值、抛出异常、使用堆外内存、CAS操作基于CPU的CAS指令，以达到原子操作。Park()阻塞线程、UnPark()唤醒线程。
+ UnSafe有一个属性静态theUnsafe，可以通过反射的方式获取到Unsafe实例
+ Field theUnsafe = Unsafe.class.getDeclaredField(&#34;theUnsafe&#34;); theUnsafe.setAccessible(true); unsafe = (Unsafe) theUnsafe.get(null);  JUC下面大量使用了CAS操作，它们的底层是调用的Unsafe的CompareAndSwapXXX()方法。这种方式广泛运用于无锁算法，与java中标准的悲观锁机制相比，它可以利用CAS处理器指令提供极大的加速。
+ AtomicInteger AtomicInteger是java提供的原子类
+ 原子操作是指不会被线程调度机制打断的操作，这种操作一旦开始，就一直运行到结束，中间不会有任何线程上下文切换。
+原子操作可以是一个步骤，也可以是多个操作步骤，但是其顺序不可以被打乱，也不可以被切割而只执行其中的一部分，将整个操作视作一个整体是原子性的核心特征。
+我们这里说的原子操作与数据库ACID中的原子性，笔者认为最大区别在于，数据库中的原子性主要运用在事务中，一个事务之内的所有更新操作要么都成功，要么都失败，事务是有回滚机制的，而我们这里说的原子操作是没有回滚的，这是最大的区别。
+ 底层其实就是用UnSafe类去操作的
+Value是volatile声明的，保证多线程的可见性，volatile只能保证可见性和禁止重排序，但并不能保证原子性，所以需要cas操作
+public class AtomicInteger extends Number implements java.io.Serializable { private static final long serialVersionUID = 6214790243416807050L; /* * This class intended to be implemented using VarHandles, but there * are unresolved cyclic startup dependencies. */ private static final jdk.internal.misc.Unsafe U = jdk.internal.misc.Unsafe.getUnsafe(); private static final long VALUE = U.">
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://luluhome.site:8101/posts/"},{"@type":"ListItem","position":2,"name":"","item":"https://luluhome.site:8101/posts/%E5%A4%9A%E7%BA%BF%E7%A8%8B/"}]}</script>
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"","name":"","description":"Wait UnSafe UnSafe是为java底层类库使用的，不应该被用户所使用，因为他的权限太高，可以做很多事情，例如修改私有字段的值、抛出异常、使用堆外内存、CAS操作基于CPU的CAS指令，以达到原子操作。Park()阻塞线程、UnPark()唤醒线程。\n UnSafe有一个属性静态theUnsafe，可以通过反射的方式获取到Unsafe实例\n Field theUnsafe = Unsafe.class.getDeclaredField(\u0026#34;theUnsafe\u0026#34;); theUnsafe.setAccessible(true); unsafe = (Unsafe) theUnsafe.get(null);  JUC下面大量使用了CAS操作，它们的底层是调用的Unsafe的CompareAndSwapXXX()方法。这种方式广泛运用于无锁算法，与java中标准的悲观锁机制相比，它可以利用CAS处理器指令提供极大的加速。\n AtomicInteger AtomicInteger是java提供的原子类\n 原子操作是指不会被线程调度机制打断的操作，这种操作一旦开始，就一直运行到结束，中间不会有任何线程上下文切换。\n原子操作可以是一个步骤，也可以是多个操作步骤，但是其顺序不可以被打乱，也不可以被切割而只执行其中的一部分，将整个操作视作一个整体是原子性的核心特征。\n我们这里说的原子操作与数据库ACID中的原子性，笔者认为最大区别在于，数据库中的原子性主要运用在事务中，一个事务之内的所有更新操作要么都成功，要么都失败，事务是有回滚机制的，而我们这里说的原子操作是没有回滚的，这是最大的区别。\n 底层其实就是用UnSafe类去操作的\nValue是volatile声明的，保证多线程的可见性，volatile只能保证可见性和禁止重排序，但并不能保证原子性，所以需要cas操作\npublic class AtomicInteger extends Number implements java.io.Serializable { private static final long serialVersionUID = 6214790243416807050L; /* * This class intended to be implemented using VarHandles, but there * are unresolved cyclic startup dependencies. */ private static final jdk.internal.misc.Unsafe U = jdk.internal.misc.Unsafe.getUnsafe(); private static final long VALUE = U.","keywords":[],"articleBody":"Wait UnSafe UnSafe是为java底层类库使用的，不应该被用户所使用，因为他的权限太高，可以做很多事情，例如修改私有字段的值、抛出异常、使用堆外内存、CAS操作基于CPU的CAS指令，以达到原子操作。Park()阻塞线程、UnPark()唤醒线程。\n UnSafe有一个属性静态theUnsafe，可以通过反射的方式获取到Unsafe实例\n Field theUnsafe = Unsafe.class.getDeclaredField(\"theUnsafe\"); theUnsafe.setAccessible(true); unsafe = (Unsafe) theUnsafe.get(null);  JUC下面大量使用了CAS操作，它们的底层是调用的Unsafe的CompareAndSwapXXX()方法。这种方式广泛运用于无锁算法，与java中标准的悲观锁机制相比，它可以利用CAS处理器指令提供极大的加速。\n AtomicInteger AtomicInteger是java提供的原子类\n 原子操作是指不会被线程调度机制打断的操作，这种操作一旦开始，就一直运行到结束，中间不会有任何线程上下文切换。\n原子操作可以是一个步骤，也可以是多个操作步骤，但是其顺序不可以被打乱，也不可以被切割而只执行其中的一部分，将整个操作视作一个整体是原子性的核心特征。\n我们这里说的原子操作与数据库ACID中的原子性，笔者认为最大区别在于，数据库中的原子性主要运用在事务中，一个事务之内的所有更新操作要么都成功，要么都失败，事务是有回滚机制的，而我们这里说的原子操作是没有回滚的，这是最大的区别。\n 底层其实就是用UnSafe类去操作的\nValue是volatile声明的，保证多线程的可见性，volatile只能保证可见性和禁止重排序，但并不能保证原子性，所以需要cas操作\npublic class AtomicInteger extends Number implements java.io.Serializable { private static final long serialVersionUID = 6214790243416807050L; /* * This class intended to be implemented using VarHandles, but there * are unresolved cyclic startup dependencies. */ private static final jdk.internal.misc.Unsafe U = jdk.internal.misc.Unsafe.getUnsafe(); private static final long VALUE = U.objectFieldOffset(AtomicInteger.class, \"value\"); private volatile int value; public final boolean compareAndSet(int expectedValue, int newValue) { return U.compareAndSetInt(this, VALUE, expectedValue, newValue); } 自增的方法也是调用Unsafe的自增方法，实际上是进行自旋操作去保证更新成功\npublic final int getAndAdd(int delta) { return U.getAndAddInt(this, VALUE, delta); } @HotSpotIntrinsicCandidate public final int getAndAddInt(Object o, long offset, int delta) { int v; do { v = getIntVolatile(o, offset); } while (!weakCompareAndSetInt(o, offset, v, v + delta)); return v; } AtomicStampedReference 虽然CAS解决了高并发情况下的问题，但是带来的一个问题就是ABA问题。\nCAS是Compare and swap，只有目标值等于某个值时才会进行更新\n例如要0更新为1的时候，发生如下操作\nB线程读取到了0 B线程阻塞了\nA线程读取到了0\nA线程把0变成2\nA线程又把2变成了0\nB线程恢复，继续比较发现还是0，就把0变成1\nABA的危害主要在无锁场景中\n例如在栈中\npackage com.java.demo.jmm; import java.util.concurrent.atomic.AtomicReference; /** * 无锁栈 */ public class ABA { static class Node{ int value; Node next; public Node(int value) { this.value = value; } } public static AtomicReferenceNode top=new AtomicReference(); public static void push(Node newNode){ for (;;){ //获取站顶  Node node = top.get(); //把新节点放在顶部  newNode.next=node; //cas更新  if(top.compareAndSet(node,newNode)){ return; } } } public static Node pop(){ for (;;){ //获得栈顶元素  Node t = top.get(); if(t==null){ return null; } Node next=t.next; if(top.compareAndSet(t,next)){ t.next=null; return t; } } } public static void main(String[] args) { //两个线程去操作  //先入栈1，2，3  push(new Node(1)); push(new Node(2)); push(new Node(3)); new Thread(()-{ // 线程1出栈一个元素  pop(); }).start(); new Thread(()-{ // 线程2出栈两个元素  Node A = pop(); //3  Node B = pop(); //2  // 线程2又把A入栈了  push(A); // 3又进去了  }).start(); //线程1 出3的时候阻塞了，线程2先出3，然后再出2，测试top就剩1一个。3节点已经再1线程那里读到了，在自己的工作空间里，3的后节点是2，  //因此，线程2又把3放进去，1发现是又是3了更新成功，就放了一个2，在top，而2元素在2线程的时候已经出栈了，就没有next节点了，导致最后  //栈里就一个2节点  } } 上面的栈ABA问题\n（1）版本号\n比如，上面的栈结构增加一个版本号用于控制，每次CAS的同时检查版本号有没有变过。\n还有一些数据结构喜欢使用高位存储一个邮戳来保证CAS的安全。\n（2）不重复使用节点的引用\n比如，上面的栈结构在线程2执行push()入栈操作的时候新建一个节点传入，而不是复用节点1的引用；\n（3）直接操作元素而不是节点\n比如，上面的栈结构push()方法不应该传入一个节点（Node），而是传入元素值（int的value）。\nJava提供的AtomicStampedReference就是通过邮戳\n（1）在多线程环境下使用无锁结构要注意ABA问题；\n（2）ABA的解决一般使用版本号来控制，并保证数据结构使用元素值来传递，且每次添加元素都新建节点承载元素值；\n（3）AtomicStampedReference内部使用Pair来存储元素值及其版本号；\nLongAdder LongAdder和AtomicLong的区别\n在高并发场景下，特别是写多的场景下，LongAdder要比AtomicLong快很多\n（1）LongAdder通过base和cells数组来存储值；\n（2）不同的线程会hash到不同的cell上去更新，减少了竞争；\n（3）LongAdder的性能非常高，最终会达到一种无竞争的状态；\n伪共享 缓存是由缓存行组成的，通常是 64 字节（常用处理器的缓存行是 64 字节的，比较旧的处理器缓存行是 32 字节），并且它有效地引用主内存中的一块地址。\n一个 Java 的 long 类型是 8 字节，因此在一个缓存行中可以存 8 个 long 类型的变量。\n在程序运行的过程中，缓存每次更新都从主内存中加载连续的 64 个字节。因此，如果访问一个 long 类型的数组时，当数组中的一个值被加载到缓存中时，另外 7 个元素也会被加载到缓存中。\n但是，如果使用的数据结构中的项在内存中不是彼此相邻的，比如链表，那么将得不到免费缓存加载带来的好处。\n不过，这种免费加载也有一个坏处。设想如果我们有个 long 类型的变量 a，它不是数组的一部分，而是一个单独的变量，并且还有另外一个 long 类型的变量 b 紧挨着它，那么当加载 a 的时候将免费加载 b。\n看起来似乎没有什么毛病，但是如果一个 CPU 核心的线程在对 a 进行修改，另一个 CPU 核心的线程却在对 b 进行读取。\n当前者修改 a 时，会把 a 和 b 同时加载到前者核心的缓存行中，更新完 a 后其它所有包含 a 的缓存行都将失效，因为其它缓存中的 a 不是最新值了。\n而当后者读取 b 时，发现这个缓存行已经失效了，需要从主内存中重新加载。\n请记住，我们的缓存都是以缓存行作为一个单位来处理的，所以失效 a 的缓存的同时，也会把 b 失效，反之亦然。\n这样就出现了一个问题，b 和 a 完全不相干，每次却要因为 a 的更新需要从主内存重新读取，它被缓存未命中给拖慢了。\n这就是传说中的伪共享。\n使用 @sun.misc.Contended 注解（java8）\n@sun.misc.Contended class MyLong { volatile long value; } 默认使用这个注解是无效的，需要在JVM启动参数加上-XX:-RestrictContended才会生效，，再次运行程序发现时间是718ms。\n注意，以上三种方式中的前两种是通过加字段的形式实现的，加的字段又没有地方使用，可能会被jvm优化掉，所以建议使用第三种方式。\n锁名词解释 （1）公平锁/非公平锁\n公平锁，是指按照线程申请的顺序获取锁。\n非公平锁，是指不是按照线程申请的顺序获取锁，有可能后申请的线程反而先获取到锁，假如先来的线程一直获取不到锁，会造成锁饥饿现象。\nReentrantLock中可以通过构造方法指定是否为公平锁，默认为非公平锁，非公平锁的优点在于吞吐量大。\nsynchronized无法指定为公平锁，一直都是非公平锁。\n（2）可重入锁\n可重入锁，是指一个线程获取锁之后再尝试获取锁时会自动获取锁，可重入锁的优点是避免死锁。\nReentrantLock和synchronized都是可重入锁。\n（3）独享锁/共享锁\n独享锁，是指锁一次只能被一个线程持有。\n共享锁，是指锁一次可以被多个线程持有。\nReentrantLock和synchronized都是独享锁，ReadWriteLock的读锁是共享锁，写锁是独享锁。\n（4）互斥锁/读写锁\n与独享锁/共享锁的概念差不多，是独享锁/共享锁的具体实现。\nReentrantLock和synchronized都是互斥锁\nReadWriteLock是读写锁\n（5）乐观锁/悲观锁\n悲观锁，是指认为对于同一个数据的并发操作必然会发生修改，即使不会发生修改也这么认为，所以一定要加锁。\n乐观锁，是指认为对于同一个数据的并发操作不一定会发生修改，在更新数据的时候，尝试去更新数据，如果失败就不断尝试。\n悲观锁适用于写操作多的场景，乐观锁适用于读操作多的场景。\n（6）分段锁\n分段锁，是一种锁的设计思路，它细化了锁的粒度，主要运用在ConcurrentHashMap中，实现高效的并发操作，当操作不需要更新整个数组时，就只锁数组中的一项就可以了。\n（7）偏向锁/轻量级锁/重量级锁\n这三个锁主要是针对synchronized进行优化使用的，主要是通过对象监视器在对象头中的字段来表明的。\n偏向锁，是指一段同步代码一直被一个线程访问，那么这个线程会自动获取锁，降低获取锁的代价。\n轻量级锁，是指当锁是偏向锁时，被另一个线程所访问，偏向锁会升级为轻量级锁，这个线程会通过自旋的方式尝试获取锁，不会阻塞，提高性能。\n重量级锁，是指当锁是轻量级锁时，当自旋的线程自旋了一定的次数后，还没有获取到锁，就会进入阻塞状态，该锁升级为重量级锁，重量级锁会使其他线程阻塞，性能降低。\n（8）自旋锁\n自旋锁，是指尝试获取锁的线程不会阻塞，而是循环的方式不断尝试，这样的好处是减少线程的上下文切换带来的开锁，提高性能，缺点是循环会消耗CPU。\n（9）监视器锁\nsynchronized的实现方式，使用monitorenter和monitorexit来实现。\n（10）mutex锁\n互斥锁，LockSupport.part()底层是通过mutex实现的。\nJMM的原子性、可见性、有序性 Java内存模型就是为了解决多线程环境下共享变量的一致性问题，那么一致性包含哪些内容呢？\n一致性主要包含三大特性：原子性、可见性、有序性，下面我们就来看看Java内存模型是怎么实现这三大特性的。\n（1）原子性\n原子性是指一段操作一旦开始就会一直运行到底，中间不会被其它线程打断，这段操作可以是一个操作，也可以是多个操作。\n由Java内存模型来直接保证的原子性操作包括read、load、user、assign、store、write这两个操作，我们可以大致认为基本类型变量的读写是具备原子性的。\n如果应用需要一个更大范围的原子性，Java内存模型还提供了lock和unlock这两个操作来满足这种需求，尽管不能直接使用这两个操作，但我们可以使用它们更具体的实现synchronized来实现。\n因此，synchronized块之间的操作也是原子性的。\n（2）可见性\n可见性是指当一个线程修改了共享变量的值，其它线程能立即感知到这种变化。\nJava内存模型是通过在变更修改后同步回主内存，在变量读取前从主内存刷新变量值来实现的，它是依赖主内存的，无论是普通变量还是volatile变量都是如此。\n普通变量与volatile变量的主要区别是是否会在修改之后立即同步回主内存，以及是否在每次读取前立即从主内存刷新。因此我们可以说volatile变量保证了多线程环境下变量的可见性，但普通变量不能保证这一点。\n除了volatile之外，还有两个关键字也可以保证可见性，它们是synchronized和final。\nsynchronized的可见性是由“对一个变量执行unlock操作之前，必须先把此变量同步回主内存中，即执行store和write操作”这条规则获取的。\nfinal的可见性是指被final修饰的字段在构造器中一旦被初始化完成，那么其它线程中就能看见这个final字段了。\n（3）有序性\nJava程序中天然的有序性可以总结为一句话：如果在本线程中观察，所有的操作都是有序的；如果在另一个线程中观察，所有的操作都是无序的。\n前半句是指线程内表现为串行的语义，后半句是指“指令重排序”现象和“工作内存和主内存同步延迟”现象。\nJava中提供了volatile和synchronized两个关键字来保证有序性。\nvolatile天然就具有有序性，因为其禁止重排序。\nsynchronized的有序性是由“一个变量同一时刻只允许一条线程对其进行lock操作”这条规则获取的。\nSynchronized Java在不断进化，同样地，Java中像synchronized这种古老的东西也在不断进化，比如ConcurrentHashMap在jdk7的时候还是使用ReentrantLock加锁的，在jdk8的时候已经换成了原生的synchronized了，可见synchronized有原生的支持，它的进化空间还是很大的。\n那么，synchronized有哪些进化中的状态呢？\n我们这里稍做一些简单地介绍：\n（1）偏向锁，是指一段同步代码一直被一个线程访问，那么这个线程会自动获取锁，降低获取锁的代价。\n（2）轻量级锁，是指当锁是偏向锁时，被另一个线程所访问，偏向锁会升级为轻量级锁，这个线程会通过自旋的方式尝试获取锁，不会阻塞，提高性能。\n（3）重量级锁，是指当锁是轻量级锁时，当自旋的线程自旋了一定的次数后，还没有获取到锁，就会进入阻塞状态，该锁升级为重量级锁，重量级锁会使其他线程阻塞，性能降低。\n总结：\n（1）synchronized在编译时会在同步块前后生成monitorenter和monitorexit字节码指令；\n（2）monitorenter和monitorexit字节码指令需要一个引用类型的参数，基本类型不可以哦；\n（3）monitorenter和monitorexit字节码指令更底层是使用Java内存模型的lock和unlock指令；\n（4）synchronized是可重入锁；\n（5）synchronized是非公平锁；\n（6）synchronized可以同时保证原子性、可见性、有序性；\n（7）synchronized有三种状态：偏向锁、轻量级锁、重量级锁；\n自己实现一个锁 package com.java.demo.lock; import com.java.demo.jmm.UnSafeTest; import sun.misc.Unsafe; import java.lang.reflect.Field; /** * 自定义锁 * 多线程尝试去更新state，更新成功的线程进入执行，更新不成功的直接进入队列，进行阻塞，等待，直至拿到锁的线程释放锁 * * */ public class MyLock { /** * 状态 */ private volatile int state; //用于cas更新  private static Unsafe unsafe; private static long stateOffset; private static long tailOffset; // 链表头  private volatile Node head; // 链表尾  private volatile Node tail; private Node empty = new Node(); public MyLock() { head = tail = empty; } static { try { //准备 unsafe  Field theUnsafe = Unsafe.class.getDeclaredField(\"theUnsafe\"); theUnsafe.setAccessible(true); unsafe = (Unsafe) theUnsafe.get(null); stateOffset = unsafe.objectFieldOffset(MyLock.class.getDeclaredField(\"state\")); tailOffset = unsafe.objectFieldOffset(MyLock.class.getDeclaredField(\"tail\")); }catch (Exception e){ e.printStackTrace(); } } private boolean compareAndSetState(int expect, int update) { return unsafe.compareAndSwapInt(this, stateOffset, expect, update); } // 原子更新tail字段  private boolean compareAndSetTail(Node expect, Node update) { return unsafe.compareAndSwapObject(this, tailOffset, expect, update); } public void lock() { // 尝试更新state字段，更新成功说明占有了锁  if (compareAndSetState(0, 1)) { return; } // 未更新成功的线程则入队  Node node = enqueue(); Node prev = node.prev; // 再次尝试获取锁，需要检测上一个节点是不是head，按入队顺序加锁  while (node.prev != head || !compareAndSetState(0, 1)) { // 未获取到锁，阻塞  unsafe.park(false, 0L); } // 下面不需要原子更新，因为同时只有一个线程访问到这里  // 获取到锁了且上一个节点是head  // head后移一位  head = node; // 清空当前节点的内容，协助GC  node.thread = null; // 将上一个节点从链表中剔除，协助GC  node.prev = null; prev.next = null; } // 入队  private Node enqueue() { while (true) { // 获取尾节点  Node t = tail; // 构造新节点  Node node = new Node(Thread.currentThread(), t); // 不断尝试原子更新尾节点  if (compareAndSetTail(t, node)) { // 更新尾节点成功了，让原尾节点的next指针指向当前节点  t.next = node; return node; } } } // 解锁  public void unlock() { // 把state更新成0，这里不需要原子更新，因为同时只有一个线程访问到这里  state = 0; // 下一个待唤醒的节点  Node next = head.next; // 下一个节点不为空，就唤醒它  if (next != null) { unsafe.unpark(next.thread); } } private static class Node { // 存储的元素为线程  Thread thread; // 前一个节点（可以没有，但实现起来很困难）  Node prev; // 后一个节点  Node next; public Node() { } public Node(Thread thread, Node prev) { this.thread = thread; this.prev = prev; } } } AQS AQS的全称是AbstractQueuedSynchronizer，它的定位是为Java中几乎所有的锁和同步器提供一个基础框架。\nAQS是基于FIFO的队列实现的，并且内部维护了一个状态变量state，通过原子更新这个状态变量state即可以实现加锁解锁操作\nAQS中维护了一个队列，这个队列使用双链表实现，用于保存等待锁排队的线程；\nReentrantLock 公平锁 static final class FairSync extends Sync { private static final long serialVersionUID = -3000897897090466540L; /** * Fair version of tryAcquire. Don't grant access unless * recursive call or no waiters or is first. */ @ReservedStackAccess protected final boolean tryAcquire(int acquires) { final Thread current = Thread.currentThread(); int c = getState(); if (c == 0) { --------------------- //核心！！！！  //判断了队列中是否有前辈节点，没有前辈节点才会成功  if (!hasQueuedPredecessors() \u0026\u0026 compareAndSetState(0, acquires)) { setExclusiveOwnerThread(current); return true; } } else if (current == getExclusiveOwnerThread()) { int nextc = c + acquires; if (nextc  0) throw new Error(\"Maximum lock count exceeded\"); setState(nextc); return true; } return false; } } 和非公平的区别核心就在hasQueuedPredecessors方法\nfinal boolean nonfairTryAcquire(int acquires) { final Thread current = Thread.currentThread(); int c = getState(); if (c == 0) { if (compareAndSetState(0, acquires)) { setExclusiveOwnerThread(current); return true; } } else if (current == getExclusiveOwnerThread()) { int nextc = c + acquires; if (nextc  0) // overflow  throw new Error(\"Maximum lock count exceeded\"); setState(nextc); return true; } return false; } 条件锁 ","wordCount":"895","inLanguage":"en","datePublished":"0001-01-01T00:00:00Z","dateModified":"0001-01-01T00:00:00Z","author":{"@type":"Person","name":"Hao Sun"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://luluhome.site:8101/posts/%E5%A4%9A%E7%BA%BF%E7%A8%8B/"},"publisher":{"@type":"Organization","name":"Hao Sun","logo":{"@type":"ImageObject","url":"https://luluhome.site:8101/%3Clink%20/%20abs%20url%3E"}}}</script>
+</head>
+<body id=top>
+<script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add('dark'):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove('dark'):window.matchMedia('(prefers-color-scheme: dark)').matches&&document.body.classList.add('dark')</script>
+<header class=header>
+<nav class=nav>
+<div class=logo>
+<a href=https://luluhome.site:8101/ accesskey=h title="Hao Sun (Alt + H)">Hao Sun</a>
+<span class=logo-switches>
+<button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+</button>
+</span>
+</div>
+<ul id=menu>
+<li>
+<a href=https://luluhome.site:8101/archives/ title=Archive>
+<span>Archive</span>
+</a>
+</li>
+<li>
+<a href=https://luluhome.site:8101/search/ title="Search (Alt + /)" accesskey=/>
+<span>Search</span>
+</a>
+</li>
+<li>
+<a href=https://luluhome.site:8101/tags/ title=Tags>
+<span>Tags</span>
+</a>
+</li>
+</ul>
+</nav>
+</header>
+<main class=main>
+<article class=post-single>
+<header class=post-header>
+<div class=breadcrumbs><a href=https://luluhome.site:8101/>Home</a>&nbsp;»&nbsp;<a href=https://luluhome.site:8101/posts/>Posts</a></div>
+<h1 class=post-title>
+</h1>
+<div class=post-meta>5 min&nbsp;·&nbsp;Hao Sun
+</div>
+</header> <div class=toc>
+<details>
+<summary accesskey=c title="(Alt + C)">
+<span class=details>Table of Contents</span>
+</summary>
+<div class=inner><ul>
+<li>
+<a href=#wait aria-label=Wait>Wait</a></li>
+<li>
+<a href=#unsafe aria-label=UnSafe>UnSafe</a></li>
+<li>
+<a href=#atomicinteger aria-label=AtomicInteger>AtomicInteger</a></li>
+<li>
+<a href=#atomicstampedreference aria-label=AtomicStampedReference>AtomicStampedReference</a></li>
+<li>
+<a href=#longadder aria-label=LongAdder>LongAdder</a></li>
+<li>
+<a href=#%e4%bc%aa%e5%85%b1%e4%ba%ab aria-label=伪共享>伪共享</a></li>
+<li>
+<a href=#%e9%94%81%e5%90%8d%e8%af%8d%e8%a7%a3%e9%87%8a aria-label=锁名词解释>锁名词解释</a></li>
+<li>
+<a href=#jmm%e7%9a%84%e5%8e%9f%e5%ad%90%e6%80%a7%e5%8f%af%e8%a7%81%e6%80%a7%e6%9c%89%e5%ba%8f%e6%80%a7 aria-label=JMM的原子性、可见性、有序性>JMM的原子性、可见性、有序性</a></li>
+<li>
+<a href=#synchronized aria-label=Synchronized>Synchronized</a></li>
+<li>
+<a href=#%e8%87%aa%e5%b7%b1%e5%ae%9e%e7%8e%b0%e4%b8%80%e4%b8%aa%e9%94%81 aria-label=自己实现一个锁>自己实现一个锁</a></li>
+<li>
+<a href=#aqs aria-label=AQS>AQS</a></li>
+<li>
+<a href=#reentrantlock aria-label=ReentrantLock>ReentrantLock</a><ul>
+<li>
+<a href=#%e5%85%ac%e5%b9%b3%e9%94%81 aria-label=公平锁>公平锁</a></li>
+<li>
+<a href=#%e6%9d%a1%e4%bb%b6%e9%94%81 aria-label=条件锁>条件锁</a>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</details>
+</div>
+<div class=post-content><h1 id=wait>Wait<a hidden class=anchor aria-hidden=true href=#wait>#</a></h1>
+<h1 id=unsafe>UnSafe<a hidden class=anchor aria-hidden=true href=#unsafe>#</a></h1>
+<p>UnSafe是为java底层类库使用的，不应该被用户所使用，因为他的权限太高，可以做很多事情，例如修改私有字段的值、抛出异常、使用堆外内存、CAS操作基于CPU的CAS指令，以达到原子操作。Park()阻塞线程、UnPark()唤醒线程。</p>
+<blockquote>
+<p>UnSafe有一个属性静态theUnsafe，可以通过反射的方式获取到Unsafe实例</p>
+</blockquote>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java>Field theUnsafe <span style=color:#f92672>=</span> Unsafe<span style=color:#f92672>.</span><span style=color:#a6e22e>class</span><span style=color:#f92672>.</span><span style=color:#a6e22e>getDeclaredField</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;theUnsafe&#34;</span><span style=color:#f92672>);</span>
+theUnsafe<span style=color:#f92672>.</span><span style=color:#a6e22e>setAccessible</span><span style=color:#f92672>(</span><span style=color:#66d9ef>true</span><span style=color:#f92672>);</span>
+unsafe <span style=color:#f92672>=</span> <span style=color:#f92672>(</span>Unsafe<span style=color:#f92672>)</span> theUnsafe<span style=color:#f92672>.</span><span style=color:#a6e22e>get</span><span style=color:#f92672>(</span><span style=color:#66d9ef>null</span><span style=color:#f92672>);</span>
+</code></pre></div><blockquote>
+<p>JUC下面大量使用了CAS操作，它们的底层是调用的Unsafe的CompareAndSwapXXX()方法。这种方式广泛运用于无锁算法，与java中标准的悲观锁机制相比，它可以利用CAS处理器指令提供极大的加速。</p>
+</blockquote>
+<h1 id=atomicinteger>AtomicInteger<a hidden class=anchor aria-hidden=true href=#atomicinteger>#</a></h1>
+<p>AtomicInteger是java提供的原子类</p>
+<blockquote>
+<p>原子操作是指不会被线程调度机制打断的操作，这种操作一旦开始，就一直运行到结束，中间不会有任何线程上下文切换。</p>
+<p>原子操作可以是一个步骤，也可以是多个操作步骤，但是其顺序不可以被打乱，也不可以被切割而只执行其中的一部分，将整个操作视作一个整体是原子性的核心特征。</p>
+<p>我们这里说的原子操作与数据库ACID中的原子性，笔者认为最大区别在于，数据库中的原子性主要运用在事务中，一个事务之内的所有更新操作要么都成功，要么都失败，事务是有回滚机制的，而我们这里说的原子操作是没有回滚的，这是最大的区别。</p>
+</blockquote>
+<p>底层其实就是用UnSafe类去操作的</p>
+<p><strong>Value是volatile声明的，保证多线程的可见性，volatile只能保证可见性和禁止重排序，但并不能保证原子性，所以需要cas操作</strong></p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>AtomicInteger</span> <span style=color:#66d9ef>extends</span> Number <span style=color:#66d9ef>implements</span> java<span style=color:#f92672>.</span><span style=color:#a6e22e>io</span><span style=color:#f92672>.</span><span style=color:#a6e22e>Serializable</span> <span style=color:#f92672>{</span>
+    <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>final</span> <span style=color:#66d9ef>long</span> serialVersionUID <span style=color:#f92672>=</span> 6214790243416807050L<span style=color:#f92672>;</span>
+
+    <span style=color:#75715e>/*
+</span><span style=color:#75715e>     * This class intended to be implemented using VarHandles, but there
+</span><span style=color:#75715e>     * are unresolved cyclic startup dependencies.
+</span><span style=color:#75715e>     */</span>
+    <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>final</span> jdk<span style=color:#f92672>.</span><span style=color:#a6e22e>internal</span><span style=color:#f92672>.</span><span style=color:#a6e22e>misc</span><span style=color:#f92672>.</span><span style=color:#a6e22e>Unsafe</span> U <span style=color:#f92672>=</span> jdk<span style=color:#f92672>.</span><span style=color:#a6e22e>internal</span><span style=color:#f92672>.</span><span style=color:#a6e22e>misc</span><span style=color:#f92672>.</span><span style=color:#a6e22e>Unsafe</span><span style=color:#f92672>.</span><span style=color:#a6e22e>getUnsafe</span><span style=color:#f92672>();</span>
+    <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>final</span> <span style=color:#66d9ef>long</span> VALUE <span style=color:#f92672>=</span> U<span style=color:#f92672>.</span><span style=color:#a6e22e>objectFieldOffset</span><span style=color:#f92672>(</span>AtomicInteger<span style=color:#f92672>.</span><span style=color:#a6e22e>class</span><span style=color:#f92672>,</span> <span style=color:#e6db74>&#34;value&#34;</span><span style=color:#f92672>);</span>
+
+    <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>volatile</span> <span style=color:#66d9ef>int</span> value<span style=color:#f92672>;</span>
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>final</span> <span style=color:#66d9ef>boolean</span> <span style=color:#a6e22e>compareAndSet</span><span style=color:#f92672>(</span><span style=color:#66d9ef>int</span> expectedValue<span style=color:#f92672>,</span> <span style=color:#66d9ef>int</span> newValue<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+    <span style=color:#66d9ef>return</span> U<span style=color:#f92672>.</span><span style=color:#a6e22e>compareAndSetInt</span><span style=color:#f92672>(</span><span style=color:#66d9ef>this</span><span style=color:#f92672>,</span> VALUE<span style=color:#f92672>,</span> expectedValue<span style=color:#f92672>,</span> newValue<span style=color:#f92672>);</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>自增的方法也是调用Unsafe的自增方法，实际上是进行自旋操作去保证更新成功</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>final</span> <span style=color:#66d9ef>int</span> <span style=color:#a6e22e>getAndAdd</span><span style=color:#f92672>(</span><span style=color:#66d9ef>int</span> delta<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+    <span style=color:#66d9ef>return</span> U<span style=color:#f92672>.</span><span style=color:#a6e22e>getAndAddInt</span><span style=color:#f92672>(</span><span style=color:#66d9ef>this</span><span style=color:#f92672>,</span> VALUE<span style=color:#f92672>,</span> delta<span style=color:#f92672>);</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#a6e22e>@HotSpotIntrinsicCandidate</span>
+<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>final</span> <span style=color:#66d9ef>int</span> <span style=color:#a6e22e>getAndAddInt</span><span style=color:#f92672>(</span>Object o<span style=color:#f92672>,</span> <span style=color:#66d9ef>long</span> offset<span style=color:#f92672>,</span> <span style=color:#66d9ef>int</span> delta<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+    <span style=color:#66d9ef>int</span> v<span style=color:#f92672>;</span>
+    <span style=color:#66d9ef>do</span> <span style=color:#f92672>{</span>
+        v <span style=color:#f92672>=</span> getIntVolatile<span style=color:#f92672>(</span>o<span style=color:#f92672>,</span> offset<span style=color:#f92672>);</span>
+    <span style=color:#f92672>}</span> <span style=color:#66d9ef>while</span> <span style=color:#f92672>(!</span>weakCompareAndSetInt<span style=color:#f92672>(</span>o<span style=color:#f92672>,</span> offset<span style=color:#f92672>,</span> v<span style=color:#f92672>,</span> v <span style=color:#f92672>+</span> delta<span style=color:#f92672>));</span>
+    <span style=color:#66d9ef>return</span> v<span style=color:#f92672>;</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><h1 id=atomicstampedreference>AtomicStampedReference<a hidden class=anchor aria-hidden=true href=#atomicstampedreference>#</a></h1>
+<p>虽然CAS解决了高并发情况下的问题，但是带来的一个问题就是ABA问题。</p>
+<p>CAS是Compare and swap，只有目标值等于某个值时才会进行更新</p>
+<p>例如要0更新为1的时候，发生如下操作</p>
+<p>B线程读取到了0
+B线程阻塞了</p>
+<p>A线程读取到了0</p>
+<p>A线程把0变成2</p>
+<p>A线程又把2变成了0</p>
+<p>B线程恢复，继续比较发现还是0，就把0变成1</p>
+<p><strong>ABA的危害主要在无锁场景中</strong></p>
+<p>例如在栈中</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#f92672>package</span> com.java.demo.jmm<span style=color:#f92672>;</span>
+
+<span style=color:#f92672>import</span> java.util.concurrent.atomic.AtomicReference<span style=color:#f92672>;</span>
+
+<span style=color:#75715e>/**
+</span><span style=color:#75715e> * 无锁栈
+</span><span style=color:#75715e> */</span>
+<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>ABA</span> <span style=color:#f92672>{</span>
+
+    <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Node</span><span style=color:#f92672>{</span>
+        <span style=color:#66d9ef>int</span> value<span style=color:#f92672>;</span>
+        Node next<span style=color:#f92672>;</span>
+
+        <span style=color:#66d9ef>public</span> <span style=color:#a6e22e>Node</span><span style=color:#f92672>(</span><span style=color:#66d9ef>int</span> value<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+            <span style=color:#66d9ef>this</span><span style=color:#f92672>.</span><span style=color:#a6e22e>value</span> <span style=color:#f92672>=</span> value<span style=color:#f92672>;</span>
+        <span style=color:#f92672>}</span>
+    <span style=color:#f92672>}</span>
+
+    <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> AtomicReference<span style=color:#f92672>&lt;</span>Node<span style=color:#f92672>&gt;</span> top<span style=color:#f92672>=</span><span style=color:#66d9ef>new</span> AtomicReference<span style=color:#f92672>&lt;&gt;();</span>
+
+    <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>push</span><span style=color:#f92672>(</span>Node newNode<span style=color:#f92672>){</span>
+        <span style=color:#66d9ef>for</span> <span style=color:#f92672>(;;){</span>
+            <span style=color:#75715e>//获取站顶
+</span><span style=color:#75715e></span>            Node node <span style=color:#f92672>=</span> top<span style=color:#f92672>.</span><span style=color:#a6e22e>get</span><span style=color:#f92672>();</span>
+            <span style=color:#75715e>//把新节点放在顶部
+</span><span style=color:#75715e></span>            newNode<span style=color:#f92672>.</span><span style=color:#a6e22e>next</span><span style=color:#f92672>=</span>node<span style=color:#f92672>;</span>
+            <span style=color:#75715e>//cas更新
+</span><span style=color:#75715e></span>            <span style=color:#66d9ef>if</span><span style=color:#f92672>(</span>top<span style=color:#f92672>.</span><span style=color:#a6e22e>compareAndSet</span><span style=color:#f92672>(</span>node<span style=color:#f92672>,</span>newNode<span style=color:#f92672>)){</span>
+                <span style=color:#66d9ef>return</span><span style=color:#f92672>;</span>
+            <span style=color:#f92672>}</span>
+        <span style=color:#f92672>}</span>
+    <span style=color:#f92672>}</span>
+
+    <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> Node <span style=color:#a6e22e>pop</span><span style=color:#f92672>(){</span>
+        <span style=color:#66d9ef>for</span> <span style=color:#f92672>(;;){</span>
+            <span style=color:#75715e>//获得栈顶元素
+</span><span style=color:#75715e></span>            Node t <span style=color:#f92672>=</span> top<span style=color:#f92672>.</span><span style=color:#a6e22e>get</span><span style=color:#f92672>();</span>
+            <span style=color:#66d9ef>if</span><span style=color:#f92672>(</span>t<span style=color:#f92672>==</span><span style=color:#66d9ef>null</span><span style=color:#f92672>){</span>
+                <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>null</span><span style=color:#f92672>;</span>
+            <span style=color:#f92672>}</span>
+            Node next<span style=color:#f92672>=</span>t<span style=color:#f92672>.</span><span style=color:#a6e22e>next</span><span style=color:#f92672>;</span>
+            <span style=color:#66d9ef>if</span><span style=color:#f92672>(</span>top<span style=color:#f92672>.</span><span style=color:#a6e22e>compareAndSet</span><span style=color:#f92672>(</span>t<span style=color:#f92672>,</span>next<span style=color:#f92672>)){</span>
+                t<span style=color:#f92672>.</span><span style=color:#a6e22e>next</span><span style=color:#f92672>=</span><span style=color:#66d9ef>null</span><span style=color:#f92672>;</span>
+                <span style=color:#66d9ef>return</span> t<span style=color:#f92672>;</span>
+            <span style=color:#f92672>}</span>
+        <span style=color:#f92672>}</span>
+
+    <span style=color:#f92672>}</span>
+
+
+    <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>main</span><span style=color:#f92672>(</span>String<span style=color:#f92672>[]</span> args<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+      <span style=color:#75715e>//两个线程去操作
+</span><span style=color:#75715e></span>        <span style=color:#75715e>//先入栈1，2，3
+</span><span style=color:#75715e></span>        push<span style=color:#f92672>(</span><span style=color:#66d9ef>new</span> Node<span style=color:#f92672>(</span>1<span style=color:#f92672>));</span>
+        push<span style=color:#f92672>(</span><span style=color:#66d9ef>new</span> Node<span style=color:#f92672>(</span>2<span style=color:#f92672>));</span>
+        push<span style=color:#f92672>(</span><span style=color:#66d9ef>new</span> Node<span style=color:#f92672>(</span>3<span style=color:#f92672>));</span>
+
+
+        <span style=color:#66d9ef>new</span> Thread<span style=color:#f92672>(()-&gt;{</span>
+            <span style=color:#75715e>// 线程1出栈一个元素
+</span><span style=color:#75715e></span>            pop<span style=color:#f92672>();</span>
+        <span style=color:#f92672>}).</span><span style=color:#a6e22e>start</span><span style=color:#f92672>();</span>
+
+        <span style=color:#66d9ef>new</span> Thread<span style=color:#f92672>(()-&gt;{</span>
+            <span style=color:#75715e>// 线程2出栈两个元素
+</span><span style=color:#75715e></span>            Node A <span style=color:#f92672>=</span> pop<span style=color:#f92672>();</span> <span style=color:#75715e>//3
+</span><span style=color:#75715e></span>            Node B <span style=color:#f92672>=</span> pop<span style=color:#f92672>();</span> <span style=color:#75715e>//2
+</span><span style=color:#75715e></span>            <span style=color:#75715e>// 线程2又把A入栈了
+</span><span style=color:#75715e></span>            push<span style=color:#f92672>(</span>A<span style=color:#f92672>);</span> <span style=color:#75715e>// 3又进去了
+</span><span style=color:#75715e></span>        <span style=color:#f92672>}).</span><span style=color:#a6e22e>start</span><span style=color:#f92672>();</span>
+
+        <span style=color:#75715e>//线程1 出3的时候阻塞了，线程2先出3，然后再出2，测试top就剩1一个。3节点已经再1线程那里读到了，在自己的工作空间里，3的后节点是2，
+</span><span style=color:#75715e></span>        <span style=color:#75715e>//因此，线程2又把3放进去，1发现是又是3了更新成功，就放了一个2，在top，而2元素在2线程的时候已经出栈了，就没有next节点了，导致最后
+</span><span style=color:#75715e></span>        <span style=color:#75715e>//栈里就一个2节点
+</span><span style=color:#75715e></span>    <span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>上面的栈ABA问题</p>
+<p>（1）版本号</p>
+<p>比如，上面的栈结构增加一个版本号用于控制，每次CAS的同时检查版本号有没有变过。</p>
+<p>还有一些数据结构喜欢使用高位存储一个邮戳来保证CAS的安全。</p>
+<p>（2）不重复使用节点的引用</p>
+<p>比如，上面的栈结构在线程2执行push()入栈操作的时候新建一个节点传入，而不是复用节点1的引用；</p>
+<p>（3）直接操作元素而不是节点</p>
+<p>比如，上面的栈结构push()方法不应该传入一个节点（Node），而是传入元素值（int的value）。</p>
+<p>Java提供的AtomicStampedReference就是通过邮戳</p>
+<p>（1）在多线程环境下使用无锁结构要注意ABA问题；</p>
+<p>（2）ABA的解决一般使用版本号来控制，并保证数据结构使用元素值来传递，且每次添加元素都新建节点承载元素值；</p>
+<p>（3）AtomicStampedReference内部使用Pair来存储元素值及其版本号；</p>
+<h1 id=longadder>LongAdder<a hidden class=anchor aria-hidden=true href=#longadder>#</a></h1>
+<p>LongAdder和AtomicLong的区别</p>
+<p>在高并发场景下，特别是写多的场景下，LongAdder要比AtomicLong快很多</p>
+<p>（1）LongAdder通过base和cells数组来存储值；</p>
+<p>（2）不同的线程会hash到不同的cell上去更新，减少了竞争；</p>
+<p>（3）LongAdder的性能非常高，最终会达到一种无竞争的状态；</p>
+<h1 id=伪共享>伪共享<a hidden class=anchor aria-hidden=true href=#伪共享>#</a></h1>
+<p>缓存是由缓存行组成的，通常是 64 字节（常用处理器的缓存行是 64 字节的，比较旧的处理器缓存行是 32 字节），并且它有效地引用主内存中的一块地址。</p>
+<p>一个 Java 的 long 类型是 8 字节，因此在一个缓存行中可以存 8 个 long 类型的变量。</p>
+<p><img loading=lazy src=https://gitee.com/alan-tang-tt/yuan/raw/master/%E6%AD%BB%E7%A3%95%20java%E5%B9%B6%E5%8F%91%E5%8C%85/resource/false-sharing2.png alt=ABA>
+</p>
+<p>在程序运行的过程中，缓存每次更新都从主内存中加载连续的 64 个字节。因此，如果访问一个 long 类型的数组时，当数组中的一个值被加载到缓存中时，另外 7 个元素也会被加载到缓存中。</p>
+<p>但是，如果使用的数据结构中的项在内存中不是彼此相邻的，比如链表，那么将得不到免费缓存加载带来的好处。</p>
+<p>不过，这种免费加载也有一个坏处。设想如果我们有个 long 类型的变量 a，它不是数组的一部分，而是一个单独的变量，并且还有另外一个 long 类型的变量 b 紧挨着它，那么当加载 a 的时候将免费加载 b。</p>
+<p>看起来似乎没有什么毛病，但是如果一个 CPU 核心的线程在对 a 进行修改，另一个 CPU 核心的线程却在对 b 进行读取。</p>
+<p>当前者修改 a 时，会把 a 和 b 同时加载到前者核心的缓存行中，更新完 a 后其它所有包含 a 的缓存行都将失效，因为其它缓存中的 a 不是最新值了。</p>
+<p>而当后者读取 b 时，发现这个缓存行已经失效了，需要从主内存中重新加载。</p>
+<p>请记住，我们的缓存都是以缓存行作为一个单位来处理的，所以失效 a 的缓存的同时，也会把 b 失效，反之亦然。</p>
+<p><img loading=lazy src=https://gitee.com/alan-tang-tt/yuan/raw/master/%E6%AD%BB%E7%A3%95%20java%E5%B9%B6%E5%8F%91%E5%8C%85/resource/false-sharing3.png alt=ABA>
+</p>
+<p>这样就出现了一个问题，b 和 a 完全不相干，每次却要因为 a 的更新需要从主内存重新读取，它被缓存未命中给拖慢了。</p>
+<p>这就是传说中的伪共享。</p>
+<p>使用 @sun.misc.Contended 注解（java8）</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#a6e22e>@sun.misc.Contended</span>
+<span style=color:#66d9ef>class</span> <span style=color:#a6e22e>MyLong</span> <span style=color:#f92672>{</span>
+    <span style=color:#66d9ef>volatile</span> <span style=color:#66d9ef>long</span> value<span style=color:#f92672>;</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>默认使用这个注解是无效的，需要在JVM启动参数加上<code>-XX:-RestrictContended</code>才会生效，，再次运行程序发现时间是<code>718ms</code>。</p>
+<p>注意，以上三种方式中的前两种是通过加字段的形式实现的，加的字段又没有地方使用，可能会被jvm优化掉，所以建议使用第三种方式。</p>
+<h1 id=锁名词解释>锁名词解释<a hidden class=anchor aria-hidden=true href=#锁名词解释>#</a></h1>
+<p>（1）公平锁/非公平锁</p>
+<p>公平锁，是指按照线程申请的顺序获取锁。</p>
+<p>非公平锁，是指不是按照线程申请的顺序获取锁，有可能后申请的线程反而先获取到锁，假如先来的线程一直获取不到锁，会造成锁饥饿现象。</p>
+<p>ReentrantLock中可以通过构造方法指定是否为公平锁，默认为非公平锁，非公平锁的优点在于吞吐量大。</p>
+<p>synchronized无法指定为公平锁，一直都是非公平锁。</p>
+<p>（2）可重入锁</p>
+<p>可重入锁，是指一个线程获取锁之后再尝试获取锁时会自动获取锁，可重入锁的优点是避免死锁。</p>
+<p>ReentrantLock和synchronized都是可重入锁。</p>
+<p>（3）独享锁/共享锁</p>
+<p>独享锁，是指锁一次只能被一个线程持有。</p>
+<p>共享锁，是指锁一次可以被多个线程持有。</p>
+<p>ReentrantLock和synchronized都是独享锁，ReadWriteLock的读锁是共享锁，写锁是独享锁。</p>
+<p>（4）互斥锁/读写锁</p>
+<p>与独享锁/共享锁的概念差不多，是独享锁/共享锁的具体实现。</p>
+<p>ReentrantLock和synchronized都是互斥锁</p>
+<p>ReadWriteLock是读写锁</p>
+<p>（5）乐观锁/悲观锁</p>
+<p>悲观锁，是指认为对于同一个数据的并发操作必然会发生修改，即使不会发生修改也这么认为，所以一定要加锁。</p>
+<p>乐观锁，是指认为对于同一个数据的并发操作不一定会发生修改，在更新数据的时候，尝试去更新数据，如果失败就不断尝试。</p>
+<p>悲观锁适用于写操作多的场景，乐观锁适用于读操作多的场景。</p>
+<p>（6）分段锁</p>
+<p>分段锁，是一种锁的设计思路，它细化了锁的粒度，主要运用在ConcurrentHashMap中，实现高效的并发操作，当操作不需要更新整个数组时，就只锁数组中的一项就可以了。</p>
+<p>（7）偏向锁/轻量级锁/重量级锁</p>
+<p>这三个锁主要是针对synchronized进行优化使用的，主要是通过对象监视器在对象头中的字段来表明的。</p>
+<p>偏向锁，是指一段同步代码一直被一个线程访问，那么这个线程会自动获取锁，降低获取锁的代价。</p>
+<p>轻量级锁，是指当锁是偏向锁时，被另一个线程所访问，偏向锁会升级为轻量级锁，这个线程会通过自旋的方式尝试获取锁，不会阻塞，提高性能。</p>
+<p>重量级锁，是指当锁是轻量级锁时，当自旋的线程自旋了一定的次数后，还没有获取到锁，就会进入阻塞状态，该锁升级为重量级锁，重量级锁会使其他线程阻塞，性能降低。</p>
+<p>（8）自旋锁</p>
+<p>自旋锁，是指尝试获取锁的线程不会阻塞，而是循环的方式不断尝试，这样的好处是减少线程的上下文切换带来的开锁，提高性能，缺点是循环会消耗CPU。</p>
+<p>（9）监视器锁</p>
+<p>synchronized的实现方式，使用monitorenter和monitorexit来实现。</p>
+<p>（10）mutex锁</p>
+<p>互斥锁，LockSupport.part()底层是通过mutex实现的。</p>
+<h1 id=jmm的原子性可见性有序性>JMM的原子性、可见性、有序性<a hidden class=anchor aria-hidden=true href=#jmm的原子性可见性有序性>#</a></h1>
+<p>Java内存模型就是为了解决多线程环境下共享变量的一致性问题，那么一致性包含哪些内容呢？</p>
+<p>一致性主要包含三大特性：原子性、可见性、有序性，下面我们就来看看Java内存模型是怎么实现这三大特性的。</p>
+<p>（1）原子性</p>
+<p>原子性是指一段操作一旦开始就会一直运行到底，中间不会被其它线程打断，这段操作可以是一个操作，也可以是多个操作。</p>
+<p>由Java内存模型来直接保证的原子性操作包括read、load、user、assign、store、write这两个操作，我们可以大致认为基本类型变量的读写是具备原子性的。</p>
+<p>如果应用需要一个更大范围的原子性，Java内存模型还提供了lock和unlock这两个操作来满足这种需求，尽管不能直接使用这两个操作，但我们可以使用它们更具体的实现synchronized来实现。</p>
+<p>因此，synchronized块之间的操作也是原子性的。</p>
+<p>（2）可见性</p>
+<p>可见性是指当一个线程修改了共享变量的值，其它线程能立即感知到这种变化。</p>
+<p>Java内存模型是通过在变更修改后同步回主内存，在变量读取前从主内存刷新变量值来实现的，它是依赖主内存的，无论是普通变量还是volatile变量都是如此。</p>
+<p>普通变量与volatile变量的主要区别是是否会在修改之后立即同步回主内存，以及是否在每次读取前立即从主内存刷新。因此我们可以说volatile变量保证了多线程环境下变量的可见性，但普通变量不能保证这一点。</p>
+<p>除了volatile之外，还有两个关键字也可以保证可见性，它们是synchronized和final。</p>
+<p>synchronized的可见性是由“对一个变量执行unlock操作之前，必须先把此变量同步回主内存中，即执行store和write操作”这条规则获取的。</p>
+<p>final的可见性是指被final修饰的字段在构造器中一旦被初始化完成，那么其它线程中就能看见这个final字段了。</p>
+<p>（3）有序性</p>
+<p>Java程序中天然的有序性可以总结为一句话：如果在本线程中观察，所有的操作都是有序的；如果在另一个线程中观察，所有的操作都是无序的。</p>
+<p>前半句是指线程内表现为串行的语义，后半句是指“指令重排序”现象和“工作内存和主内存同步延迟”现象。</p>
+<p>Java中提供了volatile和synchronized两个关键字来保证有序性。</p>
+<p>volatile天然就具有有序性，因为其禁止重排序。</p>
+<p>synchronized的有序性是由“一个变量同一时刻只允许一条线程对其进行lock操作”这条规则获取的。</p>
+<h1 id=synchronized>Synchronized<a hidden class=anchor aria-hidden=true href=#synchronized>#</a></h1>
+<p>Java在不断进化，同样地，Java中像synchronized这种古老的东西也在不断进化，比如ConcurrentHashMap在jdk7的时候还是使用ReentrantLock加锁的，在jdk8的时候已经换成了原生的synchronized了，可见synchronized有原生的支持，它的进化空间还是很大的。</p>
+<p>那么，synchronized有哪些进化中的状态呢？</p>
+<p>我们这里稍做一些简单地介绍：</p>
+<p>（1）偏向锁，是指一段同步代码一直被一个线程访问，那么这个线程会自动获取锁，降低获取锁的代价。</p>
+<p>（2）轻量级锁，是指当锁是偏向锁时，被另一个线程所访问，偏向锁会升级为轻量级锁，这个线程会通过自旋的方式尝试获取锁，不会阻塞，提高性能。</p>
+<p>（3）重量级锁，是指当锁是轻量级锁时，当自旋的线程自旋了一定的次数后，还没有获取到锁，就会进入阻塞状态，该锁升级为重量级锁，重量级锁会使其他线程阻塞，性能降低。</p>
+<p>总结：</p>
+<p>（1）synchronized在编译时会在同步块前后生成monitorenter和monitorexit字节码指令；</p>
+<p>（2）monitorenter和monitorexit字节码指令需要一个引用类型的参数，基本类型不可以哦；</p>
+<p>（3）monitorenter和monitorexit字节码指令更底层是使用Java内存模型的lock和unlock指令；</p>
+<p>（4）synchronized是可重入锁；</p>
+<p>（5）synchronized是非公平锁；</p>
+<p>（6）synchronized可以同时保证原子性、可见性、有序性；</p>
+<p>（7）synchronized有三种状态：偏向锁、轻量级锁、重量级锁；</p>
+<h1 id=自己实现一个锁>自己实现一个锁<a hidden class=anchor aria-hidden=true href=#自己实现一个锁>#</a></h1>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#f92672>package</span> com.java.demo.lock<span style=color:#f92672>;</span>
+
+<span style=color:#f92672>import</span> com.java.demo.jmm.UnSafeTest<span style=color:#f92672>;</span>
+<span style=color:#f92672>import</span> sun.misc.Unsafe<span style=color:#f92672>;</span>
+
+<span style=color:#f92672>import</span> java.lang.reflect.Field<span style=color:#f92672>;</span>
+
+<span style=color:#75715e>/**
+</span><span style=color:#75715e> * 自定义锁
+</span><span style=color:#75715e> * 多线程尝试去更新state，更新成功的线程进入执行，更新不成功的直接进入队列，进行阻塞，等待，直至拿到锁的线程释放锁
+</span><span style=color:#75715e> *
+</span><span style=color:#75715e> *
+</span><span style=color:#75715e> */</span>
+<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>MyLock</span> <span style=color:#f92672>{</span>
+    <span style=color:#75715e>/**
+</span><span style=color:#75715e>     * 状态
+</span><span style=color:#75715e>     */</span>
+    <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>volatile</span> <span style=color:#66d9ef>int</span> state<span style=color:#f92672>;</span>
+
+    <span style=color:#75715e>//用于cas更新
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>static</span> Unsafe unsafe<span style=color:#f92672>;</span>
+
+    <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>long</span> stateOffset<span style=color:#f92672>;</span>
+
+    <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>long</span> tailOffset<span style=color:#f92672>;</span>
+
+    <span style=color:#75715e>// 链表头
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>volatile</span> Node head<span style=color:#f92672>;</span>
+    <span style=color:#75715e>// 链表尾
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>volatile</span> Node tail<span style=color:#f92672>;</span>
+
+    <span style=color:#66d9ef>private</span> Node empty <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> Node<span style=color:#f92672>();</span>
+
+    <span style=color:#66d9ef>public</span> <span style=color:#a6e22e>MyLock</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+        head <span style=color:#f92672>=</span> tail <span style=color:#f92672>=</span> empty<span style=color:#f92672>;</span>
+    <span style=color:#f92672>}</span>
+    <span style=color:#66d9ef>static</span> <span style=color:#f92672>{</span>
+        <span style=color:#66d9ef>try</span> <span style=color:#f92672>{</span>
+            <span style=color:#75715e>//准备 unsafe
+</span><span style=color:#75715e></span>            Field theUnsafe <span style=color:#f92672>=</span> Unsafe<span style=color:#f92672>.</span><span style=color:#a6e22e>class</span><span style=color:#f92672>.</span><span style=color:#a6e22e>getDeclaredField</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;theUnsafe&#34;</span><span style=color:#f92672>);</span>
+            theUnsafe<span style=color:#f92672>.</span><span style=color:#a6e22e>setAccessible</span><span style=color:#f92672>(</span><span style=color:#66d9ef>true</span><span style=color:#f92672>);</span>
+            unsafe <span style=color:#f92672>=</span> <span style=color:#f92672>(</span>Unsafe<span style=color:#f92672>)</span> theUnsafe<span style=color:#f92672>.</span><span style=color:#a6e22e>get</span><span style=color:#f92672>(</span><span style=color:#66d9ef>null</span><span style=color:#f92672>);</span>
+            stateOffset <span style=color:#f92672>=</span> unsafe<span style=color:#f92672>.</span><span style=color:#a6e22e>objectFieldOffset</span><span style=color:#f92672>(</span>MyLock<span style=color:#f92672>.</span><span style=color:#a6e22e>class</span><span style=color:#f92672>.</span><span style=color:#a6e22e>getDeclaredField</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;state&#34;</span><span style=color:#f92672>));</span>
+            tailOffset <span style=color:#f92672>=</span> unsafe<span style=color:#f92672>.</span><span style=color:#a6e22e>objectFieldOffset</span><span style=color:#f92672>(</span>MyLock<span style=color:#f92672>.</span><span style=color:#a6e22e>class</span><span style=color:#f92672>.</span><span style=color:#a6e22e>getDeclaredField</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;tail&#34;</span><span style=color:#f92672>));</span>
+        <span style=color:#f92672>}</span><span style=color:#66d9ef>catch</span> <span style=color:#f92672>(</span>Exception e<span style=color:#f92672>){</span>
+            e<span style=color:#f92672>.</span><span style=color:#a6e22e>printStackTrace</span><span style=color:#f92672>();</span>
+        <span style=color:#f92672>}</span>
+    <span style=color:#f92672>}</span>
+    <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>boolean</span> <span style=color:#a6e22e>compareAndSetState</span><span style=color:#f92672>(</span><span style=color:#66d9ef>int</span> expect<span style=color:#f92672>,</span> <span style=color:#66d9ef>int</span> update<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+        <span style=color:#66d9ef>return</span> unsafe<span style=color:#f92672>.</span><span style=color:#a6e22e>compareAndSwapInt</span><span style=color:#f92672>(</span><span style=color:#66d9ef>this</span><span style=color:#f92672>,</span> stateOffset<span style=color:#f92672>,</span> expect<span style=color:#f92672>,</span> update<span style=color:#f92672>);</span>
+    <span style=color:#f92672>}</span>
+
+    <span style=color:#75715e>// 原子更新tail字段
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>boolean</span> <span style=color:#a6e22e>compareAndSetTail</span><span style=color:#f92672>(</span>Node expect<span style=color:#f92672>,</span> Node update<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+        <span style=color:#66d9ef>return</span> unsafe<span style=color:#f92672>.</span><span style=color:#a6e22e>compareAndSwapObject</span><span style=color:#f92672>(</span><span style=color:#66d9ef>this</span><span style=color:#f92672>,</span> tailOffset<span style=color:#f92672>,</span> expect<span style=color:#f92672>,</span> update<span style=color:#f92672>);</span>
+    <span style=color:#f92672>}</span>
+
+    <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>lock</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+        <span style=color:#75715e>// 尝试更新state字段，更新成功说明占有了锁
+</span><span style=color:#75715e></span>        <span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>compareAndSetState<span style=color:#f92672>(</span>0<span style=color:#f92672>,</span> 1<span style=color:#f92672>))</span> <span style=color:#f92672>{</span>
+            <span style=color:#66d9ef>return</span><span style=color:#f92672>;</span>
+        <span style=color:#f92672>}</span>
+        <span style=color:#75715e>// 未更新成功的线程则入队
+</span><span style=color:#75715e></span>        Node node <span style=color:#f92672>=</span> enqueue<span style=color:#f92672>();</span>
+        Node prev <span style=color:#f92672>=</span> node<span style=color:#f92672>.</span><span style=color:#a6e22e>prev</span><span style=color:#f92672>;</span>
+        <span style=color:#75715e>// 再次尝试获取锁，需要检测上一个节点是不是head，按入队顺序加锁
+</span><span style=color:#75715e></span>        <span style=color:#66d9ef>while</span> <span style=color:#f92672>(</span>node<span style=color:#f92672>.</span><span style=color:#a6e22e>prev</span> <span style=color:#f92672>!=</span> head <span style=color:#f92672>||</span> <span style=color:#f92672>!</span>compareAndSetState<span style=color:#f92672>(</span>0<span style=color:#f92672>,</span> 1<span style=color:#f92672>))</span> <span style=color:#f92672>{</span>
+            <span style=color:#75715e>// 未获取到锁，阻塞
+</span><span style=color:#75715e></span>            unsafe<span style=color:#f92672>.</span><span style=color:#a6e22e>park</span><span style=color:#f92672>(</span><span style=color:#66d9ef>false</span><span style=color:#f92672>,</span> 0L<span style=color:#f92672>);</span>
+        <span style=color:#f92672>}</span>
+        <span style=color:#75715e>// 下面不需要原子更新，因为同时只有一个线程访问到这里
+</span><span style=color:#75715e></span>        <span style=color:#75715e>// 获取到锁了且上一个节点是head
+</span><span style=color:#75715e></span>        <span style=color:#75715e>// head后移一位
+</span><span style=color:#75715e></span>        head <span style=color:#f92672>=</span> node<span style=color:#f92672>;</span>
+        <span style=color:#75715e>// 清空当前节点的内容，协助GC
+</span><span style=color:#75715e></span>        node<span style=color:#f92672>.</span><span style=color:#a6e22e>thread</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>null</span><span style=color:#f92672>;</span>
+        <span style=color:#75715e>// 将上一个节点从链表中剔除，协助GC
+</span><span style=color:#75715e></span>        node<span style=color:#f92672>.</span><span style=color:#a6e22e>prev</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>null</span><span style=color:#f92672>;</span>
+        prev<span style=color:#f92672>.</span><span style=color:#a6e22e>next</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>null</span><span style=color:#f92672>;</span>
+    <span style=color:#f92672>}</span>
+    <span style=color:#75715e>// 入队
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>private</span> Node <span style=color:#a6e22e>enqueue</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+        <span style=color:#66d9ef>while</span> <span style=color:#f92672>(</span><span style=color:#66d9ef>true</span><span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+            <span style=color:#75715e>// 获取尾节点
+</span><span style=color:#75715e></span>            Node t <span style=color:#f92672>=</span> tail<span style=color:#f92672>;</span>
+            <span style=color:#75715e>// 构造新节点
+</span><span style=color:#75715e></span>            Node node <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> Node<span style=color:#f92672>(</span>Thread<span style=color:#f92672>.</span><span style=color:#a6e22e>currentThread</span><span style=color:#f92672>(),</span> t<span style=color:#f92672>);</span>
+            <span style=color:#75715e>// 不断尝试原子更新尾节点
+</span><span style=color:#75715e></span>            <span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>compareAndSetTail<span style=color:#f92672>(</span>t<span style=color:#f92672>,</span> node<span style=color:#f92672>))</span> <span style=color:#f92672>{</span>
+                <span style=color:#75715e>// 更新尾节点成功了，让原尾节点的next指针指向当前节点
+</span><span style=color:#75715e></span>                t<span style=color:#f92672>.</span><span style=color:#a6e22e>next</span> <span style=color:#f92672>=</span> node<span style=color:#f92672>;</span>
+                <span style=color:#66d9ef>return</span> node<span style=color:#f92672>;</span>
+            <span style=color:#f92672>}</span>
+        <span style=color:#f92672>}</span>
+    <span style=color:#f92672>}</span>
+
+    <span style=color:#75715e>// 解锁
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>unlock</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+        <span style=color:#75715e>// 把state更新成0，这里不需要原子更新，因为同时只有一个线程访问到这里
+</span><span style=color:#75715e></span>        state <span style=color:#f92672>=</span> 0<span style=color:#f92672>;</span>
+        <span style=color:#75715e>// 下一个待唤醒的节点
+</span><span style=color:#75715e></span>        Node next <span style=color:#f92672>=</span> head<span style=color:#f92672>.</span><span style=color:#a6e22e>next</span><span style=color:#f92672>;</span>
+        <span style=color:#75715e>// 下一个节点不为空，就唤醒它
+</span><span style=color:#75715e></span>        <span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>next <span style=color:#f92672>!=</span> <span style=color:#66d9ef>null</span><span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+            unsafe<span style=color:#f92672>.</span><span style=color:#a6e22e>unpark</span><span style=color:#f92672>(</span>next<span style=color:#f92672>.</span><span style=color:#a6e22e>thread</span><span style=color:#f92672>);</span>
+        <span style=color:#f92672>}</span>
+    <span style=color:#f92672>}</span>
+
+    <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Node</span> <span style=color:#f92672>{</span>
+        <span style=color:#75715e>// 存储的元素为线程
+</span><span style=color:#75715e></span>        Thread thread<span style=color:#f92672>;</span>
+        <span style=color:#75715e>// 前一个节点（可以没有，但实现起来很困难）
+</span><span style=color:#75715e></span>        Node prev<span style=color:#f92672>;</span>
+        <span style=color:#75715e>// 后一个节点
+</span><span style=color:#75715e></span>        Node next<span style=color:#f92672>;</span>
+
+        <span style=color:#66d9ef>public</span> <span style=color:#a6e22e>Node</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+        <span style=color:#f92672>}</span>
+
+        <span style=color:#66d9ef>public</span> <span style=color:#a6e22e>Node</span><span style=color:#f92672>(</span>Thread thread<span style=color:#f92672>,</span> Node prev<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+            <span style=color:#66d9ef>this</span><span style=color:#f92672>.</span><span style=color:#a6e22e>thread</span> <span style=color:#f92672>=</span> thread<span style=color:#f92672>;</span>
+            <span style=color:#66d9ef>this</span><span style=color:#f92672>.</span><span style=color:#a6e22e>prev</span> <span style=color:#f92672>=</span> prev<span style=color:#f92672>;</span>
+        <span style=color:#f92672>}</span>
+    <span style=color:#f92672>}</span>
+
+
+<span style=color:#f92672>}</span>
+</code></pre></div><h1 id=aqs>AQS<a hidden class=anchor aria-hidden=true href=#aqs>#</a></h1>
+<p>AQS的全称是AbstractQueuedSynchronizer，它的定位是为Java中几乎所有的锁和同步器提供一个基础框架。</p>
+<p>AQS是基于FIFO的队列实现的，并且内部维护了一个状态变量state，通过原子更新这个状态变量state即可以实现加锁解锁操作</p>
+<p>AQS中维护了一个队列，这个队列使用双链表实现，用于保存等待锁排队的线程；</p>
+<h1 id=reentrantlock>ReentrantLock<a hidden class=anchor aria-hidden=true href=#reentrantlock>#</a></h1>
+<h2 id=公平锁>公平锁<a hidden class=anchor aria-hidden=true href=#公平锁>#</a></h2>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>final</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>FairSync</span> <span style=color:#66d9ef>extends</span> Sync <span style=color:#f92672>{</span>
+    <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>final</span> <span style=color:#66d9ef>long</span> serialVersionUID <span style=color:#f92672>=</span> <span style=color:#f92672>-</span>3000897897090466540L<span style=color:#f92672>;</span>
+    <span style=color:#75715e>/**
+</span><span style=color:#75715e>     * Fair version of tryAcquire.  Don&#39;t grant access unless
+</span><span style=color:#75715e>     * recursive call or no waiters or is first.
+</span><span style=color:#75715e>     */</span>
+    <span style=color:#a6e22e>@ReservedStackAccess</span>
+    <span style=color:#66d9ef>protected</span> <span style=color:#66d9ef>final</span> <span style=color:#66d9ef>boolean</span> <span style=color:#a6e22e>tryAcquire</span><span style=color:#f92672>(</span><span style=color:#66d9ef>int</span> acquires<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+        <span style=color:#66d9ef>final</span> Thread current <span style=color:#f92672>=</span> Thread<span style=color:#f92672>.</span><span style=color:#a6e22e>currentThread</span><span style=color:#f92672>();</span>
+        <span style=color:#66d9ef>int</span> c <span style=color:#f92672>=</span> getState<span style=color:#f92672>();</span>
+        <span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>c <span style=color:#f92672>==</span> 0<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+            <span style=color:#f92672>---------------------</span>
+            <span style=color:#75715e>//核心！！！！
+</span><span style=color:#75715e></span>            <span style=color:#75715e>//判断了队列中是否有前辈节点，没有前辈节点才会成功
+</span><span style=color:#75715e></span>            <span style=color:#66d9ef>if</span> <span style=color:#f92672>(!</span>hasQueuedPredecessors<span style=color:#f92672>()</span> <span style=color:#f92672>&amp;&amp;</span>
+                compareAndSetState<span style=color:#f92672>(</span>0<span style=color:#f92672>,</span> acquires<span style=color:#f92672>))</span> <span style=color:#f92672>{</span>
+                setExclusiveOwnerThread<span style=color:#f92672>(</span>current<span style=color:#f92672>);</span>
+                <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>true</span><span style=color:#f92672>;</span>
+            <span style=color:#f92672>}</span>
+        <span style=color:#f92672>}</span>
+        <span style=color:#66d9ef>else</span> <span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>current <span style=color:#f92672>==</span> getExclusiveOwnerThread<span style=color:#f92672>())</span> <span style=color:#f92672>{</span>
+            <span style=color:#66d9ef>int</span> nextc <span style=color:#f92672>=</span> c <span style=color:#f92672>+</span> acquires<span style=color:#f92672>;</span>
+            <span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>nextc <span style=color:#f92672>&lt;</span> 0<span style=color:#f92672>)</span>
+                <span style=color:#66d9ef>throw</span> <span style=color:#66d9ef>new</span> Error<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;Maximum lock count exceeded&#34;</span><span style=color:#f92672>);</span>
+            setState<span style=color:#f92672>(</span>nextc<span style=color:#f92672>);</span>
+            <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>true</span><span style=color:#f92672>;</span>
+        <span style=color:#f92672>}</span>
+        <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>false</span><span style=color:#f92672>;</span>
+    <span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>和非公平的区别核心就在hasQueuedPredecessors方法</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>final</span> <span style=color:#66d9ef>boolean</span> <span style=color:#a6e22e>nonfairTryAcquire</span><span style=color:#f92672>(</span><span style=color:#66d9ef>int</span> acquires<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+    <span style=color:#66d9ef>final</span> Thread current <span style=color:#f92672>=</span> Thread<span style=color:#f92672>.</span><span style=color:#a6e22e>currentThread</span><span style=color:#f92672>();</span>
+    <span style=color:#66d9ef>int</span> c <span style=color:#f92672>=</span> getState<span style=color:#f92672>();</span>
+    <span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>c <span style=color:#f92672>==</span> 0<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+        <span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>compareAndSetState<span style=color:#f92672>(</span>0<span style=color:#f92672>,</span> acquires<span style=color:#f92672>))</span> <span style=color:#f92672>{</span>
+            setExclusiveOwnerThread<span style=color:#f92672>(</span>current<span style=color:#f92672>);</span>
+            <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>true</span><span style=color:#f92672>;</span>
+        <span style=color:#f92672>}</span>
+    <span style=color:#f92672>}</span>
+    <span style=color:#66d9ef>else</span> <span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>current <span style=color:#f92672>==</span> getExclusiveOwnerThread<span style=color:#f92672>())</span> <span style=color:#f92672>{</span>
+        <span style=color:#66d9ef>int</span> nextc <span style=color:#f92672>=</span> c <span style=color:#f92672>+</span> acquires<span style=color:#f92672>;</span>
+        <span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>nextc <span style=color:#f92672>&lt;</span> 0<span style=color:#f92672>)</span> <span style=color:#75715e>// overflow
+</span><span style=color:#75715e></span>            <span style=color:#66d9ef>throw</span> <span style=color:#66d9ef>new</span> Error<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;Maximum lock count exceeded&#34;</span><span style=color:#f92672>);</span>
+        setState<span style=color:#f92672>(</span>nextc<span style=color:#f92672>);</span>
+        <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>true</span><span style=color:#f92672>;</span>
+    <span style=color:#f92672>}</span>
+    <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>false</span><span style=color:#f92672>;</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><h2 id=条件锁>条件锁<a hidden class=anchor aria-hidden=true href=#条件锁>#</a></h2>
+</div>
+<footer class=post-footer>
+<nav class=paginav>
+<a class=prev href=https://luluhome.site:8101/posts/spring%E6%95%B4%E7%90%86/>
+<span class=title>« Prev Page</span>
+<br>
+<span></span>
+</a>
+<a class=next href=https://luluhome.site:8101/posts/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/>
+<span class=title>Next Page »</span>
+<br>
+<span></span>
+</a>
+</nav>
+</footer>
+</article>
+</main>
+<footer class=footer>
+<span>&copy; 2022 <a href=https://luluhome.site:8101/>Hao Sun</a></span>
+<span>
+Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://git.io/hugopapermod rel=noopener target=_blank>PaperMod</a>
+</span>
+</footer>
+<a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
+</a>
+<script>let menu=document.getElementById('menu');menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener("click",function(b){b.preventDefault();var a=this.getAttribute("href").substr(1);window.matchMedia('(prefers-reduced-motion: reduce)').matches?document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView({behavior:"smooth"}),a==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${a}`)})})</script>
+<script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script>
+<script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove('dark'),localStorage.setItem("pref-theme",'light')):(document.body.classList.add('dark'),localStorage.setItem("pref-theme",'dark'))})</script>
+</body>
+</html>

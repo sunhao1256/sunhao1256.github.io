@@ -1,0 +1,238 @@
+<!doctype html><html lang=en dir=auto>
+<head><meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no">
+<meta name=robots content="index, follow">
+<title>Hao Sun</title>
+<meta name=keywords content>
+<meta name=description content="堆 堆是一种非线性结构，可以把堆看作一个数组，也可以被看作一个完全二叉树，通俗来讲堆其实就是利用完全二叉树的结构来维护的一维数组但堆并不一定是完全二叉树
+按照堆的特点可以把堆分为大顶堆和小顶堆 大顶堆：每个结点的值都大于或等于其左右孩子结点的值 小顶堆：每个结点的值都小于或等于其左右孩子结点的值
+使用堆的原因？ 如果仅仅是需要得到一个有序的序列，使用排序就可以很快完成，并不需要去组织一个新的数据结构。但是如果我们的需求是对于一个随时会有更新的序列，我要随时知道这个序列的最小值或最大值是什么。显然如果是线性结构，每次插入之后，假设原数组是有序的，那使用二分把它放在正确的位置也未尝不可，但是插入的时候从数组中留出空位就需要O(n)的时间复杂度，删除的时候亦然。
+时间复杂度 插入和删除的时间复杂度是O(logn)
+环形队列(数组) 普通队列 普通队列，数组实现时，出队后，原来的空间就浪费了。
+环形队列 环形队列，数组实现时，下标用模取运算，例如最大空间为5，模取后只会有0，1，2，3，4下标，组成了循环。
+ front 变量的含义做一个调整： front 就指向队列的第一个元素, 也就是说 arr[front] 就是队列的第一个元素 front 的初始值 = 0 rear 变量的含义做一个调整：rear 指向队列的最后一个元素的后一个位置. 因为希望空出一个空间做为约定. rear 的初始值 = 0 当队列满时，条件是 (rear + 1) % maxSize == front 【满】 对队列为空的条件， rear == front 空 当我们这样分析， 队列中有效的数据的个数 (rear + maxSize - front) % maxSize // rear = 1 front = 0  时间轮 使用场景，处理大批量的定时任务
+利用环形队列，队列的每个空间里存放的是任务的集合。
+例如以60秒为一个轮，70秒后执行一个任务。只需要一个timer按秒去旋转时间轮，70%60=10，到达第10个槽的时候，执行内部的所有任务即可。
+为了解决10秒和70秒落在同一个槽上，可以在任务身上加一个属性，圈数，例如10秒的任务圈数是0，70秒的任务是1，只有达到槽位置，并且圈数为0的任务才会被执行。">
+<meta name=author content="Hao Sun">
+<link rel=canonical href=https://luluhome.site:8101/posts/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/>
+<link crossorigin=anonymous href=/assets/css/stylesheet.min.c88963fe2d79462000fd0fb1b3737783c32855d340583e4523343f8735c787f0.css integrity="sha256-yIlj/i15RiAA/Q+xs3N3g8MoVdNAWD5FIzQ/hzXHh/A=" rel="preload stylesheet" as=style>
+<script defer crossorigin=anonymous src=/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5+kdJvBz5iKbt6B5PJI=" onload=hljs.initHighlightingOnLoad()></script>
+<link rel=icon href=https://luluhome.site:8101/%3Clink%20/%20abs%20url%3E>
+<link rel=icon type=image/png sizes=16x16 href=https://luluhome.site:8101/%3Clink%20/%20abs%20url%3E>
+<link rel=icon type=image/png sizes=32x32 href=https://luluhome.site:8101/%3Clink%20/%20abs%20url%3E>
+<link rel=apple-touch-icon href=https://luluhome.site:8101/%3Clink%20/%20abs%20url%3E>
+<link rel=mask-icon href=https://luluhome.site:8101/%3Clink%20/%20abs%20url%3E>
+<meta name=theme-color content="#2e2e33">
+<meta name=msapplication-TileColor content="#2e2e33">
+<meta name=generator content="Hugo 0.89.0">
+<noscript>
+<style>#theme-toggle,.top-link{display:none}</style>
+<style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style>
+</noscript><meta property="og:title" content>
+<meta property="og:description" content="堆 堆是一种非线性结构，可以把堆看作一个数组，也可以被看作一个完全二叉树，通俗来讲堆其实就是利用完全二叉树的结构来维护的一维数组但堆并不一定是完全二叉树
+按照堆的特点可以把堆分为大顶堆和小顶堆 大顶堆：每个结点的值都大于或等于其左右孩子结点的值 小顶堆：每个结点的值都小于或等于其左右孩子结点的值
+使用堆的原因？ 如果仅仅是需要得到一个有序的序列，使用排序就可以很快完成，并不需要去组织一个新的数据结构。但是如果我们的需求是对于一个随时会有更新的序列，我要随时知道这个序列的最小值或最大值是什么。显然如果是线性结构，每次插入之后，假设原数组是有序的，那使用二分把它放在正确的位置也未尝不可，但是插入的时候从数组中留出空位就需要O(n)的时间复杂度，删除的时候亦然。
+时间复杂度 插入和删除的时间复杂度是O(logn)
+环形队列(数组) 普通队列 普通队列，数组实现时，出队后，原来的空间就浪费了。
+环形队列 环形队列，数组实现时，下标用模取运算，例如最大空间为5，模取后只会有0，1，2，3，4下标，组成了循环。
+ front 变量的含义做一个调整： front 就指向队列的第一个元素, 也就是说 arr[front] 就是队列的第一个元素 front 的初始值 = 0 rear 变量的含义做一个调整：rear 指向队列的最后一个元素的后一个位置. 因为希望空出一个空间做为约定. rear 的初始值 = 0 当队列满时，条件是 (rear + 1) % maxSize == front 【满】 对队列为空的条件， rear == front 空 当我们这样分析， 队列中有效的数据的个数 (rear + maxSize - front) % maxSize // rear = 1 front = 0  时间轮 使用场景，处理大批量的定时任务
+利用环形队列，队列的每个空间里存放的是任务的集合。
+例如以60秒为一个轮，70秒后执行一个任务。只需要一个timer按秒去旋转时间轮，70%60=10，到达第10个槽的时候，执行内部的所有任务即可。
+为了解决10秒和70秒落在同一个槽上，可以在任务身上加一个属性，圈数，例如10秒的任务圈数是0，70秒的任务是1，只有达到槽位置，并且圈数为0的任务才会被执行。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://luluhome.site:8101/posts/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"><meta property="og:image" content="https://luluhome.site:8101/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta property="article:section" content="posts">
+<meta property="og:site_name" content="Hao Sun">
+<meta name=twitter:card content="summary_large_image">
+<meta name=twitter:image content="https://luluhome.site:8101/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E">
+<meta name=twitter:title content>
+<meta name=twitter:description content="堆 堆是一种非线性结构，可以把堆看作一个数组，也可以被看作一个完全二叉树，通俗来讲堆其实就是利用完全二叉树的结构来维护的一维数组但堆并不一定是完全二叉树
+按照堆的特点可以把堆分为大顶堆和小顶堆 大顶堆：每个结点的值都大于或等于其左右孩子结点的值 小顶堆：每个结点的值都小于或等于其左右孩子结点的值
+使用堆的原因？ 如果仅仅是需要得到一个有序的序列，使用排序就可以很快完成，并不需要去组织一个新的数据结构。但是如果我们的需求是对于一个随时会有更新的序列，我要随时知道这个序列的最小值或最大值是什么。显然如果是线性结构，每次插入之后，假设原数组是有序的，那使用二分把它放在正确的位置也未尝不可，但是插入的时候从数组中留出空位就需要O(n)的时间复杂度，删除的时候亦然。
+时间复杂度 插入和删除的时间复杂度是O(logn)
+环形队列(数组) 普通队列 普通队列，数组实现时，出队后，原来的空间就浪费了。
+环形队列 环形队列，数组实现时，下标用模取运算，例如最大空间为5，模取后只会有0，1，2，3，4下标，组成了循环。
+ front 变量的含义做一个调整： front 就指向队列的第一个元素, 也就是说 arr[front] 就是队列的第一个元素 front 的初始值 = 0 rear 变量的含义做一个调整：rear 指向队列的最后一个元素的后一个位置. 因为希望空出一个空间做为约定. rear 的初始值 = 0 当队列满时，条件是 (rear + 1) % maxSize == front 【满】 对队列为空的条件， rear == front 空 当我们这样分析， 队列中有效的数据的个数 (rear + maxSize - front) % maxSize // rear = 1 front = 0  时间轮 使用场景，处理大批量的定时任务
+利用环形队列，队列的每个空间里存放的是任务的集合。
+例如以60秒为一个轮，70秒后执行一个任务。只需要一个timer按秒去旋转时间轮，70%60=10，到达第10个槽的时候，执行内部的所有任务即可。
+为了解决10秒和70秒落在同一个槽上，可以在任务身上加一个属性，圈数，例如10秒的任务圈数是0，70秒的任务是1，只有达到槽位置，并且圈数为0的任务才会被执行。">
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://luluhome.site:8101/posts/"},{"@type":"ListItem","position":2,"name":"","item":"https://luluhome.site:8101/posts/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"}]}</script>
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"","name":"","description":"堆 堆是一种非线性结构，可以把堆看作一个数组，也可以被看作一个完全二叉树，通俗来讲堆其实就是利用完全二叉树的结构来维护的一维数组但堆并不一定是完全二叉树\n按照堆的特点可以把堆分为大顶堆和小顶堆 大顶堆：每个结点的值都大于或等于其左右孩子结点的值 小顶堆：每个结点的值都小于或等于其左右孩子结点的值\n使用堆的原因？ 如果仅仅是需要得到一个有序的序列，使用排序就可以很快完成，并不需要去组织一个新的数据结构。但是如果我们的需求是对于一个随时会有更新的序列，我要随时知道这个序列的最小值或最大值是什么。显然如果是线性结构，每次插入之后，假设原数组是有序的，那使用二分把它放在正确的位置也未尝不可，但是插入的时候从数组中留出空位就需要O(n)的时间复杂度，删除的时候亦然。\n时间复杂度 插入和删除的时间复杂度是O(logn)\n环形队列(数组) 普通队列 普通队列，数组实现时，出队后，原来的空间就浪费了。\n环形队列 环形队列，数组实现时，下标用模取运算，例如最大空间为5，模取后只会有0，1，2，3，4下标，组成了循环。\n front 变量的含义做一个调整： front 就指向队列的第一个元素, 也就是说 arr[front] 就是队列的第一个元素 front 的初始值 = 0 rear 变量的含义做一个调整：rear 指向队列的最后一个元素的后一个位置. 因为希望空出一个空间做为约定. rear 的初始值 = 0 当队列满时，条件是 (rear + 1) % maxSize == front 【满】 对队列为空的条件， rear == front 空 当我们这样分析， 队列中有效的数据的个数 (rear + maxSize - front) % maxSize // rear = 1 front = 0  时间轮 使用场景，处理大批量的定时任务\n利用环形队列，队列的每个空间里存放的是任务的集合。\n例如以60秒为一个轮，70秒后执行一个任务。只需要一个timer按秒去旋转时间轮，70%60=10，到达第10个槽的时候，执行内部的所有任务即可。\n为了解决10秒和70秒落在同一个槽上，可以在任务身上加一个属性，圈数，例如10秒的任务圈数是0，70秒的任务是1，只有达到槽位置，并且圈数为0的任务才会被执行。","keywords":[],"articleBody":"堆 堆是一种非线性结构，可以把堆看作一个数组，也可以被看作一个完全二叉树，通俗来讲堆其实就是利用完全二叉树的结构来维护的一维数组但堆并不一定是完全二叉树\n按照堆的特点可以把堆分为大顶堆和小顶堆 大顶堆：每个结点的值都大于或等于其左右孩子结点的值 小顶堆：每个结点的值都小于或等于其左右孩子结点的值\n使用堆的原因？ 如果仅仅是需要得到一个有序的序列，使用排序就可以很快完成，并不需要去组织一个新的数据结构。但是如果我们的需求是对于一个随时会有更新的序列，我要随时知道这个序列的最小值或最大值是什么。显然如果是线性结构，每次插入之后，假设原数组是有序的，那使用二分把它放在正确的位置也未尝不可，但是插入的时候从数组中留出空位就需要O(n)的时间复杂度，删除的时候亦然。\n时间复杂度 插入和删除的时间复杂度是O(logn)\n环形队列(数组) 普通队列 普通队列，数组实现时，出队后，原来的空间就浪费了。\n环形队列 环形队列，数组实现时，下标用模取运算，例如最大空间为5，模取后只会有0，1，2，3，4下标，组成了循环。\n front 变量的含义做一个调整： front 就指向队列的第一个元素, 也就是说 arr[front] 就是队列的第一个元素 front 的初始值 = 0 rear 变量的含义做一个调整：rear 指向队列的最后一个元素的后一个位置. 因为希望空出一个空间做为约定. rear 的初始值 = 0 当队列满时，条件是 (rear + 1) % maxSize == front 【满】 对队列为空的条件， rear == front 空 当我们这样分析， 队列中有效的数据的个数 (rear + maxSize - front) % maxSize // rear = 1 front = 0  时间轮 使用场景，处理大批量的定时任务\n利用环形队列，队列的每个空间里存放的是任务的集合。\n例如以60秒为一个轮，70秒后执行一个任务。只需要一个timer按秒去旋转时间轮，70%60=10，到达第10个槽的时候，执行内部的所有任务即可。\n为了解决10秒和70秒落在同一个槽上，可以在任务身上加一个属性，圈数，例如10秒的任务圈数是0，70秒的任务是1，只有达到槽位置，并且圈数为0的任务才会被执行。\nkafaka的做法是，再做一个分钟轮，先转分钟轮。再转秒的轮。\n树 二叉搜索树(BST) 根节点的值大于其左子树中任意一个节点的值，小于其右节点中任意一节点的值，这一规则适用于二叉查找树中的每一个节点。\n完全平衡二叉树(AVL) 解决二叉树极端下变成链表\n红黑树 解决，完全平衡二叉树平衡频率过于频繁。\n时间复杂度log(n)\n 二叉搜索树：也称二叉查找树，或二叉排序树。定义也比较简单，要么是一颗空树，要么就是具有如下性质的二叉树： （1）若任意节点的左子树不空，则左子树上所有结点的值均小于它的根结点的 值； （2）若任意节点的右子树不空，则右子树上所有结点的值均大于它的根结点的 值； （3）任意节点的左、右子树也分别为二叉查找树； （4）没有键值相等的节点。\n平衡二叉树：在二叉搜索树的基础上多了两个重要的特点： （1）左右两子树的高度差的绝对值不能超过 1； （2）左右两子树也是一颗平衡二叉树。\n红黑树：红黑树是在普通二叉树上，对每个节点添加一个颜色属性形成的，需要同时满足一下五条性质： （1）节点是红色或者是黑色； （2）根节点是黑色； （3）每个叶节点（NIL 或空节点）是黑色； （4）每个红色节点的两个子节点都是黑色的（也就是说不存在两个连续的红色节 点）； （5）从任一节点到其没个叶节点的所有路径都包含相同数目的黑色节点。\n区别：AVL 树需要保持平衡，但它的旋转太耗时，而红黑树就是一个没有 AVL 树 那样平衡，因此插入、删除效率会高于 AVL 树，而 AVL 树的查找效率显然高于红黑树。\n   如果插入一个node引起了树的不平衡，AVL和RB-Tree(红黑树)都是最多只需要2次旋转操作，即两者都是O(1)；但是在删除node引起树的不平衡时，最坏情况下，AVL需要维护从被删node到root这条路径上所有node的平衡性，因此需要旋转的量级O(logN)，而RB-Tree最多只需3次(因为不需要严格的平衡，从根到叶子的最长的可能路径不多于最短的可能路径的两倍长)旋转以及修改节点的颜色，只需要O(1)的复杂度。\n  其次，AVL的结构相较RB-Tree来说更为平衡，在插入和删除node更容易引起Tree的unbalance，因此在大量数据需要插入或者删除时，AVL需要rebalance的频率会更高。因此，RB-Tree在需要大量插入和删除node的场景下，效率更高。自然，由于AVL高度平衡，因此AVL的search效率更高。\n  IO多路复用epoll的实现采用红黑树组织管理sockfd，以支持快速的增删改查. ngnix中,用红黑树管理timer,因为红黑树是有序的,可以很快的得到距离当前最小的定时器. java中TreeMap，jdk1.8的hashmap的实现.\n","wordCount":"110","inLanguage":"en","datePublished":"0001-01-01T00:00:00Z","dateModified":"0001-01-01T00:00:00Z","author":{"@type":"Person","name":"Hao Sun"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://luluhome.site:8101/posts/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"},"publisher":{"@type":"Organization","name":"Hao Sun","logo":{"@type":"ImageObject","url":"https://luluhome.site:8101/%3Clink%20/%20abs%20url%3E"}}}</script>
+</head>
+<body id=top>
+<script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add('dark'):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove('dark'):window.matchMedia('(prefers-color-scheme: dark)').matches&&document.body.classList.add('dark')</script>
+<header class=header>
+<nav class=nav>
+<div class=logo>
+<a href=https://luluhome.site:8101/ accesskey=h title="Hao Sun (Alt + H)">Hao Sun</a>
+<span class=logo-switches>
+<button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+</button>
+</span>
+</div>
+<ul id=menu>
+<li>
+<a href=https://luluhome.site:8101/archives/ title=Archive>
+<span>Archive</span>
+</a>
+</li>
+<li>
+<a href=https://luluhome.site:8101/search/ title="Search (Alt + /)" accesskey=/>
+<span>Search</span>
+</a>
+</li>
+<li>
+<a href=https://luluhome.site:8101/tags/ title=Tags>
+<span>Tags</span>
+</a>
+</li>
+</ul>
+</nav>
+</header>
+<main class=main>
+<article class=post-single>
+<header class=post-header>
+<div class=breadcrumbs><a href=https://luluhome.site:8101/>Home</a>&nbsp;»&nbsp;<a href=https://luluhome.site:8101/posts/>Posts</a></div>
+<h1 class=post-title>
+</h1>
+<div class=post-meta>1 min&nbsp;·&nbsp;Hao Sun
+</div>
+</header> <div class=toc>
+<details>
+<summary accesskey=c title="(Alt + C)">
+<span class=details>Table of Contents</span>
+</summary>
+<div class=inner><ul>
+<li>
+<a href=#%e5%a0%86 aria-label=堆>堆</a><ul>
+<li>
+<a href=#%e4%bd%bf%e7%94%a8%e5%a0%86%e7%9a%84%e5%8e%9f%e5%9b%a0 aria-label=使用堆的原因？>使用堆的原因？</a></li>
+<li>
+<a href=#%e6%97%b6%e9%97%b4%e5%a4%8d%e6%9d%82%e5%ba%a6 aria-label=时间复杂度>时间复杂度</a></li></ul>
+</li>
+<li>
+<a href=#%e7%8e%af%e5%bd%a2%e9%98%9f%e5%88%97%e6%95%b0%e7%bb%84 aria-label=环形队列(数组)>环形队列(数组)</a><ul>
+<li>
+<a href=#%e6%99%ae%e9%80%9a%e9%98%9f%e5%88%97 aria-label=普通队列>普通队列</a></li>
+<li>
+<a href=#%e7%8e%af%e5%bd%a2%e9%98%9f%e5%88%97 aria-label=环形队列>环形队列</a></li></ul>
+</li>
+<li>
+<a href=#%e6%97%b6%e9%97%b4%e8%bd%ae aria-label=时间轮>时间轮</a></li>
+<li>
+<a href=#%e6%a0%91 aria-label=树>树</a><ul>
+<li>
+<a href=#%e4%ba%8c%e5%8f%89%e6%90%9c%e7%b4%a2%e6%a0%91bst aria-label=二叉搜索树(BST)>二叉搜索树(BST)</a></li>
+<li>
+<a href=#%e5%ae%8c%e5%85%a8%e5%b9%b3%e8%a1%a1%e4%ba%8c%e5%8f%89%e6%a0%91avl aria-label=完全平衡二叉树(AVL)>完全平衡二叉树(AVL)</a></li>
+<li>
+<a href=#%e7%ba%a2%e9%bb%91%e6%a0%91 aria-label=红黑树>红黑树</a>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</details>
+</div>
+<div class=post-content><h1 id=堆>堆<a hidden class=anchor aria-hidden=true href=#堆>#</a></h1>
+<p>堆是一种非线性结构，<strong>可以</strong>把堆看作一个数组，<strong>也可以</strong>被看作一个完全二叉树，通俗来讲堆其实就是<strong>利用完全二叉树的结构来维护的一维数组</strong><code>但堆并不一定是完全二叉树</code></p>
+<p>按照堆的特点可以把堆分为大顶堆和小顶堆
+大顶堆：每个结点的值都大于或等于其左右孩子结点的值
+小顶堆：每个结点的值都小于或等于其左右孩子结点的值</p>
+<h2 id=使用堆的原因>使用堆的原因？<a hidden class=anchor aria-hidden=true href=#使用堆的原因>#</a></h2>
+<p>如果仅仅是需要得到一个有序的序列，使用排序就可以很快完成，并不需要去组织一个新的数据结构。但是如果我们的需求是对于一个随时会有更新的序列，我要随时知道这个序列的最小值或最大值是什么。显然如果是线性结构，每次插入之后，假设原数组是有序的，那使用二分把它放在正确的位置也未尝不可，但是插入的时候从数组中留出空位就需要O(n)的时间复杂度，删除的时候亦然。</p>
+<h2 id=时间复杂度>时间复杂度<a hidden class=anchor aria-hidden=true href=#时间复杂度>#</a></h2>
+<p><strong>插入和删除的时间复杂度是O(logn)</strong></p>
+<h1 id=环形队列数组>环形队列(数组)<a hidden class=anchor aria-hidden=true href=#环形队列数组>#</a></h1>
+<h2 id=普通队列>普通队列<a hidden class=anchor aria-hidden=true href=#普通队列>#</a></h2>
+<p>普通队列，数组实现时，出队后，原来的空间就浪费了。</p>
+<h2 id=环形队列>环形队列<a hidden class=anchor aria-hidden=true href=#环形队列>#</a></h2>
+<p>环形队列，数组实现时，下标用模取运算，例如最大空间为5，模取后只会有0，1，2，3，4下标，组成了循环。</p>
+<ol>
+<li><code>front</code> 变量的含义做一个调整： <code>front</code> 就指向队列的第一个元素, 也就是说 <code>arr[front]</code> 就是队列的第一个元素
+<code>front</code> 的初始值 = 0</li>
+<li><code>rear</code> 变量的含义做一个调整：<code>rear</code> 指向队列的最后一个元素的后一个位置. 因为希望空出一个空间做为约定.
+<code>rear</code> 的初始值 = 0</li>
+<li>当队列满时，条件是 <code>(rear + 1) % maxSize == front</code> 【满】</li>
+<li>对队列为空的条件， <code>rear == front</code> 空</li>
+<li>当我们这样分析， 队列中有效的数据的个数 <code>(rear + maxSize - front) % maxSize</code> // rear = 1 front = 0</li>
+</ol>
+<h1 id=时间轮>时间轮<a hidden class=anchor aria-hidden=true href=#时间轮>#</a></h1>
+<p>使用场景，处理大批量的定时任务</p>
+<p>利用环形队列，队列的每个空间里存放的是任务的集合。</p>
+<p>例如以60秒为一个轮，70秒后执行一个任务。只需要一个timer按秒去旋转时间轮，70%60=10，到达第10个槽的时候，执行内部的所有任务即可。</p>
+<p>为了解决10秒和70秒落在同一个槽上，可以在任务身上加一个属性，圈数，例如10秒的任务圈数是0，70秒的任务是1，只有达到槽位置，并且圈数为0的任务才会被执行。</p>
+<p>kafaka的做法是，再做一个分钟轮，先转分钟轮。再转秒的轮。</p>
+<h1 id=树>树<a hidden class=anchor aria-hidden=true href=#树>#</a></h1>
+<h2 id=二叉搜索树bst>二叉搜索树(BST)<a hidden class=anchor aria-hidden=true href=#二叉搜索树bst>#</a></h2>
+<p>根节点的值大于其左子树中任意一个节点的值，小于其右节点中任意一节点的值，这一规则适用于二叉查找树中的每一个节点。</p>
+<h2 id=完全平衡二叉树avl>完全平衡二叉树(AVL)<a hidden class=anchor aria-hidden=true href=#完全平衡二叉树avl>#</a></h2>
+<p>解决二叉树极端下变成链表</p>
+<h2 id=红黑树>红黑树<a hidden class=anchor aria-hidden=true href=#红黑树>#</a></h2>
+<p>解决，完全平衡二叉树平衡频率过于频繁。</p>
+<p>时间复杂度<em>l<strong>o</strong>g</em>(<em>n</em>)</p>
+<blockquote>
+<p>二叉搜索树：也称二叉查找树，或二叉排序树。定义也比较简单，要么是一颗空树，要么就是具有如下性质的二叉树：
+（1）若任意节点的左子树不空，则左子树上所有结点的值均小于它的根结点的
+值；
+（2）若任意节点的右子树不空，则右子树上所有结点的值均大于它的根结点的
+值；
+（3）任意节点的左、右子树也分别为二叉查找树；
+（4）没有键值相等的节点。</p>
+<p>平衡二叉树：在二叉搜索树的基础上多了两个重要的特点：
+（1）左右两子树的高度差的绝对值不能超过 1；
+（2）左右两子树也是一颗平衡二叉树。</p>
+<p>红黑树：红黑树是在普通二叉树上，对每个节点添加一个颜色属性形成的，需要同时满足一下五条性质：
+（1）节点是红色或者是黑色；
+（2）根节点是黑色；
+（3）每个叶节点（NIL 或空节点）是黑色；
+（4）每个红色节点的两个子节点都是黑色的（也就是说不存在两个连续的红色节
+点）；
+（5）从任一节点到其没个叶节点的所有路径都包含相同数目的黑色节点。</p>
+<p>区别：AVL 树需要保持平衡，但它的旋转太耗时，而红黑树就是一个没有 AVL 树 那样平衡，因此插入、删除效率会高于 AVL 树，而 AVL
+树的查找效率显然高于红黑树。</p>
+</blockquote>
+<ul>
+<li>
+<p>如果插入一个node引起了树的不平衡，AVL和RB-Tree(红黑树)都是最多只需要2次旋转操作，即两者都是O(1)；但是在删除node引起树的不平衡时，最坏情况下，AVL需要维护从被删node到root这条路径上所有node的平衡性，因此需要旋转的量级O(logN)，而RB-Tree最多只需3次(因为不需要严格的平衡，从根到叶子的最长的可能路径不多于最短的可能路径的两倍长)旋转以及修改节点的颜色，只需要O(1)的复杂度。</p>
+</li>
+<li>
+<p>其次，AVL的结构相较RB-Tree来说更为平衡，在插入和删除node更容易引起Tree的unbalance，因此在大量数据需要插入或者删除时，AVL需要rebalance的频率会更高。因此，RB-Tree在需要大量插入和删除node的场景下，效率更高。自然，由于AVL高度平衡，因此AVL的search效率更高。</p>
+</li>
+</ul>
+<p>IO多路复用epoll的实现采用红黑树组织管理sockfd，以支持快速的增删改查.
+ngnix中,用红黑树管理timer,因为红黑树是有序的,可以很快的得到距离当前最小的定时器.
+java中TreeMap，jdk1.8的hashmap的实现.</p>
+</div>
+<footer class=post-footer>
+<nav class=paginav>
+<a class=prev href=https://luluhome.site:8101/posts/%E5%A4%9A%E7%BA%BF%E7%A8%8B/>
+<span class=title>« Prev Page</span>
+<br>
+<span></span>
+</a>
+<a class=next href=https://luluhome.site:8101/posts/%E7%9F%A5%E8%AF%86%E7%82%B9/>
+<span class=title>Next Page »</span>
+<br>
+<span></span>
+</a>
+</nav>
+</footer>
+</article>
+</main>
+<footer class=footer>
+<span>&copy; 2022 <a href=https://luluhome.site:8101/>Hao Sun</a></span>
+<span>
+Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://git.io/hugopapermod rel=noopener target=_blank>PaperMod</a>
+</span>
+</footer>
+<a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
+</a>
+<script>let menu=document.getElementById('menu');menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener("click",function(b){b.preventDefault();var a=this.getAttribute("href").substr(1);window.matchMedia('(prefers-reduced-motion: reduce)').matches?document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView({behavior:"smooth"}),a==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${a}`)})})</script>
+<script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script>
+<script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove('dark'),localStorage.setItem("pref-theme",'light')):(document.body.classList.add('dark'),localStorage.setItem("pref-theme",'dark'))})</script>
+</body>
+</html>
