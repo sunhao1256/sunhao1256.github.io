@@ -2,29 +2,29 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Tags on Hao Sun</title>
-    <link>https://luluhome.site:8101/tags/</link>
+    <link>https://sunhao1256.github.io/tags/</link>
     <description>Recent content in Tags on Hao Sun</description>
     <image>
-      <url>https://luluhome.site:8101/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
-      <link>https://luluhome.site:8101/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+      <url>https://sunhao1256.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://sunhao1256.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
     </image>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Mon, 21 Feb 2022 16:57:01 +0800</lastBuildDate><atom:link href="https://luluhome.site:8101/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 21 Feb 2022 16:57:01 +0800</lastBuildDate><atom:link href="https://sunhao1256.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Git</title>
-      <link>https://luluhome.site:8101/tags/git/</link>
+      <link>https://sunhao1256.github.io/tags/git/</link>
       <pubDate>Mon, 21 Feb 2022 16:57:01 +0800</pubDate>
       
-      <guid>https://luluhome.site:8101/tags/git/</guid>
+      <guid>https://sunhao1256.github.io/tags/git/</guid>
       <description></description>
     </item>
     
     <item>
       <title>面试</title>
-      <link>https://luluhome.site:8101/tags/%E9%9D%A2%E8%AF%95/</link>
+      <link>https://sunhao1256.github.io/tags/%E9%9D%A2%E8%AF%95/</link>
       <pubDate>Tue, 11 Jan 2022 14:43:18 +0800</pubDate>
       
-      <guid>https://luluhome.site:8101/tags/%E9%9D%A2%E8%AF%95/</guid>
+      <guid>https://sunhao1256.github.io/tags/%E9%9D%A2%E8%AF%95/</guid>
       <description></description>
     </item>
     

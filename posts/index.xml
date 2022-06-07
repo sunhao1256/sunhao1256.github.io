@@ -2,29 +2,29 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Posts on Hao Sun</title>
-    <link>https://luluhome.site:8101/posts/</link>
+    <link>https://sunhao1256.github.io/posts/</link>
     <description>Recent content in Posts on Hao Sun</description>
     <image>
-      <url>https://luluhome.site:8101/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
-      <link>https://luluhome.site:8101/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+      <url>https://sunhao1256.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://sunhao1256.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
     </image>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Mon, 21 Feb 2022 16:57:01 +0800</lastBuildDate><atom:link href="https://luluhome.site:8101/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 21 Feb 2022 16:57:01 +0800</lastBuildDate><atom:link href="https://sunhao1256.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Git命令</title>
-      <link>https://luluhome.site:8101/posts/git%E5%91%BD%E4%BB%A4/</link>
+      <link>https://sunhao1256.github.io/posts/git%E5%91%BD%E4%BB%A4/</link>
       <pubDate>Mon, 21 Feb 2022 16:57:01 +0800</pubDate>
       
-      <guid>https://luluhome.site:8101/posts/git%E5%91%BD%E4%BB%A4/</guid>
+      <guid>https://sunhao1256.github.io/posts/git%E5%91%BD%E4%BB%A4/</guid>
       <description>Git常用命令 git init # 初始化本地git仓库（创建新仓库） git config --global user.name &amp;quot;xxx&amp;quot; # 配置用户名 git config --global user.email &amp;quot;xxx@xxx.com&amp;quot; # 配置邮件 git config --global color.ui true # git status等命令自动着色 git config --global color.status auto git config --global color.diff auto git config --global color.branch auto git config --global color.interactive auto git config --global --unset http.proxy # remove proxy configuration on git git clone git+ssh://git@192.168.53.168/VT.git # clone远程仓库 git status # 查看当前版本状态（是否修改） git add xyz # 添加xyz文件至index git add .</description>
     </item>
     
     <item>
       <title>八股文</title>
-      <link>https://luluhome.site:8101/posts/%E5%B8%B8%E8%A7%81%E9%A2%98%E7%9B%AE/</link>
+      <link>https://sunhao1256.github.io/posts/%E5%B8%B8%E8%A7%81%E9%A2%98%E7%9B%AE/</link>
       <pubDate>Tue, 11 Jan 2022 14:43:18 +0800</pubDate>
       
-      <guid>https://luluhome.site:8101/posts/%E5%B8%B8%E8%A7%81%E9%A2%98%E7%9B%AE/</guid>
+      <guid>https://sunhao1256.github.io/posts/%E5%B8%B8%E8%A7%81%E9%A2%98%E7%9B%AE/</guid>
       <description>Redis redis有哪些数据结构，你用过哪些，做过什么事情   String
 最简单的数据结构，用于存放字符串，实际上在redis中存放的是字符数组，类似java中的arrayList，**Redis 为了对内存做极致的优化，不同长度的字符串使用不同的结构体来表示。**Redis 规定了字符串的长度不得超过 512 MB
   List
@@ -49,10 +49,10 @@ Redis 的集合相当于 Java 语言中的 HashSet，它内部的键值对是无
     
     <item>
       <title>linux</title>
-      <link>https://luluhome.site:8101/posts/linux/</link>
+      <link>https://sunhao1256.github.io/posts/linux/</link>
       <pubDate>Fri, 31 Jan 2020 20:50:54 +0000</pubDate>
       
-      <guid>https://luluhome.site:8101/posts/linux/</guid>
+      <guid>https://sunhao1256.github.io/posts/linux/</guid>
       <description>终端 [root@LocalHost 桌面]# l
  root表示当前登录用户名 locahost表示当前登录的主机名 桌面 表示当前的工作目录 # 身份标识符 #表示为超级管理员 $表示为普通用户  目录结构  Bin：全称Binary，存放的都是一些二进制文件 Dev：主要存放一些外接设备，例如U盘等，在其中的设备是不能直接使用的，需要挂载（类似windows下的分盘） Etc：主要存放一些配置文件 Home：表示除了root用户以外的其他的家目录，类似windows下的user用户目录 Proc：该目录存放运行的进程文件 Root：该目录是root用户的家目录 SBin：该目录也是存放二进制文件，但是必须得有super权限的用户才能执行 Usr：用户的应用程序和文件都放在这个目录下类似于windows下的program files目录 Mnt：让用户临时挂在别的文件系统 Opt：一般存放安装软件包 Usr/local：存放安装软件后存在的软件目录 Var：存放不断变化的文件，例如日志文件  VI和VIM编辑器 所有的Linux系统都会内建VI文本编辑器，VIM具有程序编辑的能力，可以看成是VI的增强版
 VI和VIM的3种常见模式   正常模式
@@ -73,28 +73,28 @@ VI和VIM的3种常见模式   正常模式
     
     <item>
       <title></title>
-      <link>https://luluhome.site:8101/posts/go/</link>
+      <link>https://sunhao1256.github.io/posts/go/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://luluhome.site:8101/posts/go/</guid>
+      <guid>https://sunhao1256.github.io/posts/go/</guid>
       <description>Go go mod init:初始化modules go mod download:下载modules到本地cache go mod edit:编辑go.mod文件，选项有-json、-require和-exclude，可以使用帮助go help mod edit go mod graph:以文本模式打印模块需求图 go mod tidy:检查，删除错误或者不使用的modules，下载没download的package go mod vendor:生成vendor目录 go mod verify:验证依赖是否正确 go mod why：查找依赖 ​ go test 执行一下，自动导包 ​ go list -m 主模块的打印路径 go list -m -f={{.Dir}} print主模块的根目录 go list -m all 查看当前的依赖和版本信息 </description>
     </item>
     
     <item>
       <title></title>
-      <link>https://luluhome.site:8101/posts/gradle/</link>
+      <link>https://sunhao1256.github.io/posts/gradle/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://luluhome.site:8101/posts/gradle/</guid>
+      <guid>https://sunhao1256.github.io/posts/gradle/</guid>
       <description>Gradle </description>
     </item>
     
     <item>
       <title></title>
-      <link>https://luluhome.site:8101/posts/mac%E4%BD%BF%E7%94%A8/</link>
+      <link>https://sunhao1256.github.io/posts/mac%E4%BD%BF%E7%94%A8/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://luluhome.site:8101/posts/mac%E4%BD%BF%E7%94%A8/</guid>
+      <guid>https://sunhao1256.github.io/posts/mac%E4%BD%BF%E7%94%A8/</guid>
       <description>快捷键   Finder绝对路径跳转
 command+shift+G
   Finder绝对路径复制
@@ -114,10 +114,10 @@ command f3
     
     <item>
       <title></title>
-      <link>https://luluhome.site:8101/posts/netty/</link>
+      <link>https://sunhao1256.github.io/posts/netty/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://luluhome.site:8101/posts/netty/</guid>
+      <guid>https://sunhao1256.github.io/posts/netty/</guid>
       <description>netty是在什么地方创建SeverChannel的 在BootStrap调用bind方法时创建
 private ChannelFuture doBind(final SocketAddress localAddress) { final ChannelFuture regFuture = this.initAndRegister(); } initAndRegister方法
 final ChannelFuture initAndRegister() { Channel channel = null; try { channel = this.channelFactory.newChannel(); channelFactory是在bootstrap配置class时实例化的
@@ -128,10 +128,10 @@ public class NioServerSocketChannel extends AbstractNioMessageChannel implements
     
     <item>
       <title></title>
-      <link>https://luluhome.site:8101/posts/spring%E6%95%B4%E7%90%86/</link>
+      <link>https://sunhao1256.github.io/posts/spring%E6%95%B4%E7%90%86/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://luluhome.site:8101/posts/spring%E6%95%B4%E7%90%86/</guid>
+      <guid>https://sunhao1256.github.io/posts/spring%E6%95%B4%E7%90%86/</guid>
       <description>@Override@Nullablepublic Object invoke(MethodInvocation mi) throws Throwable {if (!(mi instanceof ProxyMethodInvocation)) {throw new IllegalStateException(&amp;quot;MethodInvocation is not a Spring ProxyMethodInvocation: &amp;quot; + mi);}ProxyMethodInvocation pmi = (ProxyMethodInvocation) mi;ProceedingJoinPoint pjp = lazyGetProceedingJoinPoint(pmi);JoinPointMatch jpm = getJoinPointMatch(pmi);return invokeAdviceMethod(pjp, jpm, null, null);}当在Sping中配置的Bean存在相互依赖，Spring是怎么处理的 针对原型Bean直接抛出异常，不支持。
 单例Bean，Spring使用3个Map做缓存，来处理。
 分别是：一级缓存Spring最终保存的单例对象Map，二级缓存建造Spring单例对象的匿名工厂对象返回的就是三级缓存需要的，三级缓存是允许提前被依赖的单例对象。
@@ -140,10 +140,10 @@ public class NioServerSocketChannel extends AbstractNioMessageChannel implements
     
     <item>
       <title></title>
-      <link>https://luluhome.site:8101/posts/%E5%A4%9A%E7%BA%BF%E7%A8%8B/</link>
+      <link>https://sunhao1256.github.io/posts/%E5%A4%9A%E7%BA%BF%E7%A8%8B/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://luluhome.site:8101/posts/%E5%A4%9A%E7%BA%BF%E7%A8%8B/</guid>
+      <guid>https://sunhao1256.github.io/posts/%E5%A4%9A%E7%BA%BF%E7%A8%8B/</guid>
       <description>Wait UnSafe UnSafe是为java底层类库使用的，不应该被用户所使用，因为他的权限太高，可以做很多事情，例如修改私有字段的值、抛出异常、使用堆外内存、CAS操作基于CPU的CAS指令，以达到原子操作。Park()阻塞线程、UnPark()唤醒线程。
  UnSafe有一个属性静态theUnsafe，可以通过反射的方式获取到Unsafe实例
  Field theUnsafe = Unsafe.class.getDeclaredField(&amp;#34;theUnsafe&amp;#34;); theUnsafe.setAccessible(true); unsafe = (Unsafe) theUnsafe.get(null);  JUC下面大量使用了CAS操作，它们的底层是调用的Unsafe的CompareAndSwapXXX()方法。这种方式广泛运用于无锁算法，与java中标准的悲观锁机制相比，它可以利用CAS处理器指令提供极大的加速。
@@ -158,10 +158,10 @@ public class AtomicInteger extends Number implements java.io.Serializable { priv
     
     <item>
       <title></title>
-      <link>https://luluhome.site:8101/posts/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</link>
+      <link>https://sunhao1256.github.io/posts/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://luluhome.site:8101/posts/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</guid>
+      <guid>https://sunhao1256.github.io/posts/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</guid>
       <description>堆 堆是一种非线性结构，可以把堆看作一个数组，也可以被看作一个完全二叉树，通俗来讲堆其实就是利用完全二叉树的结构来维护的一维数组但堆并不一定是完全二叉树
 按照堆的特点可以把堆分为大顶堆和小顶堆 大顶堆：每个结点的值都大于或等于其左右孩子结点的值 小顶堆：每个结点的值都小于或等于其左右孩子结点的值
 使用堆的原因？ 如果仅仅是需要得到一个有序的序列，使用排序就可以很快完成，并不需要去组织一个新的数据结构。但是如果我们的需求是对于一个随时会有更新的序列，我要随时知道这个序列的最小值或最大值是什么。显然如果是线性结构，每次插入之后，假设原数组是有序的，那使用二分把它放在正确的位置也未尝不可，但是插入的时候从数组中留出空位就需要O(n)的时间复杂度，删除的时候亦然。
@@ -172,19 +172,6 @@ public class AtomicInteger extends Number implements java.io.Serializable { priv
 利用环形队列，队列的每个空间里存放的是任务的集合。
 例如以60秒为一个轮，70秒后执行一个任务。只需要一个timer按秒去旋转时间轮，70%60=10，到达第10个槽的时候，执行内部的所有任务即可。
 为了解决10秒和70秒落在同一个槽上，可以在任务身上加一个属性，圈数，例如10秒的任务圈数是0，70秒的任务是1，只有达到槽位置，并且圈数为0的任务才会被执行。</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://luluhome.site:8101/posts/%E7%9F%A5%E8%AF%86%E7%82%B9/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://luluhome.site:8101/posts/%E7%9F%A5%E8%AF%86%E7%82%B9/</guid>
-      <description>Redis redis如何做到限流的 限流的几个方式
-  计数器
-计数器即是计算在单位时间窗口内请求访问的次数是否超过阀值。
-窗口分为：固定窗口、滑动窗口
- 固定窗口java实现：  private final AtomicInteger cur = new AtomicInteger(0); private Long startTime; public boolean isAllowed(int maxCount, int interval) { //如果没有第一次时间，则当下为第一次时间  if (startTime == null) startTime = System.currentTimeMillis(); //新增一次  cur.addAndGet(1); //如果当前时间减去开始时间，大于间隙了，说明进入新一轮计算  if (System.currentTimeMillis() - interval * 1000L &amp;gt; startTime) { //重置开始时间  startTime = System.currentTimeMillis(); //重置计数  cur.set(1); return true; } //还在时间内  return cur.get() &amp;lt;= maxCount; } 固定窗口解决了在单位时间内流量次数不会超过阀值，但是在临界点会出现问题。</description>
     </item>
     
   </channel>
