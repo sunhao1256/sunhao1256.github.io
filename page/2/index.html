@@ -69,6 +69,17 @@
 </h2>
 </header>
 <section class=entry-content>
+<p>Gradle </p>
+</section>
+<footer class=entry-footer>1 min&nbsp;·&nbsp;Hao Sun</footer>
+<a class=entry-link aria-label="post link to " href=https://sunhao1256.github.io/posts/gradle/></a>
+</article>
+<article class=post-entry>
+<header class=entry-header>
+<h2>
+</h2>
+</header>
+<section class=entry-content>
 <p>快捷键 Finder绝对路径跳转
 command+shift+G
 Finder绝对路径复制
@@ -149,29 +160,10 @@ public class AtomicInteger extends Number implements java.io.Serializable { priv
 <footer class=entry-footer>5 min&nbsp;·&nbsp;Hao Sun</footer>
 <a class=entry-link aria-label="post link to " href=https://sunhao1256.github.io/posts/%E5%A4%9A%E7%BA%BF%E7%A8%8B/></a>
 </article>
-<article class=post-entry>
-<header class=entry-header>
-<h2>
-</h2>
-</header>
-<section class=entry-content>
-<p>堆 堆是一种非线性结构，可以把堆看作一个数组，也可以被看作一个完全二叉树，通俗来讲堆其实就是利用完全二叉树的结构来维护的一维数组但堆并不一定是完全二叉树
-按照堆的特点可以把堆分为大顶堆和小顶堆 大顶堆：每个结点的值都大于或等于其左右孩子结点的值 小顶堆：每个结点的值都小于或等于其左右孩子结点的值
-使用堆的原因？ 如果仅仅是需要得到一个有序的序列，使用排序就可以很快完成，并不需要去组织一个新的数据结构。但是如果我们的需求是对于一个随时会有更新的序列，我要随时知道这个序列的最小值或最大值是什么。显然如果是线性结构，每次插入之后，假设原数组是有序的，那使用二分把它放在正确的位置也未尝不可，但是插入的时候从数组中留出空位就需要O(n)的时间复杂度，删除的时候亦然。
-时间复杂度 插入和删除的时间复杂度是O(logn)
-环形队列(数组) 普通队列 普通队列，数组实现时，出队后，原来的空间就浪费了。
-环形队列 环形队列，数组实现时，下标用模取运算，例如最大空间为5，模取后只会有0，1，2，3，4下标，组成了循环。
-front 变量的含义做一个调整： front 就指向队列的第一个元素, 也就是说 arr[front] 就是队列的第一个元素 front 的初始值 = 0 rear 变量的含义做一个调整：rear 指向队列的最后一个元素的后一个位置. 因为希望空出一个空间做为约定. rear 的初始值 = 0 当队列满时，条件是 (rear + 1) % maxSize == front 【满】 对队列为空的条件， rear == front 空 当我们这样分析， 队列中有效的数据的个数 (rear + maxSize - front) % maxSize // rear = 1 front = 0 时间轮 使用场景，处理大批量的定时任务
-利用环形队列，队列的每个空间里存放的是任务的集合。
-例如以60秒为一个轮，70秒后执行一个任务。只需要一个timer按秒去旋转时间轮，70%60=10，到达第10个槽的时候，执行内部的所有任务即可。
-为了解决10秒和70秒落在同一个槽上，可以在任务身上加一个属性，圈数，例如10秒的任务圈数是0，70秒的任务是1，只有达到槽位置，并且圈数为0的任务才会被执行。...</p>
-</section>
-<footer class=entry-footer>1 min&nbsp;·&nbsp;Hao Sun</footer>
-<a class=entry-link aria-label="post link to " href=https://sunhao1256.github.io/posts/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/></a>
-</article>
 <footer class=page-footer>
 <nav class=pagination>
 <a class=prev href=https://sunhao1256.github.io/>« Prev Page</a>
+<a class=next href=https://sunhao1256.github.io/page/3/>Next Page »</a>
 </nav>
 </footer>
 </main>

@@ -3,11 +3,11 @@
 <meta http-equiv=x-ua-compatible content="IE=edge">
 <meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no">
 <meta name=robots content="index, follow">
-<title>Posts | Hao Sun</title>
+<title>硬件 | Hao Sun</title>
 <meta name=keywords content>
-<meta name=description content="Posts - Hao Sun">
+<meta name=description content="Blog for Hao Sun">
 <meta name=author content="Hao Sun">
-<link rel=canonical href=https://sunhao1256.github.io/posts/>
+<link rel=canonical href=https://sunhao1256.github.io/tags/%E7%A1%AC%E4%BB%B6/>
 <link crossorigin=anonymous href=/assets/css/stylesheet.min.c88963fe2d79462000fd0fb1b3737783c32855d340583e4523343f8735c787f0.css integrity="sha256-yIlj/i15RiAA/Q+xs3N3g8MoVdNAWD5FIzQ/hzXHh/A=" rel="preload stylesheet" as=style>
 <link rel=icon href=https://sunhao1256.github.io/%3Clink%20/%20abs%20url%3E>
 <link rel=icon type=image/png sizes=16x16 href=https://sunhao1256.github.io/%3Clink%20/%20abs%20url%3E>
@@ -17,19 +17,18 @@
 <meta name=theme-color content="#2e2e33">
 <meta name=msapplication-TileColor content="#2e2e33">
 <meta name=generator content="Hugo 0.89.0">
-<link rel=alternate type=application/rss+xml href=https://sunhao1256.github.io/posts/index.xml>
+<link rel=alternate type=application/rss+xml href=https://sunhao1256.github.io/tags/%E7%A1%AC%E4%BB%B6/index.xml>
 <noscript>
 <style>#theme-toggle,.top-link{display:none}</style>
 <style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style>
-</noscript><meta property="og:title" content="Posts">
+</noscript><meta property="og:title" content="硬件">
 <meta property="og:description" content="Blog for Hao Sun">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://sunhao1256.github.io/posts/"><meta property="og:image" content="https://sunhao1256.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta property="og:site_name" content="Hao Sun">
+<meta property="og:url" content="https://sunhao1256.github.io/tags/%E7%A1%AC%E4%BB%B6/"><meta property="og:image" content="https://sunhao1256.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta property="og:site_name" content="Hao Sun">
 <meta name=twitter:card content="summary_large_image">
 <meta name=twitter:image content="https://sunhao1256.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E">
-<meta name=twitter:title content="Posts">
+<meta name=twitter:title content="硬件">
 <meta name=twitter:description content="Blog for Hao Sun">
-<script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://sunhao1256.github.io/posts/"}]}</script>
 </head>
 <body class=list id=top>
 <script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add('dark'):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove('dark'):window.matchMedia('(prefers-color-scheme: dark)').matches&&document.body.classList.add('dark')</script>
@@ -62,34 +61,20 @@
 </nav>
 </header>
 <main class=main>
-<header class=page-header><div class=breadcrumbs><a href=https://sunhao1256.github.io/>Home</a></div>
-<h1>Posts</h1>
+<header class=page-header><div class=breadcrumbs><a href=https://sunhao1256.github.io/>Home</a>&nbsp;»&nbsp;<a href=https://sunhao1256.github.io/tags/>Tags</a></div>
+<h1>硬件</h1>
 </header>
-<article class=post-entry>
+<article class="post-entry tag-entry">
 <header class=entry-header>
-<h2>
+<h2>all in one配置
 </h2>
 </header>
 <section class=entry-content>
-<p>堆 堆是一种非线性结构，可以把堆看作一个数组，也可以被看作一个完全二叉树，通俗来讲堆其实就是利用完全二叉树的结构来维护的一维数组但堆并不一定是完全二叉树
-按照堆的特点可以把堆分为大顶堆和小顶堆 大顶堆：每个结点的值都大于或等于其左右孩子结点的值 小顶堆：每个结点的值都小于或等于其左右孩子结点的值
-使用堆的原因？ 如果仅仅是需要得到一个有序的序列，使用排序就可以很快完成，并不需要去组织一个新的数据结构。但是如果我们的需求是对于一个随时会有更新的序列，我要随时知道这个序列的最小值或最大值是什么。显然如果是线性结构，每次插入之后，假设原数组是有序的，那使用二分把它放在正确的位置也未尝不可，但是插入的时候从数组中留出空位就需要O(n)的时间复杂度，删除的时候亦然。
-时间复杂度 插入和删除的时间复杂度是O(logn)
-环形队列(数组) 普通队列 普通队列，数组实现时，出队后，原来的空间就浪费了。
-环形队列 环形队列，数组实现时，下标用模取运算，例如最大空间为5，模取后只会有0，1，2，3，4下标，组成了循环。
-front 变量的含义做一个调整： front 就指向队列的第一个元素, 也就是说 arr[front] 就是队列的第一个元素 front 的初始值 = 0 rear 变量的含义做一个调整：rear 指向队列的最后一个元素的后一个位置. 因为希望空出一个空间做为约定. rear 的初始值 = 0 当队列满时，条件是 (rear + 1) % maxSize == front 【满】 对队列为空的条件， rear == front 空 当我们这样分析， 队列中有效的数据的个数 (rear + maxSize - front) % maxSize // rear = 1 front = 0 时间轮 使用场景，处理大批量的定时任务
-利用环形队列，队列的每个空间里存放的是任务的集合。
-例如以60秒为一个轮，70秒后执行一个任务。只需要一个timer按秒去旋转时间轮，70%60=10，到达第10个槽的时候，执行内部的所有任务即可。
-为了解决10秒和70秒落在同一个槽上，可以在任务身上加一个属性，圈数，例如10秒的任务圈数是0，70秒的任务是1，只有达到槽位置，并且圈数为0的任务才会被执行。...</p>
+<p>需求 虚拟机 我和对象都是程序员，学新技术的时候得有环境 同时两台 win 用于娱乐 目标是 2 台 win 达到 2k 下中配吃鸡流畅，独立键鼠显示器 带 nas 最好 对我用处不是很大，有的话更好，当网盘用用。 配置如下 实现细节 看 B 站司波图的教程 显示器得带音响，因为在家玩，不喜欢带耳机，音质听个响 开机麻烦，因为要先开 unraid ，然后再开 vm ，有的时候只是想开个 centos vm ，进行开发。懒得去房间开主机，买了个小米蓝牙开关，配合主板的 ac recovery 可以实现远程开机。(好像可以用代码实现，一直没整出来) usb 设备，就 unraid 带的 hot usb 插件就可以 直通硬盘，开发环境 centos 的无所谓，丢了就算，我放在了 nas 的 2t 机械盘里。但是我的 win ，有的时候还要拿来工作，包括游戏，丢了要下老半天。所以我原本笔记本上有一块 500g 的固态，又买了一块三星 980 pro 。用于 win 的硬盘，使用的是 pcie 直通。和物理机一样，都在硬盘里。虚拟机删了，东西也都在硬盘。性能达到满 显卡直通，打游戏肯定要显卡直通的，我买的两个同价位同性能的 n 卡和 a 卡，都能直通，除了 a 卡在 LOL 环境下会被检测是虚拟机环境，需要改一个配置。两个发挥的性能没什么区别，都达到了物理机的 90%性能，主要是因为 CPU 的导致没跑满性能 主板和机箱有坑！因为 b660m 是 matx 的，虽然可以插 2 个显卡，但是你如果配置的是 matx 的机箱，第二张显卡就卡在了电源那里，所以机箱一定要是 atx 的。不然装不下，害我白花了 170 快，闲鱼 89 挂着呢。当然可以买 atx 主板，贵啊！ CPU 直通， 打游戏的时候，核心要分离开的。一碗粉的钱总会有点影响，12600k 是 16 线程，所以我给 2 个 win 各用了 8 线程，CPU 得买带核显的，因为 unraid 自己要占一个输出，万一 web 挂了，还有地方可以查。 电源，不用想你都一碗粉的钱了，电源功率整大点别崩了，我的 750w ，用起来还行。建议上 1000w unraid 系统，我只是主要是想用虚拟机功能，nas 不是主要目的，所以就买了 basic 版本，b 站也有半价折扣教程。不用 pve ，当然是因为我代码看不懂，unraid 可视化做的太好了。不用开心版，是因为我要做主力机器的，未来也有可能在 nas 上做一些事情，支持下正版（第一次买正版系统） 不知道为什么，我 bios 里已经调整为首选视频输出是板载显卡了，但是当我的 hdmi 插在独立显卡的时候，unraid 启动的时候还是会占用独立显卡，导致显卡直通的时候会提示 busy 。所以我花了几块钱买了个 hdmi 欺骗器，一直插在核显上。 微星的主板需要关闭 fast boot ，微星自己有一个叫 msi fast boot ，两个都关了，否则 unraid 重启会黑屏 效果 nas 2t 双开 win 虚拟机，2k 100 渲染 中配吃鸡，70fps ，LOL 团战 150fps ，走路 200+ 远程开机，配合 unraid web 远程开虚拟机，进行开发 总结 最近看了 B 站司波图的两男一机。突然想用一碗粉的钱吃两碗粉。基于上面的需求，就动手做了。主板应该选带 wifi 的，不用一直拖网线，有点失误。都是 618 京东买的，后面价格降价了，可恶的狗东。但是有大部分 30 天保价，后面又少了几百块。配置图是没保价之前的价格。总体还算满意。达到了一开始的需求，家里整个公网 ip 啥的，也能在公司就能用家里的虚拟机了。因为自己换了 M1 pro ，pd 虚拟机总觉得用的不舒服。还不能装 centos7 。也满足了自己第一次装机，省钱的话，就是省了一份 cpu ，主板，电源，机箱。2000+。装机大佬们可以多多评价。总觉得硬件买贵了，又不敢去咸鱼～～🙄</p>
 </section>
-<footer class=entry-footer>1 min&nbsp;·&nbsp;Hao Sun</footer>
-<a class=entry-link aria-label="post link to " href=https://sunhao1256.github.io/posts/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/></a>
+<footer class=entry-footer><span title="2022-06-20 16:57:01 +0800 CST">June 20, 2022</span>&nbsp;·&nbsp;1 min&nbsp;·&nbsp;Hao Sun</footer>
+<a class=entry-link aria-label="post link to all in one配置" href=https://sunhao1256.github.io/posts/all-in-one/></a>
 </article>
-<footer class=page-footer>
-<nav class=pagination>
-<a class=prev href=https://sunhao1256.github.io/posts/page/2/>« Prev Page</a>
-</nav>
-</footer>
 </main>
 <footer class=footer>
 <span>&copy; 2022 <a href=https://sunhao1256.github.io/>Hao Sun</a></span>

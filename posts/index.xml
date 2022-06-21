@@ -9,7 +9,16 @@
       <link>https://sunhao1256.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
     </image>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Mon, 21 Feb 2022 16:57:01 +0800</lastBuildDate><atom:link href="https://sunhao1256.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 20 Jun 2022 16:57:01 +0800</lastBuildDate><atom:link href="https://sunhao1256.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>all in one配置</title>
+      <link>https://sunhao1256.github.io/posts/all-in-one/</link>
+      <pubDate>Mon, 20 Jun 2022 16:57:01 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/posts/all-in-one/</guid>
+      <description>需求  虚拟机 我和对象都是程序员，学新技术的时候得有环境 同时两台 win 用于娱乐 目标是 2 台 win 达到 2k 下中配吃鸡流畅，独立键鼠显示器 带 nas 最好 对我用处不是很大，有的话更好，当网盘用用。  配置如下 实现细节  看 B 站司波图的教程 显示器得带音响，因为在家玩，不喜欢带耳机，音质听个响 开机麻烦，因为要先开 unraid ，然后再开 vm ，有的时候只是想开个 centos vm ，进行开发。懒得去房间开主机，买了个小米蓝牙开关，配合主板的 ac recovery 可以实现远程开机。(好像可以用代码实现，一直没整出来) usb 设备，就 unraid 带的 hot usb 插件就可以 直通硬盘，开发环境 centos 的无所谓，丢了就算，我放在了 nas 的 2t 机械盘里。但是我的 win ，有的时候还要拿来工作，包括游戏，丢了要下老半天。所以我原本笔记本上有一块 500g 的固态，又买了一块三星 980 pro 。用于 win 的硬盘，使用的是 pcie 直通。和物理机一样，都在硬盘里。虚拟机删了，东西也都在硬盘。性能达到满 显卡直通，打游戏肯定要显卡直通的，我买的两个同价位同性能的 n 卡和 a 卡，都能直通，除了 a 卡在 LOL 环境下会被检测是虚拟机环境，需要改一个配置。两个发挥的性能没什么区别，都达到了物理机的 90%性能，主要是因为 CPU 的导致没跑满性能 主板和机箱有坑！因为 b660m 是 matx 的，虽然可以插 2 个显卡，但是你如果配置的是 matx 的机箱，第二张显卡就卡在了电源那里，所以机箱一定要是 atx 的。不然装不下，害我白花了 170 快，闲鱼 89 挂着呢。当然可以买 atx 主板，贵啊！ CPU 直通， 打游戏的时候，核心要分离开的。一碗粉的钱总会有点影响，12600k 是 16 线程，所以我给 2 个 win 各用了 8 线程，CPU 得买带核显的，因为 unraid 自己要占一个输出，万一 web 挂了，还有地方可以查。 电源，不用想你都一碗粉的钱了，电源功率整大点别崩了，我的 750w ，用起来还行。建议上 1000w unraid 系统，我只是主要是想用虚拟机功能，nas 不是主要目的，所以就买了 basic 版本，b 站也有半价折扣教程。不用 pve ，当然是因为我代码看不懂，unraid 可视化做的太好了。不用开心版，是因为我要做主力机器的，未来也有可能在 nas 上做一些事情，支持下正版（第一次买正版系统） 不知道为什么，我 bios 里已经调整为首选视频输出是板载显卡了，但是当我的 hdmi 插在独立显卡的时候，unraid 启动的时候还是会占用独立显卡，导致显卡直通的时候会提示 busy 。所以我花了几块钱买了个 hdmi 欺骗器，一直插在核显上。 微星的主板需要关闭 fast boot ，微星自己有一个叫 msi fast boot ，两个都关了，否则 unraid 重启会黑屏  效果  nas 2t 双开 win 虚拟机，2k 100 渲染 中配吃鸡，70fps ，LOL 团战 150fps ，走路 200+ 远程开机，配合 unraid web 远程开虚拟机，进行开发  总结 最近看了 B 站司波图的两男一机。突然想用一碗粉的钱吃两碗粉。基于上面的需求，就动手做了。主板应该选带 wifi 的，不用一直拖网线，有点失误。都是 618 京东买的，后面价格降价了，可恶的狗东。但是有大部分 30 天保价，后面又少了几百块。配置图是没保价之前的价格。总体还算满意。达到了一开始的需求，家里整个公网 ip 啥的，也能在公司就能用家里的虚拟机了。因为自己换了 M1 pro ，pd 虚拟机总觉得用的不舒服。还不能装 centos7 。也满足了自己第一次装机，省钱的话，就是省了一份 cpu ，主板，电源，机箱。2000+。装机大佬们可以多多评价。总觉得硬件买贵了，又不敢去咸鱼～～🙄</description>
+    </item>
+    
     <item>
       <title>Git命令</title>
       <link>https://sunhao1256.github.io/posts/git%E5%91%BD%E4%BB%A4/</link>
@@ -77,7 +86,7 @@ VI和VIM的3种常见模式   正常模式
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://sunhao1256.github.io/posts/go/</guid>
-      <description>Go go mod init:初始化modules go mod download:下载modules到本地cache go mod edit:编辑go.mod文件，选项有-json、-require和-exclude，可以使用帮助go help mod edit go mod graph:以文本模式打印模块需求图 go mod tidy:检查，删除错误或者不使用的modules，下载没download的package go mod vendor:生成vendor目录 go mod verify:验证依赖是否正确 go mod why：查找依赖 ​ go test 执行一下，自动导包 ​ go list -m 主模块的打印路径 go list -m -f={{.Dir}} print主模块的根目录 go list -m all 查看当前的依赖和版本信息 </description>
+      <description>Go 包管理 go mod init:初始化modules go mod download:下载modules到本地cache go mod edit:编辑go.mod文件，选项有-json、-require和-exclude，可以使用帮助go help mod edit go mod graph:以文本模式打印模块需求图 go mod tidy:检查，删除错误或者不使用的modules，下载没download的package go mod vendor:生成vendor目录 go mod verify:验证依赖是否正确 go mod why：查找依赖 ​ go test 执行一下，自动导包 ​ go list -m 主模块的打印路径 go list -m -f={{.Dir}} print主模块的根目录 go list -m all 查看当前的依赖和版本信息 </description>
     </item>
     
     <item>
