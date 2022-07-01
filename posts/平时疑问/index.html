@@ -1,0 +1,287 @@
+<!doctype html><html lang=en dir=auto>
+<head><meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no">
+<meta name=robots content="index, follow">
+<title>Hao Sun</title>
+<meta name=keywords content>
+<meta name=description content="平时疑问   浏览器输入一个地址，整个流程
+  如果线上流量暴增，全都打到一个 upstream 上了，怎么排查
+  如何在 nginx 的 access log 中查出请求前 10 的 ip
+  台阶问题，假如对于上台阶，可以一次上一阶，也可以一次上两阶，写一个方法，实现输入台阶数，输出可以有多少种上法。
+  广度优先和深度优先
+  spring reactive，响应式聊下，什么时候适合用？背压是什么东西，backpress
+  压缩算法，怎么就“压缩”了？如何减少体积的？
+  实时一致性，最终一致性是什么？什么场景下用那种，如何实现的？
+  实时一致性:
+微服务中，场景用户使用积分兑换优惠券，积分service先扣除积分，优惠券service再进行发券动作，如果网络问题，积分扣成功了，但是优惠券发失败了。用户会投诉，必须要证优惠券和积分要在同一个分布式事务中.
+解决方案：市面上的分布式事务，阿里的seata
+  最终一致性:
+微服务中，用户选择商品下单，商品service进行库存扣件，订单service生成订单，交易service生成交易订单。如果网络原因导致，交易service生成交易订单失败了。并没有影响，只需要通过措施重新弥补交易service去生成交易订单即可。
+解决方法：mq，通过mq的重试机制以及持久化等特性，每一个微服务与下游微服务进行交互动作都是通过mq的消息。保证消息能够被消费，长时间未消费可以告警。
+    消息堆积如何处理？以及产生的危害。
+  怎么保证接口幂等
+  如何评判一个服务的好坏？你是如何进行压测的？查看了哪些指标
+  对象存储，文件存储，块存储。区别
+  服务器卡了，字都快打不动了，咋回事，怎么排查
+  用过mysql行锁吗
+用过，在一些比较简单的微服务场景，或者无法使用其他中间件的前提下。如果需要部署多节点的话，最方便的分布式锁就是mysql，因为我们的db库基本都是单节点的mysql或者mariadb。使用起来其实很简单，就是一个update语句，更新version字段。也就是所谓的乐观锁。开启一个事务，先select锁，然后尝试更新锁，在没完成业务的之前是不提交锁的，所以，其他线程会在获取锁的时候就停下来。因为update，delete，insert默认都是带for update，即行锁的。当然select不会阻塞，除非主动的设置for update。这样就是最基础的一个分布式锁了。切记锁字段必须要有索引，否则锁整个表。就G了
+  netty玩过吗，玩过哪些东西，能干啥">
+<meta name=author content="Hao Sun">
+<link rel=canonical href=https://sunhao1256.github.io/posts/%E5%B9%B3%E6%97%B6%E7%96%91%E9%97%AE/>
+<link crossorigin=anonymous href=/assets/css/stylesheet.min.c88963fe2d79462000fd0fb1b3737783c32855d340583e4523343f8735c787f0.css integrity="sha256-yIlj/i15RiAA/Q+xs3N3g8MoVdNAWD5FIzQ/hzXHh/A=" rel="preload stylesheet" as=style>
+<script defer crossorigin=anonymous src=/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5+kdJvBz5iKbt6B5PJI=" onload=hljs.initHighlightingOnLoad()></script>
+<link rel=icon href=https://sunhao1256.github.io/%3Clink%20/%20abs%20url%3E>
+<link rel=icon type=image/png sizes=16x16 href=https://sunhao1256.github.io/%3Clink%20/%20abs%20url%3E>
+<link rel=icon type=image/png sizes=32x32 href=https://sunhao1256.github.io/%3Clink%20/%20abs%20url%3E>
+<link rel=apple-touch-icon href=https://sunhao1256.github.io/%3Clink%20/%20abs%20url%3E>
+<link rel=mask-icon href=https://sunhao1256.github.io/%3Clink%20/%20abs%20url%3E>
+<meta name=theme-color content="#2e2e33">
+<meta name=msapplication-TileColor content="#2e2e33">
+<meta name=generator content="Hugo 0.89.0">
+<noscript>
+<style>#theme-toggle,.top-link{display:none}</style>
+<style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style>
+</noscript><meta property="og:title" content>
+<meta property="og:description" content="平时疑问   浏览器输入一个地址，整个流程
+  如果线上流量暴增，全都打到一个 upstream 上了，怎么排查
+  如何在 nginx 的 access log 中查出请求前 10 的 ip
+  台阶问题，假如对于上台阶，可以一次上一阶，也可以一次上两阶，写一个方法，实现输入台阶数，输出可以有多少种上法。
+  广度优先和深度优先
+  spring reactive，响应式聊下，什么时候适合用？背压是什么东西，backpress
+  压缩算法，怎么就“压缩”了？如何减少体积的？
+  实时一致性，最终一致性是什么？什么场景下用那种，如何实现的？
+  实时一致性:
+微服务中，场景用户使用积分兑换优惠券，积分service先扣除积分，优惠券service再进行发券动作，如果网络问题，积分扣成功了，但是优惠券发失败了。用户会投诉，必须要证优惠券和积分要在同一个分布式事务中.
+解决方案：市面上的分布式事务，阿里的seata
+  最终一致性:
+微服务中，用户选择商品下单，商品service进行库存扣件，订单service生成订单，交易service生成交易订单。如果网络原因导致，交易service生成交易订单失败了。并没有影响，只需要通过措施重新弥补交易service去生成交易订单即可。
+解决方法：mq，通过mq的重试机制以及持久化等特性，每一个微服务与下游微服务进行交互动作都是通过mq的消息。保证消息能够被消费，长时间未消费可以告警。
+    消息堆积如何处理？以及产生的危害。
+  怎么保证接口幂等
+  如何评判一个服务的好坏？你是如何进行压测的？查看了哪些指标
+  对象存储，文件存储，块存储。区别
+  服务器卡了，字都快打不动了，咋回事，怎么排查
+  用过mysql行锁吗
+用过，在一些比较简单的微服务场景，或者无法使用其他中间件的前提下。如果需要部署多节点的话，最方便的分布式锁就是mysql，因为我们的db库基本都是单节点的mysql或者mariadb。使用起来其实很简单，就是一个update语句，更新version字段。也就是所谓的乐观锁。开启一个事务，先select锁，然后尝试更新锁，在没完成业务的之前是不提交锁的，所以，其他线程会在获取锁的时候就停下来。因为update，delete，insert默认都是带for update，即行锁的。当然select不会阻塞，除非主动的设置for update。这样就是最基础的一个分布式锁了。切记锁字段必须要有索引，否则锁整个表。就G了
+  netty玩过吗，玩过哪些东西，能干啥">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://sunhao1256.github.io/posts/%E5%B9%B3%E6%97%B6%E7%96%91%E9%97%AE/"><meta property="og:image" content="https://sunhao1256.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta property="article:section" content="posts">
+<meta property="og:site_name" content="Hao Sun">
+<meta name=twitter:card content="summary_large_image">
+<meta name=twitter:image content="https://sunhao1256.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E">
+<meta name=twitter:title content>
+<meta name=twitter:description content="平时疑问   浏览器输入一个地址，整个流程
+  如果线上流量暴增，全都打到一个 upstream 上了，怎么排查
+  如何在 nginx 的 access log 中查出请求前 10 的 ip
+  台阶问题，假如对于上台阶，可以一次上一阶，也可以一次上两阶，写一个方法，实现输入台阶数，输出可以有多少种上法。
+  广度优先和深度优先
+  spring reactive，响应式聊下，什么时候适合用？背压是什么东西，backpress
+  压缩算法，怎么就“压缩”了？如何减少体积的？
+  实时一致性，最终一致性是什么？什么场景下用那种，如何实现的？
+  实时一致性:
+微服务中，场景用户使用积分兑换优惠券，积分service先扣除积分，优惠券service再进行发券动作，如果网络问题，积分扣成功了，但是优惠券发失败了。用户会投诉，必须要证优惠券和积分要在同一个分布式事务中.
+解决方案：市面上的分布式事务，阿里的seata
+  最终一致性:
+微服务中，用户选择商品下单，商品service进行库存扣件，订单service生成订单，交易service生成交易订单。如果网络原因导致，交易service生成交易订单失败了。并没有影响，只需要通过措施重新弥补交易service去生成交易订单即可。
+解决方法：mq，通过mq的重试机制以及持久化等特性，每一个微服务与下游微服务进行交互动作都是通过mq的消息。保证消息能够被消费，长时间未消费可以告警。
+    消息堆积如何处理？以及产生的危害。
+  怎么保证接口幂等
+  如何评判一个服务的好坏？你是如何进行压测的？查看了哪些指标
+  对象存储，文件存储，块存储。区别
+  服务器卡了，字都快打不动了，咋回事，怎么排查
+  用过mysql行锁吗
+用过，在一些比较简单的微服务场景，或者无法使用其他中间件的前提下。如果需要部署多节点的话，最方便的分布式锁就是mysql，因为我们的db库基本都是单节点的mysql或者mariadb。使用起来其实很简单，就是一个update语句，更新version字段。也就是所谓的乐观锁。开启一个事务，先select锁，然后尝试更新锁，在没完成业务的之前是不提交锁的，所以，其他线程会在获取锁的时候就停下来。因为update，delete，insert默认都是带for update，即行锁的。当然select不会阻塞，除非主动的设置for update。这样就是最基础的一个分布式锁了。切记锁字段必须要有索引，否则锁整个表。就G了
+  netty玩过吗，玩过哪些东西，能干啥">
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://sunhao1256.github.io/posts/"},{"@type":"ListItem","position":2,"name":"","item":"https://sunhao1256.github.io/posts/%E5%B9%B3%E6%97%B6%E7%96%91%E9%97%AE/"}]}</script>
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"","name":"","description":"平时疑问   浏览器输入一个地址，整个流程\n  如果线上流量暴增，全都打到一个 upstream 上了，怎么排查\n  如何在 nginx 的 access log 中查出请求前 10 的 ip\n  台阶问题，假如对于上台阶，可以一次上一阶，也可以一次上两阶，写一个方法，实现输入台阶数，输出可以有多少种上法。\n  广度优先和深度优先\n  spring reactive，响应式聊下，什么时候适合用？背压是什么东西，backpress\n  压缩算法，怎么就“压缩”了？如何减少体积的？\n  实时一致性，最终一致性是什么？什么场景下用那种，如何实现的？\n  实时一致性:\n微服务中，场景用户使用积分兑换优惠券，积分service先扣除积分，优惠券service再进行发券动作，如果网络问题，积分扣成功了，但是优惠券发失败了。用户会投诉，必须要证优惠券和积分要在同一个分布式事务中.\n解决方案：市面上的分布式事务，阿里的seata\n  最终一致性:\n微服务中，用户选择商品下单，商品service进行库存扣件，订单service生成订单，交易service生成交易订单。如果网络原因导致，交易service生成交易订单失败了。并没有影响，只需要通过措施重新弥补交易service去生成交易订单即可。\n解决方法：mq，通过mq的重试机制以及持久化等特性，每一个微服务与下游微服务进行交互动作都是通过mq的消息。保证消息能够被消费，长时间未消费可以告警。\n    消息堆积如何处理？以及产生的危害。\n  怎么保证接口幂等\n  如何评判一个服务的好坏？你是如何进行压测的？查看了哪些指标\n  对象存储，文件存储，块存储。区别\n  服务器卡了，字都快打不动了，咋回事，怎么排查\n  用过mysql行锁吗\n用过，在一些比较简单的微服务场景，或者无法使用其他中间件的前提下。如果需要部署多节点的话，最方便的分布式锁就是mysql，因为我们的db库基本都是单节点的mysql或者mariadb。使用起来其实很简单，就是一个update语句，更新version字段。也就是所谓的乐观锁。开启一个事务，先select锁，然后尝试更新锁，在没完成业务的之前是不提交锁的，所以，其他线程会在获取锁的时候就停下来。因为update，delete，insert默认都是带for update，即行锁的。当然select不会阻塞，除非主动的设置for update。这样就是最基础的一个分布式锁了。切记锁字段必须要有索引，否则锁整个表。就G了\n  netty玩过吗，玩过哪些东西，能干啥","keywords":[],"articleBody":"平时疑问   浏览器输入一个地址，整个流程\n  如果线上流量暴增，全都打到一个 upstream 上了，怎么排查\n  如何在 nginx 的 access log 中查出请求前 10 的 ip\n  台阶问题，假如对于上台阶，可以一次上一阶，也可以一次上两阶，写一个方法，实现输入台阶数，输出可以有多少种上法。\n  广度优先和深度优先\n  spring reactive，响应式聊下，什么时候适合用？背压是什么东西，backpress\n  压缩算法，怎么就“压缩”了？如何减少体积的？\n  实时一致性，最终一致性是什么？什么场景下用那种，如何实现的？\n  实时一致性:\n微服务中，场景用户使用积分兑换优惠券，积分service先扣除积分，优惠券service再进行发券动作，如果网络问题，积分扣成功了，但是优惠券发失败了。用户会投诉，必须要证优惠券和积分要在同一个分布式事务中.\n解决方案：市面上的分布式事务，阿里的seata\n  最终一致性:\n微服务中，用户选择商品下单，商品service进行库存扣件，订单service生成订单，交易service生成交易订单。如果网络原因导致，交易service生成交易订单失败了。并没有影响，只需要通过措施重新弥补交易service去生成交易订单即可。\n解决方法：mq，通过mq的重试机制以及持久化等特性，每一个微服务与下游微服务进行交互动作都是通过mq的消息。保证消息能够被消费，长时间未消费可以告警。\n    消息堆积如何处理？以及产生的危害。\n  怎么保证接口幂等\n  如何评判一个服务的好坏？你是如何进行压测的？查看了哪些指标\n  对象存储，文件存储，块存储。区别\n  服务器卡了，字都快打不动了，咋回事，怎么排查\n  用过mysql行锁吗\n用过，在一些比较简单的微服务场景，或者无法使用其他中间件的前提下。如果需要部署多节点的话，最方便的分布式锁就是mysql，因为我们的db库基本都是单节点的mysql或者mariadb。使用起来其实很简单，就是一个update语句，更新version字段。也就是所谓的乐观锁。开启一个事务，先select锁，然后尝试更新锁，在没完成业务的之前是不提交锁的，所以，其他线程会在获取锁的时候就停下来。因为update，delete，insert默认都是带for update，即行锁的。当然select不会阻塞，除非主动的设置for update。这样就是最基础的一个分布式锁了。切记锁字段必须要有索引，否则锁整个表。就G了\n  netty玩过吗，玩过哪些东西，能干啥\n  你看过一个springboot的启动内存吗？大吗？为啥这么大，怎么瘦身呢，为什么一个go就只要几十M\n  activity7了解过吗\n  规则引擎了解了解？\n  git cherry-pick是啥\n  你们平时是如何开发的，用jira，说说jira的几个问题类型，epic，之类的。\n  大量sql都超过了200ms。怎么排查\n  你写了一个服务，怎么压测的？怎么得到qps,qps的计算公式\n  为什么main线程执行结束了，jvm虚拟机还不退出。\njvm退出的条件是，当前虚拟机中只存在守护线程了，只要存活非守护线程，则jvm不会退出直到线程执行完毕。所以，如果你用了一个有多线程功能的包，但是测试的时候，main线程结束的，整个jvm都退出了，原因就是这个包，创建线程的时候是守护线程。当然main线程是不可以设为守护线程的。\n  字典树有什么场景可以使用？\n  amd64,arm64,x86_64,aarch,都是啥\n  背压理解吗，微服务中下游服务扛不住并发会崩了。有实战过吗\n场景：A服务调用B服务某个接口。耗时，并且需要资源巨大的接口。B不一定是你自己的微服务，可能是别人提供的部署在公网环境的服务。客户端通过A接口调用B，现在要求B不能崩，而且A的接口需要全部请求下来，不能丢，可以异步。 方案：mq\n  GRPC是什么，用过吗\n  脑裂\n  rabbitmq怎么保证顺序消费\n  ","wordCount":"54","inLanguage":"en","datePublished":"0001-01-01T00:00:00Z","dateModified":"0001-01-01T00:00:00Z","author":{"@type":"Person","name":"Hao Sun"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://sunhao1256.github.io/posts/%E5%B9%B3%E6%97%B6%E7%96%91%E9%97%AE/"},"publisher":{"@type":"Organization","name":"Hao Sun","logo":{"@type":"ImageObject","url":"https://sunhao1256.github.io/%3Clink%20/%20abs%20url%3E"}}}</script>
+</head>
+<body id=top>
+<script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add('dark'):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove('dark'):window.matchMedia('(prefers-color-scheme: dark)').matches&&document.body.classList.add('dark')</script>
+<header class=header>
+<nav class=nav>
+<div class=logo>
+<a href=https://sunhao1256.github.io/ accesskey=h title="Hao Sun (Alt + H)">Hao Sun</a>
+<span class=logo-switches>
+<button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+</button>
+</span>
+</div>
+<ul id=menu>
+<li>
+<a href=https://sunhao1256.github.io/archives/ title=Archive>
+<span>Archive</span>
+</a>
+</li>
+<li>
+<a href=https://sunhao1256.github.io/search/ title="Search (Alt + /)" accesskey=/>
+<span>Search</span>
+</a>
+</li>
+<li>
+<a href=https://sunhao1256.github.io/tags/ title=Tags>
+<span>Tags</span>
+</a>
+</li>
+</ul>
+</nav>
+</header>
+<main class=main>
+<article class=post-single>
+<header class=post-header>
+<div class=breadcrumbs><a href=https://sunhao1256.github.io/>Home</a>&nbsp;»&nbsp;<a href=https://sunhao1256.github.io/posts/>Posts</a></div>
+<h1 class=post-title>
+</h1>
+<div class=post-meta>1 min&nbsp;·&nbsp;Hao Sun
+</div>
+</header> <div class=toc>
+<details>
+<summary accesskey=c title="(Alt + C)">
+<span class=details>Table of Contents</span>
+</summary>
+<div class=inner><ul>
+<li>
+<a href=#%e5%b9%b3%e6%97%b6%e7%96%91%e9%97%ae aria-label=平时疑问>平时疑问</a>
+</li>
+</ul>
+</div>
+</details>
+</div>
+<div class=post-content><h1 id=平时疑问>平时疑问<a hidden class=anchor aria-hidden=true href=#平时疑问>#</a></h1>
+<ul>
+<li>
+<p>浏览器输入一个地址，整个流程</p>
+</li>
+<li>
+<p>如果线上流量暴增，全都打到一个 upstream 上了，怎么排查</p>
+</li>
+<li>
+<p>如何在 nginx 的 access log 中查出请求前 10 的 ip</p>
+</li>
+<li>
+<p>台阶问题，假如对于上台阶，可以一次上一阶，也可以一次上两阶，写一个方法，实现输入台阶数，输出可以有多少种上法。</p>
+</li>
+<li>
+<p>广度优先和深度优先</p>
+</li>
+<li>
+<p>spring reactive，响应式聊下，什么时候适合用？背压是什么东西，backpress</p>
+</li>
+<li>
+<p>压缩算法，怎么就“压缩”了？如何减少体积的？</p>
+</li>
+<li>
+<p>实时一致性，最终一致性是什么？什么场景下用那种，如何实现的？</p>
+<ul>
+<li>
+<p>实时一致性:</p>
+<p>微服务中，场景用户使用积分兑换优惠券，积分service先扣除积分，优惠券service再进行发券动作，如果网络问题，积分扣成功了，但是优惠券发失败了。用户会投诉，必须要证优惠券和积分要在同一个分布式事务中.</p>
+<p>解决方案：市面上的分布式事务，阿里的seata</p>
+</li>
+<li>
+<p>最终一致性:</p>
+<p>微服务中，用户选择商品下单，商品service进行库存扣件，订单service生成订单，交易service生成交易订单。如果网络原因导致，交易service生成交易订单失败了。并没有影响，只需要通过措施重新弥补交易service去生成交易订单即可。</p>
+<p>解决方法：mq，通过mq的重试机制以及持久化等特性，每一个微服务与下游微服务进行交互动作都是通过mq的消息。保证消息能够被消费，长时间未消费可以告警。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>消息堆积如何处理？以及产生的危害。</p>
+</li>
+<li>
+<p>怎么保证接口幂等</p>
+</li>
+<li>
+<p>如何评判一个服务的好坏？你是如何进行压测的？查看了哪些指标</p>
+</li>
+<li>
+<p>对象存储，文件存储，块存储。区别</p>
+</li>
+<li>
+<p>服务器卡了，字都快打不动了，咋回事，怎么排查</p>
+</li>
+<li>
+<p>用过mysql行锁吗</p>
+<p>用过，在一些比较简单的微服务场景，或者无法使用其他中间件的前提下。如果需要部署多节点的话，最方便的分布式锁就是mysql，因为我们的db库基本都是单节点的mysql或者mariadb。使用起来其实很简单，就是一个update语句，更新version字段。也就是所谓的乐观锁。开启一个事务，先select锁，然后尝试更新锁，在没完成业务的之前是不提交锁的，所以，其他线程会在获取锁的时候就停下来。因为update，delete，insert默认都是带for update，即行锁的。当然select不会阻塞，除非主动的设置for update。这样就是最基础的一个分布式锁了。切记锁字段必须要有索引，否则锁整个表。就G了</p>
+</li>
+<li>
+<p>netty玩过吗，玩过哪些东西，能干啥</p>
+</li>
+<li>
+<p>你看过一个springboot的启动内存吗？大吗？为啥这么大，怎么瘦身呢，为什么一个go就只要几十M</p>
+</li>
+<li>
+<p>activity7了解过吗</p>
+</li>
+<li>
+<p>规则引擎了解了解？</p>
+</li>
+<li>
+<p>git cherry-pick是啥</p>
+</li>
+<li>
+<p>你们平时是如何开发的，用jira，说说jira的几个问题类型，epic，之类的。</p>
+</li>
+<li>
+<p>大量sql都超过了200ms。怎么排查</p>
+</li>
+<li>
+<p>你写了一个服务，怎么压测的？怎么得到qps,qps的计算公式</p>
+</li>
+<li>
+<p>为什么main线程执行结束了，jvm虚拟机还不退出。</p>
+<p>jvm退出的条件是，当前虚拟机中只存在守护线程了，只要存活非守护线程，则jvm不会退出直到线程执行完毕。所以，如果你用了一个有多线程功能的包，但是测试的时候，main线程结束的，整个jvm都退出了，原因就是这个包，创建线程的时候是守护线程。当然main线程是不可以设为守护线程的。</p>
+</li>
+<li>
+<p>字典树有什么场景可以使用？</p>
+</li>
+<li>
+<p>amd64,arm64,x86_64,aarch,都是啥</p>
+</li>
+<li>
+<p>背压理解吗，微服务中下游服务扛不住并发会崩了。有实战过吗</p>
+<p>场景：A服务调用B服务某个接口。耗时，并且需要资源巨大的接口。B不一定是你自己的微服务，可能是别人提供的部署在公网环境的服务。客户端通过A接口调用B，现在要求B不能崩，而且A的接口需要全部请求下来，不能丢，可以异步。
+方案：mq</p>
+</li>
+<li>
+<p>GRPC是什么，用过吗</p>
+</li>
+<li>
+<p>脑裂</p>
+</li>
+<li>
+<p>rabbitmq怎么保证顺序消费</p>
+</li>
+</ul>
+</div>
+<footer class=post-footer>
+<nav class=paginav>
+<a class=prev href=https://sunhao1256.github.io/posts/%E5%A4%9A%E7%BA%BF%E7%A8%8B/>
+<span class=title>« Prev Page</span>
+<br>
+<span></span>
+</a>
+<a class=next href=https://sunhao1256.github.io/posts/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/>
+<span class=title>Next Page »</span>
+<br>
+<span></span>
+</a>
+</nav>
+</footer>
+</article>
+</main>
+<footer class=footer>
+<span>&copy; 2022 <a href=https://sunhao1256.github.io/>Hao Sun</a></span>
+<span>
+Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://git.io/hugopapermod rel=noopener target=_blank>PaperMod</a>
+</span>
+</footer>
+<a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
+</a>
+<script>let menu=document.getElementById('menu');menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener("click",function(b){b.preventDefault();var a=this.getAttribute("href").substr(1);window.matchMedia('(prefers-reduced-motion: reduce)').matches?document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView({behavior:"smooth"}),a==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${a}`)})})</script>
+<script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script>
+<script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove('dark'),localStorage.setItem("pref-theme",'light')):(document.body.classList.add('dark'),localStorage.setItem("pref-theme",'dark'))})</script>
+</body>
+</html>
