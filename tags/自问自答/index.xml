@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>自问自答 on Hao Sun</title>
+    <link>https://sunhao1256.github.io/tags/%E8%87%AA%E9%97%AE%E8%87%AA%E7%AD%94/</link>
+    <description>Recent content in 自问自答 on Hao Sun</description>
+    <image>
+      <url>https://sunhao1256.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://sunhao1256.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Tue, 11 Jan 2022 14:43:18 +0800</lastBuildDate><atom:link href="https://sunhao1256.github.io/tags/%E8%87%AA%E9%97%AE%E8%87%AA%E7%AD%94/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>平时疑问</title>
+      <link>https://sunhao1256.github.io/posts/%E5%B9%B3%E6%97%B6%E7%96%91%E9%97%AE/</link>
+      <pubDate>Tue, 11 Jan 2022 14:43:18 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/posts/%E5%B9%B3%E6%97%B6%E7%96%91%E9%97%AE/</guid>
+      <description>平时疑问   浏览器输入一个地址，整个流程
+  如果线上流量暴增，全都打到一个 upstream 上了，怎么排查
+  如何在 nginx 的 access log 中查出请求前 10 的 ip
+  台阶问题，假如对于上台阶，可以一次上一阶，也可以一次上两阶，写一个方法，实现输入台阶数，输出可以有多少种上法。
+  广度优先和深度优先
+  spring reactive，响应式聊下，什么时候适合用？背压是什么东西，backpress
+  压缩算法，怎么就“压缩”了？如何减少体积的？
+  实时一致性，最终一致性是什么？什么场景下用那种，如何实现的？
+  实时一致性:
+微服务中，场景用户使用积分兑换优惠券，积分service先扣除积分，优惠券service再进行发券动作，如果网络问题，积分扣成功了，但是优惠券发失败了。用户会投诉，必须要证优惠券和积分要在同一个分布式事务中.
+解决方案：市面上的分布式事务，阿里的seata
+  最终一致性:
+微服务中，用户选择商品下单，商品service进行库存扣件，订单service生成订单，交易service生成交易订单。如果网络原因导致，交易service生成交易订单失败了。并没有影响，只需要通过措施重新弥补交易service去生成交易订单即可。
+解决方法：mq，通过mq的重试机制以及持久化等特性，每一个微服务与下游微服务进行交互动作都是通过mq的消息。保证消息能够被消费，长时间未消费可以告警。
+    消息堆积如何处理？以及产生的危害。
+  怎么保证接口幂等
+  如何评判一个服务的好坏？你是如何进行压测的？查看了哪些指标
+  对象存储，文件存储，块存储。区别
+  服务器卡了，字都快打不动了，咋回事，怎么排查
+  用过mysql行锁吗
+用过，在一些比较简单的微服务场景，或者无法使用其他中间件的前提下。如果需要部署多节点的话，最方便的分布式锁就是mysql，因为我们的db库基本都是单节点的mysql或者mariadb。使用起来其实很简单，就是一个update语句，更新version字段。也就是所谓的乐观锁。开启一个事务，先select锁，然后尝试更新锁，在没完成业务的之前是不提交锁的，所以，其他线程会在获取锁的时候就停下来。因为update，delete，insert默认都是带for update，即行锁的。当然select不会阻塞，除非主动的设置for update。这样就是最基础的一个分布式锁了。切记锁字段必须要有索引，否则锁整个表。就G了
+  netty玩过吗，玩过哪些东西，能干啥</description>
+    </item>
+    
+  </channel>
+</rss>

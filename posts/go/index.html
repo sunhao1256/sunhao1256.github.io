@@ -3,8 +3,8 @@
 <meta http-equiv=x-ua-compatible content="IE=edge">
 <meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no">
 <meta name=robots content="index, follow">
-<title>Hao Sun</title>
-<meta name=keywords content>
+<title>Go包管理 | Hao Sun</title>
+<meta name=keywords content="学习">
 <meta name=description content="Go 包管理 go mod init:初始化modules go mod download:下载modules到本地cache go mod edit:编辑go.mod文件，选项有-json、-require和-exclude，可以使用帮助go help mod edit go mod graph:以文本模式打印模块需求图 go mod tidy:检查，删除错误或者不使用的modules，下载没download的package go mod vendor:生成vendor目录 go mod verify:验证依赖是否正确 go mod why：查找依赖 ​ go test 执行一下，自动导包 ​ go list -m 主模块的打印路径 go list -m -f={{.Dir}} print主模块的根目录 go list -m all 查看当前的依赖和版本信息 ">
 <meta name=author content="Hao Sun">
 <link rel=canonical href=https://sunhao1256.github.io/posts/go/>
@@ -21,17 +21,18 @@
 <noscript>
 <style>#theme-toggle,.top-link{display:none}</style>
 <style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style>
-</noscript><meta property="og:title" content>
+</noscript><meta property="og:title" content="Go包管理">
 <meta property="og:description" content="Go 包管理 go mod init:初始化modules go mod download:下载modules到本地cache go mod edit:编辑go.mod文件，选项有-json、-require和-exclude，可以使用帮助go help mod edit go mod graph:以文本模式打印模块需求图 go mod tidy:检查，删除错误或者不使用的modules，下载没download的package go mod vendor:生成vendor目录 go mod verify:验证依赖是否正确 go mod why：查找依赖 ​ go test 执行一下，自动导包 ​ go list -m 主模块的打印路径 go list -m -f={{.Dir}} print主模块的根目录 go list -m all 查看当前的依赖和版本信息 ">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://sunhao1256.github.io/posts/go/"><meta property="og:image" content="https://sunhao1256.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta property="article:section" content="posts">
-<meta property="og:site_name" content="Hao Sun">
+<meta property="article:published_time" content="2022-01-11T14:43:18+08:00">
+<meta property="article:modified_time" content="2022-01-11T14:43:18+08:00"><meta property="og:site_name" content="Hao Sun">
 <meta name=twitter:card content="summary_large_image">
 <meta name=twitter:image content="https://sunhao1256.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E">
-<meta name=twitter:title content>
+<meta name=twitter:title content="Go包管理">
 <meta name=twitter:description content="Go 包管理 go mod init:初始化modules go mod download:下载modules到本地cache go mod edit:编辑go.mod文件，选项有-json、-require和-exclude，可以使用帮助go help mod edit go mod graph:以文本模式打印模块需求图 go mod tidy:检查，删除错误或者不使用的modules，下载没download的package go mod vendor:生成vendor目录 go mod verify:验证依赖是否正确 go mod why：查找依赖 ​ go test 执行一下，自动导包 ​ go list -m 主模块的打印路径 go list -m -f={{.Dir}} print主模块的根目录 go list -m all 查看当前的依赖和版本信息 ">
-<script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://sunhao1256.github.io/posts/"},{"@type":"ListItem","position":2,"name":"","item":"https://sunhao1256.github.io/posts/go/"}]}</script>
-<script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"","name":"","description":"Go 包管理 go mod init:初始化modules go mod download:下载modules到本地cache go mod edit:编辑go.mod文件，选项有-json、-require和-exclude，可以使用帮助go help mod edit go mod graph:以文本模式打印模块需求图 go mod tidy:检查，删除错误或者不使用的modules，下载没download的package go mod vendor:生成vendor目录 go mod verify:验证依赖是否正确 go mod why：查找依赖 ​ go test 执行一下，自动导包 ​ go list -m 主模块的打印路径 go list -m -f={{.Dir}} print主模块的根目录 go list -m all 查看当前的依赖和版本信息 ","keywords":[],"articleBody":"Go 包管理 go mod init:初始化modules go mod download:下载modules到本地cache go mod edit:编辑go.mod文件，选项有-json、-require和-exclude，可以使用帮助go help mod edit go mod graph:以文本模式打印模块需求图 go mod tidy:检查，删除错误或者不使用的modules，下载没download的package go mod vendor:生成vendor目录 go mod verify:验证依赖是否正确 go mod why：查找依赖 ​ go test 执行一下，自动导包 ​ go list -m 主模块的打印路径 go list -m -f={{.Dir}} print主模块的根目录 go list -m all 查看当前的依赖和版本信息 ","wordCount":"48","inLanguage":"en","datePublished":"0001-01-01T00:00:00Z","dateModified":"0001-01-01T00:00:00Z","author":{"@type":"Person","name":"Hao Sun"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://sunhao1256.github.io/posts/go/"},"publisher":{"@type":"Organization","name":"Hao Sun","logo":{"@type":"ImageObject","url":"https://sunhao1256.github.io/%3Clink%20/%20abs%20url%3E"}}}</script>
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://sunhao1256.github.io/posts/"},{"@type":"ListItem","position":2,"name":"Go包管理","item":"https://sunhao1256.github.io/posts/go/"}]}</script>
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Go包管理","name":"Go包管理","description":"Go 包管理 go mod init:初始化modules go mod download:下载modules到本地cache go mod edit:编辑go.mod文件，选项有-json、-require和-exclude，可以使用帮助go help mod edit go mod graph:以文本模式打印模块需求图 go mod tidy:检查，删除错误或者不使用的modules，下载没download的package go mod vendor:生成vendor目录 go mod verify:验证依赖是否正确 go mod why：查找依赖 ​ go test 执行一下，自动导包 ​ go list -m 主模块的打印路径 go list -m -f={{.Dir}} print主模块的根目录 go list -m all 查看当前的依赖和版本信息 ","keywords":["学习"],"articleBody":"Go 包管理 go mod init:初始化modules go mod download:下载modules到本地cache go mod edit:编辑go.mod文件，选项有-json、-require和-exclude，可以使用帮助go help mod edit go mod graph:以文本模式打印模块需求图 go mod tidy:检查，删除错误或者不使用的modules，下载没download的package go mod vendor:生成vendor目录 go mod verify:验证依赖是否正确 go mod why：查找依赖 ​ go test 执行一下，自动导包 ​ go list -m 主模块的打印路径 go list -m -f={{.Dir}} print主模块的根目录 go list -m all 查看当前的依赖和版本信息 ","wordCount":"48","inLanguage":"en","datePublished":"2022-01-11T14:43:18+08:00","dateModified":"2022-01-11T14:43:18+08:00","author":{"@type":"Person","name":"Hao Sun"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://sunhao1256.github.io/posts/go/"},"publisher":{"@type":"Organization","name":"Hao Sun","logo":{"@type":"ImageObject","url":"https://sunhao1256.github.io/%3Clink%20/%20abs%20url%3E"}}}</script>
 </head>
 <body id=top>
 <script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add('dark'):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove('dark'):window.matchMedia('(prefers-color-scheme: dark)').matches&&document.body.classList.add('dark')</script>
@@ -68,8 +69,9 @@
 <header class=post-header>
 <div class=breadcrumbs><a href=https://sunhao1256.github.io/>Home</a>&nbsp;»&nbsp;<a href=https://sunhao1256.github.io/posts/>Posts</a></div>
 <h1 class=post-title>
+Go包管理
 </h1>
-<div class=post-meta>1 min&nbsp;·&nbsp;Hao Sun
+<div class=post-meta><span title="2022-01-11 14:43:18 +0800 CST">January 11, 2022</span>&nbsp;·&nbsp;1 min&nbsp;·&nbsp;Hao Sun
 </div>
 </header> <div class=toc>
 <details>
@@ -102,16 +104,19 @@
 </code></pre></div>
 </div>
 <footer class=post-footer>
+<ul class=post-tags>
+<li><a href=https://sunhao1256.github.io/tags/%E5%AD%A6%E4%B9%A0/>学习</a></li>
+</ul>
 <nav class=paginav>
-<a class=prev href=https://sunhao1256.github.io/posts/linux/>
+<a class=prev href=https://sunhao1256.github.io/posts/git%E5%91%BD%E4%BB%A4/>
 <span class=title>« Prev Page</span>
 <br>
-<span>linux</span>
+<span>Git命令</span>
 </a>
-<a class=next href=https://sunhao1256.github.io/posts/gradle/>
+<a class=next href=https://sunhao1256.github.io/posts/%E5%B8%B8%E8%A7%81%E9%A2%98%E7%9B%AE/>
 <span class=title>Next Page »</span>
 <br>
-<span></span>
+<span>八股文</span>
 </a>
 </nav>
 </footer>

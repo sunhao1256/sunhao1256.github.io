@@ -69,31 +69,19 @@
 </h2>
 </header>
 <section class=entry-content>
-<p>平时疑问 浏览器输入一个地址，整个流程
-如果线上流量暴增，全都打到一个 upstream 上了，怎么排查
-如何在 nginx 的 access log 中查出请求前 10 的 ip
-台阶问题，假如对于上台阶，可以一次上一阶，也可以一次上两阶，写一个方法，实现输入台阶数，输出可以有多少种上法。
-广度优先和深度优先
-spring reactive，响应式聊下，什么时候适合用？背压是什么东西，backpress
-压缩算法，怎么就“压缩”了？如何减少体积的？
-实时一致性，最终一致性是什么？什么场景下用那种，如何实现的？
-实时一致性:
-微服务中，场景用户使用积分兑换优惠券，积分service先扣除积分，优惠券service再进行发券动作，如果网络问题，积分扣成功了，但是优惠券发失败了。用户会投诉，必须要证优惠券和积分要在同一个分布式事务中.
-解决方案：市面上的分布式事务，阿里的seata
-最终一致性:
-微服务中，用户选择商品下单，商品service进行库存扣件，订单service生成订单，交易service生成交易订单。如果网络原因导致，交易service生成交易订单失败了。并没有影响，只需要通过措施重新弥补交易service去生成交易订单即可。
-解决方法：mq，通过mq的重试机制以及持久化等特性，每一个微服务与下游微服务进行交互动作都是通过mq的消息。保证消息能够被消费，长时间未消费可以告警。
-消息堆积如何处理？以及产生的危害。
-怎么保证接口幂等
-如何评判一个服务的好坏？你是如何进行压测的？查看了哪些指标
-对象存储，文件存储，块存储。区别
-服务器卡了，字都快打不动了，咋回事，怎么排查
-用过mysql行锁吗
-用过，在一些比较简单的微服务场景，或者无法使用其他中间件的前提下。如果需要部署多节点的话，最方便的分布式锁就是mysql，因为我们的db库基本都是单节点的mysql或者mariadb。使用起来其实很简单，就是一个update语句，更新version字段。也就是所谓的乐观锁。开启一个事务，先select锁，然后尝试更新锁，在没完成业务的之前是不提交锁的，所以，其他线程会在获取锁的时候就停下来。因为update，delete，insert默认都是带for update，即行锁的。当然select不会阻塞，除非主动的设置for update。这样就是最基础的一个分布式锁了。切记锁字段必须要有索引，否则锁整个表。就G了
-netty玩过吗，玩过哪些东西，能干啥...</p>
+<p>Wait UnSafe UnSafe是为java底层类库使用的，不应该被用户所使用，因为他的权限太高，可以做很多事情，例如修改私有字段的值、抛出异常、使用堆外内存、CAS操作基于CPU的CAS指令，以达到原子操作。Park()阻塞线程、UnPark()唤醒线程。
+UnSafe有一个属性静态theUnsafe，可以通过反射的方式获取到Unsafe实例
+Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe"); theUnsafe.setAccessible(true); unsafe = (Unsafe) theUnsafe.get(null); JUC下面大量使用了CAS操作，它们的底层是调用的Unsafe的CompareAndSwapXXX()方法。这种方式广泛运用于无锁算法，与java中标准的悲观锁机制相比，它可以利用CAS处理器指令提供极大的加速。
+AtomicInteger AtomicInteger是java提供的原子类
+原子操作是指不会被线程调度机制打断的操作，这种操作一旦开始，就一直运行到结束，中间不会有任何线程上下文切换。
+原子操作可以是一个步骤，也可以是多个操作步骤，但是其顺序不可以被打乱，也不可以被切割而只执行其中的一部分，将整个操作视作一个整体是原子性的核心特征。
+我们这里说的原子操作与数据库ACID中的原子性，笔者认为最大区别在于，数据库中的原子性主要运用在事务中，一个事务之内的所有更新操作要么都成功，要么都失败，事务是有回滚机制的，而我们这里说的原子操作是没有回滚的，这是最大的区别。
+底层其实就是用UnSafe类去操作的
+Value是volatile声明的，保证多线程的可见性，volatile只能保证可见性和禁止重排序，但并不能保证原子性，所以需要cas操作
+public class AtomicInteger extends Number implements java.io.Serializable { private static final long serialVersionUID = 6214790243416807050L; /* * This class intended to be implemented using VarHandles, but there * are unresolved cyclic startup dependencies. */ private static final jdk.internal.misc.Unsafe U = jdk.internal.misc.Unsafe.getUnsafe(); private static final long VALUE = U....</p>
 </section>
-<footer class=entry-footer>1 min&nbsp;·&nbsp;Hao Sun</footer>
-<a class=entry-link aria-label="post link to " href=https://sunhao1256.github.io/posts/%E5%B9%B3%E6%97%B6%E7%96%91%E9%97%AE/></a>
+<footer class=entry-footer>5 min&nbsp;·&nbsp;Hao Sun</footer>
+<a class=entry-link aria-label="post link to " href=https://sunhao1256.github.io/posts/%E5%A4%9A%E7%BA%BF%E7%A8%8B/></a>
 </article>
 <article class=post-entry>
 <header class=entry-header>
