@@ -9,7 +9,16 @@
       <link>https://sunhao1256.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
     </image>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Mon, 20 Jun 2022 16:57:01 +0800</lastBuildDate><atom:link href="https://sunhao1256.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 02 Jul 2022 20:01:43 +0800</lastBuildDate><atom:link href="https://sunhao1256.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>K8s</title>
+      <link>https://sunhao1256.github.io/posts/k8s/</link>
+      <pubDate>Sat, 02 Jul 2022 20:01:43 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/posts/k8s/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>all in one配置</title>
       <link>https://sunhao1256.github.io/posts/all-in-one/</link>
