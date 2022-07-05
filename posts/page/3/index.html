@@ -71,7 +71,10 @@
 </h2>
 </header>
 <section class=entry-content>
-<p>@Override
+<p>title: "Spring问题整理"
+date: 2022-01-11T14:43:18+08:00
+tags: ['Spring']
+@Override
 @Nullable
 public Object invoke(MethodInvocation mi) throws Throwable {
 if (!(mi instanceof ProxyMethodInvocation)) {
@@ -96,36 +99,13 @@ return invokeAdviceMethod(pjp, jpm, null, null);
 </h2>
 </header>
 <section class=entry-content>
-<p>Wait UnSafe UnSafe是为java底层类库使用的，不应该被用户所使用，因为他的权限太高，可以做很多事情，例如修改私有字段的值、抛出异常、使用堆外内存、CAS操作基于CPU的CAS指令，以达到原子操作。Park()阻塞线程、UnPark()唤醒线程。
-UnSafe有一个属性静态theUnsafe，可以通过反射的方式获取到Unsafe实例
-Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe"); theUnsafe.setAccessible(true); unsafe = (Unsafe) theUnsafe.get(null); JUC下面大量使用了CAS操作，它们的底层是调用的Unsafe的CompareAndSwapXXX()方法。这种方式广泛运用于无锁算法，与java中标准的悲观锁机制相比，它可以利用CAS处理器指令提供极大的加速。
-AtomicInteger AtomicInteger是java提供的原子类
-原子操作是指不会被线程调度机制打断的操作，这种操作一旦开始，就一直运行到结束，中间不会有任何线程上下文切换。
-原子操作可以是一个步骤，也可以是多个操作步骤，但是其顺序不可以被打乱，也不可以被切割而只执行其中的一部分，将整个操作视作一个整体是原子性的核心特征。
-我们这里说的原子操作与数据库ACID中的原子性，笔者认为最大区别在于，数据库中的原子性主要运用在事务中，一个事务之内的所有更新操作要么都成功，要么都失败，事务是有回滚机制的，而我们这里说的原子操作是没有回滚的，这是最大的区别。
-底层其实就是用UnSafe类去操作的
-Value是volatile声明的，保证多线程的可见性，volatile只能保证可见性和禁止重排序，但并不能保证原子性，所以需要cas操作
-public class AtomicInteger extends Number implements java.io.Serializable { private static final long serialVersionUID = 6214790243416807050L; /* * This class intended to be implemented using VarHandles, but there * are unresolved cyclic startup dependencies. */ private static final jdk.internal.misc.Unsafe U = jdk.internal.misc.Unsafe.getUnsafe(); private static final long VALUE = U....</p>
-</section>
-<footer class=entry-footer>5 min&nbsp;·&nbsp;Hao Sun</footer>
-<a class=entry-link aria-label="post link to " href=https://sunhao1256.github.io/posts/%E5%A4%9A%E7%BA%BF%E7%A8%8B/></a>
-</article>
-<article class=post-entry>
-<header class=entry-header>
-<h2>
-</h2>
-</header>
-<section class=entry-content>
-<p>堆 堆是一种非线性结构，可以把堆看作一个数组，也可以被看作一个完全二叉树，通俗来讲堆其实就是利用完全二叉树的结构来维护的一维数组但堆并不一定是完全二叉树
+<p>title: "数据结构" date: 2022-01-11T14:43:18+08:00 tags: ['数据结构'] 堆 堆是一种非线性结构，可以把堆看作一个数组，也可以被看作一个完全二叉树，通俗来讲堆其实就是利用完全二叉树的结构来维护的一维数组但堆并不一定是完全二叉树
 按照堆的特点可以把堆分为大顶堆和小顶堆 大顶堆：每个结点的值都大于或等于其左右孩子结点的值 小顶堆：每个结点的值都小于或等于其左右孩子结点的值
 使用堆的原因？ 如果仅仅是需要得到一个有序的序列，使用排序就可以很快完成，并不需要去组织一个新的数据结构。但是如果我们的需求是对于一个随时会有更新的序列，我要随时知道这个序列的最小值或最大值是什么。显然如果是线性结构，每次插入之后，假设原数组是有序的，那使用二分把它放在正确的位置也未尝不可，但是插入的时候从数组中留出空位就需要O(n)的时间复杂度，删除的时候亦然。
 时间复杂度 插入和删除的时间复杂度是O(logn)
 环形队列(数组) 普通队列 普通队列，数组实现时，出队后，原来的空间就浪费了。
 环形队列 环形队列，数组实现时，下标用模取运算，例如最大空间为5，模取后只会有0，1，2，3，4下标，组成了循环。
-front 变量的含义做一个调整： front 就指向队列的第一个元素, 也就是说 arr[front] 就是队列的第一个元素 front 的初始值 = 0 rear 变量的含义做一个调整：rear 指向队列的最后一个元素的后一个位置. 因为希望空出一个空间做为约定. rear 的初始值 = 0 当队列满时，条件是 (rear + 1) % maxSize == front 【满】 对队列为空的条件， rear == front 空 当我们这样分析， 队列中有效的数据的个数 (rear + maxSize - front) % maxSize // rear = 1 front = 0 时间轮 使用场景，处理大批量的定时任务
-利用环形队列，队列的每个空间里存放的是任务的集合。
-例如以60秒为一个轮，70秒后执行一个任务。只需要一个timer按秒去旋转时间轮，70%60=10，到达第10个槽的时候，执行内部的所有任务即可。
-为了解决10秒和70秒落在同一个槽上，可以在任务身上加一个属性，圈数，例如10秒的任务圈数是0，70秒的任务是1，只有达到槽位置，并且圈数为0的任务才会被执行。...</p>
+front 变量的含义做一个调整： front 就指向队列的第一个元素, 也就是说 arr[front] 就是队列的第一个元素 front 的初始值 = 0 rear 变量的含义做一个调整：rear 指向队列的最后一个元素的后一个位置. 因为希望空出一个空间做为约定. rear 的初始值 = 0 当队列满时，条件是 (rear + 1) % maxSize == front 【满】 对队列为空的条件， rear == front 空 当我们这样分析， 队列中有效的数据的个数 (rear + maxSize - front) % maxSize // rear = 1 front = 0 时间轮 使用场景，处理大批量的定时任务...</p>
 </section>
 <footer class=entry-footer>1 min&nbsp;·&nbsp;Hao Sun</footer>
 <a class=entry-link aria-label="post link to " href=https://sunhao1256.github.io/posts/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/></a>

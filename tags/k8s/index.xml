@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>k8s on Hao Sun</title>
+    <link>https://sunhao1256.github.io/tags/k8s/</link>
+    <description>Recent content in k8s on Hao Sun</description>
+    <image>
+      <url>https://sunhao1256.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://sunhao1256.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Sat, 02 Jul 2022 20:01:43 +0800</lastBuildDate><atom:link href="https://sunhao1256.github.io/tags/k8s/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>K8s</title>
+      <link>https://sunhao1256.github.io/posts/k8s/</link>
+      <pubDate>Sat, 02 Jul 2022 20:01:43 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/posts/k8s/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

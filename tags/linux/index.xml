@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>linux on Hao Sun</title>
+    <link>https://sunhao1256.github.io/tags/linux/</link>
+    <description>Recent content in linux on Hao Sun</description>
+    <image>
+      <url>https://sunhao1256.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://sunhao1256.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Fri, 31 Jan 2020 20:50:54 +0000</lastBuildDate><atom:link href="https://sunhao1256.github.io/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>linux</title>
+      <link>https://sunhao1256.github.io/posts/linux/</link>
+      <pubDate>Fri, 31 Jan 2020 20:50:54 +0000</pubDate>
+      
+      <guid>https://sunhao1256.github.io/posts/linux/</guid>
+      <description>终端 [root@LocalHost 桌面]# l
+ root表示当前登录用户名 locahost表示当前登录的主机名 桌面 表示当前的工作目录 # 身份标识符 #表示为超级管理员 $表示为普通用户  目录结构  Bin：全称Binary，存放的都是一些二进制文件 Dev：主要存放一些外接设备，例如U盘等，在其中的设备是不能直接使用的，需要挂载（类似windows下的分盘） Etc：主要存放一些配置文件 Home：表示除了root用户以外的其他的家目录，类似windows下的user用户目录 Proc：该目录存放运行的进程文件 Root：该目录是root用户的家目录 SBin：该目录也是存放二进制文件，但是必须得有super权限的用户才能执行 Usr：用户的应用程序和文件都放在这个目录下类似于windows下的program files目录 Mnt：让用户临时挂在别的文件系统 Opt：一般存放安装软件包 Usr/local：存放安装软件后存在的软件目录 Var：存放不断变化的文件，例如日志文件  VI和VIM编辑器 所有的Linux系统都会内建VI文本编辑器，VIM具有程序编辑的能力，可以看成是VI的增强版
+VI和VIM的3种常见模式   正常模式
+在正常是模式下，可以使用快捷键来处理内容
+  插入/编辑模式
+在此模式下，可以输入内容，按i，I，o，O，a，A，r，R等任何一个字母就可以进入编辑模式，一般用i
+  命令行模式
+可以使用指令完成，读取，存盘，替换，离开，显示行号等动作
+  注释 单行注释：#
+多行注释：:&amp;laquo;!内容!
+快捷键的使用   行首0，行尾$
+  拷贝当前行：yy，拷贝当前向下n行：nyy，例如：5yy
+  粘贴：p
+  删除当前行：dd，删除当前行下n行：ndd，例如：5dd
+  查找：命令行模式下 / 关键字，例如：/hello，下一个n
+  设置文件行号：命令行模式下 ：set nu，关闭行号：set nonu</description>
+    </item>
+    
+  </channel>
+</rss>

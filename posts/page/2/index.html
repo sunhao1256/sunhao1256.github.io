@@ -129,7 +129,7 @@ VI和VIM的3种常见模式 正常模式
 </h2>
 </header>
 <section class=entry-content>
-<p>Gradle </p>
+<p>title: "Gradle" date: 2022-01-11T14:43:18+08:00 tags: ['Gradle'] Gradle </p>
 </section>
 <footer class=entry-footer>1 min&nbsp;·&nbsp;Hao Sun</footer>
 <a class=entry-link aria-label="post link to " href=https://sunhao1256.github.io/posts/gradle/></a>
@@ -140,7 +140,7 @@ VI和VIM的3种常见模式 正常模式
 </h2>
 </header>
 <section class=entry-content>
-<p>快捷键 Finder绝对路径跳转
+<p>title: "mac使用" date: 2022-06-20T16:57:01+08:00 tags: ['mac'] 快捷键 Finder绝对路径跳转
 command+shift+G
 Finder绝对路径复制
 command+option+C
@@ -154,7 +154,7 @@ command shift 4局部，3全屏
 command f3
 环境变量 加载顺序
 /etc/profile /etc/paths ~/.zprofile ~/.zshrc /etc/profile和/etc/paths是系统级别的，系统启动就会加载，zprofile是用户级别的 ~/.zshrc没有上述规则，它是zsh shell打开的时候载入的。
-# System-wide .profile for sh(1) if [ -x /usr/libexec/path_helper ]; then eval `/usr/libexec/path_helper -s` fi if [ "${BASH-no}" != "no" ]; then [ -r /etc/bashrc ] && . /etc/bashrc fi path_helper是将/etc/paths和/etc/paths.d中定义的路径,加入环境变量. 苹果推荐使用这个...</p>
+# System-wide .profile for sh(1) if [ -x /usr/libexec/path_helper ]; then eval `/usr/libexec/path_helper -s` fi if [ "${BASH-no}" != "no" ]; then [ -r /etc/bashrc ] && ....</p>
 </section>
 <footer class=entry-footer>1 min&nbsp;·&nbsp;Hao Sun</footer>
 <a class=entry-link aria-label="post link to " href=https://sunhao1256.github.io/posts/mac%E4%BD%BF%E7%94%A8/></a>
@@ -165,12 +165,12 @@ command f3
 </h2>
 </header>
 <section class=entry-content>
-<p>netty是在什么地方创建SeverChannel的 在BootStrap调用bind方法时创建
+<p>title: "Netty" date: 2022-01-11T14:43:18+08:00 tags: ['Netty'] netty是在什么地方创建SeverChannel的 在BootStrap调用bind方法时创建
 private ChannelFuture doBind(final SocketAddress localAddress) { final ChannelFuture regFuture = this.initAndRegister(); } initAndRegister方法
 final ChannelFuture initAndRegister() { Channel channel = null; try { channel = this.channelFactory.newChannel(); channelFactory是在bootstrap配置class时实例化的
 在AbstractBootstrap中
 public B channel(Class&lt;? extends C> channelClass) { return this.channelFactory((io.netty.channel.ChannelFactory)(new ReflectiveChannelFactory((Class)ObjectUtil.checkNotNull(channelClass, "channelClass")))); } 因此是直接通过反射，创建了NioServerSocketChannel.class
-public class NioServerSocketChannel extends AbstractNioMessageChannel implements ServerSocketChannel { private static final ChannelMetadata METADATA = new ChannelMetadata(false, 16); private static final SelectorProvider DEFAULT_SELECTOR_PROVIDER = SelectorProvider.provider(); private static final InternalLogger logger = InternalLoggerFactory....</p>
+public class NioServerSocketChannel extends AbstractNioMessageChannel implements ServerSocketChannel { private static final ChannelMetadata METADATA = new ChannelMetadata(false, 16); private static final SelectorProvider DEFAULT_SELECTOR_PROVIDER = SelectorProvider....</p>
 </section>
 <footer class=entry-footer>15 min&nbsp;·&nbsp;Hao Sun</footer>
 <a class=entry-link aria-label="post link to " href=https://sunhao1256.github.io/posts/netty/></a>

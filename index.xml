@@ -134,7 +134,7 @@ VI和VIM的3种常见模式   正常模式
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://sunhao1256.github.io/posts/gradle/</guid>
-      <description>Gradle </description>
+      <description>title: &amp;quot;Gradle&amp;quot; date: 2022-01-11T14:43:18+08:00 tags: [&#39;Gradle&#39;] Gradle </description>
     </item>
     
     <item>
@@ -143,7 +143,7 @@ VI和VIM的3种常见模式   正常模式
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://sunhao1256.github.io/posts/mac%E4%BD%BF%E7%94%A8/</guid>
-      <description>快捷键   Finder绝对路径跳转
+      <description>title: &amp;quot;mac使用&amp;quot; date: 2022-06-20T16:57:01+08:00 tags: [&#39;mac&#39;] 快捷键   Finder绝对路径跳转
 command+shift+G
   Finder绝对路径复制
 command+option+C
@@ -157,7 +157,7 @@ command shift 4局部，3全屏
 command f3
   环境变量 加载顺序
 /etc/profile /etc/paths ~/.zprofile ~/.zshrc /etc/profile和/etc/paths是系统级别的，系统启动就会加载，zprofile是用户级别的 ~/.zshrc没有上述规则，它是zsh shell打开的时候载入的。
-# System-wide .profile for sh(1) if [ -x /usr/libexec/path_helper ]; then eval `/usr/libexec/path_helper -s` fi if [ &amp;#34;${BASH-no}&amp;#34; != &amp;#34;no&amp;#34; ]; then [ -r /etc/bashrc ] &amp;amp;&amp;amp; . /etc/bashrc fi path_helper是将/etc/paths和/etc/paths.d中定义的路径,加入环境变量. 苹果推荐使用这个</description>
+# System-wide .profile for sh(1) if [ -x /usr/libexec/path_helper ]; then eval `/usr/libexec/path_helper -s` fi if [ &amp;#34;${BASH-no}&amp;#34; != &amp;#34;no&amp;#34; ]; then [ -r /etc/bashrc ] &amp;amp;&amp;amp; .</description>
     </item>
     
     <item>
@@ -166,12 +166,12 @@ command f3
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://sunhao1256.github.io/posts/netty/</guid>
-      <description>netty是在什么地方创建SeverChannel的 在BootStrap调用bind方法时创建
+      <description>title: &amp;quot;Netty&amp;quot; date: 2022-01-11T14:43:18+08:00 tags: [&#39;Netty&#39;] netty是在什么地方创建SeverChannel的 在BootStrap调用bind方法时创建
 private ChannelFuture doBind(final SocketAddress localAddress) { final ChannelFuture regFuture = this.initAndRegister(); } initAndRegister方法
 final ChannelFuture initAndRegister() { Channel channel = null; try { channel = this.channelFactory.newChannel(); channelFactory是在bootstrap配置class时实例化的
 在AbstractBootstrap中
 public B channel(Class&amp;lt;? extends C&amp;gt; channelClass) { return this.channelFactory((io.netty.channel.ChannelFactory)(new ReflectiveChannelFactory((Class)ObjectUtil.checkNotNull(channelClass, &amp;#34;channelClass&amp;#34;)))); } 因此是直接通过反射，创建了NioServerSocketChannel.class
-public class NioServerSocketChannel extends AbstractNioMessageChannel implements ServerSocketChannel { private static final ChannelMetadata METADATA = new ChannelMetadata(false, 16); private static final SelectorProvider DEFAULT_SELECTOR_PROVIDER = SelectorProvider.provider(); private static final InternalLogger logger = InternalLoggerFactory.</description>
+public class NioServerSocketChannel extends AbstractNioMessageChannel implements ServerSocketChannel { private static final ChannelMetadata METADATA = new ChannelMetadata(false, 16); private static final SelectorProvider DEFAULT_SELECTOR_PROVIDER = SelectorProvider.</description>
     </item>
     
     <item>
@@ -180,28 +180,10 @@ public class NioServerSocketChannel extends AbstractNioMessageChannel implements
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://sunhao1256.github.io/posts/spring%E6%95%B4%E7%90%86/</guid>
-      <description>@Override@Nullablepublic Object invoke(MethodInvocation mi) throws Throwable {if (!(mi instanceof ProxyMethodInvocation)) {throw new IllegalStateException(&amp;quot;MethodInvocation is not a Spring ProxyMethodInvocation: &amp;quot; + mi);}ProxyMethodInvocation pmi = (ProxyMethodInvocation) mi;ProceedingJoinPoint pjp = lazyGetProceedingJoinPoint(pmi);JoinPointMatch jpm = getJoinPointMatch(pmi);return invokeAdviceMethod(pjp, jpm, null, null);}当在Sping中配置的Bean存在相互依赖，Spring是怎么处理的 针对原型Bean直接抛出异常，不支持。
+      <description>title: &amp;quot;Spring问题整理&amp;quot;date: 2022-01-11T14:43:18+08:00tags: [&#39;Spring&#39;]@Override@Nullablepublic Object invoke(MethodInvocation mi) throws Throwable {if (!(mi instanceof ProxyMethodInvocation)) {throw new IllegalStateException(&amp;quot;MethodInvocation is not a Spring ProxyMethodInvocation: &amp;quot; + mi);}ProxyMethodInvocation pmi = (ProxyMethodInvocation) mi;ProceedingJoinPoint pjp = lazyGetProceedingJoinPoint(pmi);JoinPointMatch jpm = getJoinPointMatch(pmi);return invokeAdviceMethod(pjp, jpm, null, null);}当在Sping中配置的Bean存在相互依赖，Spring是怎么处理的 针对原型Bean直接抛出异常，不支持。
 单例Bean，Spring使用3个Map做缓存，来处理。
 分别是：一级缓存Spring最终保存的单例对象Map，二级缓存建造Spring单例对象的匿名工厂对象返回的就是三级缓存需要的，三级缓存是允许提前被依赖的单例对象。
 阐述一个Bean获取的流程  尝试获取单例Bean 检查一级缓存是否有，没有的话，检查当前获取的Bean是否正在创建，如果正在创建即出现了Bean互相依赖情况，检查三级缓存是否已经有提前可被依赖的对象，如果没有的话，检查二级缓存是否有其工厂，有的话，使用工厂，实例化这个Bean，放入三级缓存里。供其他Bean依赖使用 没获取到，可能是原型Bean，也可能是单例Bean没有实例化 检查如果是原型Bean，而且正在创建中，即出现了原型Bean被依赖的情况，直接抛出异常 准备BeanDefinition，如果档期工厂没有相应的BD，而且父工厂又存在BD，使用父工厂的getBean方法去获取Bean 标记Bean创建过了 从当前工厂读取BD,并且转为RootBeanDefinition，获取期间，还要检查父工厂是否也有该Bean的BD，有的话，以父工厂得BD为基础，子工厂得BD覆盖掉其属性 检查BD是不是抽象的，无法实例化的类，抛出异常 检查BD中得DependsOn属性，针对所有Depend，循环实例化，如果检查到有Depend得Bean又依赖于当前目标Bean，抛出异常，互相提前依赖了。并且建立相关关系，所以DependOn意义是，依赖于一个完全实例化完成后的Bean 如果是单例的话，开始创建单例Bean，创建匿名工厂对象 标记单例Bean正在被创建 使用工厂对象去调用getObject方法 实际上执行了createBean方法 根据之前的RootBD，解析出需要实例化的Class对象 检查MethodOverrides目标方法是否存在Class对象中 在实例化对象之前，给InstantiationAwareBeanPostProcessor机会去改变实例，调用其postProcessBeforeInstantiation，AOP就是在这里实现的，此外，如果返回了，还会调用BPP的postProcessAfterInitialization，但不会调用postProcessBeforeInitialization了 如果没有被InstantiationAwareBeanPostProcessor改变了的话，开始进入真正的实例化方法 实例化一个BeanWrapperImpl去封装实例 解析Class对象，确定Class对象有Public修饰符 如果有FactoryMethod的话，直接调用FactoryMethod返回实例，封装在BeanWrapperImpl，这里面也会初始化initBeanWrapper，将属性编辑器注入到BeanWrapperImpl身上，用于后续的属性注入 开始解析构造函数或者是FactoryMethod，如果解析过了，直接去实例化 否则进入构造函数解析 解析之前，看BPP有没有提供了构造函数，即SmartInstantiationAwareBeanPostProcessor的determineCandidateConstructors方法执行，如果返回了构造函数，就用BPP的了。 没有的话，进入默认的解析，依赖先看缓存里有没有解析过的参数，因为构造方法注入的话，很消耗性能，没有缓存的话，先看用户获取bean时有没有传入args，即构造函数的参数。没有的话，而且只有一个候选的构造函数，就直接用使用无参的了，没有的话，先去解析参数，construct-arg，既可以时Index，也可以是name。根据用户传入的arg长度，去解析。 最后解析完成后，使用实例化策略去实例化即可，这里也可使用cglib去处理，然后封装在BeanWrapperImpl中 至此，BeanWapper里已经包含了我们的目标对象的实例了 然后创建二级缓存，将上一步BeanWapper里的实例，作为二级缓存返回的对象，加载缓存里 至此，二级缓存的工厂加入 了。当在一开始获bean，一级获取不到，获取二级有工厂的时候，就会把BeanWapper的实例暴露出去，供后续使用 然后开始初始化实例 将上面暴露出来的示例进行属性注入 给InstantiationAwareBeanPostProcessor的postProcessAfterInstantiation在属性注入之前最后一次机会，去改变Bean，并且阻止Bean的属性注入 判断属性注入的是byName还是byType，针对所有的非简单的属性，还有排除所有的ignoredDependencyInterfaces中的接口。进行getBean操作，保存到PropertyValues中 使用InstantiationAwareBeanPostProcessor的postProcessProperties，可以进行修改属性。继续使用postProcessPropertyValues，继续可以更该属性 得到所有属性后，应用属性到Bean实例身上，在应用属性的时候，会找到前工厂里的所有的TypeConverter去将属性变为需要的属性，如果变不成会报错 至此，属性赋值完毕 复制完毕后，开始初始化Bean，先激活所有的aware方法， 调用BPP的postProcessBeforeInitialization初始化之前方法，记住，这里的初始化，是Bean已经实例化之后的事情了，是执行其他事情的初始化 执行afterPropertiesSet方法，在执行init-methods方法 调用BPP的postProcessAfterInitialization初始化以后方法 至此返回暴露的bean，即getBean结束 最后处理销毁的方法，即出发destory-method的方法  Spring是如何处理掉循环依赖的  针对非单例Bean出现循环依赖直接抛出异常 单例Bean Spring存在3个缓存Map  Spring完全生成好的BeanMap，key是Bean的name，Value是实例对象 Spring生成Bean的工厂Map，key是Bean的name，value是实现了ObjectFactory接口的实例对象 Spring尚未初始化，即赋予属性或者其他初始化动作的Bean实例Map，key是Bean的name，value是工厂map的工厂的返回值，即ObjectFactory的getObject方法结果   假设存在对象A依赖于对象B，对象Bean依赖于对象A  Spring根据A的name，首先取BeanMap里找是否有A的实例，没有的话，检查A是否正在创建，如果正在创建，则说明出现了循环依赖。（需要获取A，发现A又在创建，表名有其他bean需要A），尝试从可提前依赖的BeanMap获取EarlyBeanReference，如果没有，则尝试从工厂Map里找A对应的工厂对象，如果有工厂对象，则调用工厂对象进行返回，并且将工厂返回的Bean实例作为EarlyBeanReference，放入未完全实例化结束BeanMap里，删除工厂Map对应的value。此时工厂Map为空。 此时，A没有正在创建，继续 标记A正在创建，根绝BeanDefinition生成Bean实例对象，（此时对象实例已经生成完毕，但是还没有初始化），并且把A的创建工厂，放入工厂Map，而这个创建工厂getObject返回值就是刚才生成的实例对象，并且给SmartInstantiationAwareBeanPostProcessor接口机会取改变这个EarlyBeanReference对象。 得到实例化后的A对象，开始注入A的属性，发现A的属性b，需要B对象。 B对象开始获取（此时，A还没有结束，即一级缓存中没有A，二级缓存中有A的工厂Map） B的获取如上述一致， 直至B实例化结束，开始注入B的属性，发现B的属性a，需要A对象 又到了A对象开始获取 此时，进入第一个流程，发现一级缓存里没有A，而A又正在创建中，出现循环依赖，去二级缓存里找A的工厂Map，调用工厂Map方法去，得到了EarlyBeanReference，放入三级缓存里，返回回去 即此时，B注入属性成功，并且返回了一个EarlyBeanReference，即当前正在创建的A对象实例。 B注入成功属性后，B实例化完全结束，结束后，清除B的二三级缓存，加入一级缓存并返回 此时回到了A的注入B属性逻辑中，A得到了B实例。而这个实例里的A属性对象，和当前获取A的对象是一个 A继续完成初始化动作，最后A实例化完全结束，清楚A的二三级缓存，加入一级缓存并返回   只有2个缓存行吗？为什么一定要3个  BeanMap无用质疑是需要的 如果只有工厂Map而没有，可提前依赖的BeanMap的话，那么在一开始从缓存中获取Bean，一级缓存无法获取到，直接就有工厂Bean，一旦有工厂就调用工厂返回的值，这样是不行的，因为在工厂调用Bean的时候，有很多动作就会进行重复，比如工厂获取的时候，可以给SmartInstantiationAwareBeanPostProcessor机会去更改EarlyBeanReference对象，重复执行了。第二，与工厂模式的思想违背，工厂只需要制造一次，而不是每次都制造。 如果只有可提前依赖的BeanMap，而没有工厂Map。实际上是可以的，只不过没有工厂的话，会将大部分工作都抛给创建Bean的流程里，例如SmartInstantiationAwareBeanPostProcessor等工厂应该负责的工作    ApplicationContext的Refresh方法  Enviroment，环境参数，根据不同的环境，实现Environment不同的子类，例如Web环境会实现，StandardServletEnvironment，默认是实现StandardEnvironment，包含很多环境变量，系统变量，java环境变量，Servlet环境变量 创建beanFactory作为成员变量，ApplicationContext自身也实现了BeanFactory接口，只不过具体实现的方法是成员变量的beanFactory的方法、 填充工厂  增加SPEL表达式解析器 属性编辑器注入 增加一个ApplicationContextAwareProcessor的BPP，在Bean实例化之后，激活实现了aware接口的方法的一个BPP 配置忽略某些类型的属性自动注入，增加某些类型自动注入   postProcessBeanFactory：留给子类去实现 记录启动路径 激活BeanFactoryPostProcessor，invokeBeanFactoryPostProcessors 注册BeanPostProcessor 初始化国际化文件 初始化initApplicationEventMulticaster，事件传送器，用于发送事件 注册事件监听器 设置ConversionService 锁定所有BeanDefinitions，防止改变 实例化剩下所有的no-lazy实例 调用所有实现LifeCycle接口的bean 发送ContextRefreshedEvent事件  BeanFactoryPostProcessor和BeanPostProcessor区别   BeanFactoryPostProcessor是可以修改Bean的元数据，是控制BeanFactory的，而BeanPostProcessor是Bean实例的处理器，可以修改Bean的实例</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://sunhao1256.github.io/posts/%E5%A4%9A%E7%BA%BF%E7%A8%8B/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://sunhao1256.github.io/posts/%E5%A4%9A%E7%BA%BF%E7%A8%8B/</guid>
-      <description>Wait UnSafe UnSafe是为java底层类库使用的，不应该被用户所使用，因为他的权限太高，可以做很多事情，例如修改私有字段的值、抛出异常、使用堆外内存、CAS操作基于CPU的CAS指令，以达到原子操作。Park()阻塞线程、UnPark()唤醒线程。
- UnSafe有一个属性静态theUnsafe，可以通过反射的方式获取到Unsafe实例
- Field theUnsafe = Unsafe.class.getDeclaredField(&amp;#34;theUnsafe&amp;#34;); theUnsafe.setAccessible(true); unsafe = (Unsafe) theUnsafe.get(null);  JUC下面大量使用了CAS操作，它们的底层是调用的Unsafe的CompareAndSwapXXX()方法。这种方式广泛运用于无锁算法，与java中标准的悲观锁机制相比，它可以利用CAS处理器指令提供极大的加速。
- AtomicInteger AtomicInteger是java提供的原子类
- 原子操作是指不会被线程调度机制打断的操作，这种操作一旦开始，就一直运行到结束，中间不会有任何线程上下文切换。
-原子操作可以是一个步骤，也可以是多个操作步骤，但是其顺序不可以被打乱，也不可以被切割而只执行其中的一部分，将整个操作视作一个整体是原子性的核心特征。
-我们这里说的原子操作与数据库ACID中的原子性，笔者认为最大区别在于，数据库中的原子性主要运用在事务中，一个事务之内的所有更新操作要么都成功，要么都失败，事务是有回滚机制的，而我们这里说的原子操作是没有回滚的，这是最大的区别。
- 底层其实就是用UnSafe类去操作的
-Value是volatile声明的，保证多线程的可见性，volatile只能保证可见性和禁止重排序，但并不能保证原子性，所以需要cas操作
-public class AtomicInteger extends Number implements java.io.Serializable { private static final long serialVersionUID = 6214790243416807050L; /* * This class intended to be implemented using VarHandles, but there * are unresolved cyclic startup dependencies. */ private static final jdk.internal.misc.Unsafe U = jdk.internal.misc.Unsafe.getUnsafe(); private static final long VALUE = U.</description>
     </item>
     
     <item>
@@ -210,16 +192,13 @@ public class AtomicInteger extends Number implements java.io.Serializable { priv
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://sunhao1256.github.io/posts/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</guid>
-      <description>堆 堆是一种非线性结构，可以把堆看作一个数组，也可以被看作一个完全二叉树，通俗来讲堆其实就是利用完全二叉树的结构来维护的一维数组但堆并不一定是完全二叉树
+      <description>title: &amp;quot;数据结构&amp;quot; date: 2022-01-11T14:43:18+08:00 tags: [&#39;数据结构&#39;] 堆 堆是一种非线性结构，可以把堆看作一个数组，也可以被看作一个完全二叉树，通俗来讲堆其实就是利用完全二叉树的结构来维护的一维数组但堆并不一定是完全二叉树
 按照堆的特点可以把堆分为大顶堆和小顶堆 大顶堆：每个结点的值都大于或等于其左右孩子结点的值 小顶堆：每个结点的值都小于或等于其左右孩子结点的值
 使用堆的原因？ 如果仅仅是需要得到一个有序的序列，使用排序就可以很快完成，并不需要去组织一个新的数据结构。但是如果我们的需求是对于一个随时会有更新的序列，我要随时知道这个序列的最小值或最大值是什么。显然如果是线性结构，每次插入之后，假设原数组是有序的，那使用二分把它放在正确的位置也未尝不可，但是插入的时候从数组中留出空位就需要O(n)的时间复杂度，删除的时候亦然。
 时间复杂度 插入和删除的时间复杂度是O(logn)
 环形队列(数组) 普通队列 普通队列，数组实现时，出队后，原来的空间就浪费了。
 环形队列 环形队列，数组实现时，下标用模取运算，例如最大空间为5，模取后只会有0，1，2，3，4下标，组成了循环。
- front 变量的含义做一个调整： front 就指向队列的第一个元素, 也就是说 arr[front] 就是队列的第一个元素 front 的初始值 = 0 rear 变量的含义做一个调整：rear 指向队列的最后一个元素的后一个位置. 因为希望空出一个空间做为约定. rear 的初始值 = 0 当队列满时，条件是 (rear + 1) % maxSize == front 【满】 对队列为空的条件， rear == front 空 当我们这样分析， 队列中有效的数据的个数 (rear + maxSize - front) % maxSize // rear = 1 front = 0  时间轮 使用场景，处理大批量的定时任务
-利用环形队列，队列的每个空间里存放的是任务的集合。
-例如以60秒为一个轮，70秒后执行一个任务。只需要一个timer按秒去旋转时间轮，70%60=10，到达第10个槽的时候，执行内部的所有任务即可。
-为了解决10秒和70秒落在同一个槽上，可以在任务身上加一个属性，圈数，例如10秒的任务圈数是0，70秒的任务是1，只有达到槽位置，并且圈数为0的任务才会被执行。</description>
+ front 变量的含义做一个调整： front 就指向队列的第一个元素, 也就是说 arr[front] 就是队列的第一个元素 front 的初始值 = 0 rear 变量的含义做一个调整：rear 指向队列的最后一个元素的后一个位置. 因为希望空出一个空间做为约定. rear 的初始值 = 0 当队列满时，条件是 (rear + 1) % maxSize == front 【满】 对队列为空的条件， rear == front 空 当我们这样分析， 队列中有效的数据的个数 (rear + maxSize - front) % maxSize // rear = 1 front = 0  时间轮 使用场景，处理大批量的定时任务</description>
     </item>
     
     
