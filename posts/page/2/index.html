@@ -67,80 +67,11 @@
 </header>
 <article class=post-entry>
 <header class=entry-header>
-<h2>平时疑问
+<h2>mac使用
 </h2>
 </header>
 <section class=entry-content>
-<p>平时疑问 浏览器输入一个地址，整个流程
-如果线上流量暴增，全都打到一个 upstream 上了，怎么排查
-如何在 nginx 的 access log 中查出请求前 10 的 ip
-台阶问题，假如对于上台阶，可以一次上一阶，也可以一次上两阶，写一个方法，实现输入台阶数，输出可以有多少种上法。
-广度优先和深度优先
-spring reactive，响应式聊下，什么时候适合用？背压是什么东西，backpress
-压缩算法，怎么就“压缩”了？如何减少体积的？
-实时一致性，最终一致性是什么？什么场景下用那种，如何实现的？
-实时一致性:
-微服务中，场景用户使用积分兑换优惠券，积分service先扣除积分，优惠券service再进行发券动作，如果网络问题，积分扣成功了，但是优惠券发失败了。用户会投诉，必须要证优惠券和积分要在同一个分布式事务中.
-解决方案：市面上的分布式事务，阿里的seata
-最终一致性:
-微服务中，用户选择商品下单，商品service进行库存扣件，订单service生成订单，交易service生成交易订单。如果网络原因导致，交易service生成交易订单失败了。并没有影响，只需要通过措施重新弥补交易service去生成交易订单即可。
-解决方法：mq，通过mq的重试机制以及持久化等特性，每一个微服务与下游微服务进行交互动作都是通过mq的消息。保证消息能够被消费，长时间未消费可以告警。
-消息堆积如何处理？以及产生的危害。
-怎么保证接口幂等
-如何评判一个服务的好坏？你是如何进行压测的？查看了哪些指标
-对象存储，文件存储，块存储。区别
-服务器卡了，字都快打不动了，咋回事，怎么排查
-用过mysql行锁吗
-用过，在一些比较简单的微服务场景，或者无法使用其他中间件的前提下。如果需要部署多节点的话，最方便的分布式锁就是mysql，因为我们的db库基本都是单节点的mysql或者mariadb。使用起来其实很简单，就是一个update语句，更新version字段。也就是所谓的乐观锁。开启一个事务，先select锁，然后尝试更新锁，在没完成业务的之前是不提交锁的，所以，其他线程会在获取锁的时候就停下来。因为update，delete，insert默认都是带for update，即行锁的。当然select不会阻塞，除非主动的设置for update。这样就是最基础的一个分布式锁了。切记锁字段必须要有索引，否则锁整个表。就G了
-netty玩过吗，玩过哪些东西，能干啥...</p>
-</section>
-<footer class=entry-footer><span title="2022-01-11 14:43:18 +0800 CST">January 11, 2022</span>&nbsp;·&nbsp;1 min&nbsp;·&nbsp;Hao Sun</footer>
-<a class=entry-link aria-label="post link to 平时疑问" href=https://sunhao1256.github.io/posts/%E5%B9%B3%E6%97%B6%E7%96%91%E9%97%AE/></a>
-</article>
-<article class=post-entry>
-<header class=entry-header>
-<h2>linux
-</h2>
-</header>
-<section class=entry-content>
-<p>终端 [root@LocalHost 桌面]# l
-root表示当前登录用户名 locahost表示当前登录的主机名 桌面 表示当前的工作目录 # 身份标识符 #表示为超级管理员 $表示为普通用户 目录结构 Bin：全称Binary，存放的都是一些二进制文件 Dev：主要存放一些外接设备，例如U盘等，在其中的设备是不能直接使用的，需要挂载（类似windows下的分盘） Etc：主要存放一些配置文件 Home：表示除了root用户以外的其他的家目录，类似windows下的user用户目录 Proc：该目录存放运行的进程文件 Root：该目录是root用户的家目录 SBin：该目录也是存放二进制文件，但是必须得有super权限的用户才能执行 Usr：用户的应用程序和文件都放在这个目录下类似于windows下的program files目录 Mnt：让用户临时挂在别的文件系统 Opt：一般存放安装软件包 Usr/local：存放安装软件后存在的软件目录 Var：存放不断变化的文件，例如日志文件 VI和VIM编辑器 所有的Linux系统都会内建VI文本编辑器，VIM具有程序编辑的能力，可以看成是VI的增强版
-VI和VIM的3种常见模式 正常模式
-在正常是模式下，可以使用快捷键来处理内容
-插入/编辑模式
-在此模式下，可以输入内容，按i，I，o，O，a，A，r，R等任何一个字母就可以进入编辑模式，一般用i
-命令行模式
-可以使用指令完成，读取，存盘，替换，离开，显示行号等动作
-注释 单行注释：#
-多行注释：:«!内容!
-快捷键的使用 行首0，行尾$
-拷贝当前行：yy，拷贝当前向下n行：nyy，例如：5yy
-粘贴：p
-删除当前行：dd，删除当前行下n行：ndd，例如：5dd
-查找：命令行模式下 / 关键字，例如：/hello，下一个n
-设置文件行号：命令行模式下 ：set nu，关闭行号：set nonu...</p>
-</section>
-<footer class=entry-footer><span title="2020-01-31 20:50:54 +0000 UTC">January 31, 2020</span>&nbsp;·&nbsp;10 min&nbsp;·&nbsp;Hao Sun</footer>
-<a class=entry-link aria-label="post link to linux" href=https://sunhao1256.github.io/posts/linux/></a>
-</article>
-<article class=post-entry>
-<header class=entry-header>
-<h2>
-</h2>
-</header>
-<section class=entry-content>
-<p>title: "Gradle" date: 2022-01-11T14:43:18+08:00 tags: ['Gradle'] Gradle </p>
-</section>
-<footer class=entry-footer>1 min&nbsp;·&nbsp;Hao Sun</footer>
-<a class=entry-link aria-label="post link to " href=https://sunhao1256.github.io/posts/gradle/></a>
-</article>
-<article class=post-entry>
-<header class=entry-header>
-<h2>
-</h2>
-</header>
-<section class=entry-content>
-<p>title: "mac使用" date: 2022-06-20T16:57:01+08:00 tags: ['mac'] 快捷键 Finder绝对路径跳转
+<p>快捷键 Finder绝对路径跳转
 command+shift+G
 Finder绝对路径复制
 command+option+C
@@ -152,28 +83,72 @@ Shift-Command-5
 command shift 4局部，3全屏
 只显示桌面
 command f3
+finder
+option+command+空格
+space+command
+打开聚焦搜索，按住command再点击结果，是进入文件夹
 环境变量 加载顺序
 /etc/profile /etc/paths ~/.zprofile ~/.zshrc /etc/profile和/etc/paths是系统级别的，系统启动就会加载，zprofile是用户级别的 ~/.zshrc没有上述规则，它是zsh shell打开的时候载入的。
 # System-wide .profile for sh(1) if [ -x /usr/libexec/path_helper ]; then eval `/usr/libexec/path_helper -s` fi if [ "${BASH-no}" != "no" ]; then [ -r /etc/bashrc ] && ....</p>
 </section>
-<footer class=entry-footer>1 min&nbsp;·&nbsp;Hao Sun</footer>
-<a class=entry-link aria-label="post link to " href=https://sunhao1256.github.io/posts/mac%E4%BD%BF%E7%94%A8/></a>
+<footer class=entry-footer><span title="2022-06-20 16:57:01 +0800 CST">June 20, 2022</span>&nbsp;·&nbsp;1 min&nbsp;·&nbsp;Hao Sun</footer>
+<a class=entry-link aria-label="post link to mac使用" href=https://sunhao1256.github.io/posts/mac%E4%BD%BF%E7%94%A8/></a>
 </article>
 <article class=post-entry>
 <header class=entry-header>
-<h2>
+<h2>Git命令
 </h2>
 </header>
 <section class=entry-content>
-<p>title: "Netty" date: 2022-01-11T14:43:18+08:00 tags: ['Netty'] netty是在什么地方创建SeverChannel的 在BootStrap调用bind方法时创建
+<p>Git常用命令 git init # 初始化本地git仓库（创建新仓库） git config --global user.name "xxx" # 配置用户名 git config --global user.email "xxx@xxx.com" # 配置邮件 git config --global color.ui true # git status等命令自动着色 git config --global color.status auto git config --global color.diff auto git config --global color.branch auto git config --global color.interactive auto git config --global --unset http.proxy # remove proxy configuration on git git clone git+ssh://git@192.168.53.168/VT.git # clone远程仓库 git status # 查看当前版本状态（是否修改） git add xyz # 添加xyz文件至index git add ....</p>
+</section>
+<footer class=entry-footer><span title="2022-02-21 16:57:01 +0800 CST">February 21, 2022</span>&nbsp;·&nbsp;3 min&nbsp;·&nbsp;Hao Sun</footer>
+<a class=entry-link aria-label="post link to Git命令" href=https://sunhao1256.github.io/posts/git%E5%91%BD%E4%BB%A4/></a>
+</article>
+<article class=post-entry>
+<header class=entry-header>
+<h2>Go包管理
+</h2>
+</header>
+<section class=entry-content>
+<p>Go 包管理 go mod init:初始化modules go mod download:下载modules到本地cache go mod edit:编辑go.mod文件，选项有-json、-require和-exclude，可以使用帮助go help mod edit go mod graph:以文本模式打印模块需求图 go mod tidy:检查，删除错误或者不使用的modules，下载没download的package go mod vendor:生成vendor目录 go mod verify:验证依赖是否正确 go mod why：查找依赖 ​ go test 执行一下，自动导包 ​ go list -m 主模块的打印路径 go list -m -f={{.Dir}} print主模块的根目录 go list -m all 查看当前的依赖和版本信息 </p>
+</section>
+<footer class=entry-footer><span title="2022-01-11 14:43:18 +0800 CST">January 11, 2022</span>&nbsp;·&nbsp;1 min&nbsp;·&nbsp;Hao Sun</footer>
+<a class=entry-link aria-label="post link to Go包管理" href=https://sunhao1256.github.io/posts/go/></a>
+</article>
+<article class=post-entry>
+<header class=entry-header>
+<h2>Netty
+</h2>
+</header>
+<section class=entry-content>
+<p>netty是在什么地方创建SeverChannel的 在BootStrap调用bind方法时创建
 private ChannelFuture doBind(final SocketAddress localAddress) { final ChannelFuture regFuture = this.initAndRegister(); } initAndRegister方法
 final ChannelFuture initAndRegister() { Channel channel = null; try { channel = this.channelFactory.newChannel(); channelFactory是在bootstrap配置class时实例化的
 在AbstractBootstrap中
 public B channel(Class&lt;? extends C> channelClass) { return this.channelFactory((io.netty.channel.ChannelFactory)(new ReflectiveChannelFactory((Class)ObjectUtil.checkNotNull(channelClass, "channelClass")))); } 因此是直接通过反射，创建了NioServerSocketChannel.class
-public class NioServerSocketChannel extends AbstractNioMessageChannel implements ServerSocketChannel { private static final ChannelMetadata METADATA = new ChannelMetadata(false, 16); private static final SelectorProvider DEFAULT_SELECTOR_PROVIDER = SelectorProvider....</p>
+public class NioServerSocketChannel extends AbstractNioMessageChannel implements ServerSocketChannel { private static final ChannelMetadata METADATA = new ChannelMetadata(false, 16); private static final SelectorProvider DEFAULT_SELECTOR_PROVIDER = SelectorProvider.provider(); private static final InternalLogger logger = InternalLoggerFactory....</p>
 </section>
-<footer class=entry-footer>15 min&nbsp;·&nbsp;Hao Sun</footer>
-<a class=entry-link aria-label="post link to " href=https://sunhao1256.github.io/posts/netty/></a>
+<footer class=entry-footer><span title="2022-01-11 14:43:18 +0800 CST">January 11, 2022</span>&nbsp;·&nbsp;15 min&nbsp;·&nbsp;Hao Sun</footer>
+<a class=entry-link aria-label="post link to Netty" href=https://sunhao1256.github.io/posts/netty/></a>
+</article>
+<article class=post-entry>
+<header class=entry-header>
+<h2>Reactor响应式编程
+</h2>
+</header>
+<section class=entry-content>
+<p>Reactive Programming 响应式编程 为什么要响应式编程 传统的编程模式应对如今高并发，高响应的需求有很多限制。现在的web应用，越来越需要更高的并发，更快的响应。
+每个请求都需要一个线程 传统的web请求，每个请求都是使用单个线程贯穿整个流程。如果我们用Spring的生态，对于的就是SpringMvc框架。基于servlet容器，例如tomcat。而tomcat内部会维护一个线程池去，每当请求来的时候，便会从池中分配一个thread来处理请求。这意味着，这个web程序的并发能力只能达到线程池的大小。当然为了提高并发能力，可以增加线程池的大小。但是在Java中一个线程的开销是昂贵的，通常是1MB的内存消耗。更大的线程池大小，则意味着更大的内存。
+阻塞IO操作 IO操作，如果不做任何处理，势必会阻塞，例如查询数据库、RPC调用其他服务等。一旦发起了一个IO请求，持续等待，直到IO结束，这就是最基础的阻塞IO
+响应时间 在实际的场景中，一次请求中可能有不止一个服务调用链。例如A服务除了要调用B、C服务，还需要操作一次数据库。如果什么都不做的话，意味着这次请求花费的时间是下面花费时间之和
+B服务的响应时间（网络延迟+B服务的处理时间） C服务的响应时间（网络延迟+C服务的处理时间） 数据的处理时间（网络延迟+处理时间） 如果没有业务逻辑上的顺序，如果我们在代码中并发操作的话，那么消耗的时间肯定有所减少。虽然Java提供很多方便的异步回调方法，例如CompletableFutures，但是这极大的增加了代码的复杂性。没人愿意每次都这么复杂，并且并不是每个人都会想到用异步的。
+压倒客户端 微服务中可能会出现这样的场景，A服务需要调用B一些信息，例如查一个月的订单，但是这个数据非常庞大，对于A服务来说，一次性无法处理，甚至可能出现OOM导致服务A直接挂了。
+小结 总结上面的一些问题能发现响应式编程能带来的好处：
+不使用一个线程处理一个请求的模式，可以使用需要更少的线程处理更多的请求 防止线程在进行IO操作的时候被阻塞 能有简洁的并发操作API 提供背压机制，backpress，防止客户端直接被压垮 什么是响应式编程 “In plain terms reactive programming is about non-blocking applications that are asynchronous and event-driven and require a small number of threads to scale. A key aspect of that definition is the concept of backpressure which is a mechanism to ensure producers don’t overwhelm consumers....</p>
+</section>
+<footer class=entry-footer><span title="2022-01-11 14:43:18 +0800 CST">January 11, 2022</span>&nbsp;·&nbsp;3 min&nbsp;·&nbsp;Hao Sun</footer>
+<a class=entry-link aria-label="post link to Reactor响应式编程" href=https://sunhao1256.github.io/posts/reactor/></a>
 </article>
 <footer class=page-footer>
 <nav class=pagination>
