@@ -93,7 +93,7 @@ spring reactive，响应式聊下，什么时候适合用？背压是什么东�
 用过，在一些比较简单的微服务场景，或者无法使用其他中间件的前提下。如果需要部署多节点的话，最方便的分布式锁就是mysql，因为我们的db库基本都是单节点的mysql或者mariadb。使用起来其实很简单，就是一个update语句，更新version字段。也就是所谓的乐观锁。开启一个事务，先select锁，然后尝试更新锁，在没完成业务的之前是不提交锁的，所以，其他线程会在获取锁的时候就停下来。因为update，delete，insert默认都是带for update，即行锁的。当然select不会阻塞，除非主动的设置for update。这样就是最基础的一个分布式锁了。切记锁字段必须要有索引，否则锁整个表。就G了
 netty玩过吗，玩过哪些东西，能干啥...</p>
 </section>
-<footer class=entry-footer><span title="2022-01-11 14:43:18 +0800 CST">January 11, 2022</span>&nbsp;·&nbsp;1 min&nbsp;·&nbsp;Hao Sun</footer>
+<footer class=entry-footer><span title="2022-01-11 14:43:18 +0800 CST">January 11, 2022</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;Hao Sun</footer>
 <a class=entry-link aria-label="post link to 平时疑问" href=https://sunhao1256.github.io/posts/%E5%B9%B3%E6%97%B6%E7%96%91%E9%97%AE/></a>
 </article>
 </main>

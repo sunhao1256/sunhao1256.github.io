@@ -1,0 +1,501 @@
+<!doctype html><html lang=en dir=auto>
+<head><meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no">
+<meta name=robots content="index, follow">
+<title>VIM Keyboard Shortcuts | Hao Sun</title>
+<meta name=keywords content="Linux">
+<meta name=description content="VIM Keyboard Shortcuts    Cursor movement      h move left   j move down   k move up   l move right   w jump by start of words (punctuation considered words)   W jump by words (spaces separate words)   e jump to end of words (punctuation considered words)   E jump to end of words (no punctuation)   b jump backward by words (punctuation considered words)   B jump backward by words (no punctuation)   0 (zero) start of line   ^ first non-blank character of line   $ end of line   G Go To command (prefix with number   Note: Prefix a cursor movement command with a number to repeat it.">
+<meta name=author content="Hao Sun">
+<link rel=canonical href=https://sunhao1256.github.io/posts/vim-keyboard-shortcuts/>
+<link crossorigin=anonymous href=/assets/css/stylesheet.min.c88963fe2d79462000fd0fb1b3737783c32855d340583e4523343f8735c787f0.css integrity="sha256-yIlj/i15RiAA/Q+xs3N3g8MoVdNAWD5FIzQ/hzXHh/A=" rel="preload stylesheet" as=style>
+<script defer crossorigin=anonymous src=/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5+kdJvBz5iKbt6B5PJI=" onload=hljs.initHighlightingOnLoad()></script>
+<link rel=icon href=https://sunhao1256.github.io/%3Clink%20/%20abs%20url%3E>
+<link rel=icon type=image/png sizes=16x16 href=https://sunhao1256.github.io/%3Clink%20/%20abs%20url%3E>
+<link rel=icon type=image/png sizes=32x32 href=https://sunhao1256.github.io/%3Clink%20/%20abs%20url%3E>
+<link rel=apple-touch-icon href=https://sunhao1256.github.io/%3Clink%20/%20abs%20url%3E>
+<link rel=mask-icon href=https://sunhao1256.github.io/%3Clink%20/%20abs%20url%3E>
+<meta name=theme-color content="#2e2e33">
+<meta name=msapplication-TileColor content="#2e2e33">
+<meta name=generator content="Hugo 0.89.0">
+<noscript>
+<style>#theme-toggle,.top-link{display:none}</style>
+<style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style>
+</noscript><meta property="og:title" content="VIM Keyboard Shortcuts">
+<meta property="og:description" content="VIM Keyboard Shortcuts    Cursor movement      h move left   j move down   k move up   l move right   w jump by start of words (punctuation considered words)   W jump by words (spaces separate words)   e jump to end of words (punctuation considered words)   E jump to end of words (no punctuation)   b jump backward by words (punctuation considered words)   B jump backward by words (no punctuation)   0 (zero) start of line   ^ first non-blank character of line   $ end of line   G Go To command (prefix with number   Note: Prefix a cursor movement command with a number to repeat it.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://sunhao1256.github.io/posts/vim-keyboard-shortcuts/"><meta property="og:image" content="https://sunhao1256.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2022-09-07T13:14:35+08:00">
+<meta property="article:modified_time" content="2022-09-07T13:14:35+08:00"><meta property="og:site_name" content="Hao Sun">
+<meta name=twitter:card content="summary_large_image">
+<meta name=twitter:image content="https://sunhao1256.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E">
+<meta name=twitter:title content="VIM Keyboard Shortcuts">
+<meta name=twitter:description content="VIM Keyboard Shortcuts    Cursor movement      h move left   j move down   k move up   l move right   w jump by start of words (punctuation considered words)   W jump by words (spaces separate words)   e jump to end of words (punctuation considered words)   E jump to end of words (no punctuation)   b jump backward by words (punctuation considered words)   B jump backward by words (no punctuation)   0 (zero) start of line   ^ first non-blank character of line   $ end of line   G Go To command (prefix with number   Note: Prefix a cursor movement command with a number to repeat it.">
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://sunhao1256.github.io/posts/"},{"@type":"ListItem","position":2,"name":"VIM Keyboard Shortcuts","item":"https://sunhao1256.github.io/posts/vim-keyboard-shortcuts/"}]}</script>
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"VIM Keyboard Shortcuts","name":"VIM Keyboard Shortcuts","description":"VIM Keyboard Shortcuts    Cursor movement      h move left   j move down   k move up   l move right   w jump by start of words (punctuation considered words)   W jump by words (spaces separate words)   e jump to end of words (punctuation considered words)   E jump to end of words (no punctuation)   b jump backward by words (punctuation considered words)   B jump backward by words (no punctuation)   0 (zero) start of line   ^ first non-blank character of line   $ end of line   G Go To command (prefix with number   Note: Prefix a cursor movement command with a number to repeat it.","keywords":["Linux"],"articleBody":"VIM Keyboard Shortcuts    Cursor movement      h move left   j move down   k move up   l move right   w jump by start of words (punctuation considered words)   W jump by words (spaces separate words)   e jump to end of words (punctuation considered words)   E jump to end of words (no punctuation)   b jump backward by words (punctuation considered words)   B jump backward by words (no punctuation)   0 (zero) start of line   ^ first non-blank character of line   $ end of line   G Go To command (prefix with number   Note: Prefix a cursor movement command with a number to repeat it. For example, 4j moves down 4 lines.   Insert Mode Inserting/Appending text   i start insert mode at cursor   I insert at the beginning of the line   a append after the cursor   A append at the end of the line   o open (append) blank line below current line (no need to press return)   O open blank line above current line   ea append at end of word   Esc exit insert mode       Editing    r replace a single character (does not use insert mode)   J join line below to the current one   cc change (replace) an entire line   cw change (replace) to the end of word   c$ change (replace) to the end of line   s delete character at cursor and subsitute text   S delete line at cursor and substitute text (same as cc)   xp transpose two letters (delete and paste, technically)   u undo   . repeat last command       Marking text (visual mode)    v start visual mode, mark lines, then do command (such as y-yank)   V start Linewise visual mode   o move to other end of marked area   Ctrl+v start visual block mode   O move to Other corner of block   aw mark a word   ab a () block (with braces)   aB a {} block (with brackets)   ib inner () block   iB inner {} block   Esc exit visual mode       Visual commands     shift right    shift left   y yank (copy) marked text   d delete marked text   ~ switch case       Cut and Paste    yy yank (copy) a line   2yy yank 2 lines   yw yank word   y$ yank to end of line   p put (paste) the clipboard after cursor   P put (paste) before cursor   dd delete (cut) a line   dw delete (cut) the current word   x delete (cut) current character       Exiting    :w write (save) the file, but don’t exit   :wq write (save) and quit   :q quit (fails if anything has changed)   :q! quit and throw away changes       Search/Replace    /pattern search for pattern   ?pattern search backward for pattern   n repeat search in same direction   N repeat search in opposite direction   :%s/old/new/g replace all old with new throughout file   :%s/old/new/gc replace all old with new throughout file with confirmations       Working with multiple files    :e filename Edit a file in a new buffer   :bnext (or :bn) go to next buffer   :bprev (of :bp) go to previous buffer   :bd delete a buffer (close a file)   :sp filename Open a file in a new buffer and split window   ctrl+ws Split windows   ctrl+ww switch between windows   ctrl+wq Quit a window   ctrl+wv Split windows vertically        ","wordCount":"507","inLanguage":"en","datePublished":"2022-09-07T13:14:35+08:00","dateModified":"2022-09-07T13:14:35+08:00","author":{"@type":"Person","name":"Hao Sun"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://sunhao1256.github.io/posts/vim-keyboard-shortcuts/"},"publisher":{"@type":"Organization","name":"Hao Sun","logo":{"@type":"ImageObject","url":"https://sunhao1256.github.io/%3Clink%20/%20abs%20url%3E"}}}</script>
+</head>
+<body id=top>
+<script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add('dark'):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove('dark'):window.matchMedia('(prefers-color-scheme: dark)').matches&&document.body.classList.add('dark')</script>
+<header class=header>
+<nav class=nav>
+<div class=logo>
+<a href=https://sunhao1256.github.io/ accesskey=h title="Hao Sun (Alt + H)">Hao Sun</a>
+<span class=logo-switches>
+<button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+</button>
+</span>
+</div>
+<ul id=menu>
+<li>
+<a href=https://sunhao1256.github.io/archives/ title=Archive>
+<span>Archive</span>
+</a>
+</li>
+<li>
+<a href=https://sunhao1256.github.io/search/ title="Search (Alt + /)" accesskey=/>
+<span>Search</span>
+</a>
+</li>
+<li>
+<a href=https://sunhao1256.github.io/tags/ title=Tags>
+<span>Tags</span>
+</a>
+</li>
+</ul>
+</nav>
+</header>
+<main class=main>
+<article class=post-single>
+<header class=post-header>
+<div class=breadcrumbs><a href=https://sunhao1256.github.io/>Home</a>&nbsp;»&nbsp;<a href=https://sunhao1256.github.io/posts/>Posts</a></div>
+<h1 class=post-title>
+VIM Keyboard Shortcuts
+</h1>
+<div class=post-meta><span title="2022-09-07 13:14:35 +0800 CST">September 7, 2022</span>&nbsp;·&nbsp;3 min&nbsp;·&nbsp;Hao Sun
+</div>
+</header> <div class=toc>
+<details>
+<summary accesskey=c title="(Alt + C)">
+<span class=details>Table of Contents</span>
+</summary>
+<div class=inner><ul>
+<li>
+<a href=#vim-keyboard-shortcuts aria-label="VIM Keyboard Shortcuts">VIM Keyboard Shortcuts</a>
+</li>
+</ul>
+</div>
+</details>
+</div>
+<div class=post-content><h3 id=vim-keyboard-shortcuts>VIM Keyboard Shortcuts<a hidden class=anchor aria-hidden=true href=#vim-keyboard-shortcuts>#</a></h3>
+<table>
+<thead>
+<tr>
+<th><strong>Cursor movement</strong></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>h</td>
+<td>move left</td>
+</tr>
+<tr>
+<td>j</td>
+<td>move down</td>
+</tr>
+<tr>
+<td>k</td>
+<td>move up</td>
+</tr>
+<tr>
+<td>l</td>
+<td>move right</td>
+</tr>
+<tr>
+<td>w</td>
+<td>jump by start of words (punctuation considered words)</td>
+</tr>
+<tr>
+<td>W</td>
+<td>jump by words (spaces separate words)</td>
+</tr>
+<tr>
+<td>e</td>
+<td>jump to end of words (punctuation considered words)</td>
+</tr>
+<tr>
+<td>E</td>
+<td>jump to end of words (no punctuation)</td>
+</tr>
+<tr>
+<td>b</td>
+<td>jump backward by words (punctuation considered words)</td>
+</tr>
+<tr>
+<td>B</td>
+<td>jump backward by words (no punctuation)</td>
+</tr>
+<tr>
+<td>0</td>
+<td>(zero) start of line</td>
+</tr>
+<tr>
+<td>^</td>
+<td>first non-blank character of line</td>
+</tr>
+<tr>
+<td>$</td>
+<td>end of line</td>
+</tr>
+<tr>
+<td>G</td>
+<td>Go To command (prefix with number</td>
+</tr>
+<tr>
+<td>Note:</td>
+<td>Prefix a cursor movement command with a number to repeat it. For example, 4j moves down 4 lines.</td>
+</tr>
+<tr>
+<td>Insert Mode</td>
+<td>Inserting/Appending text</td>
+</tr>
+<tr>
+<td>i</td>
+<td>start insert mode at cursor</td>
+</tr>
+<tr>
+<td>I</td>
+<td>insert at the beginning of the line</td>
+</tr>
+<tr>
+<td>a</td>
+<td>append after the cursor</td>
+</tr>
+<tr>
+<td>A</td>
+<td>append at the end of the line</td>
+</tr>
+<tr>
+<td>o</td>
+<td>open (append) blank line below current line (no need to press return)</td>
+</tr>
+<tr>
+<td>O</td>
+<td>open blank line above current line</td>
+</tr>
+<tr>
+<td>ea</td>
+<td>append at end of word</td>
+</tr>
+<tr>
+<td>Esc</td>
+<td>exit insert mode</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Editing</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>r</td>
+<td>replace a single character (does not use insert mode)</td>
+</tr>
+<tr>
+<td>J</td>
+<td>join line below to the current one</td>
+</tr>
+<tr>
+<td>cc</td>
+<td>change (replace) an entire line</td>
+</tr>
+<tr>
+<td>cw</td>
+<td>change (replace) to the end of word</td>
+</tr>
+<tr>
+<td>c$</td>
+<td>change (replace) to the end of line</td>
+</tr>
+<tr>
+<td>s</td>
+<td>delete character at cursor and subsitute text</td>
+</tr>
+<tr>
+<td>S</td>
+<td>delete line at cursor and substitute text (same as cc)</td>
+</tr>
+<tr>
+<td>xp</td>
+<td>transpose two letters (delete and paste, technically)</td>
+</tr>
+<tr>
+<td>u</td>
+<td>undo</td>
+</tr>
+<tr>
+<td>.</td>
+<td>repeat last command</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Marking text (visual mode)</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>v</td>
+<td>start visual mode, mark lines, then do command (such as y-yank)</td>
+</tr>
+<tr>
+<td>V</td>
+<td>start Linewise visual mode</td>
+</tr>
+<tr>
+<td>o</td>
+<td>move to other end of marked area</td>
+</tr>
+<tr>
+<td>Ctrl+v</td>
+<td>start visual block mode</td>
+</tr>
+<tr>
+<td>O</td>
+<td>move to Other corner of block</td>
+</tr>
+<tr>
+<td>aw</td>
+<td>mark a word</td>
+</tr>
+<tr>
+<td>ab</td>
+<td>a () block (with braces)</td>
+</tr>
+<tr>
+<td>aB</td>
+<td>a {} block (with brackets)</td>
+</tr>
+<tr>
+<td>ib</td>
+<td>inner () block</td>
+</tr>
+<tr>
+<td>iB</td>
+<td>inner {} block</td>
+</tr>
+<tr>
+<td>Esc</td>
+<td>exit visual mode</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Visual commands</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>></td>
+<td>shift right</td>
+</tr>
+<tr>
+<td>&lt;</td>
+<td>shift left</td>
+</tr>
+<tr>
+<td>y</td>
+<td>yank (copy) marked text</td>
+</tr>
+<tr>
+<td>d</td>
+<td>delete marked text</td>
+</tr>
+<tr>
+<td>~</td>
+<td>switch case</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Cut and Paste</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>yy</td>
+<td>yank (copy) a line</td>
+</tr>
+<tr>
+<td>2yy</td>
+<td>yank 2 lines</td>
+</tr>
+<tr>
+<td>yw</td>
+<td>yank word</td>
+</tr>
+<tr>
+<td>y$</td>
+<td>yank to end of line</td>
+</tr>
+<tr>
+<td>p</td>
+<td>put (paste) the clipboard after cursor</td>
+</tr>
+<tr>
+<td>P</td>
+<td>put (paste) before cursor</td>
+</tr>
+<tr>
+<td>dd</td>
+<td>delete (cut) a line</td>
+</tr>
+<tr>
+<td>dw</td>
+<td>delete (cut) the current word</td>
+</tr>
+<tr>
+<td>x</td>
+<td>delete (cut) current character</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Exiting</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>:w</td>
+<td>write (save) the file, but don&rsquo;t exit</td>
+</tr>
+<tr>
+<td>:wq</td>
+<td>write (save) and quit</td>
+</tr>
+<tr>
+<td>:q</td>
+<td>quit (fails if anything has changed)</td>
+</tr>
+<tr>
+<td>:q!</td>
+<td>quit and throw away changes</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Search/Replace</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>/pattern</td>
+<td>search for pattern</td>
+</tr>
+<tr>
+<td>?pattern</td>
+<td>search backward for pattern</td>
+</tr>
+<tr>
+<td>n</td>
+<td>repeat search in same direction</td>
+</tr>
+<tr>
+<td>N</td>
+<td>repeat search in opposite direction</td>
+</tr>
+<tr>
+<td>:%s/old/new/g</td>
+<td>replace all old with new throughout file</td>
+</tr>
+<tr>
+<td>:%s/old/new/gc</td>
+<td>replace all old with new throughout file with confirmations</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Working with multiple files</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>:e filename</td>
+<td>Edit a file in a new buffer</td>
+</tr>
+<tr>
+<td>:bnext (or :bn)</td>
+<td>go to next buffer</td>
+</tr>
+<tr>
+<td>:bprev (of :bp)</td>
+<td>go to previous buffer</td>
+</tr>
+<tr>
+<td>:bd</td>
+<td>delete a buffer (close a file)</td>
+</tr>
+<tr>
+<td>:sp filename</td>
+<td>Open a file in a new buffer and split window</td>
+</tr>
+<tr>
+<td>ctrl+ws</td>
+<td>Split windows</td>
+</tr>
+<tr>
+<td>ctrl+ww</td>
+<td>switch between windows</td>
+</tr>
+<tr>
+<td>ctrl+wq</td>
+<td>Quit a window</td>
+</tr>
+<tr>
+<td>ctrl+wv</td>
+<td>Split windows vertically</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<footer class=post-footer>
+<ul class=post-tags>
+<li><a href=https://sunhao1256.github.io/tags/linux/>linux</a></li>
+</ul>
+<nav class=paginav>
+<a class=next href=https://sunhao1256.github.io/posts/%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95/>
+<span class=title>Next Page »</span>
+<br>
+<span>查找算法</span>
+</a>
+</nav>
+</footer>
+</article>
+</main>
+<footer class=footer>
+<span>&copy; 2022 <a href=https://sunhao1256.github.io/>Hao Sun</a></span>
+<span>
+Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://git.io/hugopapermod rel=noopener target=_blank>PaperMod</a>
+</span>
+</footer>
+<a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
+</a>
+<script>let menu=document.getElementById('menu');menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener("click",function(b){b.preventDefault();var a=this.getAttribute("href").substr(1);window.matchMedia('(prefers-reduced-motion: reduce)').matches?document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView({behavior:"smooth"}),a==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${a}`)})})</script>
+<script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script>
+<script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove('dark'),localStorage.setItem("pref-theme",'light')):(document.body.classList.add('dark'),localStorage.setItem("pref-theme",'dark'))})</script>
+</body>
+</html>

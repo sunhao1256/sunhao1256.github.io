@@ -9,7 +9,34 @@
       <link>https://sunhao1256.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
     </image>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Thu, 28 Jul 2022 10:14:49 +0800</lastBuildDate><atom:link href="https://sunhao1256.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 07 Sep 2022 13:14:35 +0800</lastBuildDate><atom:link href="https://sunhao1256.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>VIM Keyboard Shortcuts</title>
+      <link>https://sunhao1256.github.io/posts/vim-keyboard-shortcuts/</link>
+      <pubDate>Wed, 07 Sep 2022 13:14:35 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/posts/vim-keyboard-shortcuts/</guid>
+      <description>VIM Keyboard Shortcuts    Cursor movement      h move left   j move down   k move up   l move right   w jump by start of words (punctuation considered words)   W jump by words (spaces separate words)   e jump to end of words (punctuation considered words)   E jump to end of words (no punctuation)   b jump backward by words (punctuation considered words)   B jump backward by words (no punctuation)   0 (zero) start of line   ^ first non-blank character of line   $ end of line   G Go To command (prefix with number   Note: Prefix a cursor movement command with a number to repeat it.</description>
+    </item>
+    
+    <item>
+      <title>查找算法</title>
+      <link>https://sunhao1256.github.io/posts/%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95/</link>
+      <pubDate>Mon, 29 Aug 2022 18:03:28 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/posts/%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>排序算法</title>
+      <link>https://sunhao1256.github.io/posts/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/</link>
+      <pubDate>Mon, 29 Aug 2022 17:58:40 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/posts/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>Nginx</title>
       <link>https://sunhao1256.github.io/posts/nginx/</link>
@@ -81,7 +108,7 @@ command f3
 option+command+空格
   space+command
 打开聚焦搜索，按住command再点击结果，是进入文件夹
-  环境变量 加载顺序
+   环境变量 加载顺序
 /etc/profile /etc/paths ~/.zprofile ~/.zshrc /etc/profile和/etc/paths是系统级别的，系统启动就会加载，zprofile是用户级别的 ~/.zshrc没有上述规则，它是zsh shell打开的时候载入的。
 # System-wide .profile for sh(1) if [ -x /usr/libexec/path_helper ]; then eval `/usr/libexec/path_helper -s` fi if [ &amp;#34;${BASH-no}&amp;#34; != &amp;#34;no&amp;#34; ]; then [ -r /etc/bashrc ] &amp;amp;&amp;amp; .</description>
     </item>
@@ -172,6 +199,36 @@ Redis 的集合相当于 Java 语言中的 HashSet，它内部的键值对是无
   HyperLogLog
 可以用于基数的统计，例如UV统计
   redis如何做到限流的 限流的几个方式</description>
+    </item>
+    
+    <item>
+      <title>平时疑问</title>
+      <link>https://sunhao1256.github.io/posts/%E5%B9%B3%E6%97%B6%E7%96%91%E9%97%AE/</link>
+      <pubDate>Tue, 11 Jan 2022 14:43:18 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/posts/%E5%B9%B3%E6%97%B6%E7%96%91%E9%97%AE/</guid>
+      <description>平时疑问   浏览器输入一个地址，整个流程
+  如果线上流量暴增，全都打到一个 upstream 上了，怎么排查
+  如何在 nginx 的 access log 中查出请求前 10 的 ip
+  台阶问题，假如对于上台阶，可以一次上一阶，也可以一次上两阶，写一个方法，实现输入台阶数，输出可以有多少种上法。
+  广度优先和深度优先
+  spring reactive，响应式聊下，什么时候适合用？背压是什么东西，backpress
+  压缩算法，怎么就“压缩”了？如何减少体积的？
+  实时一致性，最终一致性是什么？什么场景下用那种，如何实现的？
+  实时一致性:
+微服务中，场景用户使用积分兑换优惠券，积分service先扣除积分，优惠券service再进行发券动作，如果网络问题，积分扣成功了，但是优惠券发失败了。用户会投诉，必须要证优惠券和积分要在同一个分布式事务中.
+解决方案：市面上的分布式事务，阿里的seata
+  最终一致性:
+微服务中，用户选择商品下单，商品service进行库存扣件，订单service生成订单，交易service生成交易订单。如果网络原因导致，交易service生成交易订单失败了。并没有影响，只需要通过措施重新弥补交易service去生成交易订单即可。
+解决方法：mq，通过mq的重试机制以及持久化等特性，每一个微服务与下游微服务进行交互动作都是通过mq的消息。保证消息能够被消费，长时间未消费可以告警。
+    消息堆积如何处理？以及产生的危害。
+  怎么保证接口幂等
+  如何评判一个服务的好坏？你是如何进行压测的？查看了哪些指标
+  对象存储，文件存储，块存储。区别
+  服务器卡了，字都快打不动了，咋回事，怎么排查
+  用过mysql行锁吗
+用过，在一些比较简单的微服务场景，或者无法使用其他中间件的前提下。如果需要部署多节点的话，最方便的分布式锁就是mysql，因为我们的db库基本都是单节点的mysql或者mariadb。使用起来其实很简单，就是一个update语句，更新version字段。也就是所谓的乐观锁。开启一个事务，先select锁，然后尝试更新锁，在没完成业务的之前是不提交锁的，所以，其他线程会在获取锁的时候就停下来。因为update，delete，insert默认都是带for update，即行锁的。当然select不会阻塞，除非主动的设置for update。这样就是最基础的一个分布式锁了。切记锁字段必须要有索引，否则锁整个表。就G了
+  netty玩过吗，玩过哪些东西，能干啥</description>
     </item>
     
     <item>

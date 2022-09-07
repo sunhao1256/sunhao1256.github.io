@@ -9,7 +9,16 @@
       <link>https://sunhao1256.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
     </image>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Fri, 31 Jan 2020 20:50:54 +0000</lastBuildDate><atom:link href="https://sunhao1256.github.io/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 07 Sep 2022 13:14:35 +0800</lastBuildDate><atom:link href="https://sunhao1256.github.io/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>VIM Keyboard Shortcuts</title>
+      <link>https://sunhao1256.github.io/posts/vim-keyboard-shortcuts/</link>
+      <pubDate>Wed, 07 Sep 2022 13:14:35 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/posts/vim-keyboard-shortcuts/</guid>
+      <description>VIM Keyboard Shortcuts    Cursor movement      h move left   j move down   k move up   l move right   w jump by start of words (punctuation considered words)   W jump by words (spaces separate words)   e jump to end of words (punctuation considered words)   E jump to end of words (no punctuation)   b jump backward by words (punctuation considered words)   B jump backward by words (no punctuation)   0 (zero) start of line   ^ first non-blank character of line   $ end of line   G Go To command (prefix with number   Note: Prefix a cursor movement command with a number to repeat it.</description>
+    </item>
+    
     <item>
       <title>linux</title>
       <link>https://sunhao1256.github.io/posts/linux/</link>
