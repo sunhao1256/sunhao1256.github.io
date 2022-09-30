@@ -13,7 +13,7 @@
       <pubDate>Thu, 28 Jul 2022 10:14:49 +0800</pubDate>
       
       <guid>http://luluhome.site/post/nginx/</guid>
-      <description>1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 在nginx中配置proxy_pa</description>
+      <description>在nginx中配置proxy_pass时，当在后面的url加上了/，相当于是绝对根路径，则nginx不会把location中匹配的路径部分代</description>
     </item>
     
   </channel>
