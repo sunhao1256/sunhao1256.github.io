@@ -1,29 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>乱七八糟 on Hao Sun</title>
-    <link>https://sunhao1256.github.io/tags/%E4%B9%B1%E4%B8%83%E5%85%AB%E7%B3%9F/</link>
-    <description>Recent content in 乱七八糟 on Hao Sun</description>
-    <image>
-      <url>https://sunhao1256.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
-      <link>https://sunhao1256.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
-    </image>
+    <title>乱七八糟 on Luluhome - a blog for sh , &#39;lulu&#39; is my cat</title>
+    <link>http://luluhome.site/tags/%E4%B9%B1%E4%B8%83%E5%85%AB%E7%B3%9F/</link>
+    <description>Recent content in 乱七八糟 on Luluhome - a blog for sh , &#39;lulu&#39; is my cat</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Tue, 11 Jan 2022 14:43:18 +0800</lastBuildDate><atom:link href="https://sunhao1256.github.io/tags/%E4%B9%B1%E4%B8%83%E5%85%AB%E7%B3%9F/index.xml" rel="self" type="application/rss+xml" />
+    <language>en</language>
+    <lastBuildDate>Tue, 11 Jan 2022 14:43:18 +0800</lastBuildDate><atom:link href="http://luluhome.site/tags/%E4%B9%B1%E4%B8%83%E5%85%AB%E7%B3%9F/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Reactor响应式编程</title>
-      <link>https://sunhao1256.github.io/posts/reactor/</link>
+      <link>http://luluhome.site/post/reactor/</link>
       <pubDate>Tue, 11 Jan 2022 14:43:18 +0800</pubDate>
       
-      <guid>https://sunhao1256.github.io/posts/reactor/</guid>
-      <description>Reactive Programming 响应式编程 为什么要响应式编程 传统的编程模式应对如今高并发，高响应的需求有很多限制。现在的web应用，越来越需要更高的并发，更快的响应。
-每个请求都需要一个线程 传统的web请求，每个请求都是使用单个线程贯穿整个流程。如果我们用Spring的生态，对于的就是SpringMvc框架。基于servlet容器，例如tomcat。而tomcat内部会维护一个线程池去，每当请求来的时候，便会从池中分配一个thread来处理请求。这意味着，这个web程序的并发能力只能达到线程池的大小。当然为了提高并发能力，可以增加线程池的大小。但是在Java中一个线程的开销是昂贵的，通常是1MB的内存消耗。更大的线程池大小，则意味着更大的内存。
-阻塞IO操作 IO操作，如果不做任何处理，势必会阻塞，例如查询数据库、RPC调用其他服务等。一旦发起了一个IO请求，持续等待，直到IO结束，这就是最基础的阻塞IO
-响应时间 在实际的场景中，一次请求中可能有不止一个服务调用链。例如A服务除了要调用B、C服务，还需要操作一次数据库。如果什么都不做的话，意味着这次请求花费的时间是下面花费时间之和
- B服务的响应时间（网络延迟+B服务的处理时间） C服务的响应时间（网络延迟+C服务的处理时间） 数据的处理时间（网络延迟+处理时间）  如果没有业务逻辑上的顺序，如果我们在代码中并发操作的话，那么消耗的时间肯定有所减少。虽然Java提供很多方便的异步回调方法，例如CompletableFutures，但是这极大的增加了代码的复杂性。没人愿意每次都这么复杂，并且并不是每个人都会想到用异步的。
-压倒客户端 微服务中可能会出现这样的场景，A服务需要调用B一些信息，例如查一个月的订单，但是这个数据非常庞大，对于A服务来说，一次性无法处理，甚至可能出现OOM导致服务A直接挂了。
-小结 总结上面的一些问题能发现响应式编程能带来的好处：
- 不使用一个线程处理一个请求的模式，可以使用需要更少的线程处理更多的请求 防止线程在进行IO操作的时候被阻塞 能有简洁的并发操作API 提供背压机制，backpress，防止客户端直接被压垮  什么是响应式编程  “In plain terms reactive programming is about non-blocking applications that are asynchronous and event-driven and require a small number of threads to scale. A key aspect of that definition is the concept of backpressure which is a mechanism to ensure producers don’t overwhelm consumers.</description>
+      <guid>http://luluhome.site/post/reactor/</guid>
+      <description>Reactive Programming 响应式编程 为什么要响应式编程 传统的编程模式应对如今高并发，高响应的需求有很多限制。现在的web应用，越来越需要更高的并发，更快的响应。 每</description>
     </item>
     
   </channel>

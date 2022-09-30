@@ -1,27 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Netty on Hao Sun</title>
-    <link>https://sunhao1256.github.io/tags/netty/</link>
-    <description>Recent content in Netty on Hao Sun</description>
-    <image>
-      <url>https://sunhao1256.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
-      <link>https://sunhao1256.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
-    </image>
+    <title>Netty on Luluhome - a blog for sh , &#39;lulu&#39; is my cat</title>
+    <link>http://luluhome.site/tags/netty/</link>
+    <description>Recent content in Netty on Luluhome - a blog for sh , &#39;lulu&#39; is my cat</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Tue, 11 Jan 2022 14:43:18 +0800</lastBuildDate><atom:link href="https://sunhao1256.github.io/tags/netty/index.xml" rel="self" type="application/rss+xml" />
+    <language>en</language>
+    <lastBuildDate>Tue, 11 Jan 2022 14:43:18 +0800</lastBuildDate><atom:link href="http://luluhome.site/tags/netty/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Netty</title>
-      <link>https://sunhao1256.github.io/posts/netty/</link>
+      <link>http://luluhome.site/post/netty/</link>
       <pubDate>Tue, 11 Jan 2022 14:43:18 +0800</pubDate>
       
-      <guid>https://sunhao1256.github.io/posts/netty/</guid>
-      <description>netty是在什么地方创建SeverChannel的 在BootStrap调用bind方法时创建
-private ChannelFuture doBind(final SocketAddress localAddress) { final ChannelFuture regFuture = this.initAndRegister(); } initAndRegister方法
-final ChannelFuture initAndRegister() { Channel channel = null; try { channel = this.channelFactory.newChannel(); channelFactory是在bootstrap配置class时实例化的
-在AbstractBootstrap中
-public B channel(Class&amp;lt;? extends C&amp;gt; channelClass) { return this.channelFactory((io.netty.channel.ChannelFactory)(new ReflectiveChannelFactory((Class)ObjectUtil.checkNotNull(channelClass, &amp;#34;channelClass&amp;#34;)))); } 因此是直接通过反射，创建了NioServerSocketChannel.class
-public class NioServerSocketChannel extends AbstractNioMessageChannel implements ServerSocketChannel { private static final ChannelMetadata METADATA = new ChannelMetadata(false, 16); private static final SelectorProvider DEFAULT_SELECTOR_PROVIDER = SelectorProvider.provider(); private static final InternalLogger logger = InternalLoggerFactory.</description>
+      <guid>http://luluhome.site/post/netty/</guid>
+      <description>netty是在什么地方创建SeverChannel的 在BootStrap调用bind方法时创建 1 2 3 private ChannelFuture doBind(final SocketAddress localAddress) { final ChannelFuture regFuture = this.initAndRegister(); } initAndR</description>
     </item>
     
   </channel>

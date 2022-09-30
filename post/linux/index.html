@@ -1,0 +1,2343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>linux - Luluhome - a blog for sh , &#39;lulu&#39; is my cat</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="sh" /><meta name="description" content="终端 [root@LocalHost 桌面]# l root表示当前登录用户名 locahost表示当前登录的主机名 桌面 表示当前的工作目录 # 身份标识符 #表示为超级管理员 $表示为普" /><meta name="keywords" content="luluhome, java, blog" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.89.0 with theme even" />
+
+
+<link rel="canonical" href="http://luluhome.site/post/linux/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="linux" />
+<meta property="og:description" content="终端 [root@LocalHost 桌面]# l root表示当前登录用户名 locahost表示当前登录的主机名 桌面 表示当前的工作目录 # 身份标识符 #表示为超级管理员 $表示为普" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://luluhome.site/post/linux/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2020-01-31T20:50:54+00:00" />
+<meta property="article:modified_time" content="2020-01-31T20:50:54+00:00" />
+
+<meta itemprop="name" content="linux">
+<meta itemprop="description" content="终端 [root@LocalHost 桌面]# l root表示当前登录用户名 locahost表示当前登录的主机名 桌面 表示当前的工作目录 # 身份标识符 #表示为超级管理员 $表示为普"><meta itemprop="datePublished" content="2020-01-31T20:50:54+00:00" />
+<meta itemprop="dateModified" content="2020-01-31T20:50:54+00:00" />
+<meta itemprop="wordCount" content="13005">
+<meta itemprop="keywords" content="linux," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="linux"/>
+<meta name="twitter:description" content="终端 [root@LocalHost 桌面]# l root表示当前登录用户名 locahost表示当前登录的主机名 桌面 表示当前的工作目录 # 身份标识符 #表示为超级管理员 $表示为普"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">luluhome</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">luluhome</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">linux</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-01-31 </span>
+        
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#终端">终端</a></li>
+    <li><a href="#目录结构">目录结构</a></li>
+    <li><a href="#vi和vim编辑器">VI和VIM编辑器</a>
+      <ul>
+        <li><a href="#vi和vim的3种常见模式">VI和VIM的3种常见模式</a></li>
+        <li><a href="#注释">注释</a></li>
+        <li><a href="#快捷键的使用">快捷键的使用</a></li>
+      </ul>
+    </li>
+    <li><a href="#关机和重启">关机和重启</a></li>
+    <li><a href="#登录和注销">登录和注销</a></li>
+    <li><a href="#用户管理">用户管理</a></li>
+    <li><a href="#用户组管理">用户组管理</a></li>
+    <li><a href="#指定运行级别">指定运行级别</a></li>
+    <li><a href="#帮助指令">帮助指令</a></li>
+    <li><a href="#文件目录类指令">文件目录类指令</a></li>
+    <li><a href="#时间日期类指令">时间日期类指令</a></li>
+    <li><a href="#搜索查找类指令">搜索查找类指令</a></li>
+    <li><a href="#压缩和解压缩">压缩和解压缩</a></li>
+    <li><a href="#组管理和权限管理">组管理和权限管理</a>
+      <ul>
+        <li><a href="#权限基本介绍">权限基本介绍</a></li>
+        <li><a href="#权限修改chmod">权限修改chmod</a></li>
+      </ul>
+    </li>
+    <li><a href="#crond任务调度">crond任务调度</a></li>
+    <li><a href="#分区与挂载">分区与挂载</a>
+      <ul>
+        <li><a href="#分区的方式">分区的方式</a></li>
+        <li><a href="#挂载">挂载</a></li>
+      </ul>
+    </li>
+    <li><a href="#磁盘情况查询">磁盘情况查询</a>
+      <ul>
+        <li><a href="#常用命令">常用命令</a></li>
+      </ul>
+    </li>
+    <li><a href="#网络配置">网络配置</a></li>
+    <li><a href="#进程管理">进程管理</a></li>
+    <li><a href="#服务管理">服务管理</a>
+      <ul>
+        <li><a href="#service管理命令">service管理命令</a></li>
+      </ul>
+    </li>
+    <li><a href="#进程监控">进程监控</a></li>
+    <li><a href="#网络监控">网络监控</a></li>
+    <li><a href="#lsof管理">Lsof管理</a>
+      <ul>
+        <li><a href="#关键选项">关键选项</a></li>
+        <li><a href="#参考连接">参考连接</a></li>
+      </ul>
+    </li>
+    <li><a href="#rpm包管理">RPM包管理</a></li>
+    <li><a href="#yum">Yum</a></li>
+    <li><a href="#shell脚本">Shell脚本</a>
+      <ul>
+        <li><a href="#起步">起步</a></li>
+        <li><a href="#shell变量">shell变量</a>
+          <ul>
+            <li><a href="#介绍">介绍</a></li>
+            <li><a href="#定义变量">定义变量</a></li>
+          </ul>
+        </li>
+        <li><a href="#综合案例">综合案例</a>
+          <ul>
+            <li><a href="#需求">需求：</a></li>
+          </ul>
+        </li>
+        <li><a href="#示例">示例：</a></li>
+      </ul>
+    </li>
+    <li><a href="#防火墙">防火墙</a>
+      <ul>
+        <li><a href="#查看防火墙情况">查看防火墙情况</a></li>
+        <li><a href="#增加tcp端口">增加TCP端口</a></li>
+        <li><a href="#重新加载防火墙">重新加载防火墙</a></li>
+        <li><a href="#常用命令-1">常用命令</a></li>
+        <li><a href="#配置firewalld">配置firewalld</a></li>
+        <li><a href="#服务管理-1">服务管理</a></li>
+        <li><a href="#端口管理">端口管理</a></li>
+        <li><a href="#直接模式">直接模式</a></li>
+        <li><a href="#自定义服务管理">自定义服务管理</a></li>
+        <li><a href="#控制端口服务">控制端口/服务</a></li>
+        <li><a href="#伪装ip">伪装IP</a></li>
+        <li><a href="#端口转发">端口转发</a></li>
+      </ul>
+    </li>
+    <li><a href="#开机启动服务">开机启动服务</a></li>
+    <li><a href="#jmap">Jmap</a></li>
+    <li><a href="#memoryanalyzer">MemoryAnalyzer</a></li>
+    <li><a href="#信息查看">信息查看</a></li>
+    <li><a href="#机器内核">机器内核</a>
+      <ul>
+        <li><a href="#查看核心数">查看核心数</a></li>
+      </ul>
+    </li>
+    <li><a href="#ssh登陆">ssh登陆</a>
+      <ul>
+        <li><a href="#scp上传下载">scp上传下载</a></li>
+      </ul>
+    </li>
+    <li><a href="#光标快捷键">光标快捷键</a></li>
+    <li><a href="#查看cpu架构">查看cpu架构</a>
+      <ul>
+        <li><a href="#设置网卡静态ip">设置网卡静态ip</a></li>
+        <li><a href="#rpm和yum">rpm和yum</a></li>
+        <li><a href="#aarch64-x86_64-arm64-amd64">aarch64 x86_64 arm64 amd64</a></li>
+      </ul>
+    </li>
+    <li><a href="#man详解">man详解</a></li>
+    <li><a href="#设置hostname">设置hostname</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="终端">终端</h1>
+<p>[root@LocalHost 桌面]# l</p>
+<ul>
+<li>root表示当前登录用户名</li>
+<li>locahost表示当前登录的主机名</li>
+<li>桌面 表示当前的工作目录</li>
+<li># 身份标识符 #表示为超级管理员 $表示为普通用户</li>
+</ul>
+<h1 id="目录结构">目录结构</h1>
+<ul>
+<li>Bin：全称Binary，存放的都是一些二进制文件</li>
+<li>Dev：主要存放一些外接设备，例如U盘等，在其中的设备是不能直接使用的，需要挂载（类似windows下的分盘）</li>
+<li>Etc：主要存放一些配置文件</li>
+<li>Home：表示除了root用户以外的其他的家目录，类似windows下的user用户目录</li>
+<li>Proc：该目录存放运行的进程文件</li>
+<li>Root：该目录是root用户的家目录</li>
+<li>SBin：该目录也是存放二进制文件，但是必须得有super权限的用户才能执行</li>
+<li>Usr：用户的应用程序和文件都放在这个目录下类似于windows下的program files目录</li>
+<li>Mnt：让用户临时挂在别的文件系统</li>
+<li>Opt：一般存放安装软件包</li>
+<li>Usr/local：存放安装软件后存在的软件目录</li>
+<li>Var：存放不断变化的文件，例如日志文件</li>
+</ul>
+<h1 id="vi和vim编辑器">VI和VIM编辑器</h1>
+<p>所有的Linux系统都会内建VI文本编辑器，VIM具有程序编辑的能力，可以看成是VI的增强版</p>
+<h2 id="vi和vim的3种常见模式">VI和VIM的3种常见模式</h2>
+<ul>
+<li>
+<p>正常模式</p>
+<p>在正常是模式下，可以使用快捷键来处理内容</p>
+</li>
+<li>
+<p>插入/编辑模式</p>
+<p>在此模式下，可以输入内容，按i，I，o，O，a，A，r，R等任何一个字母就可以进入编辑模式，一般用i</p>
+</li>
+<li>
+<p>命令行模式</p>
+<p>可以使用指令完成，读取，存盘，替换，离开，显示行号等动作</p>
+</li>
+</ul>
+<h2 id="注释">注释</h2>
+<p>单行注释：#</p>
+<p>多行注释：<strong>:&laquo;!内容!</strong></p>
+<h2 id="快捷键的使用">快捷键的使用</h2>
+<ul>
+<li>
+<p>行首0，行尾$</p>
+</li>
+<li>
+<p>拷贝当前行：yy，拷贝当前向下n行：nyy，例如：5yy</p>
+</li>
+<li>
+<p>粘贴：p</p>
+</li>
+<li>
+<p>删除当前行：dd，删除当前行下n行：ndd，例如：5dd</p>
+</li>
+<li>
+<p>查找：命令行模式下 / 关键字，例如：/hello，下一个n</p>
+</li>
+<li>
+<p>设置文件行号：命令行模式下 ：set nu，关闭行号：set nonu</p>
+</li>
+<li>
+<p>快速到顶行：正常模式下 gg</p>
+</li>
+<li>
+<p>快速到底行：正常模式下G</p>
+</li>
+<li>
+<p>撤销：正常模式下u</p>
+</li>
+<li>
+<p>指定到行号：先显示行号，在正常模式下先输入行数，再按shift+g</p>
+</li>
+<li>
+<p>o：进入输入模式，且进入下一行</p>
+</li>
+<li>
+<p>复制，删除/剪切
+yy：复制光标所在一行
+3yy：复制光标所在行及向下2行
+p：粘贴
+dd：剪切/删除光标所在一行
+3dd：剪切/删除光标所在行及向下两行
+D：从当前的光标开始剪切一直到行末
+d0：从当前光标开始剪切一直到行首
+x：删除当前的光标，每次只会删除一个
+X：删除当前光标前面的那个，每次只会删除一个
+控制光标上下左右走：h左j下k上l右</p>
+</li>
+<li>
+<p>定位：
+H：当前屏幕的上方
+M：当前屏幕的中间
+L：当前屏幕的下方
+Ctrl+f：向下翻一页代码
+Ctrl+b：向上翻一页代码
+Ctrl+d：向下翻半页代码
+Ctrl+u：向上翻半页代码
+20G：快速的定位到第20行，定位到第1行就是1G，以此类推
+G：快速的回到整个代码的最后一行
+gg：快速回到整个代码的第一行
+w：向后跳一个单词的长度，即调到下一个单词的开始处
+b：向后跳一个单词的长度，即调到上一个单词的开始处</p>
+</li>
+<li>
+<p>撤销
+u：撤销刚刚的动作
+Ctrl+r：反撤销</p>
+</li>
+<li>
+<p>选中一片代码
+v：选中一片代码
+V：选中一片代码</p>
+<p>：向右移动代码</p>
+<p>&laquo;：向左移动代码</p>
+<p>. ：重复执行上一次的命令</p>
+</li>
+<li>
+<p>替换
+r：替换一个字符
+R：替换光标以及后面的字符
+shift+zz：保存并退出</p>
+</li>
+<li>
+<p>末行模式下
+替换
+将当前文件中的所有abc替换成123
+:%s/abc/123/g
+将第一行到第十行之间的abc替换成123
+:1, 10s/abc/123/g**
+查找
+查找整个代码中的hello
+：/hello
+n：下一个
+N：上一个
+保存和退出
+:q 退出不保存
+:wq 保存并退出
+:q ! 强制退出不保存
+:wq! 强制保存并退出</p>
+</li>
+</ul>
+<h1 id="关机和重启">关机和重启</h1>
+<ul>
+<li>shutdown -h now ：表示立即关机</li>
+<li>shutdown -h 1：表示1分钟后关机</li>
+<li>shutdown -r now：表示立即重启</li>
+<li>halt：直接关机</li>
+<li>reboot：重启系统</li>
+<li>sync：把内存数据同步到磁盘上，防止数据丢失</li>
+</ul>
+<h1 id="登录和注销">登录和注销</h1>
+<ul>
+<li>一般是使用普通账号进行登录，当权限不够的时候在用&quot;su - 用户名&quot;切换到系统管理员身份</li>
+<li>logout注销用户</li>
+</ul>
+<h1 id="用户管理">用户管理</h1>
+<p>每个用户至少存在一个用户组中。</p>
+<ul>
+<li>
+<p>添加用户： useradd [选项] 用户名，如果不指定用户组会给用户创建一个同名的用户组，并存放在其中。</p>
+<p>useradd -d 路径 用户名，指定用户的访问路径</p>
+<p>useradd -g 组名 用户名，指定用户的用户组</p>
+</li>
+<li>
+<p>设置密码： passwd 用户名</p>
+</li>
+<li>
+<p>查看当前目录路径： pwd</p>
+</li>
+<li>
+<p>删除用户： userdel 用户名，userdel -r 用户名，删除用户且删除家目录，（一般不删除家目录）</p>
+</li>
+<li>
+<p>查询用户信息： id 用户名</p>
+</li>
+<li>
+<p>切换到其他用户： su -用户名</p>
+</li>
+<li>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="o">*</span> <span class="s">`/etc/passwd`</span><span class="err">：</span> <span class="nx">用户账户的详细信息在此文件中更新</span><span class="err">。</span>
+<span class="o">*</span> <span class="s">`/etc/shadow`</span><span class="err">：</span> <span class="nx">用户账户密码在此文件中更新</span><span class="err">。</span>
+<span class="o">*</span> <span class="s">`/etc/group`</span><span class="err">：</span> <span class="nx">新用户群组的详细信息在此文件中更新</span><span class="err">。</span>
+<span class="o">*</span> <span class="s">`/etc/gshadow`</span><span class="err">：</span> <span class="nx">新用户群组密码在此文件中更新</span><span class="err">。</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<h1 id="用户组管理">用户组管理</h1>
+<ul>
+<li>新增：groupadd 组名</li>
+<li>删除：groupdel 组名</li>
+<li>修改用户的用户组：usermod -g 组名 用户名，修改用户的用户组</li>
+<li>修改用户的登录目录：usermod -d 路径名 用户名</li>
+</ul>
+<h1 id="指定运行级别">指定运行级别</h1>
+<p>系统的运行级别文件在/etc/inittab，可以设置默认的运行级别</p>
+<ul>
+<li>
+<p>0：关机</p>
+</li>
+<li>
+<p>1：单用户</p>
+</li>
+<li>
+<p>2：多用户无网络服务</p>
+</li>
+<li>
+<p>3：多用户有网络服务</p>
+</li>
+<li>
+<p>4：保留</p>
+</li>
+<li>
+<p>5：图形化界面</p>
+</li>
+<li>
+<p>6：重启</p>
+<p>切换到指定运行级别命令：init(级别)</p>
+<p>注意点：如果root密码丢失的话，可以指定运行级别为1，单用户级别，直接免密码登录root，然后修改密码。</p>
+</li>
+</ul>
+<h1 id="帮助指令">帮助指令</h1>
+<p>man 命令</p>
+<h1 id="文件目录类指令">文件目录类指令</h1>
+<ul>
+<li>
+<p>pwd： 显示当前工作的绝对路径</p>
+</li>
+<li>
+<p>ls： 查看当前目录结构</p>
+<p>ls -[选项]</p>
+<p>-a：查出所有加上隐藏文件</p>
+<p>-l：横向展示文件信息</p>
+<p>-h：以人类的方式查看，可以显示文件具体大小单位</p>
+</li>
+<li>
+<p>cd： 切换到其他目录</p>
+</li>
+<li>
+<p>mkdir： 创建目录 mkdir[选项] 目录名</p>
+<p>mkdir -p 目录名，创建多级目录</p>
+</li>
+<li>
+<p>rmdir：删除一个空目录（无法删除非空目录，需要使用rm -rf 目录名，才可以进行删除）</p>
+</li>
+<li>
+<p>touch：创建一个或多个空文件</p>
+</li>
+<li>
+<p>cp：拷贝文件到指定目录</p>
+<p>cp 文件名 目标路径</p>
+<p>\cp ：如果有存在文件，强制覆盖</p>
+<p>cp -r 目录名 目标路径 ：递归拷贝整个文件夹</p>
+</li>
+<li>
+<p>rm：移除文件或目录</p>
+<p>rm -r：递归删除整个文件夹</p>
+<p>rm -f：强制删除不提示</p>
+</li>
+<li>
+<p>mv：移动文件与重命名</p>
+<p>mv a.txt b.txt 重命名</p>
+<p>mv /a /b 移动文件</p>
+</li>
+<li>
+<p>cat：浏览文件，只读，不能修改，一般配合 |more分页显示</p>
+<p>cat -n 文件名 |more  分页显示行号浏览文件</p>
+</li>
+<li>
+<p>more：以全屏方式去显示文件内容，空格下一页，enter下一行，ctrl+f下一页，ctrl+b上一页</p>
+</li>
+<li>
+<p>less：与More不同的是，less不是一次将文件加载完才显示，所以对大型文件效率高，推荐查看日志文件</p>
+</li>
+<li>
+<p>&gt; ：输出重定向，覆盖原先内容（文件不存在就创建）</p>
+<p>echo &lsquo;test&rsquo; test.txt</p>
+</li>
+<li>
+<p>&gt;&gt;：追加指令</p>
+</li>
+<li>
+<p>cal ：显示当前日历</p>
+</li>
+<li>
+<p>echo：输入内容到控制台，经常输出环境变量</p>
+<p>echo $PATH</p>
+</li>
+<li>
+<p>head：用于显示文件的开头部分</p>
+<p>head -n 5 文件名：查看文件的前5行，默认10行</p>
+</li>
+<li>
+<p>tail：查看文件尾部输出内容</p>
+<p>tail 文件 查看文件最后10行</p>
+<p>tail -n 100 查看文件最后100行</p>
+<p>tail -f 实时输出文件</p>
+</li>
+<li>
+<p>ln：软连接，类似windows的快捷方式</p>
+<p>ln -s [原文件或者目录] [软连接名]（用pwd查看的时候，依然是软连接的所在的目录）</p>
+</li>
+<li>
+<p>history：查看历史使用过的指令</p>
+<p>history n：查看最后的n条</p>
+<p>!188：执行历史的188号指令</p>
+</li>
+</ul>
+<h1 id="时间日期类指令">时间日期类指令</h1>
+<ul>
+<li>
+<p>date：显示当前日期时间</p>
+<p>date：显示当前时间</p>
+<p>date +%Y：显示当前年份</p>
+<p>date +%m：显示月份</p>
+<p>date +%M：显示分</p>
+<p>date +‘%Y/%M’：显示2020/*</p>
+<p>date -s 字符串时间：设置系统实际</p>
+</li>
+<li>
+<p>cal：以日历的方式显示时间</p>
+</li>
+</ul>
+<h1 id="搜索查找类指令">搜索查找类指令</h1>
+<ul>
+<li>
+<p>find：从指定目录向下递归遍历各个子目录，将满足条件的文件或者目录显示在终端</p>
+<p>find [搜索范围] [选项]</p>
+<p>find /root -name test.txt：在root下查找test.txt文件，可以使用*做模糊查询</p>
+<p>find /root -user root：在root下查找是root用户创建的文件</p>
+<p>find /root -size +20M：在root下查找大于20M的文件 ， +大于，-小于，不写是等于</p>
+</li>
+<li>
+<p>locate：可以快速定位文件路径，locate无需遍历整个文件系统，但必须定期更新locate数据库</p>
+<p>使用updatedb</p>
+</li>
+<li>
+<p>grep 和 | 管道指令</p>
+<p>grep过滤查找，管道符 | 表示将前面一个命令的处理结果交给后面的命令处理</p>
+<p>grep基本用法：grep[选项] 查找内容 原文件</p>
+<p>grep常用选项：-n 显示匹配行以及行号 -i 忽略大小写</p>
+<p>例如： cat /root/testLog.log | grep  -ni 300465</p>
+</li>
+</ul>
+<h1 id="压缩和解压缩">压缩和解压缩</h1>
+<ul>
+<li>
+<p>gzip和gunzip</p>
+<p>gizp 文件（只能将文件压缩为*.gz文件，且不保留原文件）</p>
+<p>gunzip 文件.gz（解压文件，也不保留压缩文件）</p>
+</li>
+<li>
+<p>zip和unzip</p>
+<p>zip  [选项] xxx.zip 要压缩的内容（压缩文件，保留原文件）</p>
+<ul>
+<li>-r 递归压缩，压缩整个目录</li>
+</ul>
+<p>unzip [选项] xxx.zip （解压文件，保留压缩文件）</p>
+<ul>
+<li>-d 目录地址 ，具体解压到哪</li>
+</ul>
+</li>
+<li>
+<p>tar</p>
+<p>tar是指打包指令，最后打包的指令是.tar.gz文件</p>
+<p>tar [选项] xxx.tar.gz 压缩内容</p>
+<ul>
+<li>-c 产生.tar打包文件</li>
+<li>-v 显示详细信息</li>
+<li>-f 指定压缩后的文件名</li>
+<li>-z 打包同时压缩</li>
+<li>-x 解压.tar文件</li>
+<li>-C 解压到指定目录下</li>
+</ul>
+</li>
+<li>
+<p>-P tar默认是相对路径，可以使用P设置为绝对路径</p>
+</li>
+</ul>
+<p>压缩例如：tar -zcvf a.tar.gz test.txt test1.txt ；tar -zcvf a.tar.gz /home/</p>
+<p>解压例如：tar -zxvf a.tar.gz -C /</p>
+<ul>
+<li>解压rar包</li>
+<li>解压tar包</li>
+</ul>
+<h1 id="组管理和权限管理">组管理和权限管理</h1>
+<p>在Linux中的每一个用户都必须属于一个组，不能独立于组外，在linux中每个文件都有所有者、所在组、其他组的概念</p>
+<ul>
+<li>
+<p>文件/目录的所有者（谁创建了文件，就成为该文件的所有者）</p>
+<p>查看所有者 ls -ahl</p>
+</li>
+<li>
+<p>修改文件所有者</p>
+<p>chown 用户名 文件名</p>
+</li>
+<li>
+<p>修改文件所在组</p>
+<p>chgrp 组名 文件名</p>
+</li>
+</ul>
+<h2 id="权限基本介绍">权限基本介绍</h2>
+<p>一个文件或目录的详细描述</p>
+<p>例如：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">-rw-r--r-- 1 root root         0 Feb  1 18:39 a.txt
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>0-10</strong>位说明：</p>
+<ul>
+<li>
+<p>0位表示文件类型</p>
+<ul>
+<li>
+<p>- ：普通文件</p>
+</li>
+<li>
+<p>d：目录</p>
+</li>
+<li>
+<p>l：链接文件，软连接（快捷方式）</p>
+</li>
+<li>
+<p>c：字符设备（键盘，鼠标）</p>
+</li>
+<li>
+<p>b：块文件（硬盘）</p>
+</li>
+</ul>
+</li>
+<li>
+<p>1-3位表示文件所有者拥有的权限</p>
+</li>
+<li>
+<p>-6位表示文件所在组拥有的权限</p>
+</li>
+<li>
+<p>7-9位表示文件其他组用户拥有的权限</p>
+</li>
+<li>
+<p>10位表示 如果是文件，则表示文件的硬连接数，如果是目录表示子目录个数</p>
+</li>
+</ul>
+<p><strong>rwx</strong>权限详解</p>
+<ul>
+<li>
+<p>rwx作用在文件上</p>
+<ul>
+<li>r：表示可读，可以查看</li>
+<li>w：表示修改，可以修改，但不代表可以删除该文件，删除的前提条件是拥有文件所在目录写的权限，才可以删除</li>
+<li>x：表示可以执行，表示可执行</li>
+</ul>
+</li>
+<li>
+<p>rwx作用在目录上</p>
+<ul>
+<li>r：表示可读取，ls查看目录内容</li>
+<li>w：表示可写，可以修改，目录内创建+删除+重命名目录</li>
+<li>x：表示可执行，可以进入该目录</li>
+</ul>
+</li>
+<li>
+<p>rwx用数字表示</p>
+<ul>
+<li>r：4</li>
+<li>w：2</li>
+<li>x：1</li>
+</ul>
+<p>因此rwx=7</p>
+<hr>
+</li>
+</ul>
+<h2 id="权限修改chmod">权限修改chmod</h2>
+<p>可以通过chmod修改文件或目录的权限</p>
+<ul>
+<li>
+<p>通过+ 、- 、= 来修改权限</p>
+<ul>
+<li>
+<p>u：表示所有者</p>
+</li>
+<li>
+<p>g：表示所在组</p>
+</li>
+<li>
+<p>o：表示其他人</p>
+</li>
+<li>
+<p>a：表示所有人（o，g，u的和）</p>
+<p>例如：chmod u=rwx,g=rx,o=x 文件目录名，chmod u-x 文件目录名（让所有者失去x执行权限）,chmod u+x（让所有者加上x执行权限）</p>
+</li>
+</ul>
+</li>
+<li>
+<p>通过数字变更权限</p>
+<ul>
+<li>
+<p>r：4</p>
+</li>
+<li>
+<p>w：2</p>
+</li>
+<li>
+<p>x：1</p>
+<p>例如：chmod u=rwx,g=rx,o=x 文件名  <strong>相当于</strong>   chmod 751 文件名</p>
+</li>
+</ul>
+</li>
+<li>
+<p>修改文件所有者-chown</p>
+<ul>
+<li>chown 新用户 文件名（修改文件的所有者）</li>
+<li>chown 新用户:新组 文件名（修改文件的所有组和所有者）</li>
+<li>-R 如果是目录，则使其下所有的子文件或者目录递归生效</li>
+</ul>
+</li>
+</ul>
+<h1 id="crond任务调度">crond任务调度</h1>
+<p>命令：crontab[选项]</p>
+<p style="color:red;font-weight:700">Linux的crond调度任务最小单位为分！</p>
+选项：
+<ul>
+<li>
+<p>-e：编辑crontab 定时任务</p>
+</li>
+<li>
+<p>-l：查询crontab 任务</p>
+</li>
+<li>
+<p>-r：删除当前用户的所有crontab 任务</p>
+</li>
+<li>
+<p>service crond restart ：(重启任务调度)</p>
+<p>可以写一个sheel脚本，然后去执行</p>
+</li>
+</ul>
+<h1 id="分区与挂载">分区与挂载</h1>
+<h2 id="分区的方式">分区的方式</h2>
+<ul>
+<li>mbr分区
+<ul>
+<li>最多支持4个主分区</li>
+<li>系统只能安装在主分区</li>
+<li>扩展分区占用一个主分区</li>
+<li>mbr最大只支持2TB，但有最好的兼容性</li>
+</ul>
+</li>
+<li>gtp分区
+<ul>
+<li>支持无限多个主分区（但操作系统下可能会限制，例如windows下最多支持128个分区）</li>
+<li>最大支持18EB的容量（EB=1024PB，PB=1024TB）</li>
+<li>windows7 64位以后支持gtp</li>
+</ul>
+</li>
+<li>lsblk 可以查看当前分区情况</li>
+</ul>
+<h2 id="挂载">挂载</h2>
+<ul>
+<li>
+<p>增加一块新硬盘</p>
+</li>
+<li>
+<p>分区  fdisk /dev/硬盘名</p>
+</li>
+<li>
+<p>格式化 mkfs -t 文件类型 分区路径。例如：mkfs -t ext4 /dev/sdb1</p>
+</li>
+<li>
+<p>挂载 mount 分区路径 目标目录（只是临时挂载）</p>
+</li>
+<li>
+<p>设置自动挂载：修改 /etc/fstab文件，增加自己的分区挂载到目标目录上，再使用mount -a 自动挂载</p>
+</li>
+<li>
+<p>卸载 umount 分区路径</p>
+</li>
+</ul>
+<h1 id="磁盘情况查询">磁盘情况查询</h1>
+<ul>
+<li>
+<p>df -h，df -l</p>
+</li>
+<li>
+<p>du 查看某个目录下的磁盘使用情况</p>
+<p>可带参数</p>
+<ul>
+<li>-c 列出明细同时提供总数</li>
+<li>&ndash;max-depth=n 子目录深度为n</li>
+<li>-a 查所有包含文件</li>
+<li>-h 带单位</li>
+</ul>
+<p>例如：du -cha &ndash;max-depth=1 /root</p>
+</li>
+</ul>
+<h2 id="常用命令">常用命令</h2>
+<ul>
+<li>统计目录下文件的个数 ls -al |grep &lsquo;^-&rsquo; | wc -l</li>
+<li>统计目录下目录的个数 ls -al |grep &lsquo;^d&rsquo; | wc -l</li>
+<li>统计目录下包含子目录文件的个数 ls -alR |grep &lsquo;^-&rsquo; | wc -l</li>
+<li>查看目录树 tree</li>
+</ul>
+<h1 id="网络配置">网络配置</h1>
+<ul>
+<li>
+<p>修改linux ip地址为指定地址</p>
+<p>修改/etc/sysconfig/network-scripts/ifcfg-eth0</p>
+</li>
+</ul>
+<hr>
+<h1 id="进程管理">进程管理</h1>
+<ul>
+<li>
+<p>基本介绍</p>
+<p><strong>ps</strong>命令是用来查看目前系统中有哪些正在执行，以及他们的执行状况</p>
+<p>可以配合grep使用</p>
+<p>常用选项</p>
+<ul>
+<li>-a 查看当前终端所有的进程信息</li>
+<li>-u 以用户的格式显示进程信息</li>
+<li>-x 显示后台进程运行的参数</li>
+<li>-ef 展示父进程</li>
+</ul>
+<p>显示字段</p>
+<ul>
+<li>
+<p>USER 用户名称</p>
+</li>
+<li>
+<p>PID 进程识别号</p>
+</li>
+<li>
+<p>%CPU 进程占用CPU百分比</p>
+</li>
+<li>
+<p>%MEM进程占用内存百分比</p>
+</li>
+<li>
+<p>VSZ 进程占用虚拟内存大小 （kb）</p>
+</li>
+<li>
+<p>RSS 进程占用物理内存大小 （kb）</p>
+</li>
+<li>
+<p>TTY 终端机号</p>
+</li>
+<li>
+<p>STAT 进行状态，s表示进程是绘画的先导进程，N表示进程拥有比普通进程优先级更低的优先级，R表示正在运行，D表示短期等待，Z表示僵尸进程，T表示被追踪或者被停止</p>
+</li>
+<li>
+<p>TIME 此进程所消耗CPU时间</p>
+</li>
+<li>
+<p>CMD 正在执行的命令或进程名</p>
+</li>
+</ul>
+</li>
+<li>
+<p>终止进程kill和killAll</p>
+<ul>
+<li>
+<p>kill [选项] 进程号</p>
+<p>常用选项</p>
+<ul>
+<li>-9 表示强迫进程终止</li>
+<li></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>
+<p>kill 进程名(通过名称终止进程，可以使用通配符)</p>
+</li>
+<li>
+<p>查看进程树 pstree</p>
+<p>-p显示进程ID，-u显示进程所在用户</p>
+</li>
+</ul>
+<hr>
+<h1 id="服务管理">服务管理</h1>
+<p>服务（Service）本质上就是一个进程，通常运行在后台，会监听一个端口，等待其他程序的请求，例如mysqld,sshd,防火墙等，因此我们又称为守护进程</p>
+<h2 id="service管理命令">service管理命令</h2>
+<p>service 服务名 start|stop|restart|reload|status</p>
+<p><strong>在Centos7.0以后使用systemctl</strong></p>
+<ul>
+<li>
+<p>ls -l /etc/init.d/ 查看系统有哪些服务</p>
+</li>
+<li>
+<p>chkconfig可以给每个服务设置各个运行级别自启动/关闭</p>
+<ul>
+<li>开启或关闭：chkconfig &ndash;level 5 服务名 on/off</li>
+</ul>
+</li>
+</ul>
+<h1 id="进程监控">进程监控</h1>
+<p><strong>top</strong>命令与ps不同之处在于，top会不停的更新数据</p>
+<p>常用选项</p>
+<ul>
+<li>-d 秒数 ：几秒后更新 默认3秒</li>
+<li>-i ：不显示闲置或僵尸进程</li>
+<li>-p 进程号：显示进程号</li>
+<li>-u 用户名：监控指定的用户</li>
+</ul>
+<p>交互操作</p>
+<ul>
+<li>
+<p>P：按cpu使用率排序</p>
+</li>
+<li>
+<p>M：按内存使用排序</p>
+</li>
+<li>
+<p>N：按PID排序</p>
+</li>
+<li>
+<p>q：退出top</p>
+</li>
+</ul>
+<h1 id="网络监控">网络监控</h1>
+<p><strong>netstat</strong>用来监控网络</p>
+<p>常用选项</p>
+<ul>
+<li>-an ：按照一定顺序排列</li>
+<li>-p：显示那个进程在使用</li>
+</ul>
+<h1 id="lsof管理">Lsof管理</h1>
+<p><strong>lsof</strong>是系统管理的工具，lsof可以代替ps和netstat的几乎全部工作</p>
+<h2 id="关键选项">关键选项</h2>
+<ul>
+<li>
+<p>默认 : 没有选项，lsof列出活跃进程的所有打开文件</p>
+</li>
+<li>
+<p>组合 : 可以将选项组合到一起，如-abc，但要当心哪些选项需要参数</p>
+</li>
+<li>
+<p>-a : 结果进行“与”运算（而不是“或”）</p>
+</li>
+<li>
+<p>-l : 在输出显示用户ID而不是用户名</p>
+</li>
+<li>
+<p>-h : 获得帮助</p>
+</li>
+<li>
+<p>-t : 仅获取进程ID</p>
+</li>
+<li>
+<p>-U : 获取UNIX套接口地址</p>
+</li>
+<li>
+<p>-F : 格式化输出结果，用于其它命令。可以通过多种方式格式化，如-F pcfn（用于进程id、命令名、文件描述符、文件名，并以空终止）</p>
+</li>
+<li>
+<p>-i：显示所有连接（<strong>语法：lsof -i[46] [protocol][@hostname|hostaddr][:service|port]</strong>）</p>
+<p>例如：</p>
+<ul>
+<li>lsof  -i 6：获取IPV6流量</li>
+<li>lsof -i :3306：查看3306端口使用状态</li>
+</ul>
+</li>
+</ul>
+<h2 id="参考连接">参考连接</h2>
+<p><a href="https://www.jianshu.com/p/a3aa6b01b2e1">https://www.jianshu.com/p/a3aa6b01b2e1</a></p>
+<h1 id="rpm包管理">RPM包管理</h1>
+<p>rpm -ql |grep 查询内容</p>
+<p>常用选项</p>
+<ul>
+<li>-i ：安装</li>
+<li>-v：提示</li>
+<li>-h：进度条</li>
+<li>-e：卸载RPM包（加上&ndash;nodeps强制删除）</li>
+<li>-q：查询包</li>
+</ul>
+<p>rpm -ivh RPM包全路径名称</p>
+<p>rpm -ivh –relocate = 路径</p>
+<h1 id="yum">Yum</h1>
+<p><strong>Yum</strong>可以自动处理RPM依赖关系</p>
+<p>基本指令</p>
+<ul>
+<li>list：查看</li>
+<li>install：安装</li>
+</ul>
+<h1 id="shell脚本">Shell脚本</h1>
+<h2 id="起步">起步</h2>
+<ul>
+<li>新建一个shell脚本，一般以.sh结尾</li>
+<li>写入内容，保存</li>
+<li>授予x权限</li>
+<li>执行</li>
+</ul>
+<h2 id="shell变量">shell变量</h2>
+<h3 id="介绍">介绍</h3>
+<p>shell变量分为系统变量和用户自定义变量</p>
+<ul>
+<li>系统变量：$HOME,$PWD,$SHELL,$USER,&quot;$PATH&quot;等等，比如echo $HOME</li>
+<li>显示当前shell中所有的变量：set</li>
+</ul>
+<h3 id="定义变量">定义变量</h3>
+<h4 id="基本语法">基本语法</h4>
+<ul>
+<li>定义变量：变量=值</li>
+<li>撤销变量：unset 变量</li>
+<li>声明静态变量：readonly 变量，注意：不能unset</li>
+</ul>
+<h4 id="定义规则">定义规则</h4>
+<ul>
+<li>变量名称可以由字母，数字和下划线组成，但是不能以数字开头</li>
+<li>等号两侧不能有空格</li>
+<li>变量名称习惯性是大写</li>
+</ul>
+<h4 id="将命令的返回值赋值给变量">将命令的返回值赋值给变量</h4>
+<ul>
+<li>A=$(ls -la)</li>
+<li>A=`ls -la` 使用反引号（数字键左边的键）</li>
+</ul>
+<h4 id="设置环境变量">设置环境变量</h4>
+<ul>
+<li>export 变量名=变量值（功能描述：将shell变量输出为环境变量）</li>
+<li>source 配置文件 （让修改后的配置文件立即生效）</li>
+<li>echo $变量名 （查询环境变量的值）</li>
+</ul>
+<h4 id="设置位置参数变量">设置位置参数变量</h4>
+<p>例如 ./myshell.sh 100 200 我们可以在myshell脚本中获取到100,200的参数信息</p>
+<p>基本语法：</p>
+<ul>
+<li>$n：n为数字，$0表示命令本身，$(1-9)代表第一到第九个参数，十以上的参数需要用大括号 ${10}</li>
+<li>$*：这个变量命令表示所有参数，将所有参数看成一个整体</li>
+<li>$@：也是表示所有参数，但把参数区分开来</li>
+<li>$#：表示所有参数的个数</li>
+</ul>
+<h4 id="预定义变量">预定义变量</h4>
+<ul>
+<li>$$：当前进程的PID</li>
+<li>$!：后台运行的最后一个进程的进程号</li>
+<li>$?：最后一次执行命令的状态，如果成功为0，如果不成功为开发者指定的一个值</li>
+<li>以后台方式运行：在命令最后使用一个&amp;</li>
+</ul>
+<h4 id="运算符">运算符</h4>
+<p>基本语法：</p>
+<ul>
+<li>
+<p>$((运算式))或$[运算式]</p>
+</li>
+<li>
+<p>expr m + n（注意运算符间有空格）</p>
+</li>
+<li>
+<p>expr m - n</p>
+</li>
+<li>
+<p>expr \*，/，%：乘除取余</p>
+<p><strong>expr需要用反引号</strong></p>
+</li>
+</ul>
+<h4 id="条件判断">条件判断</h4>
+<ul>
+<li>
+<p>基本语法</p>
+<p>[ condition ] （注意condition前后要有空格）</p>
+<p>非空返回true ，可以使用$?验证（0true，&gt;1false）</p>
+</li>
+<li>
+<p>常用判断</p>
+<ul>
+<li>两个整数比较
+<ul>
+<li>=字符串比较</li>
+<li>-lt小于</li>
+<li>-le小于等于</li>
+<li>-eq等于</li>
+<li>-gt大于</li>
+<li>-ge大于等于</li>
+<li>-ne不等于</li>
+</ul>
+</li>
+<li>按照文件读写权限判断
+<ul>
+<li>-r有读</li>
+<li>-w有写</li>
+<li>-x有执行</li>
+</ul>
+</li>
+<li>按照文件类型判断
+<ul>
+<li>-f文件存在且是一个常规文件</li>
+<li>-e文件存在</li>
+<li>-d文件存在且是一个目录</li>
+</ul>
+</li>
+</ul>
+<p>示例：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="cp">#!/bin/bash
+</span><span class="cp"></span><span class="k">if</span> <span class="o">[</span> <span class="nv">$1</span> -ge <span class="m">60</span> <span class="o">]</span>
+<span class="k">then</span>
+        <span class="nb">echo</span> <span class="s2">&#34;及格啦&#34;</span>
+<span class="k">elif</span> <span class="o">[</span> <span class="nv">$1</span> -ge <span class="m">40</span> <span class="o">]</span>
+<span class="k">then</span>    <span class="nb">echo</span> <span class="s2">&#34;你废物&#34;</span>
+
+<span class="k">fi</span>
+
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<h4 id="case语句">case语句</h4>
+<p>基本语法示例：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="cp">#!/bin/bash
+</span><span class="cp"></span><span class="k">case</span> <span class="nv">$1</span> in
+<span class="s2">&#34;1&#34;</span><span class="o">)</span>
+<span class="nb">echo</span> <span class="s2">&#34;周一&#34;</span>
+<span class="p">;;</span>
+<span class="s2">&#34;2&#34;</span><span class="o">)</span>
+<span class="nb">echo</span> <span class="s2">&#34;周二&#34;</span><span class="p">;;</span>
+*<span class="o">)</span>
+<span class="nb">echo</span> <span class="s2">&#34;other&#34;</span><span class="p">;;</span>
+<span class="k">esac</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="for语句">for语句</h4>
+<ul>
+<li>
+<p>for 变量 in 值1 值2 值3&hellip;</p>
+<p>do</p>
+<p>​	程序</p>
+<p>done</p>
+<p>示例：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="cp">#!/bin/bash
+</span><span class="cp"></span><span class="c1"># 使用$*</span>
+<span class="k">for</span> i  in <span class="s2">&#34;</span><span class="nv">$*</span><span class="s2">&#34;</span>
+<span class="k">do</span>
+        <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$i</span><span class="s2">&#34;</span>
+<span class="k">done</span>
+
+<span class="c1">#使用$@</span>
+<span class="k">for</span> i in <span class="nv">$@</span>
+<span class="k">do</span>
+        <span class="nb">echo</span> <span class="s2">&#34;param=</span><span class="nv">$i</span><span class="s2">&#34;</span>
+<span class="k">done</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>for((初始值；循环控制条件；变量变化))</p>
+<p>do</p>
+<p>​	程序</p>
+<p>done</p>
+<p>示例：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="cp">#!/bin/bash
+</span><span class="cp"></span><span class="nv">SUM</span><span class="o">=</span><span class="m">0</span>
+<span class="k">for</span> <span class="o">((</span><span class="nv">i</span><span class="o">=</span>1<span class="p">;</span>i&lt;<span class="o">=</span>100<span class="p">;</span>i++<span class="o">))</span>
+<span class="k">do</span>
+        <span class="nv">SUM</span><span class="o">=</span>$<span class="o">[</span><span class="nv">$SUM</span> + <span class="nv">$i</span> <span class="o">]</span>
+<span class="k">done</span>
+<span class="nb">echo</span> <span class="nv">$SUM</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<h4 id="while循环">while循环</h4>
+<p>while [ condition ]</p>
+<p>do</p>
+<p>​	程序</p>
+<p>done</p>
+<p>示例：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="cp">#!/bin/bash
+</span><span class="cp"></span><span class="nv">RESULT</span><span class="o">=</span><span class="m">0</span>
+<span class="nv">I</span><span class="o">=</span><span class="m">0</span>
+<span class="k">while</span> <span class="o">[</span> <span class="nv">$I</span> -le <span class="nv">$1</span> <span class="o">]</span>
+<span class="k">do</span>
+        <span class="nv">RESULT</span><span class="o">=</span>$<span class="o">[</span> <span class="nv">$RESULT</span> + <span class="nv">$I</span> <span class="o">]</span>
+        <span class="nv">I</span><span class="o">=</span>$<span class="o">[</span> <span class="nv">$I</span> + <span class="m">1</span> <span class="o">]</span>
+<span class="k">done</span>
+<span class="nb">echo</span> <span class="nv">$RESULT</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="read读取控制台输入">read读取控制台输入</h4>
+<p>基本语法</p>
+<p><strong>read [选项] 参数</strong></p>
+<ul>
+<li>-p：指定读取时的提示符；</li>
+<li>-t：指定读取值时的等待时间</li>
+</ul>
+<p>示例：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="nb">read</span> -p <span class="s2">&#34;请输入一个数字&#34;</span> NUM
+<span class="nb">echo</span> <span class="nv">$NUM</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="函数">函数</h4>
+<ul>
+<li>
+<p>系统函数</p>
+<ul>
+<li>basename [pathname][suffix] (常用于获取文件名)</li>
+<li>dirname （常用于返回路径名称）</li>
+</ul>
+</li>
+<li>
+<p>自定义函数</p>
+<p>基本语法</p>
+<p>[ function ] functionname [()]{</p>
+<p>​	Action;</p>
+<p>​	[return int]</p>
+<p>}</p>
+<p>示例：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="cp">#!/bin/bash
+</span><span class="cp"></span><span class="c1"># 计算输入的2个数字和</span>
+<span class="nb">read</span> -p <span class="s2">&#34;请输入第一个数字&#34;</span> NUM1
+<span class="nb">read</span> -p <span class="s2">&#34;请输入第二个数字&#34;</span> NUM2
+
+<span class="k">function</span> getSum<span class="o">(){</span>
+        <span class="nv">SUM</span><span class="o">=</span>$<span class="o">[</span> <span class="nv">$NUM1</span> + <span class="nv">$NUM2</span> <span class="o">]</span>
+        <span class="nb">echo</span> <span class="s2">&#34;和是:</span><span class="nv">$SUM</span><span class="s2">&#34;</span>
+<span class="o">}</span>
+
+getSum <span class="nv">$NUM1</span> <span class="nv">$NUM2</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<h2 id="综合案例">综合案例</h2>
+<h3 id="需求">需求：</h3>
+<ul>
+<li>每天凌晨2点10分，备份日志文件a.log到/data/backup/log</li>
+<li>备份开始和备份结束有提示</li>
+<li>备份后的文件以时间命名为文件名，并打包成压缩包.tar.gz保存</li>
+<li>在备份的时候检查是否有10天前备份过的日志文件，有的话就将它删除</li>
+</ul>
+<h2 id="示例">示例：</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="cp">#!/bin/bash
+</span><span class="cp"></span><span class="c1"># 定时备份日志文件</span>
+<span class="c1"># 定义备份的路径</span>
+<span class="nv">BACKUP</span><span class="o">=</span>/data/backup/log
+<span class="c1"># 获取当前时间作为文件名</span>
+<span class="nv">DATETIME</span><span class="o">=</span><span class="sb">`</span>date +%Y_%m_%d_%H:%M:%S<span class="sb">`</span>
+
+<span class="nb">echo</span> <span class="s2">&#34;=====开始备份=====&#34;</span>
+<span class="nb">echo</span> <span class="s2">&#34;=====备份的目标路径为</span><span class="nv">$BACKUP</span><span class="s2">=====&#34;</span>
+<span class="nb">echo</span> <span class="s2">&#34;=====文件名</span><span class="nv">$DATETIME</span><span class="s2">.tar.gz=====&#34;</span>
+
+<span class="c1">#检查目标路径是否存在如果不存在就创建</span>
+<span class="o">[</span> ! -d <span class="nv">$BACKUP</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> mkdir -p <span class="nv">$BACKUP</span>
+<span class="nv">DESTINFLOG</span><span class="o">=</span>/root/a.log
+<span class="c1"># 检查目标文件是否存在</span>
+<span class="k">if</span> <span class="o">[</span> ! -f <span class="nv">$DESTINFLOG</span> <span class="o">]</span>
+<span class="k">then</span>
+        <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$DESTINFLOG文件不存在</span><span class="s2">！&#34;</span>
+        <span class="nb">exit</span>
+<span class="k">fi</span>
+		
+<span class="c1"># 开始备份</span>
+cp <span class="nv">$DESTINFLOG</span> <span class="nv">$BACKUP</span>/<span class="nv">$DATETIME</span>.log
+
+<span class="c1">#打包 (:会被识别为地址 需要--force-local)</span>
+<span class="nb">cd</span> <span class="nv">$BACKUP</span>
+tar -zcvf <span class="nv">$DATETIME</span>.tar.gz <span class="nv">$DATETIME</span>.log --force-local
+
+<span class="c1">#删除临时文件</span>
+rm -rf <span class="nv">$DATETIME</span>.log
+
+<span class="c1">#检查是否有10天前的文件,全部删除</span>
+find <span class="nv">$BACKUP</span> -mtime +10 -name <span class="s2">&#34;*.tar.gz&#34;</span> -exec rm -rf <span class="o">{}</span> <span class="se">\;</span>
+
+<span class="c1">#结束</span>
+<span class="nb">echo</span> <span class="s2">&#34;=====备份结束=====&#34;</span>
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="防火墙">防火墙</h1>
+<h2 id="查看防火墙情况">查看防火墙情况</h2>
+<p>firewall-cmd &ndash;list -all</p>
+<h2 id="增加tcp端口">增加TCP端口</h2>
+<p>firewall-cmd &ndash;add-port=80/tcp &ndash;permanent</p>
+<h2 id="重新加载防火墙">重新加载防火墙</h2>
+<p>firewall-cmd reload</p>
+<h2 id="常用命令-1">常用命令</h2>
+<p>firewall-cmd [选项]</p>
+<blockquote>
+<p>-h, &ndash;help	显示帮助信息；
+-V, &ndash;version	显示版本信息. （这个选项不能与其他选项组合）；
+-q, &ndash;quiet	不打印状态消息；
+–state	显示firewalld的状态；
+–reload	不中断服务的重新加载；
+–complete-reload	中断所有连接的重新加载；
+–runtime-to-permanent	将当前防火墙的规则永久保存；
+–check-config	检查配置正确性；
+–get-log-denied	获取记录被拒绝的日志；
+–set-log-denied=	设置记录被拒绝的日志，只能为 ‘all’,‘unicast’,‘broadcast’,‘multicast’,‘off’ 其中的一个；</p>
+</blockquote>
+<h2 id="配置firewalld">配置firewalld</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">firewall-cmd --version  # 查看版本
+firewall-cmd --help     # 查看帮助
+
+# 查看设置：
+firewall-cmd --state  # 显示状态
+firewall-cmd --get-active-zones  # 查看区域信息
+firewall-cmd --get-zone-of-interface=eth0  # 查看指定接口所属区域
+firewall-cmd --panic-on  # 拒绝所有包
+firewall-cmd --panic-off  # 取消拒绝状态
+firewall-cmd --query-panic  # 查看是否拒绝
+
+firewall-cmd --reload # 更新防火墙规则
+firewall-cmd --complete-reload
+# 两者的区别就是第一个无需断开连接，就是firewalld特性之一动态添加规则，第二个需要断开连接，类似重启服务
+
+
+# 将接口添加到区域，默认接口都在public
+firewall-cmd --zone=public --add-interface=eth0
+# 永久生效再加上 --permanent 然后reload防火墙
+
+# 设置默认接口区域，立即生效无需重启
+firewall-cmd --set-default-zone=public
+
+# 查看所有打开的端口：
+firewall-cmd --zone=dmz --list-ports
+
+# 加入一个端口到区域：
+firewall-cmd --zone=dmz --add-port=8080/tcp
+# 若要永久生效方法同上
+
+# 打开一个服务，类似于将端口可视化，服务需要在配置文件中添加，/etc/firewalld 目录下有services文件夹，这个不详细说了，详情参考文档
+firewall-cmd --zone=work --add-service=smtp
+
+# 移除服务
+firewall-cmd --zone=work --remove-service=smtp
+
+# 显示支持的区域列表
+firewall-cmd --get-zones
+
+# 设置为家庭区域
+firewall-cmd --set-default-zone=home
+
+# 查看当前区域
+firewall-cmd --get-active-zones
+
+# 设置当前区域的接口
+firewall-cmd --get-zone-of-interface=enp03s
+
+# 显示所有公共区域（public）
+firewall-cmd --zone=public --list-all
+
+# 临时修改网络接口（enp0s3）为内部区域（internal）
+firewall-cmd --zone=internal --change-interface=enp03s
+
+# 永久修改网络接口enp03s为内部区域（internal）
+firewall-cmd --permanent --zone=internal --change-interface=enp03s
+
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="服务管理-1">服务管理</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"># 显示服务列表  
+Amanda, ftp, Samba和tftp等最重要的服务已经被FirewallD提供相应的服务，可以使用如下命令查看：
+
+firewall-cmd --get-services
+
+# 允许ssh服务通过
+firewall-cmd --enable service=ssh
+
+# 禁止SSH服务通过
+firewall-cmd --disable service=ssh
+
+# 打开TCP的8080端口
+firewall-cmd --enable ports=8080/tcp
+
+# 临时允许Samba服务通过600秒
+firewall-cmd --enable service=samba --timeout=600
+
+# 显示当前服务
+firewall-cmd --list-services
+
+# 添加HTTP服务到内部区域（internal）
+firewall-cmd --permanent --zone=internal --add-service=http
+firewall-cmd --reload     # 在不改变状态的条件下重新加载防火墙
+
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="端口管理">端口管理</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"># 打开443/TCP端口
+firewall-cmd --add-port=443/tcp
+
+# 永久打开3690/TCP端口
+firewall-cmd --permanent --add-port=3690/tcp
+
+# 永久打开端口好像需要reload一下，临时打开好像不用，如果用了reload临时打开的端口就失效了
+# 其它服务也可能是这样的，这个没有测试
+firewall-cmd --reload
+
+# 查看防火墙，添加的端口也可以看到
+firewall-cmd --list-all
+
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="直接模式">直接模式</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"># FirewallD包括一种直接模式，使用它可以完成一些工作，例如打开TCP协议的9999端口
+firewall-cmd --direct -add-rule ipv4 filter INPUT 0 -p tcp --dport 9000 -j accept
+firewall-cmd --reload
+
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="自定义服务管理">自定义服务管理</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">（末尾带有 [P only] 的话表示该选项除了与（--permanent）之外，不能与其他选项一同使用！）
+--new-service=&lt;服务名&gt; 新建一个自定义服务 [P only]
+--new-service-from-file=&lt;文件名&gt; [--name=&lt;服务名&gt;]
+                      从文件中读取配置用以新建一个自定义服务 [P only]
+--delete-service=&lt;服务名&gt;
+                      删除一个已存在的服务 [P only]
+--load-service-defaults=&lt;服务名&gt;
+                      Load icmptype default settings [P only]
+--info-service=&lt;服务名&gt;
+                      显示该服务的相关信息
+--path-service=&lt;服务名&gt;
+                      显示该服务的文件的相关路径 [P only]
+--service=&lt;服务名&gt; --set-description=&lt;描述&gt;
+                      给该服务设置描述信息 [P only]
+--service=&lt;服务名&gt; --get-description
+                      显示该服务的描述信息 [P only]
+--service=&lt;服务名&gt; --set-short=&lt;描述&gt;
+                      给该服务设置一个简短的描述 [P only]
+--service=&lt;服务名&gt; --get-short
+                      显示该服务的简短描述 [P only]
+
+--service=&lt;服务名&gt; --add-port=&lt;端口号&gt;[-&lt;端口号&gt;]/&lt;protocol&gt;
+                      给该服务添加一个新的端口(端口段) [P only]
+
+--service=&lt;服务名&gt; --remove-port=&lt;端口号&gt;[-&lt;端口号&gt;]/&lt;protocol&gt;
+                      从该服务上移除一个端口(端口段) [P only]
+
+--service=&lt;服务名&gt; --query-port=&lt;端口号&gt;[-&lt;端口号&gt;]/&lt;protocol&gt;
+                      查询该服务是否添加了某个端口(端口段) [P only]
+
+--service=&lt;服务名&gt; --get-ports
+                      显示该服务添加的所有端口 [P only]
+
+--service=&lt;服务名&gt; --add-protocol=&lt;protocol&gt;
+                      为该服务添加一个协议 [P only]
+
+--service=&lt;服务名&gt; --remove-protocol=&lt;protocol&gt;
+                      从该服务上移除一个协议 [P only]
+
+--service=&lt;服务名&gt; --query-protocol=&lt;protocol&gt;
+                      查询该服务是否添加了某个协议 [P only]
+
+--service=&lt;服务名&gt; --get-protocols
+                      显示该服务添加的所有协议 [P only]
+
+--service=&lt;服务名&gt; --add-source-port=&lt;端口号&gt;[-&lt;端口号&gt;]/&lt;protocol&gt;
+                      添加新的源端口(端口段)到该服务 [P only]
+
+--service=&lt;服务名&gt; --remove-source-port=&lt;端口号&gt;[-&lt;端口号&gt;]/&lt;protocol&gt;
+                      从该服务中删除源端口(端口段) [P only]
+
+--service=&lt;服务名&gt; --query-source-port=&lt;端口号&gt;[-&lt;端口号&gt;]/&lt;protocol&gt;
+                      查询该服务是否添加了某个源端口(端口段) [P only]
+
+--service=&lt;服务名&gt; --get-source-ports
+                      显示该服务所有源端口 [P only]
+
+--service=&lt;服务名&gt; --add-module=&lt;module&gt;
+                      为该服务添加一个模块 [P only]
+--service=&lt;服务名&gt; --remove-module=&lt;module&gt;
+                      为该服务移除一个模块 [P only]
+--service=&lt;服务名&gt; --query-module=&lt;module&gt;
+                      查询该服务是否添加了某个模块 [P only]
+--service=&lt;服务名&gt; --get-modules
+                      显示该服务添加的所有模块 [P only]
+--service=&lt;服务名&gt; --set-destination=&lt;ipv&gt;:&lt;address&gt;[/]
+                      Set destination for ipv to address in service [P only]
+--service=&lt;服务名&gt; --remove-destination=&lt;ipv&gt;
+                      Disable destination for ipv i service [P only]
+--service=&lt;服务名&gt; --query-destination=&lt;ipv&gt;:&lt;address&gt;[/]
+                      Return whether destination ipv is set for service [P only]
+--service=&lt;服务名&gt; --get-destinations
+                      List destinations in service [P only]
+
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="控制端口服务">控制端口/服务</h2>
+<blockquote>
+<p>可以通过两种方式控制端口的开放，一种是指定端口号另一种是指定服务名。虽然开放 http 服务就是开放了 80 端口，但是还是不能通过端口号来关闭，也就是说通过指定服务名开放的就要通过指定服务名关闭；通过指定端口号开放的就要通过指定端口号关闭。还有一个要注意的就是指定端口的时候一定要指定是什么协议，tcp 还是 udp。知道这个之后以后就不用每次先关防火墙了，可以让防火墙真正的生效。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">firewall-cmd --add-service=mysql        # 开放mysql端口
+firewall-cmd --remove-service=http      # 阻止http端口
+firewall-cmd --list-services            # 查看开放的服务
+firewall-cmd --add-port=3306/tcp        # 开放通过tcp访问3306
+firewall-cmd --remove-port=80tcp        # 阻止通过tcp访问3306
+firewall-cmd --add-port=233/udp         # 开放通过udp访问233
+firewall-cmd --list-ports               # 查看开放的端口
+
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="伪装ip">伪装IP</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">firewall-cmd --query-masquerade # 检查是否允许伪装IP
+firewall-cmd --add-masquerade   # 允许防火墙伪装IP
+firewall-cmd --remove-masquerade# 禁止防火墙伪装IP
+
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="端口转发">端口转发</h2>
+<blockquote>
+<p>端口转发可以将指定地址访问指定的端口时，将流量转发至指定地址的指定端口。转发的目的如果不指定 ip 的话就默认为本机，如果指定了 ip 却没指定端口，则默认使用来源端口。 如果配置好端口转发之后不能用，可以检查下面两个问题：</p>
+<p>比如我将 80 端口转发至 8080 端口，首先检查本地的 80 端口和目标的 8080 端口是否开放监听了
+其次检查是否允许伪装 IP，没允许的话要开启伪装 IP</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">firewall-cmd --add-forward-port=port=80:proto=tcp:toport=8080   # 将80端口的流量转发至8080
+firewall-cmd --add-forward-port=port=80:proto=tcp:toaddr=192.168.0.1 # 将80端口的流量转发至192.168.0.1
+firewall-cmd --add-forward-port=port=80:proto=tcp:toaddr=192.168.0.1:toport=8080 # 将80端口的流量转发至192.168.0.1的8080端口
+
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<ul>
+<li>1)当我们想把某个端口隐藏起来的时候，就可以在防火墙上阻止那个端口访问，然后再开一个不规则的端口，之后配置防火
+墙的端口转发，将流量转发过去。</li>
+<li>2)端口转发还可以做流量分发，一个防火墙拖着好多台运行着不同服务的机器，然后用防火墙将不同端口的流量转发至不同机器。</li>
+</ul>
+</blockquote>
+<h1 id="开机启动服务">开机启动服务</h1>
+<p>在linux下，有一个目录专门用以管理所有的服务的启动脚本的，即/etc/rc.d/init.d下。</p>
+<p>这时候，我们来试一下使用service的命令进行启动，可以看到，这时候就可以通过service的方式进行启动了，真实运维中也是如此，我们只需要把服务的启动脚本文件放在此处，就可以以service的方式启动了</p>
+<p>Reids示例：</p>
+<p>每个服务都会配置一个init的脚本。例如redis在units下的，redis_init_script，就可以放在/etc/rc.d/init.d中</p>
+<p>通过chkconfig 服务名 on就可以开机启动</p>
+<p><strong># chkconfig:  2345 15 95</strong> 其中2345是默认启动级别，级别有0-6共7个级别。15是启动优先级，95是停止优先级，优先级范围是0－100，数字越大，优先级越低。</p>
+<h1 id="jmap">Jmap</h1>
+<p>jmap -dump:format=b,file=文件名 [pid]</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">jmap -dump:format=b,file=/usr/local/base/02.hprof 12942
+</code></pre></td></tr></table>
+</div>
+</div><p>-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/usr/local/base</p>
+<h1 id="memoryanalyzer">MemoryAnalyzer</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">-vmargs -Xmx5g
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="信息查看">信息查看</h1>
+<h1 id="机器内核">机器内核</h1>
+<p>/proc/version</p>
+<p>uname -a</p>
+<h2 id="查看核心数">查看核心数</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-SHELL" data-lang="SHELL"><span class="c1"># 总核数 = 物理CPU个数 X 每颗物理CPU的核数 </span>
+<span class="c1"># 总逻辑CPU数 = 物理CPU个数 X 每颗物理CPU的核数 X 超线程数</span>
+
+<span class="c1"># 查看物理CPU个数</span>
+cat /proc/cpuinfo<span class="p">|</span> grep <span class="s2">&#34;physical id&#34;</span><span class="p">|</span> sort<span class="p">|</span> uniq<span class="p">|</span> wc -l
+
+<span class="c1"># 查看每个物理CPU中core的个数(即核数)</span>
+cat /proc/cpuinfo<span class="p">|</span> grep <span class="s2">&#34;cpu cores&#34;</span><span class="p">|</span> uniq
+
+<span class="c1"># 查看逻辑CPU的个数</span>
+cat /proc/cpuinfo<span class="p">|</span> grep <span class="s2">&#34;processor&#34;</span><span class="p">|</span> wc -l
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="ssh登陆">ssh登陆</h1>
+<p>生成公私钥</p>
+<p>ssh-keygen -t rsa -C &ldquo;email&rdquo;</p>
+<p>上传公钥到目标服务器</p>
+<p>scp -p ~/.ssh/id_rsa.pub root@&lt;remote_ip&gt;:/root/.ssh/authorized_keys</p>
+<h2 id="scp上传下载">scp上传下载</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">-o <span class="nv">PubkeyAuthentication</span><span class="o">=</span>no
+<span class="c1"># 不实用pk下载</span>
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="光标快捷键">光标快捷键</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">光标操作快捷键，光标快捷键
+
+这些光标操作快捷键适用mac/linux终端和chrome控制台，这些快捷键都是emacs的快捷键，
+
+常用的快捷键：
+
+Ctrl + d        删除一个字符，相当于通常的Delete键<span class="o">(</span>命令行若无所有字符，则相当于exit；处理多行标准输入时也表示eof<span class="o">)</span>
+
+Ctrl + h        退格删除一个字符，相当于通常的Backspace键
+
+Ctrl + u        删除光标之前到行首的字符
+
+Ctrl + k        删除光标之前到行尾的字符
+
+Ctrl + c        取消当前行输入的命令，相当于Ctrl + Break
+
+Ctrl + a        光标移动到行首<span class="o">(</span>Ahead of line<span class="o">)</span>，相当于通常的Home键
+
+Ctrl + e        光标移动到行尾<span class="o">(</span>End of line<span class="o">)</span>
+
+Ctrl + f        光标向前<span class="o">(</span>Forward<span class="o">)</span>移动一个字符位置
+
+Ctrl + b        光标往回<span class="o">(</span>Backward<span class="o">)</span>移动一个字符位置
+
+Ctrl + l        清屏，相当于执行clear命令
+
+Ctrl + p        调出命令历史中的前一条<span class="o">(</span>Previous<span class="o">)</span>命令，相当于通常的上箭头
+
+Ctrl + n        调出命令历史中的下一条<span class="o">(</span>Next<span class="o">)</span>命令，相当于通常的上箭头
+
+Ctrl + r        显示：号提示，根据用户输入查找相关历史命令<span class="o">(</span>reverse-i-search<span class="o">)</span>
+
+次常用快捷键：
+
+Alt + f         光标向前<span class="o">(</span>Forward<span class="o">)</span>移动到下一个单词
+
+Alt + b         光标往回<span class="o">(</span>Backward<span class="o">)</span>移动到前一个单词
+
+Ctrl + w        删除从光标位置前到当前所处单词<span class="o">(</span>Word<span class="o">)</span>的开头
+
+Alt + d         删除从光标位置到当前所处单词的末尾
+
+Ctrl + y        粘贴最后一次被删除的单词
+
+
+</code></pre></td></tr></table>
+</div>
+</div><table>
+<thead>
+<tr>
+<th style="text-align:left">COMMAND</th>
+<th style="text-align:left">ACTION</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>Shortcuts</strong></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">Tab</td>
+<td style="text-align:left">Auto-complete file and folder names</td>
+</tr>
+<tr>
+<td style="text-align:left">Ctrl + A</td>
+<td style="text-align:left">Go to the beginning of the line you&rsquo;re currently typing on</td>
+</tr>
+<tr>
+<td style="text-align:left">Ctrl + E</td>
+<td style="text-align:left">Go to the end of the line you&rsquo;re currently typing on</td>
+</tr>
+<tr>
+<td style="text-align:left">Ctrl + U</td>
+<td style="text-align:left">Clear the line before the cursor</td>
+</tr>
+<tr>
+<td style="text-align:left">Ctrl + K</td>
+<td style="text-align:left">Clear the line after the cursor</td>
+</tr>
+<tr>
+<td style="text-align:left">Ctrl + W</td>
+<td style="text-align:left">Delete the word before the cursor</td>
+</tr>
+<tr>
+<td style="text-align:left">Ctrl + T</td>
+<td style="text-align:left">Swap the last two characters before the cursor</td>
+</tr>
+<tr>
+<td style="text-align:left">Esc + T</td>
+<td style="text-align:left">Swap the last two words before the cursor</td>
+</tr>
+<tr>
+<td style="text-align:left">Ctrl + L</td>
+<td style="text-align:left">Clear the screen</td>
+</tr>
+<tr>
+<td style="text-align:left">Ctrl + C</td>
+<td style="text-align:left">Kill whatever you&rsquo;re running</td>
+</tr>
+<tr>
+<td style="text-align:left">Ctrl + D</td>
+<td style="text-align:left">Exit the current shell</td>
+</tr>
+<tr>
+<td style="text-align:left">Option + →</td>
+<td style="text-align:left">Move cursor one word forward</td>
+</tr>
+<tr>
+<td style="text-align:left">Option + ←</td>
+<td style="text-align:left">Move cursor one word backward</td>
+</tr>
+<tr>
+<td style="text-align:left">Ctrl + F</td>
+<td style="text-align:left">Move cursor one character forward</td>
+</tr>
+<tr>
+<td style="text-align:left">Ctrl + B</td>
+<td style="text-align:left">Move cursor one character backward</td>
+</tr>
+<tr>
+<td style="text-align:left">Ctrl + Y</td>
+<td style="text-align:left">Paste whatever was cut by the last command</td>
+</tr>
+<tr>
+<td style="text-align:left">Ctrl + Z</td>
+<td style="text-align:left">Puts whatever you&rsquo;re running into a suspended background process</td>
+</tr>
+<tr>
+<td style="text-align:left">Ctrl + _</td>
+<td style="text-align:left">Undo the last command</td>
+</tr>
+<tr>
+<td style="text-align:left">Option + Shift + Cmd + C</td>
+<td style="text-align:left">Copy plain text</td>
+</tr>
+<tr>
+<td style="text-align:left">Shift + Cmd + V</td>
+<td style="text-align:left">Paste the selection</td>
+</tr>
+<tr>
+<td style="text-align:left">exit</td>
+<td style="text-align:left">End a shell session</td>
+</tr>
+</tbody>
+</table>
+<h1 id="查看cpu架构">查看cpu架构</h1>
+<p>arch</p>
+<h2 id="设置网卡静态ip">设置网卡静态ip</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">BOOTPROTO=static
+
+IPADDR=128.83.155.1
+NETMASK=255.255.255.0
+GATEWAY=128.83.155.250
+DNS1=114.114.114.114
+
+
+service network restart
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="rpm和yum">rpm和yum</h2>
+<p><a href="https://www.cnblogs.com/LiuChunfu/p/8">https://www.cnblogs.com/LiuChunfu/p/8</a> 052890.html</p>
+<h2 id="aarch64-x86_64-arm64-amd64">aarch64 x86_64 arm64 amd64</h2>
+<p><a href="https://www.jianshu.com/p/2753c45af9bf">https://www.jianshu.com/p/2753c45af9bf</a></p>
+<p>aarch64==arm64 是arm架构的</p>
+<p>x86_64=amd64 是x86架构的</p>
+<h1 id="man详解">man详解</h1>
+<p><a href="https://www.geek-share.com/detail/2728370984.html">https://www.geek-share.com/detail/2728370984.html</a></p>
+<h1 id="设置hostname">设置hostname</h1>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">sh</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2020-01-31
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/linux/">linux</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">数据结构</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:sunhao1256@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://twitter.com/Frank12990735" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://github.com/sunhao1256" class="iconfont icon-github" title="github"></a>
+  <a href="http://luluhome.site/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>sh</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,40 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>mac on Hao Sun</title>
-    <link>https://sunhao1256.github.io/tags/mac/</link>
-    <description>Recent content in mac on Hao Sun</description>
-    <image>
-      <url>https://sunhao1256.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
-      <link>https://sunhao1256.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
-    </image>
+    <title>mac on Luluhome - a blog for sh , &#39;lulu&#39; is my cat</title>
+    <link>http://luluhome.site/tags/mac/</link>
+    <description>Recent content in mac on Luluhome - a blog for sh , &#39;lulu&#39; is my cat</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Mon, 20 Jun 2022 16:57:01 +0800</lastBuildDate><atom:link href="https://sunhao1256.github.io/tags/mac/index.xml" rel="self" type="application/rss+xml" />
+    <language>en</language>
+    <lastBuildDate>Mon, 20 Jun 2022 16:57:01 +0800</lastBuildDate><atom:link href="http://luluhome.site/tags/mac/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>mac使用</title>
-      <link>https://sunhao1256.github.io/posts/mac%E4%BD%BF%E7%94%A8/</link>
+      <link>http://luluhome.site/post/mac%E4%BD%BF%E7%94%A8/</link>
       <pubDate>Mon, 20 Jun 2022 16:57:01 +0800</pubDate>
       
-      <guid>https://sunhao1256.github.io/posts/mac%E4%BD%BF%E7%94%A8/</guid>
-      <description>快捷键   Finder绝对路径跳转
-command+shift+G
-  Finder绝对路径复制
-command+option+C
-  表情
-control+cmmand+space
-  录屏
-Shift-Command-5
-  截图
-command shift 4局部，3全屏
-  只显示桌面
-command f3
-  finder
-option+command+空格
-  space+command
-打开聚焦搜索，按住command再点击结果，是进入文件夹
-   环境变量 加载顺序
-/etc/profile /etc/paths ~/.zprofile ~/.zshrc /etc/profile和/etc/paths是系统级别的，系统启动就会加载，zprofile是用户级别的 ~/.zshrc没有上述规则，它是zsh shell打开的时候载入的。
-# System-wide .profile for sh(1) if [ -x /usr/libexec/path_helper ]; then eval `/usr/libexec/path_helper -s` fi if [ &amp;#34;${BASH-no}&amp;#34; != &amp;#34;no&amp;#34; ]; then [ -r /etc/bashrc ] &amp;amp;&amp;amp; .</description>
+      <guid>http://luluhome.site/post/mac%E4%BD%BF%E7%94%A8/</guid>
+      <description>快捷键 Finder绝对路径跳转 command+shift+G Finder绝对路径复制 command+option+C 表情 control+cmmand+space 录屏 Shift-Command-5 截图 command shift 4局部，3全屏 只显示桌面 command f3 finder option+command+空</description>
     </item>
     
   </channel>
