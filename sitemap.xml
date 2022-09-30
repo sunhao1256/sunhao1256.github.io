@@ -9,13 +9,6 @@
   </url>
   
   <url>
-    <loc>http://luluhome.site/tags/enligsh-learn/</loc>
-    <lastmod>2022-09-20T13:56:19+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>http://luluhome.site/</loc>
     <lastmod>2022-09-20T13:56:19+08:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -38,6 +31,13 @@
   
   <url>
     <loc>http://luluhome.site/tags/</loc>
+    <lastmod>2022-09-20T13:56:19+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://luluhome.site/tags/%E5%AD%A6%E5%A4%96%E8%AF%AD/</loc>
     <lastmod>2022-09-20T13:56:19+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>

@@ -49,7 +49,7 @@
 <meta itemprop="name" content="JavaCollections">
 <meta itemprop="description" content="ArrayList ArrayList实现了List，RandomAccess，Cloneable，java.io.Serializable接口 ArrayLi"><meta itemprop="datePublished" content="2021-09-26T21:50:07+08:00" />
 <meta itemprop="dateModified" content="2021-09-26T21:50:07+08:00" />
-<meta itemprop="wordCount" content="18497">
+<meta itemprop="wordCount" content="19346">
 <meta itemprop="keywords" content="java基础," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="JavaCollections"/>
 <meta name="twitter:description" content="ArrayList ArrayList实现了List，RandomAccess，Cloneable，java.io.Serializable接口 ArrayLi"/>
@@ -209,8 +209,11 @@
         <li><a href="#put方法-2">Put方法</a></li>
         <li><a href="#插入后平衡">插入后平衡</a></li>
         <li><a href="#二叉树的遍历">二叉树的遍历</a></li>
+        <li><a href="#遍历方法">遍历方法</a></li>
+        <li><a href="#总结-4">总结</a></li>
       </ul>
     </li>
+    <li><a href="#hashmaplinkedhashmaptreemap的使用场景">HashMap，LinkedHashMap，TreeMap的使用场景</a></li>
   </ul>
 </nav>
   </div>
@@ -3566,11 +3569,130 @@
 
 </code></pre></td></tr></table>
 </div>
-</div><ul>
-<li>
-<p>遍历方式不优雅</p>
-<p>我们使用的递归，如果元素很多的话，会导致递归调很多的方法，栈太多，最后导致内存溢出</p>
-</li>
+</div><h2 id="遍历方法">遍历方法</h2>
+<p>遍历方式不优雅，我们使用的递归，如果元素很多的话，会导致递归调很多的方法，栈太多，最后导致内存溢出，而默认的方法有优化</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">forEach</span><span class="o">(</span><span class="n">BiConsumer</span><span class="o">&lt;?</span> <span class="kd">super</span> <span class="n">K</span><span class="o">,</span> <span class="o">?</span> <span class="kd">super</span> <span class="n">V</span><span class="o">&gt;</span> <span class="n">action</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">Objects</span><span class="o">.</span><span class="na">requireNonNull</span><span class="o">(</span><span class="n">action</span><span class="o">);</span>
+    <span class="c1">// 遍历前的修改次数
+</span><span class="c1"></span>    <span class="kt">int</span> <span class="n">expectedModCount</span> <span class="o">=</span> <span class="n">modCount</span><span class="o">;</span>
+    <span class="c1">// 执行遍历，先获取第一个元素的位置，再循环遍历后继节点
+</span><span class="c1"></span>    <span class="k">for</span> <span class="o">(</span><span class="n">Entry</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span> <span class="n">V</span><span class="o">&gt;</span> <span class="n">e</span> <span class="o">=</span> <span class="n">getFirstEntry</span><span class="o">();</span> <span class="n">e</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">;</span> <span class="n">e</span> <span class="o">=</span> <span class="n">successor</span><span class="o">(</span><span class="n">e</span><span class="o">))</span> <span class="o">{</span>
+        <span class="c1">// 执行动作
+</span><span class="c1"></span>        <span class="n">action</span><span class="o">.</span><span class="na">accept</span><span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="na">key</span><span class="o">,</span> <span class="n">e</span><span class="o">.</span><span class="na">value</span><span class="o">);</span>
+
+        <span class="c1">// 如果发现修改次数变了，则抛出异常
+</span><span class="c1"></span>        <span class="k">if</span> <span class="o">(</span><span class="n">expectedModCount</span> <span class="o">!=</span> <span class="n">modCount</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="n">ConcurrentModificationException</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+
+    <span class="kd">final</span> <span class="n">Entry</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="nf">getFirstEntry</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">Entry</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">p</span> <span class="o">=</span> <span class="n">root</span><span class="o">;</span>
+        <span class="c1">// 从根节点开始找最左边的节点，即最小的元素
+</span><span class="c1"></span>        <span class="k">if</span> <span class="o">(</span><span class="n">p</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span>
+            <span class="k">while</span> <span class="o">(</span><span class="n">p</span><span class="o">.</span><span class="na">left</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span>
+                <span class="n">p</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="na">left</span><span class="o">;</span>
+        <span class="k">return</span> <span class="n">p</span><span class="o">;</span>
+    <span class="o">}</span>
+
+
+<span class="kd">static</span> <span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">TreeMap</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="nf">successor</span><span class="o">(</span><span class="n">Entry</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">t</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">t</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span>
+        <span class="c1">// 如果当前节点为空，返回空
+</span><span class="c1"></span>        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">t</span><span class="o">.</span><span class="na">right</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">// 如果当前节点有右子树，取右子树中最小的节点
+</span><span class="c1"></span>        <span class="n">Entry</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">p</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="na">right</span><span class="o">;</span>
+        <span class="k">while</span> <span class="o">(</span><span class="n">p</span><span class="o">.</span><span class="na">left</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="na">left</span><span class="o">;</span>
+        <span class="k">return</span> <span class="n">p</span><span class="o">;</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+        <span class="c1">// 如果当前节点没有右子树
+</span><span class="c1"></span>        <span class="c1">// 如果当前节点是父节点的左子节点，直接返回父节点
+</span><span class="c1"></span>        <span class="c1">// 如果当前节点是父节点的右子节点，一直往上找，直到找到一个祖先节点是其父节点的左子节点为止，返回这个祖先节点的父节点
+</span><span class="c1"></span>        <span class="n">Entry</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">p</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="na">parent</span><span class="o">;</span>
+        <span class="n">Entry</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">ch</span> <span class="o">=</span> <span class="n">t</span><span class="o">;</span>
+        <span class="k">while</span> <span class="o">(</span><span class="n">p</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">ch</span> <span class="o">==</span> <span class="n">p</span><span class="o">.</span><span class="na">right</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">ch</span> <span class="o">=</span> <span class="n">p</span><span class="o">;</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="na">parent</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">p</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="总结-4">总结</h2>
+<p>（1）TreeMap的存储结构只有一颗红黑树；</p>
+<p>（2）TreeMap中的元素是有序的，按key的顺序排列；</p>
+<p>（3）TreeMap比HashMap要慢一些，因为HashMap前面还做了一层桶，寻找元素要快很多；</p>
+<p>（4）TreeMap没有扩容的概念；</p>
+<p>（5）TreeMap的遍历不是采用传统的递归式遍历；</p>
+<p>（6）TreeMap可以按范围查找元素，查找最近的元素；</p>
+<h1 id="hashmaplinkedhashmaptreemap的使用场景">HashMap，LinkedHashMap，TreeMap的使用场景</h1>
+<ul>
+<li>HashMap，在不考虑冲突的情况下，CRUD的时间复杂度近乎O(1)。适合只进行CRUD的场景</li>
+<li>如果需要保证插入的顺序，以及遍历的顺序，则可以使用LinkedHashMap。如果通过compare查询的，最坏需要O(n)</li>
+<li>如果需要查询很快，则使用二叉树，二叉树里使用红黑树能解决普通二叉树退化为链表和平衡二叉树在频繁插入删除下的频繁平衡问题，时间复杂度均维持在O(logN)，那么就可以使用TreeMap，插入和删除后，维持原来的排序，LinkedHashMap，需要O(n)。</li>
 </ul>
 
     </div>
