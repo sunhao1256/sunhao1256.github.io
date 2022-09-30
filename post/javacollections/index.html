@@ -43,13 +43,13 @@
 <meta property="og:description" content="ArrayList ArrayList实现了List，RandomAccess，Cloneable，java.io.Serializable接口 ArrayLi" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="http://luluhome.site/post/javacollections/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2022-09-26T21:50:07+08:00" />
-<meta property="article:modified_time" content="2022-09-26T21:50:07+08:00" />
+<meta property="article:published_time" content="2021-09-26T21:50:07+08:00" />
+<meta property="article:modified_time" content="2021-09-26T21:50:07+08:00" />
 
 <meta itemprop="name" content="JavaCollections">
-<meta itemprop="description" content="ArrayList ArrayList实现了List，RandomAccess，Cloneable，java.io.Serializable接口 ArrayLi"><meta itemprop="datePublished" content="2022-09-26T21:50:07+08:00" />
-<meta itemprop="dateModified" content="2022-09-26T21:50:07+08:00" />
-<meta itemprop="wordCount" content="17140">
+<meta itemprop="description" content="ArrayList ArrayList实现了List，RandomAccess，Cloneable，java.io.Serializable接口 ArrayLi"><meta itemprop="datePublished" content="2021-09-26T21:50:07+08:00" />
+<meta itemprop="dateModified" content="2021-09-26T21:50:07+08:00" />
+<meta itemprop="wordCount" content="18449">
 <meta itemprop="keywords" content="java基础," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="JavaCollections"/>
 <meta name="twitter:description" content="ArrayList ArrayList实现了List，RandomAccess，Cloneable，java.io.Serializable接口 ArrayLi"/>
@@ -132,7 +132,7 @@
       <h1 class="post-title">JavaCollections</h1>
 
       <div class="post-meta">
-        <span class="post-time"> 2022-09-26 </span>
+        <span class="post-time"> 2021-09-26 </span>
         
         
       </div>
@@ -207,6 +207,8 @@
         <li><a href="#左旋">左旋</a></li>
         <li><a href="#右旋">右旋</a></li>
         <li><a href="#put方法-2">Put方法</a></li>
+        <li><a href="#插入后平衡">插入后平衡</a></li>
+        <li><a href="#二叉树的遍历">二叉树的遍历</a></li>
       </ul>
     </li>
   </ul>
@@ -3158,6 +3160,412 @@
 
 </code></pre></td></tr></table>
 </div>
+</div><h2 id="插入后平衡">插入后平衡</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span><span class="lnt">78
+</span><span class="lnt">79
+</span><span class="lnt">80
+</span><span class="lnt">81
+</span><span class="lnt">82
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="cm">/**
+</span><span class="cm"> * 插入再平衡
+</span><span class="cm"> *（1）每个节点或者是黑色，或者是红色。
+</span><span class="cm"> *（2）根节点是黑色。
+</span><span class="cm"> *（3）每个叶子节点（NIL）是黑色。（注意：这里叶子节点，是指为空(NIL或NULL)的叶子节点！）
+</span><span class="cm"> *（4）如果一个节点是红色的，则它的子节点必须是黑色的。
+</span><span class="cm"> *（5）从一个节点到该节点的子孙节点的所有路径上包含相同数目的黑节点。
+</span><span class="cm"> */</span>
+<span class="kd">private</span> <span class="kt">void</span> <span class="nf">fixAfterInsertion</span><span class="o">(</span><span class="n">Entry</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">x</span><span class="o">)</span> <span class="o">{</span>
+    <span class="c1">// 插入的节点为红节点，x为当前节点
+</span><span class="c1"></span>    <span class="n">x</span><span class="o">.</span><span class="na">color</span> <span class="o">=</span> <span class="n">RED</span><span class="o">;</span>
+
+    <span class="c1">// 只有当插入节点不是根节点且其父节点为红色时才需要平衡（违背了特性4）
+</span><span class="c1"></span>    <span class="k">while</span> <span class="o">(</span><span class="n">x</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">x</span> <span class="o">!=</span> <span class="n">root</span> <span class="o">&amp;&amp;</span> <span class="n">x</span><span class="o">.</span><span class="na">parent</span><span class="o">.</span><span class="na">color</span> <span class="o">==</span> <span class="n">RED</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">parentOf</span><span class="o">(</span><span class="n">x</span><span class="o">)</span> <span class="o">==</span> <span class="n">leftOf</span><span class="o">(</span><span class="n">parentOf</span><span class="o">(</span><span class="n">parentOf</span><span class="o">(</span><span class="n">x</span><span class="o">))))</span> <span class="o">{</span>
+            <span class="c1">// a）如果父节点是祖父节点的左节点
+</span><span class="c1"></span>            <span class="c1">// y为叔叔节点
+</span><span class="c1"></span>            <span class="n">Entry</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">y</span> <span class="o">=</span> <span class="n">rightOf</span><span class="o">(</span><span class="n">parentOf</span><span class="o">(</span><span class="n">parentOf</span><span class="o">(</span><span class="n">x</span><span class="o">)));</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">colorOf</span><span class="o">(</span><span class="n">y</span><span class="o">)</span> <span class="o">==</span> <span class="n">RED</span><span class="o">)</span> <span class="o">{</span>
+                <span class="c1">// 情况1）如果叔叔节点为红色
+</span><span class="c1"></span>                <span class="c1">// （1）将父节点设为黑色
+</span><span class="c1"></span>                <span class="n">setColor</span><span class="o">(</span><span class="n">parentOf</span><span class="o">(</span><span class="n">x</span><span class="o">),</span> <span class="n">BLACK</span><span class="o">);</span>
+                <span class="c1">// （2）将叔叔节点设为黑色
+</span><span class="c1"></span>                <span class="n">setColor</span><span class="o">(</span><span class="n">y</span><span class="o">,</span> <span class="n">BLACK</span><span class="o">);</span>
+                <span class="c1">// （3）将祖父节点设为红色
+</span><span class="c1"></span>                <span class="n">setColor</span><span class="o">(</span><span class="n">parentOf</span><span class="o">(</span><span class="n">parentOf</span><span class="o">(</span><span class="n">x</span><span class="o">)),</span> <span class="n">RED</span><span class="o">);</span>
+                <span class="c1">// （4）将祖父节点设为新的当前节点
+</span><span class="c1"></span>                <span class="n">x</span> <span class="o">=</span> <span class="n">parentOf</span><span class="o">(</span><span class="n">parentOf</span><span class="o">(</span><span class="n">x</span><span class="o">));</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="c1">// 如果叔叔节点为黑色
+</span><span class="c1"></span>                <span class="c1">// 情况2）如果当前节点为其父节点的右节点
+</span><span class="c1"></span>                <span class="k">if</span> <span class="o">(</span><span class="n">x</span> <span class="o">==</span> <span class="n">rightOf</span><span class="o">(</span><span class="n">parentOf</span><span class="o">(</span><span class="n">x</span><span class="o">)))</span> <span class="o">{</span>
+                    <span class="c1">// （1）将父节点设为当前节点
+</span><span class="c1"></span>                    <span class="n">x</span> <span class="o">=</span> <span class="n">parentOf</span><span class="o">(</span><span class="n">x</span><span class="o">);</span>
+                    <span class="c1">// （2）以新当前节点左旋
+</span><span class="c1"></span>                    <span class="n">rotateLeft</span><span class="o">(</span><span class="n">x</span><span class="o">);</span>
+                <span class="o">}</span>
+                <span class="c1">// 情况3）如果当前节点为其父节点的左节点（如果是情况2）则左旋之后新当前节点正好为其父节点的左节点了）
+</span><span class="c1"></span>                <span class="c1">// （1）将父节点设为黑色
+</span><span class="c1"></span>                <span class="n">setColor</span><span class="o">(</span><span class="n">parentOf</span><span class="o">(</span><span class="n">x</span><span class="o">),</span> <span class="n">BLACK</span><span class="o">);</span>
+                <span class="c1">// （2）将祖父节点设为红色
+</span><span class="c1"></span>                <span class="n">setColor</span><span class="o">(</span><span class="n">parentOf</span><span class="o">(</span><span class="n">parentOf</span><span class="o">(</span><span class="n">x</span><span class="o">)),</span> <span class="n">RED</span><span class="o">);</span>
+                <span class="c1">// （3）以祖父节点为支点进行右旋
+</span><span class="c1"></span>                <span class="n">rotateRight</span><span class="o">(</span><span class="n">parentOf</span><span class="o">(</span><span class="n">parentOf</span><span class="o">(</span><span class="n">x</span><span class="o">)));</span>
+            <span class="o">}</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="c1">// b）如果父节点是祖父节点的右节点
+</span><span class="c1"></span>            <span class="c1">// y是叔叔节点
+</span><span class="c1"></span>            <span class="n">Entry</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">y</span> <span class="o">=</span> <span class="n">leftOf</span><span class="o">(</span><span class="n">parentOf</span><span class="o">(</span><span class="n">parentOf</span><span class="o">(</span><span class="n">x</span><span class="o">)));</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">colorOf</span><span class="o">(</span><span class="n">y</span><span class="o">)</span> <span class="o">==</span> <span class="n">RED</span><span class="o">)</span> <span class="o">{</span>
+                <span class="c1">// 情况1）如果叔叔节点为红色
+</span><span class="c1"></span>                <span class="c1">// （1）将父节点设为黑色
+</span><span class="c1"></span>                <span class="n">setColor</span><span class="o">(</span><span class="n">parentOf</span><span class="o">(</span><span class="n">x</span><span class="o">),</span> <span class="n">BLACK</span><span class="o">);</span>
+                <span class="c1">// （2）将叔叔节点设为黑色
+</span><span class="c1"></span>                <span class="n">setColor</span><span class="o">(</span><span class="n">y</span><span class="o">,</span> <span class="n">BLACK</span><span class="o">);</span>
+                <span class="c1">// （3）将祖父节点设为红色
+</span><span class="c1"></span>                <span class="n">setColor</span><span class="o">(</span><span class="n">parentOf</span><span class="o">(</span><span class="n">parentOf</span><span class="o">(</span><span class="n">x</span><span class="o">)),</span> <span class="n">RED</span><span class="o">);</span>
+                <span class="c1">// （4）将祖父节点设为新的当前节点
+</span><span class="c1"></span>                <span class="n">x</span> <span class="o">=</span> <span class="n">parentOf</span><span class="o">(</span><span class="n">parentOf</span><span class="o">(</span><span class="n">x</span><span class="o">));</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="c1">// 如果叔叔节点为黑色
+</span><span class="c1"></span>                <span class="c1">// 情况2）如果当前节点为其父节点的左节点
+</span><span class="c1"></span>                <span class="k">if</span> <span class="o">(</span><span class="n">x</span> <span class="o">==</span> <span class="n">leftOf</span><span class="o">(</span><span class="n">parentOf</span><span class="o">(</span><span class="n">x</span><span class="o">)))</span> <span class="o">{</span>
+                    <span class="c1">// （1）将父节点设为当前节点
+</span><span class="c1"></span>                    <span class="n">x</span> <span class="o">=</span> <span class="n">parentOf</span><span class="o">(</span><span class="n">x</span><span class="o">);</span>
+                    <span class="c1">// （2）以新当前节点右旋
+</span><span class="c1"></span>                    <span class="n">rotateRight</span><span class="o">(</span><span class="n">x</span><span class="o">);</span>
+                <span class="o">}</span>
+                <span class="c1">// 情况3）如果当前节点为其父节点的右节点（如果是情况2）则右旋之后新当前节点正好为其父节点的右节点了）
+</span><span class="c1"></span>                <span class="c1">// （1）将父节点设为黑色
+</span><span class="c1"></span>                <span class="n">setColor</span><span class="o">(</span><span class="n">parentOf</span><span class="o">(</span><span class="n">x</span><span class="o">),</span> <span class="n">BLACK</span><span class="o">);</span>
+                <span class="c1">// （2）将祖父节点设为红色
+</span><span class="c1"></span>                <span class="n">setColor</span><span class="o">(</span><span class="n">parentOf</span><span class="o">(</span><span class="n">parentOf</span><span class="o">(</span><span class="n">x</span><span class="o">)),</span> <span class="n">RED</span><span class="o">);</span>
+                <span class="c1">// （3）以祖父节点为支点进行左旋
+</span><span class="c1"></span>                <span class="n">rotateLeft</span><span class="o">(</span><span class="n">parentOf</span><span class="o">(</span><span class="n">parentOf</span><span class="o">(</span><span class="n">x</span><span class="o">)));</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="c1">// 平衡完成后将根节点设为黑色
+</span><span class="c1"></span>    <span class="n">root</span><span class="o">.</span><span class="na">color</span> <span class="o">=</span> <span class="n">BLACK</span><span class="o">;</span>
+<span class="o">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="二叉树的遍历">二叉树的遍历</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">BinaryTree</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="n">Node</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">root</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="n">Comparator</span><span class="o">&lt;</span><span class="n">Node</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;&gt;</span> <span class="n">comparator</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">BinaryTree</span><span class="o">(</span><span class="n">Comparator</span><span class="o">&lt;</span><span class="n">Node</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span> <span class="n">V</span><span class="o">&gt;&gt;</span> <span class="n">comparator</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">comparator</span> <span class="o">=</span> <span class="n">comparator</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">put</span><span class="o">(</span><span class="n">Node</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">node</span><span class="o">){</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">root</span><span class="o">==</span><span class="kc">null</span><span class="o">){</span>
+            <span class="n">root</span><span class="o">=</span><span class="n">node</span><span class="o">;</span>
+        <span class="o">}</span><span class="k">else</span> <span class="o">{</span>
+            <span class="n">Node</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">parent</span><span class="o">=</span><span class="n">root</span><span class="o">,</span><span class="n">n</span><span class="o">;</span>
+            <span class="kt">int</span> <span class="n">compare</span><span class="o">;</span>
+            <span class="k">do</span> <span class="o">{</span>
+                <span class="n">n</span><span class="o">=</span><span class="n">parent</span><span class="o">;</span>
+                <span class="n">compare</span> <span class="o">=</span> <span class="n">comparator</span><span class="o">.</span><span class="na">compare</span><span class="o">(</span><span class="n">parent</span><span class="o">,</span> <span class="n">node</span><span class="o">);</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">compare</span><span class="o">&gt;</span><span class="n">0</span><span class="o">){</span>
+                    <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="o">.</span><span class="na">right</span><span class="o">;</span>
+                <span class="o">}</span><span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">compare</span><span class="o">&lt;</span><span class="n">0</span><span class="o">){</span>
+                    <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="o">.</span><span class="na">left</span><span class="o">;</span>
+                <span class="o">}</span><span class="k">else</span> <span class="o">{</span>
+                    <span class="n">parent</span><span class="o">.</span><span class="na">setValue</span><span class="o">(</span><span class="n">node</span><span class="o">.</span><span class="na">getValue</span><span class="o">());</span>
+                    <span class="k">return</span><span class="o">;</span>
+                <span class="o">}</span>
+            <span class="o">}</span><span class="k">while</span> <span class="o">(</span><span class="n">parent</span><span class="o">!=</span><span class="kc">null</span><span class="o">);</span>
+
+            <span class="k">if</span> <span class="o">(</span><span class="n">compare</span><span class="o">&gt;</span><span class="n">0</span><span class="o">){</span>
+              <span class="n">n</span><span class="o">.</span><span class="na">right</span><span class="o">=</span><span class="n">node</span><span class="o">;</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="n">n</span><span class="o">.</span><span class="na">left</span><span class="o">=</span><span class="n">node</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">inOrderTraverse</span><span class="o">(</span><span class="n">Integer</span> <span class="n">type</span><span class="o">){</span>
+        <span class="n">inOrderTraverse</span><span class="o">(</span><span class="n">root</span><span class="o">,</span><span class="n">type</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">inOrderTraverse</span><span class="o">(</span><span class="n">Node</span> <span class="n">root</span><span class="o">,</span><span class="n">Integer</span> <span class="n">type</span><span class="o">){</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">root</span><span class="o">!=</span><span class="kc">null</span><span class="o">){</span>
+            <span class="k">switch</span> <span class="o">(</span><span class="n">type</span><span class="o">){</span>
+                <span class="k">case</span> <span class="n">2</span><span class="o">:</span>
+                    <span class="k">if</span> <span class="o">(</span><span class="n">root</span><span class="o">.</span><span class="na">left</span><span class="o">!=</span><span class="kc">null</span><span class="o">){</span>
+                        <span class="n">inOrderTraverse</span><span class="o">(</span><span class="n">root</span><span class="o">.</span><span class="na">left</span><span class="o">,</span><span class="n">type</span><span class="o">);</span>
+                    <span class="o">}</span>
+                    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="n">root</span><span class="o">.</span><span class="na">getKey</span><span class="o">());</span>
+                    <span class="k">if</span> <span class="o">(</span><span class="n">root</span><span class="o">.</span><span class="na">right</span><span class="o">!=</span><span class="kc">null</span><span class="o">){</span>
+                        <span class="n">inOrderTraverse</span><span class="o">(</span><span class="n">root</span><span class="o">.</span><span class="na">right</span><span class="o">,</span><span class="n">type</span><span class="o">);</span>
+                    <span class="o">}</span>
+                    <span class="k">break</span><span class="o">;</span>
+                <span class="k">case</span> <span class="n">1</span><span class="o">:</span>
+                    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="n">root</span><span class="o">.</span><span class="na">getKey</span><span class="o">());</span>
+                    <span class="k">if</span> <span class="o">(</span><span class="n">root</span><span class="o">.</span><span class="na">left</span><span class="o">!=</span><span class="kc">null</span><span class="o">){</span>
+                        <span class="n">inOrderTraverse</span><span class="o">(</span><span class="n">root</span><span class="o">.</span><span class="na">left</span><span class="o">,</span><span class="n">type</span><span class="o">);</span>
+                    <span class="o">}</span>
+                    <span class="k">if</span> <span class="o">(</span><span class="n">root</span><span class="o">.</span><span class="na">right</span><span class="o">!=</span><span class="kc">null</span><span class="o">){</span>
+                        <span class="n">inOrderTraverse</span><span class="o">(</span><span class="n">root</span><span class="o">.</span><span class="na">right</span><span class="o">,</span><span class="n">type</span><span class="o">);</span>
+                    <span class="o">}</span>
+                    <span class="k">break</span><span class="o">;</span>
+                <span class="k">case</span> <span class="n">3</span><span class="o">:</span>
+                    <span class="k">if</span> <span class="o">(</span><span class="n">root</span><span class="o">.</span><span class="na">left</span><span class="o">!=</span><span class="kc">null</span><span class="o">){</span>
+                        <span class="n">inOrderTraverse</span><span class="o">(</span><span class="n">root</span><span class="o">.</span><span class="na">left</span><span class="o">,</span><span class="n">type</span><span class="o">);</span>
+                    <span class="o">}</span>
+                    <span class="k">if</span> <span class="o">(</span><span class="n">root</span><span class="o">.</span><span class="na">right</span><span class="o">!=</span><span class="kc">null</span><span class="o">){</span>
+                        <span class="n">inOrderTraverse</span><span class="o">(</span><span class="n">root</span><span class="o">.</span><span class="na">right</span><span class="o">,</span><span class="n">type</span><span class="o">);</span>
+                    <span class="o">}</span>
+                    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="n">root</span><span class="o">.</span><span class="na">getKey</span><span class="o">());</span>
+                    <span class="k">break</span><span class="o">;</span>
+            <span class="o">}</span>
+
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+
+    <span class="nd">@Data</span>
+    <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Node</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="o">{</span>
+        <span class="kd">private</span> <span class="n">K</span> <span class="n">key</span><span class="o">;</span>
+        <span class="kd">private</span> <span class="n">V</span> <span class="n">value</span><span class="o">;</span>
+        <span class="kd">private</span> <span class="n">Node</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">parent</span><span class="o">;</span>
+        <span class="kd">private</span> <span class="n">Node</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">left</span><span class="o">;</span>
+        <span class="kd">private</span> <span class="n">Node</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">right</span><span class="o">;</span>
+
+        <span class="kd">public</span> <span class="nf">Node</span><span class="o">(</span><span class="n">K</span> <span class="n">key</span><span class="o">,</span> <span class="n">V</span> <span class="n">value</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">this</span><span class="o">.</span><span class="na">key</span> <span class="o">=</span> <span class="n">key</span><span class="o">;</span>
+            <span class="k">this</span><span class="o">.</span><span class="na">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">BinaryTree</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;</span> <span class="n">integerBinaryTree</span> <span class="o">=</span> <span class="k">new</span> <span class="n">BinaryTree</span><span class="o">&lt;&gt;(</span><span class="n">Comparator</span><span class="o">.</span><span class="na">comparingInt</span><span class="o">(</span><span class="n">Node</span><span class="o">::</span><span class="n">getKey</span><span class="o">));</span>
+
+        <span class="n">integerBinaryTree</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="k">new</span> <span class="n">Node</span><span class="o">&lt;&gt;(</span><span class="n">2</span><span class="o">,</span><span class="n">1</span><span class="o">));</span>
+        <span class="n">integerBinaryTree</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="k">new</span> <span class="n">Node</span><span class="o">&lt;&gt;(</span><span class="n">6</span><span class="o">,</span><span class="n">2</span><span class="o">));</span>
+        <span class="n">integerBinaryTree</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="k">new</span> <span class="n">Node</span><span class="o">&lt;&gt;(</span><span class="n">3</span><span class="o">,</span><span class="n">3</span><span class="o">));</span>
+        <span class="n">integerBinaryTree</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="k">new</span> <span class="n">Node</span><span class="o">&lt;&gt;(</span><span class="n">6</span><span class="o">,</span><span class="n">4</span><span class="o">));</span>
+        <span class="n">integerBinaryTree</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="k">new</span> <span class="n">Node</span><span class="o">&lt;&gt;(</span><span class="n">9</span><span class="o">,</span><span class="n">5</span><span class="o">));</span>
+        <span class="n">integerBinaryTree</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="k">new</span> <span class="n">Node</span><span class="o">&lt;&gt;(</span><span class="n">7</span><span class="o">,</span><span class="n">5</span><span class="o">));</span>
+        <span class="n">integerBinaryTree</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="k">new</span> <span class="n">Node</span><span class="o">&lt;&gt;(</span><span class="n">8</span><span class="o">,</span><span class="n">5</span><span class="o">));</span>
+        <span class="n">integerBinaryTree</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="k">new</span> <span class="n">Node</span><span class="o">&lt;&gt;(</span><span class="n">4</span><span class="o">,</span><span class="n">5</span><span class="o">));</span>
+        <span class="n">integerBinaryTree</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="k">new</span> <span class="n">Node</span><span class="o">&lt;&gt;(</span><span class="n">10</span><span class="o">,</span><span class="n">5</span><span class="o">));</span>
+
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="s">&#34;前序遍历:&#34;</span><span class="o">);</span>
+        <span class="n">integerBinaryTree</span><span class="o">.</span><span class="na">inOrderTraverse</span><span class="o">(</span><span class="n">1</span><span class="o">);</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">();</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="s">&#34;中序遍历:&#34;</span><span class="o">);</span>
+        <span class="n">integerBinaryTree</span><span class="o">.</span><span class="na">inOrderTraverse</span><span class="o">(</span><span class="n">2</span><span class="o">);</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">();</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="s">&#34;后序遍历:&#34;</span><span class="o">);</span>
+        <span class="n">integerBinaryTree</span><span class="o">.</span><span class="na">inOrderTraverse</span><span class="o">(</span><span class="n">3</span><span class="o">);</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></td></tr></table>
+</div>
 </div>
     </div>
 
@@ -3169,7 +3577,7 @@
   <p class="copyright-item">
     <span class="item-title">LastMod</span>
     <span class="item-content">
-        2022-09-26
+        2021-09-26
         
     </span>
   </p>
@@ -3181,9 +3589,13 @@
           <a href="/tags/java%E5%9F%BA%E7%A1%80/">java基础</a>
           </div>
       <nav class="post-nav">
-        
-        <a class="next" href="/post/mywordnote/">
-            <span class="next-text nav-default">MyWordNote</span>
+        <a class="prev" href="/post/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">数据结构</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/linux/">
+            <span class="next-text nav-default">linux</span>
             <span class="next-text nav-mobile">Next</span>
             <i class="iconfont icon-right"></i>
           </a>

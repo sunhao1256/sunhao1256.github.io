@@ -9,41 +9,6 @@
   </url>
   
   <url>
-    <loc>http://luluhome.site/post/javacollections/</loc>
-    <lastmod>2022-09-26T21:50:07+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>http://luluhome.site/tags/java%E5%9F%BA%E7%A1%80/</loc>
-    <lastmod>2022-09-26T21:50:07+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>http://luluhome.site/</loc>
-    <lastmod>2022-09-26T21:50:07+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>http://luluhome.site/post/</loc>
-    <lastmod>2022-09-26T21:50:07+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>http://luluhome.site/tags/</loc>
-    <lastmod>2022-09-26T21:50:07+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>http://luluhome.site/tags/enligsh-learn/</loc>
     <lastmod>2022-09-20T13:56:19+08:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -51,7 +16,28 @@
   </url>
   
   <url>
+    <loc>http://luluhome.site/</loc>
+    <lastmod>2022-09-20T13:56:19+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>http://luluhome.site/post/mywordnote/</loc>
+    <lastmod>2022-09-20T13:56:19+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://luluhome.site/post/</loc>
+    <lastmod>2022-09-20T13:56:19+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://luluhome.site/tags/</loc>
     <lastmod>2022-09-20T13:56:19+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -270,6 +256,20 @@
   <url>
     <loc>http://luluhome.site/tags/%E9%9D%A2%E8%AF%95/</loc>
     <lastmod>2022-01-11T14:43:18+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://luluhome.site/post/javacollections/</loc>
+    <lastmod>2021-09-26T21:50:07+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://luluhome.site/tags/java%E5%9F%BA%E7%A1%80/</loc>
+    <lastmod>2021-09-26T21:50:07+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
