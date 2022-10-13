@@ -49,7 +49,7 @@
 <meta itemprop="name" content="VIM Keyboard Shortcuts">
 <meta itemprop="description" content="VIM Keyboard Shortcuts    Cursor movement      h move left   j move down   k move up   l move right   w jump by start of words (punctuation considered words)   W jump by words (spaces separate words)   e jump to end of words (punctuation considered words)   E jump to end of words (no punctuation)   b jump backward by words (punctuation considered words)   B jump backward by words (no punctuation)   0 (zero) start of line   ^ first non-blank character of line   $ end of line   G Go To command (prefix with number   Note: Prefix a cursor movement command with a number to repeat it."><meta itemprop="datePublished" content="2022-09-07T13:14:35+08:00" />
 <meta itemprop="dateModified" content="2022-09-07T13:14:35+08:00" />
-<meta itemprop="wordCount" content="544">
+<meta itemprop="wordCount" content="791">
 <meta itemprop="keywords" content="Linux," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="VIM Keyboard Shortcuts"/>
 <meta name="twitter:description" content="VIM Keyboard Shortcuts    Cursor movement      h move left   j move down   k move up   l move right   w jump by start of words (punctuation considered words)   W jump by words (spaces separate words)   e jump to end of words (punctuation considered words)   E jump to end of words (no punctuation)   b jump backward by words (punctuation considered words)   B jump backward by words (no punctuation)   0 (zero) start of line   ^ first non-blank character of line   $ end of line   G Go To command (prefix with number   Note: Prefix a cursor movement command with a number to repeat it."/>
@@ -150,6 +150,7 @@
             <li><a href="#vim-keyboard-shortcuts">VIM Keyboard Shortcuts</a></li>
           </ul>
         </li>
+        <li><a href="#visual-mode">visual mode</a></li>
       </ul>
     </li>
   </ul>
@@ -598,61 +599,88 @@
 <td></td>
 <td></td>
 </tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
 </tbody>
 </table>
+<h2 id="visual-mode">visual mode</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">The operators that can be used are:
+        ~       switch <span class="k">case</span>                                     v_~
+        d       delete                                          v_d
+        c       change <span class="o">(</span>4<span class="o">)</span>                                      v_c
+        y       yank                                            v_y
+        &gt;       <span class="nb">shift</span> right <span class="o">(</span>4<span class="o">)</span>                                 v_&gt;
+        &lt;       <span class="nb">shift</span> left <span class="o">(</span>4<span class="o">)</span>                                  v_&lt;
+        !       filter through external <span class="nb">command</span> <span class="o">(</span>1<span class="o">)</span>             v_!
+        <span class="o">=</span>       filter through <span class="s1">&#39;equalprg&#39;</span> option <span class="nb">command</span> <span class="o">(</span>1<span class="o">)</span>    <span class="nv">v_</span><span class="o">=</span>
+        gq      format lines to <span class="s1">&#39;textwidth&#39;</span> length <span class="o">(</span>1<span class="o">)</span>          v_gq
 
+The objects that can be used are:
+        aw      a word <span class="o">(</span>with white space<span class="o">)</span>                       v_aw
+        iw      inner word                                      v_iw
+        aW      a WORD <span class="o">(</span>with white space<span class="o">)</span>                       v_aW
+        iW      inner WORD                                      v_iW
+        as      a sentence <span class="o">(</span>with white space<span class="o">)</span>                   v_as
+        is      inner sentence                                  v_is
+        ap      a paragraph <span class="o">(</span>with white space<span class="o">)</span>                  v_ap
+        ip      inner paragraph                                 v_ip
+        ab      a <span class="o">()</span> block <span class="o">(</span>with parentheses<span class="o">)</span>                   v_ab
+        ib      inner <span class="o">()</span> block                                  v_ib
+        aB      a <span class="o">{}</span> block <span class="o">(</span>with braces<span class="o">)</span>                        v_aB
+        iB      inner <span class="o">{}</span> block                                  v_iB
+        at      a &lt;tag&gt; &lt;/tag&gt; block <span class="o">(</span>with tags<span class="o">)</span>                v_at
+        it      inner &lt;tag&gt; &lt;/tag&gt; block                        v_it
+        a&lt;      a &lt;&gt; block <span class="o">(</span>with &lt;&gt;<span class="o">)</span>                            v_a&lt;
+        i&lt;      inner &lt;&gt; block                                  v_i&lt;
+        a<span class="o">[</span>      a <span class="o">[]</span> block <span class="o">(</span>with <span class="o">[])</span>                            v_a<span class="o">[</span>
+        i<span class="o">[</span>      inner <span class="o">[]</span> block                                  v_i<span class="o">[</span>
+        a<span class="s2">&#34;      a double quoted string (with quotes)            v_aquote
+</span><span class="s2">        i&#34;</span>      inner double quoted string                      v_iquote
+        a<span class="s1">&#39;      a single quoted string (with quotes)            v_a&#39;</span>
+        i<span class="s1">&#39;      inner simple quoted string                      v_i&#39;</span>
+        a<span class="sb">`</span>      a string in backticks <span class="o">(</span>with backticks<span class="o">)</span>          v_a<span class="sb">`</span>
+        i<span class="sb">`</span>      inner string in backticks                       v_i<span class="sb">`</span>
+</code></pre></td></tr></table>
+</div>
+</div>
     </div>
 
     <div class="post-copyright">
