@@ -1,5 +1,5 @@
 baseURL = "http://luluhome.site/"
-publishDir = "docs"
+#publishDir = "docs"
 languageCode = "en"
 defaultContentLanguage = "en"                             # en / zh-cn / ... (This field determines which i18n file to use)
 title = "Luluhome - a blog for sh , 'lulu' is my cat"

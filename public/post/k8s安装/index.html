@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>K8s安装 - Luluhome - a blog for sh , &#39;lulu&#39; is my cat</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="sh" /><meta name="description" content="文章摘自https://k8s.easydoc.net/docs/dRiQjyTY/28366845/6GiNOzyZ/nd7yOvdY 💽安" /><meta name="keywords" content="luluhome, java, blog" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.89.0 with theme even" />
+
+
+<link rel="canonical" href="http://luluhome.site/post/k8s%E5%AE%89%E8%A3%85/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="K8s安装" />
+<meta property="og:description" content="文章摘自https://k8s.easydoc.net/docs/dRiQjyTY/28366845/6GiNOzyZ/nd7yOvdY 💽安" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://luluhome.site/post/k8s%E5%AE%89%E8%A3%85/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-07-02T20:01:43+08:00" />
+<meta property="article:modified_time" content="2022-07-02T20:01:43+08:00" />
+
+<meta itemprop="name" content="K8s安装">
+<meta itemprop="description" content="文章摘自https://k8s.easydoc.net/docs/dRiQjyTY/28366845/6GiNOzyZ/nd7yOvdY 💽安"><meta itemprop="datePublished" content="2022-07-02T20:01:43+08:00" />
+<meta itemprop="dateModified" content="2022-07-02T20:01:43+08:00" />
+<meta itemprop="wordCount" content="1307">
+<meta itemprop="keywords" content="k8s," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="K8s安装"/>
+<meta name="twitter:description" content="文章摘自https://k8s.easydoc.net/docs/dRiQjyTY/28366845/6GiNOzyZ/nd7yOvdY 💽安"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">luluhome</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">luluhome</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">K8s安装</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-07-02 </span>
+        
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#安装-kubernetes-集群">💽安装 Kubernetes 集群</a>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#安装方式介绍">安装方式介绍</a></li>
+            <li><a href="#minikube">minikube</a></li>
+            <li><a href="#云平台搭建">云平台搭建</a></li>
+            <li><a href="#裸机搭建bare-metal">裸机搭建（Bare Metal）</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#更新configmap">更新configmap</a></li>
+    <li><a href="#nodeport-从master节点访问会超时">NodePort 从master节点访问会超时</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p>文章摘自https://k8s.easydoc.net/docs/dRiQjyTY/28366845/6GiNOzyZ/nd7yOvdY</p>
+</blockquote>
+<h1 id="安装-kubernetes-集群">💽安装 Kubernetes 集群</h1>
+<h3 id="安装方式介绍">安装方式介绍</h3>
+<ul>
+<li><strong>minikube</strong>
+只是一个 K8S 集群模拟器，只有一个节点的集群，只为测试用，master 和 worker 都在一起</li>
+<li><strong>直接用云平台 Kubernetes</strong>
+可视化搭建，只需简单几步就可以创建好一个集群。
+优点：安装简单，生态齐全，负载均衡器、存储等都给你配套好，简单操作就搞定</li>
+<li><strong>裸机安装（Bare Metal）</strong>
+至少需要两台机器（主节点、工作节点个一台），需要自己安装 Kubernetes 组件，配置会稍微麻烦点。
+可以到各云厂商按时租用服务器，费用低，用完就销毁。
+缺点：配置麻烦，缺少生态支持，例如负载均衡器、云存储。</li>
+</ul>
+<blockquote>
+<p>本文档课件需配套 <a href="https://www.bilibili.com/video/BV1Tg411P7EB?p=2">视频</a> 一起学习</p>
+</blockquote>
+<h3 id="minikube">minikube</h3>
+<p>安装非常简单，支持各种平台，<a href="https://minikube.sigs.k8s.io/docs/start/">安装方法</a></p>
+<blockquote>
+<p>需要提前安装好 Docker</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"># 启动集群
+minikube start
+# 查看节点。kubectl 是一个用来跟 K8S 集群进行交互的命令行工具
+kubectl get node
+# 停止集群
+minikube stop
+# 清空集群
+minikube delete --all
+# 安装集群可视化 Web UI 控制台
+minikube dashboard
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="云平台搭建">云平台搭建</h3>
+<ul>
+<li><a href="https://cloud.tencent.com/product/tke">腾讯云 TKE</a>（控制台搜索容器）</li>
+<li>登录阿里云控制台 - 产品搜索 Kubernetes</li>
+</ul>
+<h3 id="裸机搭建bare-metal">裸机搭建（Bare Metal）</h3>
+<h5 id="主节点需要组件">主节点需要组件</h5>
+<ul>
+<li>docker（也可以是其他容器运行时）</li>
+<li>kubectl 集群命令行交互工具</li>
+<li>kubeadm 集群初始化工具</li>
+</ul>
+<h5 id="工作节点需要组件-文档httpskubernetesiozhdocsconceptsoverviewcomponentsnode-components">工作节点需要组件 <a href="https://kubernetes.io/zh/docs/concepts/overview/components/#node-components">文档</a></h5>
+<ul>
+<li>docker（也可以是其他容器运行时）</li>
+<li>kubelet 管理 Pod 和容器，确保他们健康稳定运行。</li>
+<li>kube-proxy 网络代理，负责网络相关的工作</li>
+</ul>
+<h4 id="开始安装">开始安装</h4>
+<blockquote>
+<p>你也可以试下 <a href="https://github.com/lework/kainstall">这个项目</a>，用脚本快速搭建 K8S 裸机集群
+当然，为了更好的理解，你应该先手动搭建一次</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"># 每个节点分别设置对应主机名
+hostnamectl set-hostname master
+hostnamectl set-hostname node1
+hostnamectl set-hostname node2
+# 所有节点都修改 hosts
+vim /etc/hosts
+172.16.32.2 node1
+172.16.32.6 node2
+172.16.0.4 master
+# 所有节点关闭 SELinux
+setenforce 0
+sed -i --follow-symlinks &#39;s/SELINUX=enforcing/SELINUX=disabled/g&#39; /etc/sysconfig/selinux
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>所有节点确保防火墙关闭
+systemctl stop firewalld
+systemctl disable firewalld</p>
+</blockquote>
+<p>添加安装源（所有节点）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"># 添加 k8s 安装源
+cat &lt;&lt;EOF &gt; kubernetes.repo
+[kubernetes]
+name=Kubernetes
+baseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64
+enabled=1
+gpgcheck=0
+repo_gpgcheck=0
+gpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg
+EOF
+mv kubernetes.repo /etc/yum.repos.d/
+
+# 添加 Docker 安装源
+yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+</code></pre></td></tr></table>
+</div>
+</div><p>安装所需组件（所有节点）
+<code>yum install -y kubelet-1.22.4 kubectl-1.22.4 kubeadm-1.22.4 docker-ce</code></p>
+<blockquote>
+<p>注意，据学员反馈，1.24 以上的版本会报错，跟教程有差异，所以建议大家指定版本号安装，版本号确保跟老师的一样</p>
+</blockquote>
+<p>启动 kubelet、docker，并设置开机启动（所有节点）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">systemctl enable kubelet
+systemctl start kubelet
+systemctl enable docker
+systemctl start docker
+</code></pre></td></tr></table>
+</div>
+</div><p>修改 docker 配置（所有节点）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"># kubernetes 官方推荐 docker 等使用 systemd 作为 cgroupdriver，否则 kubelet 启动不了
+cat &lt;&lt;EOF &gt; daemon.json
+{
+  &#34;exec-opts&#34;: [&#34;native.cgroupdriver=systemd&#34;],
+  &#34;registry-mirrors&#34;: [&#34;https://ud6340vz.mirror.aliyuncs.com&#34;]
+}
+EOF
+mv daemon.json /etc/docker/
+
+# 重启生效
+systemctl daemon-reload
+systemctl restart docker
+</code></pre></td></tr></table>
+</div>
+</div><p>用 <a href="https://kubernetes.io/docs/reference/setup-tools/kubeadm/">kubeadm</a> 初始化集群（仅在主节点跑），</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"># 初始化集群控制台 Control plane
+# 失败了可以用 kubeadm reset 重置
+kubeadm init --image-repository=registry.aliyuncs.com/google_containers
+
+# 记得把 kubeadm join xxx 保存起来
+# 忘记了重新获取：kubeadm token create --print-join-command
+
+# 复制授权文件，以便 kubectl 可以有权限访问集群
+# 如果你其他节点需要访问集群，需要从主节点复制这个文件过去其他节点
+mkdir -p $HOME/.kube
+cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+chown $(id -u):$(id -g) $HOME/.kube/config
+
+# 在其他机器上创建 ~/.kube/config 文件也能通过 kubectl 访问到集群
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>有兴趣了解 kubeadm init 具体做了什么的，可以 <a href="https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-init/">查看文档</a></p>
+</blockquote>
+<p>把工作节点加入集群（只在工作节点跑）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubeadm join 172.16.32.10:6443 --token xxx --discovery-token-ca-cert-hash xxx
+</code></pre></td></tr></table>
+</div>
+</div><p>安装网络插件，否则 node 是 NotReady 状态（主节点跑）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"># 很有可能国内网络访问不到这个资源，你可以网上找找国内的源安装 flannel
+kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+</code></pre></td></tr></table>
+</div>
+</div><p>查看节点，要在主节点查看（其他节点有安装 kubectl 也可以查看）
+<img src="https://sjwx.easydoc.xyz/46901064/files/kw8x2qdf.png" alt="image.png"></p>
+<h1 id="更新configmap">更新configmap</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="l">kubectl create configmap foo --from-file foo.properties -o yaml --dry-run | kubectl apply -f -</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><h1 id="nodeport-从master节点访问会超时">NodePort 从master节点访问会超时</h1>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">sh</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2022-07-02
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/k8s/">k8s</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/%E6%97%B6%E9%97%B4%E8%BD%AE/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">时间轮</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/all-in-one/">
+            <span class="next-text nav-default">all in one配置</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:sunhao1256@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://twitter.com/Frank12990735" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://github.com/sunhao1256" class="iconfont icon-github" title="github"></a>
+  <a href="http://luluhome.site/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>sh</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

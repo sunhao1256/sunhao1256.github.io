@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Nginx on Luluhome - a blog for sh , &#39;lulu&#39; is my cat</title>
+    <link>http://luluhome.site/tags/nginx/</link>
+    <description>Recent content in Nginx on Luluhome - a blog for sh , &#39;lulu&#39; is my cat</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 28 Jul 2022 10:14:49 +0800</lastBuildDate><atom:link href="http://luluhome.site/tags/nginx/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Nginx转发规则</title>
+      <link>http://luluhome.site/post/nginx/</link>
+      <pubDate>Thu, 28 Jul 2022 10:14:49 +0800</pubDate>
+      
+      <guid>http://luluhome.site/post/nginx/</guid>
+      <description>在nginx中配置proxy_pass时，当在后面的url加上了/，相当于是绝对根路径，则nginx不会把location中匹配的路径部分代</description>
+    </item>
+    
+  </channel>
+</rss>

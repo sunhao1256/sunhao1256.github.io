@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Git on Luluhome - a blog for sh , &#39;lulu&#39; is my cat</title>
+    <link>http://luluhome.site/tags/git/</link>
+    <description>Recent content in Git on Luluhome - a blog for sh , &#39;lulu&#39; is my cat</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 21 Feb 2022 16:57:01 +0800</lastBuildDate><atom:link href="http://luluhome.site/tags/git/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Git命令</title>
+      <link>http://luluhome.site/post/git%E5%91%BD%E4%BB%A4/</link>
+      <pubDate>Mon, 21 Feb 2022 16:57:01 +0800</pubDate>
+      
+      <guid>http://luluhome.site/post/git%E5%91%BD%E4%BB%A4/</guid>
+      <description>Git常用命令 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63</description>
+    </item>
+    
+  </channel>
+</rss>
