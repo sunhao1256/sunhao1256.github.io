@@ -6,7 +6,19 @@
     <description>Recent content in Posts on Luluhome - a blog for sh , &#39;lulu&#39; is my cat</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 08 Oct 2022 17:46:07 +0800</lastBuildDate><atom:link href="http://luluhome.site/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 13 Oct 2022 09:48:19 +0800</lastBuildDate><atom:link href="http://luluhome.site/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Idea Keyboard Shortcuts</title>
+      <link>http://luluhome.site/post/idea-keyboard-shortcuts/</link>
+      <pubDate>Thu, 13 Oct 2022 09:48:19 +0800</pubDate>
+      
+      <guid>http://luluhome.site/post/idea-keyboard-shortcuts/</guid>
+      <description>  resize
+  open new file on right split
+shift+enter
+  </description>
+    </item>
+    
     <item>
       <title>Regular_expression</title>
       <link>http://luluhome.site/post/regular_expression/</link>

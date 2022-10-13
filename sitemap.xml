@@ -9,15 +9,36 @@
   </url>
   
   <url>
+    <loc>http://luluhome.site/tags/idea/</loc>
+    <lastmod>2022-10-13T09:48:19+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://luluhome.site/post/idea-keyboard-shortcuts/</loc>
+    <lastmod>2022-10-13T09:48:19+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>http://luluhome.site/</loc>
-    <lastmod>2022-10-08T17:46:07+08:00</lastmod>
+    <lastmod>2022-10-13T09:48:19+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>http://luluhome.site/post/</loc>
-    <lastmod>2022-10-08T17:46:07+08:00</lastmod>
+    <lastmod>2022-10-13T09:48:19+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://luluhome.site/tags/</loc>
+    <lastmod>2022-10-13T09:48:19+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -31,13 +52,6 @@
   
   <url>
     <loc>http://luluhome.site/post/regular_expression/</loc>
-    <lastmod>2022-10-08T17:46:07+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>http://luluhome.site/tags/</loc>
     <lastmod>2022-10-08T17:46:07+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
