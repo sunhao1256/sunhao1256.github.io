@@ -49,7 +49,7 @@
 <meta itemprop="name" content="VIM Keyboard Shortcuts">
 <meta itemprop="description" content="VIM Keyboard Shortcuts    Cursor movement      h move left   j move down   k move up   l move right   w jump by start of words (punctuation considered words)   W jump by words (spaces separate words)   e jump to end of words (punctuation considered words)   E jump to end of words (no punctuation)   b jump backward by words (punctuation considered words)   B jump backward by words (no punctuation)   0 (zero) start of line   ^ first non-blank character of line   $ end of line   G Go To command (prefix with number   Note: Prefix a cursor movement command with a number to repeat it."><meta itemprop="datePublished" content="2022-09-07T13:14:35+08:00" />
 <meta itemprop="dateModified" content="2022-09-07T13:14:35+08:00" />
-<meta itemprop="wordCount" content="791">
+<meta itemprop="wordCount" content="1204">
 <meta itemprop="keywords" content="Linux," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="VIM Keyboard Shortcuts"/>
 <meta name="twitter:description" content="VIM Keyboard Shortcuts    Cursor movement      h move left   j move down   k move up   l move right   w jump by start of words (punctuation considered words)   W jump by words (spaces separate words)   e jump to end of words (punctuation considered words)   E jump to end of words (no punctuation)   b jump backward by words (punctuation considered words)   B jump backward by words (no punctuation)   0 (zero) start of line   ^ first non-blank character of line   $ end of line   G Go To command (prefix with number   Note: Prefix a cursor movement command with a number to repeat it."/>
@@ -143,14 +143,12 @@
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
   <ul>
-    <li>
+    <li><a href="#vim-keyboard-shortcuts">VIM Keyboard Shortcuts</a>
       <ul>
-        <li>
-          <ul>
-            <li><a href="#vim-keyboard-shortcuts">VIM Keyboard Shortcuts</a></li>
-          </ul>
-        </li>
         <li><a href="#visual-mode">visual mode</a></li>
+        <li><a href="#srolling-around">Srolling around</a></li>
+        <li><a href="#scrolling-releative-to-cursor">Scrolling releative to cursor</a></li>
+        <li><a href="#find-char-in-line">Find char in line</a></li>
       </ul>
     </li>
   </ul>
@@ -158,7 +156,7 @@
   </div>
 </div>
     <div class="post-content">
-      <h3 id="vim-keyboard-shortcuts">VIM Keyboard Shortcuts</h3>
+      <h1 id="vim-keyboard-shortcuts">VIM Keyboard Shortcuts</h1>
 <table>
 <thead>
 <tr>
@@ -666,7 +664,7 @@ The objects that can be used are:
         ib      inner <span class="o">()</span> block                                  v_ib
         aB      a <span class="o">{}</span> block <span class="o">(</span>with braces<span class="o">)</span>                        v_aB
         iB      inner <span class="o">{}</span> block                                  v_iB
-        at      a &lt;tag&gt; &lt;/tag&gt; block <span class="o">(</span>with tags<span class="o">)</span>                v_at
+        at      a &lt;tag&gt; &lt;/tag&gt; block <span class="o">(</span>withjj tags<span class="o">)</span>                v_at
         it      inner &lt;tag&gt; &lt;/tag&gt; block                        v_it
         a&lt;      a &lt;&gt; block <span class="o">(</span>with &lt;&gt;<span class="o">)</span>                            v_a&lt;
         i&lt;      inner &lt;&gt; block                                  v_i&lt;
@@ -678,6 +676,161 @@ The objects that can be used are:
         i<span class="s1">&#39;      inner simple quoted string                      v_i&#39;</span>
         a<span class="sb">`</span>      a string in backticks <span class="o">(</span>with backticks<span class="o">)</span>          v_a<span class="sb">`</span>
         i<span class="sb">`</span>      inner string in backticks                       v_i<span class="sb">`</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="srolling-around">Srolling around</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">ctrl+d u <span class="c1"># one line</span>
+ctrl+e y <span class="c1"># half of screen of text</span>
+ctrl+f b <span class="c1"># whole screen</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="scrolling-releative-to-cursor">Scrolling releative to cursor</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">                                                        z&lt;CR&gt;
+z&lt;CR&gt;                   Redraw, line <span class="o">[</span>count<span class="o">]</span> at top of window <span class="o">(</span>default
+                        cursor line<span class="o">)</span>.  Put cursor at first non-blank in the
+                        line.
+
+                                                        zt
+zt                      Like <span class="s2">&#34;z&lt;CR&gt;&#34;</span>, but leave the cursor in the same
+                        column.
+
+                                                        zN&lt;CR&gt;
+z<span class="o">{</span>height<span class="o">}</span>&lt;CR&gt;           Redraw, make window <span class="o">{</span>height<span class="o">}</span> lines tall.  This is
+                        useful to make the number of lines small when screen
+                        updating is very slow.  Cannot make the height more
+                        than the physical screen height.
+
+                                                        z.
+z.                      Redraw, line <span class="o">[</span>count<span class="o">]</span> at center of window <span class="o">(</span>default
+                        cursor line<span class="o">)</span>.  Put cursor at first non-blank in the
+                        line.
+
+                                                        zz
+zz                      Like <span class="s2">&#34;z.&#34;</span>, but leavke the cursor in the same column.
+                        Careful: If caps-lock is on, this <span class="nb">command</span> becomes
+                        <span class="s2">&#34;ZZ&#34;</span>: write buffer and exit!
+
+                                                        z-
+z-                      Redraw, line <span class="o">[</span>count<span class="o">]</span> at bottom of window <span class="o">(</span>default
+                        cursor line<span class="o">)</span>.  Put cursor at first non-blank in the
+                        line.
+
+                                                        zb
+zb                      Like <span class="s2">&#34;z-&#34;</span>, but leave the cursor in the same column.
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="find-char-in-line">Find char in line</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">f<span class="o">{</span>char<span class="o">}</span>                 To <span class="o">[</span>count<span class="o">]</span><span class="s1">&#39;th occurrence of {char} to the right.  The
+</span><span class="s1">                        cursor is placed on {char} inclusive.
+</span><span class="s1">                        {char} can be entered as a digraph digraph-arg.
+</span><span class="s1">                        When &#39;</span>encoding<span class="s1">&#39; is set to Unicode, composing
+</span><span class="s1">                        characters may be used, see utf-8-char-arg.
+</span><span class="s1">                        :lmap mappings apply to {char}.  The CTRL-^ command
+</span><span class="s1">                        in Insert mode can be used to switch this on/off
+</span><span class="s1">                        i_CTRL-^.
+</span><span class="s1">
+</span><span class="s1">                                                        F
+</span><span class="s1">F{char}                 To the [count]&#39;</span>th occurrence of <span class="o">{</span>char<span class="o">}</span> to the left.
+                        The cursor is placed on <span class="o">{</span>char<span class="o">}</span> exclusive.
+                        <span class="o">{</span>char<span class="o">}</span> can be entered like with the f command.
+
+                                                        t
+t<span class="o">{</span>char<span class="o">}</span>                 Till before <span class="o">[</span>count<span class="o">]</span><span class="s1">&#39;th occurrence of {char} to the
+</span><span class="s1">                        right.  The cursor is placed on the character left of
+</span><span class="s1">                        {char} inclusive.
+</span><span class="s1">                        {char} can be entered like with the f command.
+</span><span class="s1">
+</span><span class="s1">                                                        T
+</span><span class="s1">T{char}                 Till after [count]&#39;</span>th occurrence of <span class="o">{</span>char<span class="o">}</span> to the
+                        left.  The cursor is placed on the character right of
+                        <span class="o">{</span>char<span class="o">}</span> exclusive.
+                        <span class="o">{</span>char<span class="o">}</span> can be entered like with the f command.
+
+                                                        <span class="p">;</span>
+<span class="p">;</span>                       Repeat latest f, t, F or T <span class="o">[</span>count<span class="o">]</span> times. See cpo-<span class="p">;</span>
+
+                                                        ,
+,                       Repeat latest f, t, F or T in opposite direction
+                        <span class="o">[</span>count<span class="o">]</span> times. See also cpo-<span class="p">;</span>
 </code></pre></td></tr></table>
 </div>
 </div>
