@@ -1,8 +1,0 @@
-
-cd /Users/zero/Projects/Github/sunhao1256.github.io
-hugo
-#git pull
-git add .
-git commit -m 'update'
-git push origin
-echo 'push done'
