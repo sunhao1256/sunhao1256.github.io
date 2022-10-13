@@ -238,6 +238,7 @@ T{char}                 Till after [count]'th occurrence of {char} to the
                                                         ,
 ,                       Repeat latest f, t, F or T in opposite direction
                         [count] times. See also cpo-;
+                        
 ```
 
 
