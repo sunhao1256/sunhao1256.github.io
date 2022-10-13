@@ -1,2 +1,0 @@
-User-agent: *
-Sitemap: http://luluhome.site/sitemap.xml
