@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>mac on Luluhome - a blog for sh , &#39;lulu&#39; is my cat</title>
+    <link>http://luluhome.site/tags/mac/</link>
+    <description>Recent content in mac on Luluhome - a blog for sh , &#39;lulu&#39; is my cat</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 20 Jun 2022 16:57:01 +0800</lastBuildDate><atom:link href="http://luluhome.site/tags/mac/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>mac使用</title>
+      <link>http://luluhome.site/post/mac%E4%BD%BF%E7%94%A8/</link>
+      <pubDate>Mon, 20 Jun 2022 16:57:01 +0800</pubDate>
+      
+      <guid>http://luluhome.site/post/mac%E4%BD%BF%E7%94%A8/</guid>
+      <description>快捷键 Finder绝对路径跳转 command+shift+G Finder绝对路径复制 command+option+C 表情 control+cmmand+space 录屏 Shift-Command-5 截图 command shift 4局部，3全屏 只显示桌面 command f3 finder option+command+空</description>
+    </item>
+    
+  </channel>
+</rss>

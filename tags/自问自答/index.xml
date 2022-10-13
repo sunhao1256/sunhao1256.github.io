@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>自问自答 on Luluhome - a blog for sh , &#39;lulu&#39; is my cat</title>
+    <link>http://luluhome.site/tags/%E8%87%AA%E9%97%AE%E8%87%AA%E7%AD%94/</link>
+    <description>Recent content in 自问自答 on Luluhome - a blog for sh , &#39;lulu&#39; is my cat</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 11 Jan 2022 14:43:18 +0800</lastBuildDate><atom:link href="http://luluhome.site/tags/%E8%87%AA%E9%97%AE%E8%87%AA%E7%AD%94/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>平时疑问</title>
+      <link>http://luluhome.site/post/%E5%B9%B3%E6%97%B6%E7%96%91%E9%97%AE/</link>
+      <pubDate>Tue, 11 Jan 2022 14:43:18 +0800</pubDate>
+      
+      <guid>http://luluhome.site/post/%E5%B9%B3%E6%97%B6%E7%96%91%E9%97%AE/</guid>
+      <description>平时疑问 浏览器输入一个地址，整个流程 如果线上流量暴增，全都打到一个 upstream 上了，怎么排查 如何在 nginx 的 access log 中查出请求前 10 的 ip 台阶问题，假如对于上台阶，</description>
+    </item>
+    
+  </channel>
+</rss>
