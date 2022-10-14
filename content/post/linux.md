@@ -502,6 +502,16 @@ man 命令
 
   可以写一个sheel脚本，然后去执行
 
+crontable **cronFile**
+
+```shell
+# cronFile
+
+0 16 * * * /Users/zero/Projects/Github/sunhao1256.github.io
+```
+
+
+
 # 分区与挂载
 
 ## 分区的方式
