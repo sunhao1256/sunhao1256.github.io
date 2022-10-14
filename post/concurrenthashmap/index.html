@@ -16,7 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="sh" /><meta name="description" content="简介 ConcurrentHashMap是HashMap的线程安全版本，内部也是使用（数组 &#43; 链表 &#43; 红黑树）的结构来存储元素。 相比于同样线程安全" /><meta name="keywords" content="luluhome, java, blog" />
+<meta name="author" content="sh" /><meta name="description" content="摘自：https://www.cnblogs.com/tong-yuan/p/ConcurrentHashMap-resize.html 简介" /><meta name="keywords" content="luluhome, java, blog" />
 
 
 
@@ -40,19 +40,19 @@
 
 
 <meta property="og:title" content="ConcurrentHashMap" />
-<meta property="og:description" content="简介 ConcurrentHashMap是HashMap的线程安全版本，内部也是使用（数组 &#43; 链表 &#43; 红黑树）的结构来存储元素。 相比于同样线程安全" />
+<meta property="og:description" content="摘自：https://www.cnblogs.com/tong-yuan/p/ConcurrentHashMap-resize.html 简介" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="http://luluhome.site/post/concurrenthashmap/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2021-10-12T21:55:51+08:00" />
 <meta property="article:modified_time" content="2022-10-13T16:34:57+08:00" />
 
 <meta itemprop="name" content="ConcurrentHashMap">
-<meta itemprop="description" content="简介 ConcurrentHashMap是HashMap的线程安全版本，内部也是使用（数组 &#43; 链表 &#43; 红黑树）的结构来存储元素。 相比于同样线程安全"><meta itemprop="datePublished" content="2021-10-12T21:55:51+08:00" />
+<meta itemprop="description" content="摘自：https://www.cnblogs.com/tong-yuan/p/ConcurrentHashMap-resize.html 简介"><meta itemprop="datePublished" content="2021-10-12T21:55:51+08:00" />
 <meta itemprop="dateModified" content="2022-10-13T16:34:57+08:00" />
-<meta itemprop="wordCount" content="1978">
+<meta itemprop="wordCount" content="9849">
 <meta itemprop="keywords" content="java基础," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="ConcurrentHashMap"/>
-<meta name="twitter:description" content="简介 ConcurrentHashMap是HashMap的线程安全版本，内部也是使用（数组 &#43; 链表 &#43; 红黑树）的结构来存储元素。 相比于同样线程安全"/>
+<meta name="twitter:description" content="摘自：https://www.cnblogs.com/tong-yuan/p/ConcurrentHashMap-resize.html 简介"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -134,8 +134,8 @@
       <div class="post-meta">
         <span class="post-time"> 2021-10-12 </span>
         
-          <span class="more-meta"> 1978 words </span>
-          <span class="more-meta"> 4 mins read </span>
+          <span class="more-meta"> 9849 words </span>
+          <span class="more-meta"> 20 mins read </span>
         
       </div>
     </header>
@@ -152,12 +152,26 @@
         <li><a href="#提问">提问</a></li>
       </ul>
     </li>
+    <li><a href="#初始化">初始化</a></li>
+    <li><a href="#判断是否需要扩容">判断是否需要扩容</a></li>
+    <li><a href="#迁移元素">迁移元素</a></li>
+    <li><a href="#删除元素">删除元素</a></li>
+    <li><a href="#获取元素">获取元素</a></li>
+    <li><a href="#获取元素个数">获取元素个数</a></li>
+    <li><a href="#总结">总结</a>
+      <ul>
+        <li><a href="#提问-1">提问</a></li>
+      </ul>
+    </li>
   </ul>
 </nav>
   </div>
 </div>
     <div class="post-content">
-      <h1 id="简介">简介</h1>
+      <blockquote>
+<p>摘自：https://www.cnblogs.com/tong-yuan/p/ConcurrentHashMap-resize.html</p>
+</blockquote>
+<h1 id="简介">简介</h1>
 <p>ConcurrentHashMap是HashMap的线程安全版本，内部也是使用（数组 + 链表 + 红黑树）的结构来存储元素。</p>
 <p>相比于同样线程安全的HashTable来说，效率等各方面都有极大地提高。</p>
 <h1 id="构造函数">构造函数</h1>
@@ -458,9 +472,1044 @@
 </div><h2 id="提问">提问</h2>
 <p>为什么Put方法是CAS+Synchronized而不是CAS+CAS，或者Synchronized+Synchronized？</p>
 <ul>
-<li>CAS是通过自旋来实现的无锁，如果在竞争很激烈的情况下，想象一下是不是很多线程都会阻塞在这个循环里。这个时候直接使用互斥锁Synchronized带来的性能收益要远高于CAS，</li>
-<li>而ConcurrentHashMap是在找桶的时候使用CAS，此时竞争不激烈，只是简单尝试一下CAS操作(CAS是利用CPU提供的原子指令操作实现的)。这个时候用Synchronized性能肯定不如CAS的。</li>
-<li>而在后面已经找到桶的情况下，形成了链表或者红黑树场景下，首先此时再进到这段代码，已经意味着在竞争很激烈的场景下了，此时如果自旋CAS大部分都会失败，这个时候Synchronized的性能远高于CAS，并且此时CAS比较的是整个链表或者树了。</li>
+<li>
+<p>CAS是通过自旋来实现的无锁，如果在竞争很激烈的情况下，想象一下是不是很多线程都会阻塞在这个循环里。这个时候直接使用互斥锁Synchronized带来的性能收益要远高于CAS，</p>
+</li>
+<li>
+<p>而ConcurrentHashMap是在找桶的时候使用CAS，此时竞争不激烈，只是简单尝试一下CAS操作(CAS是利用CPU提供的原子指令操作实现的)。这个时候用Synchronized性能肯定不如CAS的。</p>
+</li>
+<li>
+<p>而在后面已经找到桶的情况下，形成了链表或者红黑树场景下，首先此时再进到这段代码，已经意味着在竞争很激烈的场景下了，此时如果自旋CAS大部分都会失败，这个时候Synchronized的性能远高于CAS，并且此时CAS比较的是整个链表或者树了。</p>
+</li>
+<li>
+<p>这里也就是用了“分段锁”，实际上只是针对每个桶，即链表或者是树进行加锁。</p>
+</li>
+</ul>
+<h1 id="初始化">初始化</h1>
+<p>第一次放元素的时候，会检查数组是否为空，然后进行初始化</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">private</span> <span class="kd">final</span> <span class="n">Node</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;[]</span> <span class="nf">initTable</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">Node</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;[]</span> <span class="n">tab</span><span class="o">;</span> <span class="kt">int</span> <span class="n">sc</span><span class="o">;</span>
+    <span class="k">while</span> <span class="o">((</span><span class="n">tab</span> <span class="o">=</span> <span class="n">table</span><span class="o">)</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">tab</span><span class="o">.</span><span class="na">length</span> <span class="o">==</span> <span class="n">0</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">((</span><span class="n">sc</span> <span class="o">=</span> <span class="n">sizeCtl</span><span class="o">)</span> <span class="o">&lt;</span> <span class="n">0</span><span class="o">)</span>
+            <span class="c1">// 如果sizeCtl&lt;0说明正在初始化或者扩容，让出CPU
+</span><span class="c1"></span>            <span class="n">Thread</span><span class="o">.</span><span class="na">yield</span><span class="o">();</span> <span class="c1">// lost initialization race; just spin
+</span><span class="c1"></span>        <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">U</span><span class="o">.</span><span class="na">compareAndSwapInt</span><span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="n">SIZECTL</span><span class="o">,</span> <span class="n">sc</span><span class="o">,</span> <span class="o">-</span><span class="n">1</span><span class="o">))</span> <span class="o">{</span>
+            <span class="c1">// 如果把sizeCtl原子更新为-1成功，则当前线程进入初始化
+</span><span class="c1"></span>            <span class="c1">// 如果原子更新失败则说明有其它线程先一步进入初始化了，则进入下一次循环
+</span><span class="c1"></span>            <span class="c1">// 如果下一次循环时还没初始化完毕，则sizeCtl&lt;0进入上面if的逻辑让出CPU
+</span><span class="c1"></span>            <span class="c1">// 如果下一次循环更新完毕了，则table.length!=0，退出循环
+</span><span class="c1"></span>            <span class="k">try</span> <span class="o">{</span>
+                <span class="c1">// 再次检查table是否为空，防止ABA问题
+</span><span class="c1"></span>                <span class="k">if</span> <span class="o">((</span><span class="n">tab</span> <span class="o">=</span> <span class="n">table</span><span class="o">)</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">tab</span><span class="o">.</span><span class="na">length</span> <span class="o">==</span> <span class="n">0</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="c1">// 如果sc为0则使用默认值16
+</span><span class="c1"></span>                    <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="o">(</span><span class="n">sc</span> <span class="o">&gt;</span> <span class="n">0</span><span class="o">)</span> <span class="o">?</span> <span class="n">sc</span> <span class="o">:</span> <span class="n">DEFAULT_CAPACITY</span><span class="o">;</span>
+                    <span class="c1">// 新建数组
+</span><span class="c1"></span>                    <span class="nd">@SuppressWarnings</span><span class="o">(</span><span class="s">&#34;unchecked&#34;</span><span class="o">)</span>
+                    <span class="n">Node</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;[]</span> <span class="n">nt</span> <span class="o">=</span> <span class="o">(</span><span class="n">Node</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;[])</span><span class="k">new</span> <span class="n">Node</span><span class="o">&lt;?,?&gt;[</span><span class="n">n</span><span class="o">];</span>
+                    <span class="c1">// 赋值给table桶数组
+</span><span class="c1"></span>                    <span class="n">table</span> <span class="o">=</span> <span class="n">tab</span> <span class="o">=</span> <span class="n">nt</span><span class="o">;</span>
+                    <span class="c1">// 设置sc为数组长度的0.75倍
+</span><span class="c1"></span>                    <span class="c1">// n - (n &gt;&gt;&gt; 2) = n - n/4 = 0.75n
+</span><span class="c1"></span>                    <span class="c1">// 可见这里装载因子和扩容门槛都是写死了的
+</span><span class="c1"></span>                    <span class="c1">// 这也正是没有threshold和loadFactor属性的原因
+</span><span class="c1"></span>                    <span class="n">sc</span> <span class="o">=</span> <span class="n">n</span> <span class="o">-</span> <span class="o">(</span><span class="n">n</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">2</span><span class="o">);</span>
+                <span class="o">}</span>
+            <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+                <span class="c1">// 把sc赋值给sizeCtl，这时存储的是扩容门槛
+</span><span class="c1"></span>                <span class="n">sizeCtl</span> <span class="o">=</span> <span class="n">sc</span><span class="o">;</span>
+            <span class="o">}</span>
+            <span class="k">break</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">tab</span><span class="o">;</span>
+<span class="o">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><p>（1）使用CAS锁控制只有一个线程初始化桶数组；</p>
+<p>（2）sizeCtl在初始化后存储的是扩容门槛；</p>
+<p>（3）扩容门槛写死的是桶数组大小的0.75倍，桶数组大小即map的容量，也就是最多存储多少个元素。</p>
+<h1 id="判断是否需要扩容">判断是否需要扩容</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">private</span> <span class="kd">final</span> <span class="kt">void</span> <span class="nf">addCount</span><span class="o">(</span><span class="kt">long</span> <span class="n">x</span><span class="o">,</span> <span class="kt">int</span> <span class="n">check</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">CounterCell</span><span class="o">[]</span> <span class="n">as</span><span class="o">;</span> <span class="kt">long</span> <span class="n">b</span><span class="o">,</span> <span class="n">s</span><span class="o">;</span>
+    <span class="c1">// 这里使用的思想跟LongAdder类是一模一样的（后面会讲）
+</span><span class="c1"></span>    <span class="c1">// 把数组的大小存储根据不同的线程存储到不同的段上（也是分段锁的思想）
+</span><span class="c1"></span>    <span class="c1">// 并且有一个baseCount，优先更新baseCount，如果失败了再更新不同线程对应的段
+</span><span class="c1"></span>    <span class="c1">// 这样可以保证尽量小的减少冲突
+</span><span class="c1"></span>
+    <span class="c1">// 先尝试把数量加到baseCount上，如果失败再加到分段的CounterCell上
+</span><span class="c1"></span>    <span class="k">if</span> <span class="o">((</span><span class="n">as</span> <span class="o">=</span> <span class="n">counterCells</span><span class="o">)</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">||</span>
+            <span class="o">!</span><span class="n">U</span><span class="o">.</span><span class="na">compareAndSwapLong</span><span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="n">BASECOUNT</span><span class="o">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">baseCount</span><span class="o">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">b</span> <span class="o">+</span> <span class="n">x</span><span class="o">))</span> <span class="o">{</span>
+        <span class="n">CounterCell</span> <span class="n">a</span><span class="o">;</span> <span class="kt">long</span> <span class="n">v</span><span class="o">;</span> <span class="kt">int</span> <span class="n">m</span><span class="o">;</span>
+        <span class="kt">boolean</span> <span class="n">uncontended</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+        <span class="c1">// 如果as为空
+</span><span class="c1"></span>        <span class="c1">// 或者长度为0
+</span><span class="c1"></span>        <span class="c1">// 或者当前线程所在的段为null
+</span><span class="c1"></span>        <span class="c1">// 或者在当前线程的段上加数量失败
+</span><span class="c1"></span>        <span class="k">if</span> <span class="o">(</span><span class="n">as</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="o">(</span><span class="n">m</span> <span class="o">=</span> <span class="n">as</span><span class="o">.</span><span class="na">length</span> <span class="o">-</span> <span class="n">1</span><span class="o">)</span> <span class="o">&lt;</span> <span class="n">0</span> <span class="o">||</span>
+                <span class="o">(</span><span class="n">a</span> <span class="o">=</span> <span class="n">as</span><span class="o">[</span><span class="n">ThreadLocalRandom</span><span class="o">.</span><span class="na">getProbe</span><span class="o">()</span> <span class="o">&amp;</span> <span class="n">m</span><span class="o">])</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span>
+                <span class="o">!(</span><span class="n">uncontended</span> <span class="o">=</span>
+                        <span class="n">U</span><span class="o">.</span><span class="na">compareAndSwapLong</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">CELLVALUE</span><span class="o">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="na">value</span><span class="o">,</span> <span class="n">v</span> <span class="o">+</span> <span class="n">x</span><span class="o">)))</span> <span class="o">{</span>
+            <span class="c1">// 强制增加数量（无论如何数量是一定要加上的，并不是简单地自旋）
+</span><span class="c1"></span>            <span class="c1">// 不同线程对应不同的段都更新失败了
+</span><span class="c1"></span>            <span class="c1">// 说明已经发生冲突了，那么就对counterCells进行扩容
+</span><span class="c1"></span>            <span class="c1">// 以减少多个线程hash到同一个段的概率
+</span><span class="c1"></span>            <span class="n">fullAddCount</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">uncontended</span><span class="o">);</span>
+            <span class="k">return</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">check</span> <span class="o">&lt;=</span> <span class="n">1</span><span class="o">)</span>
+            <span class="k">return</span><span class="o">;</span>
+        <span class="c1">// 计算元素个数
+</span><span class="c1"></span>        <span class="n">s</span> <span class="o">=</span> <span class="n">sumCount</span><span class="o">();</span>
+    <span class="o">}</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">check</span> <span class="o">&gt;=</span> <span class="n">0</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">Node</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;[]</span> <span class="n">tab</span><span class="o">,</span> <span class="n">nt</span><span class="o">;</span> <span class="kt">int</span> <span class="n">n</span><span class="o">,</span> <span class="n">sc</span><span class="o">;</span>
+        <span class="c1">// 如果元素个数达到了扩容门槛，则进行扩容
+</span><span class="c1"></span>        <span class="c1">// 注意，正常情况下sizeCtl存储的是扩容门槛，即容量的0.75倍
+</span><span class="c1"></span>        <span class="k">while</span> <span class="o">(</span><span class="n">s</span> <span class="o">&gt;=</span> <span class="o">(</span><span class="kt">long</span><span class="o">)(</span><span class="n">sc</span> <span class="o">=</span> <span class="n">sizeCtl</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="o">(</span><span class="n">tab</span> <span class="o">=</span> <span class="n">table</span><span class="o">)</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span>
+                <span class="o">(</span><span class="n">n</span> <span class="o">=</span> <span class="n">tab</span><span class="o">.</span><span class="na">length</span><span class="o">)</span> <span class="o">&lt;</span> <span class="n">MAXIMUM_CAPACITY</span><span class="o">)</span> <span class="o">{</span>
+            <span class="c1">// rs是扩容时的一个邮戳标识
+</span><span class="c1"></span>            <span class="kt">int</span> <span class="n">rs</span> <span class="o">=</span> <span class="n">resizeStamp</span><span class="o">(</span><span class="n">n</span><span class="o">);</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">sc</span> <span class="o">&lt;</span> <span class="n">0</span><span class="o">)</span> <span class="o">{</span>
+                <span class="c1">// sc&lt;0说明正在扩容中
+</span><span class="c1"></span>                <span class="k">if</span> <span class="o">((</span><span class="n">sc</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">RESIZE_STAMP_SHIFT</span><span class="o">)</span> <span class="o">!=</span> <span class="n">rs</span> <span class="o">||</span> <span class="n">sc</span> <span class="o">==</span> <span class="n">rs</span> <span class="o">+</span> <span class="n">1</span> <span class="o">||</span>
+                        <span class="n">sc</span> <span class="o">==</span> <span class="n">rs</span> <span class="o">+</span> <span class="n">MAX_RESIZERS</span> <span class="o">||</span> <span class="o">(</span><span class="n">nt</span> <span class="o">=</span> <span class="n">nextTable</span><span class="o">)</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span>
+                        <span class="n">transferIndex</span> <span class="o">&lt;=</span> <span class="n">0</span><span class="o">)</span>
+                    <span class="c1">// 扩容已经完成了，退出循环
+</span><span class="c1"></span>                    <span class="c1">// 正常应该只会触发nextTable==null这个条件，其它条件没看出来何时触发
+</span><span class="c1"></span>                    <span class="k">break</span><span class="o">;</span>
+
+                <span class="c1">// 扩容未完成，则当前线程加入迁移元素中
+</span><span class="c1"></span>                <span class="c1">// 并把扩容线程数加1
+</span><span class="c1"></span>                <span class="k">if</span> <span class="o">(</span><span class="n">U</span><span class="o">.</span><span class="na">compareAndSwapInt</span><span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="n">SIZECTL</span><span class="o">,</span> <span class="n">sc</span><span class="o">,</span> <span class="n">sc</span> <span class="o">+</span> <span class="n">1</span><span class="o">))</span>
+                    <span class="n">transfer</span><span class="o">(</span><span class="n">tab</span><span class="o">,</span> <span class="n">nt</span><span class="o">);</span>
+            <span class="o">}</span>
+            <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">U</span><span class="o">.</span><span class="na">compareAndSwapInt</span><span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="n">SIZECTL</span><span class="o">,</span> <span class="n">sc</span><span class="o">,</span>
+                    <span class="o">(</span><span class="n">rs</span> <span class="o">&lt;&lt;</span> <span class="n">RESIZE_STAMP_SHIFT</span><span class="o">)</span> <span class="o">+</span> <span class="n">2</span><span class="o">))</span>
+                <span class="c1">// 这里是触发扩容的那个线程进入的地方
+</span><span class="c1"></span>                <span class="c1">// sizeCtl的高16位存储着rs这个扩容邮戳
+</span><span class="c1"></span>                <span class="c1">// sizeCtl的低16位存储着扩容线程数加1，即(1+nThreads)
+</span><span class="c1"></span>                <span class="c1">// 所以官方说的扩容时sizeCtl的值为 -(1+nThreads)是错误的
+</span><span class="c1"></span>
+                <span class="c1">// 进入迁移元素
+</span><span class="c1"></span>                <span class="n">transfer</span><span class="o">(</span><span class="n">tab</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+            <span class="c1">// 重新计算元素个数
+</span><span class="c1"></span>            <span class="n">s</span> <span class="o">=</span> <span class="n">sumCount</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><p>（1）元素个数的存储方式类似于LongAdder类，存储在不同的段上，减少不同线程同时更新size时的冲突；</p>
+<p>（2）计算元素个数时把这些段的值及baseCount相加算出总的元素个数；</p>
+<p>（3）正常情况下sizeCtl存储着扩容门槛，扩容门槛为容量的0.75倍；</p>
+<p>（4）扩容时sizeCtl高位存储扩容邮戳(resizeStamp)，低位存储扩容线程数加1（1+nThreads）；</p>
+<p>（5）其它线程添加元素后如果发现存在扩容，也会加入的扩容行列中来；</p>
+<h1 id="迁移元素">迁移元素</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span><span class="lnt">141
+</span><span class="lnt">142
+</span><span class="lnt">143
+</span><span class="lnt">144
+</span><span class="lnt">145
+</span><span class="lnt">146
+</span><span class="lnt">147
+</span><span class="lnt">148
+</span><span class="lnt">149
+</span><span class="lnt">150
+</span><span class="lnt">151
+</span><span class="lnt">152
+</span><span class="lnt">153
+</span><span class="lnt">154
+</span><span class="lnt">155
+</span><span class="lnt">156
+</span><span class="lnt">157
+</span><span class="lnt">158
+</span><span class="lnt">159
+</span><span class="lnt">160
+</span><span class="lnt">161
+</span><span class="lnt">162
+</span><span class="lnt">163
+</span><span class="lnt">164
+</span><span class="lnt">165
+</span><span class="lnt">166
+</span><span class="lnt">167
+</span><span class="lnt">168
+</span><span class="lnt">169
+</span><span class="lnt">170
+</span><span class="lnt">171
+</span><span class="lnt">172
+</span><span class="lnt">173
+</span><span class="lnt">174
+</span><span class="lnt">175
+</span><span class="lnt">176
+</span><span class="lnt">177
+</span><span class="lnt">178
+</span><span class="lnt">179
+</span><span class="lnt">180
+</span><span class="lnt">181
+</span><span class="lnt">182
+</span><span class="lnt">183
+</span><span class="lnt">184
+</span><span class="lnt">185
+</span><span class="lnt">186
+</span><span class="lnt">187
+</span><span class="lnt">188
+</span><span class="lnt">189
+</span><span class="lnt">190
+</span><span class="lnt">191
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">private</span> <span class="kd">final</span> <span class="kt">void</span> <span class="nf">transfer</span><span class="o">(</span><span class="n">Node</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;[]</span> <span class="n">tab</span><span class="o">,</span> <span class="n">Node</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;[]</span> <span class="n">nextTab</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">tab</span><span class="o">.</span><span class="na">length</span><span class="o">,</span> <span class="n">stride</span><span class="o">;</span>
+    <span class="k">if</span> <span class="o">((</span><span class="n">stride</span> <span class="o">=</span> <span class="o">(</span><span class="n">NCPU</span> <span class="o">&gt;</span> <span class="n">1</span><span class="o">)</span> <span class="o">?</span> <span class="o">(</span><span class="n">n</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">3</span><span class="o">)</span> <span class="o">/</span> <span class="n">NCPU</span> <span class="o">:</span> <span class="n">n</span><span class="o">)</span> <span class="o">&lt;</span> <span class="n">MIN_TRANSFER_STRIDE</span><span class="o">)</span>
+        <span class="n">stride</span> <span class="o">=</span> <span class="n">MIN_TRANSFER_STRIDE</span><span class="o">;</span> <span class="c1">// subdivide range
+</span><span class="c1"></span>    <span class="k">if</span> <span class="o">(</span><span class="n">nextTab</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>            <span class="c1">// initiating
+</span><span class="c1"></span>        <span class="c1">// 如果nextTab为空，说明还没开始迁移
+</span><span class="c1"></span>        <span class="c1">// 就新建一个新桶数组
+</span><span class="c1"></span>        <span class="k">try</span> <span class="o">{</span>
+            <span class="c1">// 新桶数组是原桶的两倍
+</span><span class="c1"></span>            <span class="nd">@SuppressWarnings</span><span class="o">(</span><span class="s">&#34;unchecked&#34;</span><span class="o">)</span>
+            <span class="n">Node</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;[]</span> <span class="n">nt</span> <span class="o">=</span> <span class="o">(</span><span class="n">Node</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;[])</span><span class="k">new</span> <span class="n">Node</span><span class="o">&lt;?,?&gt;[</span><span class="n">n</span> <span class="o">&lt;&lt;</span> <span class="n">1</span><span class="o">];</span>
+            <span class="n">nextTab</span> <span class="o">=</span> <span class="n">nt</span><span class="o">;</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Throwable</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span>      <span class="c1">// try to cope with OOME
+</span><span class="c1"></span>            <span class="n">sizeCtl</span> <span class="o">=</span> <span class="n">Integer</span><span class="o">.</span><span class="na">MAX_VALUE</span><span class="o">;</span>
+            <span class="k">return</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="n">nextTable</span> <span class="o">=</span> <span class="n">nextTab</span><span class="o">;</span>
+        <span class="n">transferIndex</span> <span class="o">=</span> <span class="n">n</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="c1">// 新桶数组大小
+</span><span class="c1"></span>    <span class="kt">int</span> <span class="n">nextn</span> <span class="o">=</span> <span class="n">nextTab</span><span class="o">.</span><span class="na">length</span><span class="o">;</span>
+    <span class="c1">// 新建一个ForwardingNode类型的节点，并把新桶数组存储在里面
+</span><span class="c1"></span>    <span class="n">ForwardingNode</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">fwd</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ForwardingNode</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;(</span><span class="n">nextTab</span><span class="o">);</span>
+    <span class="kt">boolean</span> <span class="n">advance</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="kt">boolean</span> <span class="n">finishing</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span> <span class="c1">// to ensure sweep before committing nextTab
+</span><span class="c1"></span>    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span><span class="o">,</span> <span class="n">bound</span> <span class="o">=</span> <span class="n">0</span><span class="o">;;)</span> <span class="o">{</span>
+        <span class="n">Node</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">f</span><span class="o">;</span> <span class="kt">int</span> <span class="n">fh</span><span class="o">;</span>
+        <span class="c1">// 整个while循环就是在算i的值，过程太复杂，不用太关心
+</span><span class="c1"></span>        <span class="c1">// i的值会从n-1依次递减，感兴趣的可以打下断点就知道了
+</span><span class="c1"></span>        <span class="c1">// 其中n是旧桶数组的大小，也就是说i从15开始一直减到1这样去迁移元素
+</span><span class="c1"></span>        <span class="k">while</span> <span class="o">(</span><span class="n">advance</span><span class="o">)</span> <span class="o">{</span>
+            <span class="kt">int</span> <span class="n">nextIndex</span><span class="o">,</span> <span class="n">nextBound</span><span class="o">;</span>
+            <span class="k">if</span> <span class="o">(--</span><span class="n">i</span> <span class="o">&gt;=</span> <span class="n">bound</span> <span class="o">||</span> <span class="n">finishing</span><span class="o">)</span>
+                <span class="n">advance</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+            <span class="k">else</span> <span class="k">if</span> <span class="o">((</span><span class="n">nextIndex</span> <span class="o">=</span> <span class="n">transferIndex</span><span class="o">)</span> <span class="o">&lt;=</span> <span class="n">0</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="o">-</span><span class="n">1</span><span class="o">;</span>
+                <span class="n">advance</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+            <span class="o">}</span>
+            <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">U</span><span class="o">.</span><span class="na">compareAndSwapInt</span>
+                    <span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="n">TRANSFERINDEX</span><span class="o">,</span> <span class="n">nextIndex</span><span class="o">,</span>
+                            <span class="n">nextBound</span> <span class="o">=</span> <span class="o">(</span><span class="n">nextIndex</span> <span class="o">&gt;</span> <span class="n">stride</span> <span class="o">?</span>
+                                    <span class="n">nextIndex</span> <span class="o">-</span> <span class="n">stride</span> <span class="o">:</span> <span class="n">0</span><span class="o">)))</span> <span class="o">{</span>
+                <span class="n">bound</span> <span class="o">=</span> <span class="n">nextBound</span><span class="o">;</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="n">nextIndex</span> <span class="o">-</span> <span class="n">1</span><span class="o">;</span>
+                <span class="n">advance</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">0</span> <span class="o">||</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="n">n</span> <span class="o">||</span> <span class="n">i</span> <span class="o">+</span> <span class="n">n</span> <span class="o">&gt;=</span> <span class="n">nextn</span><span class="o">)</span> <span class="o">{</span>
+            <span class="c1">// 如果一次遍历完成了
+</span><span class="c1"></span>            <span class="c1">// 也就是整个map所有桶中的元素都迁移完成了
+</span><span class="c1"></span>            <span class="kt">int</span> <span class="n">sc</span><span class="o">;</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">finishing</span><span class="o">)</span> <span class="o">{</span>
+                <span class="c1">// 如果全部迁移完成了，则替换旧桶数组
+</span><span class="c1"></span>                <span class="c1">// 并设置下一次扩容门槛为新桶数组容量的0.75倍
+</span><span class="c1"></span>                <span class="n">nextTable</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+                <span class="n">table</span> <span class="o">=</span> <span class="n">nextTab</span><span class="o">;</span>
+                <span class="n">sizeCtl</span> <span class="o">=</span> <span class="o">(</span><span class="n">n</span> <span class="o">&lt;&lt;</span> <span class="n">1</span><span class="o">)</span> <span class="o">-</span> <span class="o">(</span><span class="n">n</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">1</span><span class="o">);</span>
+                <span class="k">return</span><span class="o">;</span>
+            <span class="o">}</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">U</span><span class="o">.</span><span class="na">compareAndSwapInt</span><span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="n">SIZECTL</span><span class="o">,</span> <span class="n">sc</span> <span class="o">=</span> <span class="n">sizeCtl</span><span class="o">,</span> <span class="n">sc</span> <span class="o">-</span> <span class="n">1</span><span class="o">))</span> <span class="o">{</span>
+                <span class="c1">// 当前线程扩容完成，把扩容线程数-1
+</span><span class="c1"></span>                <span class="k">if</span> <span class="o">((</span><span class="n">sc</span> <span class="o">-</span> <span class="n">2</span><span class="o">)</span> <span class="o">!=</span> <span class="n">resizeStamp</span><span class="o">(</span><span class="n">n</span><span class="o">)</span> <span class="o">&lt;&lt;</span> <span class="n">RESIZE_STAMP_SHIFT</span><span class="o">)</span>
+                    <span class="c1">// 扩容完成两边肯定相等
+</span><span class="c1"></span>                    <span class="k">return</span><span class="o">;</span>
+                <span class="c1">// 把finishing设置为true
+</span><span class="c1"></span>                <span class="c1">// finishing为true才会走到上面的if条件
+</span><span class="c1"></span>                <span class="n">finishing</span> <span class="o">=</span> <span class="n">advance</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+                <span class="c1">// i重新赋值为n
+</span><span class="c1"></span>                <span class="c1">// 这样会再重新遍历一次桶数组，看看是不是都迁移完成了
+</span><span class="c1"></span>                <span class="c1">// 也就是第二次遍历都会走到下面的(fh = f.hash) == MOVED这个条件
+</span><span class="c1"></span>                <span class="n">i</span> <span class="o">=</span> <span class="n">n</span><span class="o">;</span> <span class="c1">// recheck before commit
+</span><span class="c1"></span>            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="o">((</span><span class="n">f</span> <span class="o">=</span> <span class="n">tabAt</span><span class="o">(</span><span class="n">tab</span><span class="o">,</span> <span class="n">i</span><span class="o">))</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span>
+            <span class="c1">// 如果桶中无数据，直接放入ForwardingNode标记该桶已迁移
+</span><span class="c1"></span>            <span class="n">advance</span> <span class="o">=</span> <span class="n">casTabAt</span><span class="o">(</span><span class="n">tab</span><span class="o">,</span> <span class="n">i</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="n">fwd</span><span class="o">);</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="o">((</span><span class="n">fh</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="na">hash</span><span class="o">)</span> <span class="o">==</span> <span class="n">MOVED</span><span class="o">)</span>
+            <span class="c1">// 如果桶中第一个元素的hash值为MOVED
+</span><span class="c1"></span>            <span class="c1">// 说明它是ForwardingNode节点
+</span><span class="c1"></span>            <span class="c1">// 也就是该桶已迁移
+</span><span class="c1"></span>            <span class="n">advance</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span> <span class="c1">// already processed
+</span><span class="c1"></span>        <span class="k">else</span> <span class="o">{</span>
+            <span class="c1">// 锁定该桶并迁移元素
+</span><span class="c1"></span>            <span class="kd">synchronized</span> <span class="o">(</span><span class="n">f</span><span class="o">)</span> <span class="o">{</span>
+                <span class="c1">// 再次判断当前桶第一个元素是否有修改
+</span><span class="c1"></span>                <span class="c1">// 也就是可能其它线程先一步迁移了元素
+</span><span class="c1"></span>                <span class="k">if</span> <span class="o">(</span><span class="n">tabAt</span><span class="o">(</span><span class="n">tab</span><span class="o">,</span> <span class="n">i</span><span class="o">)</span> <span class="o">==</span> <span class="n">f</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="c1">// 把一个链表分化成两个链表
+</span><span class="c1"></span>                    <span class="c1">// 规则是桶中各元素的hash与桶大小n进行与操作
+</span><span class="c1"></span>                    <span class="c1">// 等于0的放到低位链表(low)中，不等于0的放到高位链表(high)中
+</span><span class="c1"></span>                    <span class="c1">// 其中低位链表迁移到新桶中的位置相对旧桶不变
+</span><span class="c1"></span>                    <span class="c1">// 高位链表迁移到新桶中位置正好是其在旧桶的位置加n
+</span><span class="c1"></span>                    <span class="c1">// 这也正是为什么扩容时容量在变成两倍的原因
+</span><span class="c1"></span>                    <span class="n">Node</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">ln</span><span class="o">,</span> <span class="n">hn</span><span class="o">;</span>
+                    <span class="k">if</span> <span class="o">(</span><span class="n">fh</span> <span class="o">&gt;=</span> <span class="n">0</span><span class="o">)</span> <span class="o">{</span>
+                        <span class="c1">// 第一个元素的hash值大于等于0
+</span><span class="c1"></span>                        <span class="c1">// 说明该桶中元素是以链表形式存储的
+</span><span class="c1"></span>                        <span class="c1">// 这里与HashMap迁移算法基本类似
+</span><span class="c1"></span>                        <span class="c1">// 唯一不同的是多了一步寻找lastRun
+</span><span class="c1"></span>                        <span class="c1">// 这里的lastRun是提取出链表后面不用处理再特殊处理的子链表
+</span><span class="c1"></span>                        <span class="c1">// 比如所有元素的hash值与桶大小n与操作后的值分别为 0 0 4 4 0 0 0
+</span><span class="c1"></span>                        <span class="c1">// 则最后后面三个0对应的元素肯定还是在同一个桶中
+</span><span class="c1"></span>                        <span class="c1">// 这时lastRun对应的就是倒数第三个节点
+</span><span class="c1"></span>                        <span class="c1">// 至于为啥要这样处理，我也没太搞明白
+</span><span class="c1"></span>                        <span class="kt">int</span> <span class="n">runBit</span> <span class="o">=</span> <span class="n">fh</span> <span class="o">&amp;</span> <span class="n">n</span><span class="o">;</span>
+                        <span class="n">Node</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">lastRun</span> <span class="o">=</span> <span class="n">f</span><span class="o">;</span>
+                        <span class="k">for</span> <span class="o">(</span><span class="n">Node</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">p</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="na">next</span><span class="o">;</span> <span class="n">p</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">;</span> <span class="n">p</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="na">next</span><span class="o">)</span> <span class="o">{</span>
+                            <span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="na">hash</span> <span class="o">&amp;</span> <span class="n">n</span><span class="o">;</span>
+                            <span class="k">if</span> <span class="o">(</span><span class="n">b</span> <span class="o">!=</span> <span class="n">runBit</span><span class="o">)</span> <span class="o">{</span>
+                                <span class="n">runBit</span> <span class="o">=</span> <span class="n">b</span><span class="o">;</span>
+                                <span class="n">lastRun</span> <span class="o">=</span> <span class="n">p</span><span class="o">;</span>
+                            <span class="o">}</span>
+                        <span class="o">}</span>
+                        <span class="c1">// 看看最后这几个元素归属于低位链表还是高位链表
+</span><span class="c1"></span>                        <span class="k">if</span> <span class="o">(</span><span class="n">runBit</span> <span class="o">==</span> <span class="n">0</span><span class="o">)</span> <span class="o">{</span>
+                            <span class="n">ln</span> <span class="o">=</span> <span class="n">lastRun</span><span class="o">;</span>
+                            <span class="n">hn</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+                        <span class="o">}</span>
+                        <span class="k">else</span> <span class="o">{</span>
+                            <span class="n">hn</span> <span class="o">=</span> <span class="n">lastRun</span><span class="o">;</span>
+                            <span class="n">ln</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+                        <span class="o">}</span>
+                        <span class="c1">// 遍历链表，把hash&amp;n为0的放在低位链表中
+</span><span class="c1"></span>                        <span class="c1">// 不为0的放在高位链表中
+</span><span class="c1"></span>                        <span class="k">for</span> <span class="o">(</span><span class="n">Node</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">p</span> <span class="o">=</span> <span class="n">f</span><span class="o">;</span> <span class="n">p</span> <span class="o">!=</span> <span class="n">lastRun</span><span class="o">;</span> <span class="n">p</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="na">next</span><span class="o">)</span> <span class="o">{</span>
+                            <span class="kt">int</span> <span class="n">ph</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="na">hash</span><span class="o">;</span> <span class="n">K</span> <span class="n">pk</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="na">key</span><span class="o">;</span> <span class="n">V</span> <span class="n">pv</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="na">val</span><span class="o">;</span>
+                            <span class="k">if</span> <span class="o">((</span><span class="n">ph</span> <span class="o">&amp;</span> <span class="n">n</span><span class="o">)</span> <span class="o">==</span> <span class="n">0</span><span class="o">)</span>
+                                <span class="n">ln</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Node</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;(</span><span class="n">ph</span><span class="o">,</span> <span class="n">pk</span><span class="o">,</span> <span class="n">pv</span><span class="o">,</span> <span class="n">ln</span><span class="o">);</span>
+                            <span class="k">else</span>
+                                <span class="n">hn</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Node</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;(</span><span class="n">ph</span><span class="o">,</span> <span class="n">pk</span><span class="o">,</span> <span class="n">pv</span><span class="o">,</span> <span class="n">hn</span><span class="o">);</span>
+                        <span class="o">}</span>
+                        <span class="c1">// 低位链表的位置不变
+</span><span class="c1"></span>                        <span class="n">setTabAt</span><span class="o">(</span><span class="n">nextTab</span><span class="o">,</span> <span class="n">i</span><span class="o">,</span> <span class="n">ln</span><span class="o">);</span>
+                        <span class="c1">// 高位链表的位置是原位置加n
+</span><span class="c1"></span>                        <span class="n">setTabAt</span><span class="o">(</span><span class="n">nextTab</span><span class="o">,</span> <span class="n">i</span> <span class="o">+</span> <span class="n">n</span><span class="o">,</span> <span class="n">hn</span><span class="o">);</span>
+                        <span class="c1">// 标记当前桶已迁移
+</span><span class="c1"></span>                        <span class="n">setTabAt</span><span class="o">(</span><span class="n">tab</span><span class="o">,</span> <span class="n">i</span><span class="o">,</span> <span class="n">fwd</span><span class="o">);</span>
+                        <span class="c1">// advance为true，返回上面进行--i操作
+</span><span class="c1"></span>                        <span class="n">advance</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+                    <span class="o">}</span>
+                    <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">f</span> <span class="k">instanceof</span> <span class="n">TreeBin</span><span class="o">)</span> <span class="o">{</span>
+                        <span class="c1">// 如果第一个元素是树节点
+</span><span class="c1"></span>                        <span class="c1">// 也是一样，分化成两颗树
+</span><span class="c1"></span>                        <span class="c1">// 也是根据hash&amp;n为0放在低位树中
+</span><span class="c1"></span>                        <span class="c1">// 不为0放在高位树中
+</span><span class="c1"></span>                        <span class="n">TreeBin</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">t</span> <span class="o">=</span> <span class="o">(</span><span class="n">TreeBin</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;)</span><span class="n">f</span><span class="o">;</span>
+                        <span class="n">TreeNode</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">lo</span> <span class="o">=</span> <span class="kc">null</span><span class="o">,</span> <span class="n">loTail</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+                        <span class="n">TreeNode</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">hi</span> <span class="o">=</span> <span class="kc">null</span><span class="o">,</span> <span class="n">hiTail</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+                        <span class="kt">int</span> <span class="n">lc</span> <span class="o">=</span> <span class="n">0</span><span class="o">,</span> <span class="n">hc</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span>
+                        <span class="c1">// 遍历整颗树，根据hash&amp;n是否为0分化成两颗树
+</span><span class="c1"></span>                        <span class="k">for</span> <span class="o">(</span><span class="n">Node</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">e</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="na">first</span><span class="o">;</span> <span class="n">e</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">;</span> <span class="n">e</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">next</span><span class="o">)</span> <span class="o">{</span>
+                            <span class="kt">int</span> <span class="n">h</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">hash</span><span class="o">;</span>
+                            <span class="n">TreeNode</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">p</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TreeNode</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span>
+                                    <span class="o">(</span><span class="n">h</span><span class="o">,</span> <span class="n">e</span><span class="o">.</span><span class="na">key</span><span class="o">,</span> <span class="n">e</span><span class="o">.</span><span class="na">val</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+                            <span class="k">if</span> <span class="o">((</span><span class="n">h</span> <span class="o">&amp;</span> <span class="n">n</span><span class="o">)</span> <span class="o">==</span> <span class="n">0</span><span class="o">)</span> <span class="o">{</span>
+                                <span class="k">if</span> <span class="o">((</span><span class="n">p</span><span class="o">.</span><span class="na">prev</span> <span class="o">=</span> <span class="n">loTail</span><span class="o">)</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span>
+                                    <span class="n">lo</span> <span class="o">=</span> <span class="n">p</span><span class="o">;</span>
+                                <span class="k">else</span>
+                                    <span class="n">loTail</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="n">p</span><span class="o">;</span>
+                                <span class="n">loTail</span> <span class="o">=</span> <span class="n">p</span><span class="o">;</span>
+                                <span class="o">++</span><span class="n">lc</span><span class="o">;</span>
+                            <span class="o">}</span>
+                            <span class="k">else</span> <span class="o">{</span>
+                                <span class="k">if</span> <span class="o">((</span><span class="n">p</span><span class="o">.</span><span class="na">prev</span> <span class="o">=</span> <span class="n">hiTail</span><span class="o">)</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span>
+                                    <span class="n">hi</span> <span class="o">=</span> <span class="n">p</span><span class="o">;</span>
+                                <span class="k">else</span>
+                                    <span class="n">hiTail</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="n">p</span><span class="o">;</span>
+                                <span class="n">hiTail</span> <span class="o">=</span> <span class="n">p</span><span class="o">;</span>
+                                <span class="o">++</span><span class="n">hc</span><span class="o">;</span>
+                            <span class="o">}</span>
+                        <span class="o">}</span>
+                        <span class="c1">// 如果分化的树中元素个数小于等于6，则退化成链表
+</span><span class="c1"></span>                        <span class="n">ln</span> <span class="o">=</span> <span class="o">(</span><span class="n">lc</span> <span class="o">&lt;=</span> <span class="n">UNTREEIFY_THRESHOLD</span><span class="o">)</span> <span class="o">?</span> <span class="n">untreeify</span><span class="o">(</span><span class="n">lo</span><span class="o">)</span> <span class="o">:</span>
+                                <span class="o">(</span><span class="n">hc</span> <span class="o">!=</span> <span class="n">0</span><span class="o">)</span> <span class="o">?</span> <span class="k">new</span> <span class="n">TreeBin</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;(</span><span class="n">lo</span><span class="o">)</span> <span class="o">:</span> <span class="n">t</span><span class="o">;</span>
+                        <span class="n">hn</span> <span class="o">=</span> <span class="o">(</span><span class="n">hc</span> <span class="o">&lt;=</span> <span class="n">UNTREEIFY_THRESHOLD</span><span class="o">)</span> <span class="o">?</span> <span class="n">untreeify</span><span class="o">(</span><span class="n">hi</span><span class="o">)</span> <span class="o">:</span>
+                                <span class="o">(</span><span class="n">lc</span> <span class="o">!=</span> <span class="n">0</span><span class="o">)</span> <span class="o">?</span> <span class="k">new</span> <span class="n">TreeBin</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;(</span><span class="n">hi</span><span class="o">)</span> <span class="o">:</span> <span class="n">t</span><span class="o">;</span>
+                        <span class="c1">// 低位树的位置不变
+</span><span class="c1"></span>                        <span class="n">setTabAt</span><span class="o">(</span><span class="n">nextTab</span><span class="o">,</span> <span class="n">i</span><span class="o">,</span> <span class="n">ln</span><span class="o">);</span>
+                        <span class="c1">// 高位树的位置是原位置加n
+</span><span class="c1"></span>                        <span class="n">setTabAt</span><span class="o">(</span><span class="n">nextTab</span><span class="o">,</span> <span class="n">i</span> <span class="o">+</span> <span class="n">n</span><span class="o">,</span> <span class="n">hn</span><span class="o">);</span>
+                        <span class="c1">// 标记该桶已迁移
+</span><span class="c1"></span>                        <span class="n">setTabAt</span><span class="o">(</span><span class="n">tab</span><span class="o">,</span> <span class="n">i</span><span class="o">,</span> <span class="n">fwd</span><span class="o">);</span>
+                        <span class="c1">// advance为true，返回上面进行--i操作
+</span><span class="c1"></span>                        <span class="n">advance</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+                    <span class="o">}</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><p>（1）新桶数组大小是旧桶数组的两倍；</p>
+<p>（2）迁移元素先从靠后的桶开始；</p>
+<p>（3）迁移完成的桶在里面放置一ForwardingNode类型的元素，标记该桶迁移完成；</p>
+<p>（4）迁移时根据hash&amp;n是否等于0把桶中元素分化成两个链表或树；</p>
+<p>（5）低位链表（树）存储在原来的位置；</p>
+<p>（6）高们链表（树）存储在原来的位置加n的位置；</p>
+<p>（7）迁移元素时会锁住当前桶，也是分段锁的思想；</p>
+<h1 id="删除元素">删除元素</h1>
+<p>删除元素跟添加元素一样，都是先找到元素所在的桶，然后采用分段锁的思想锁住整个桶，再进行操作。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="n">V</span> <span class="nf">remove</span><span class="o">(</span><span class="n">Object</span> <span class="n">key</span><span class="o">)</span> <span class="o">{</span>
+    <span class="c1">// 调用替换节点方法
+</span><span class="c1"></span>    <span class="k">return</span> <span class="n">replaceNode</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="kd">final</span> <span class="n">V</span> <span class="nf">replaceNode</span><span class="o">(</span><span class="n">Object</span> <span class="n">key</span><span class="o">,</span> <span class="n">V</span> <span class="n">value</span><span class="o">,</span> <span class="n">Object</span> <span class="n">cv</span><span class="o">)</span> <span class="o">{</span>
+    <span class="c1">// 计算hash
+</span><span class="c1"></span>    <span class="kt">int</span> <span class="n">hash</span> <span class="o">=</span> <span class="n">spread</span><span class="o">(</span><span class="n">key</span><span class="o">.</span><span class="na">hashCode</span><span class="o">());</span>
+    <span class="c1">// 自旋
+</span><span class="c1"></span>    <span class="k">for</span> <span class="o">(</span><span class="n">Node</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;[]</span> <span class="n">tab</span> <span class="o">=</span> <span class="n">table</span><span class="o">;;)</span> <span class="o">{</span>
+        <span class="n">Node</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">f</span><span class="o">;</span> <span class="kt">int</span> <span class="n">n</span><span class="o">,</span> <span class="n">i</span><span class="o">,</span> <span class="n">fh</span><span class="o">;</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">tab</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="o">(</span><span class="n">n</span> <span class="o">=</span> <span class="n">tab</span><span class="o">.</span><span class="na">length</span><span class="o">)</span> <span class="o">==</span> <span class="n">0</span> <span class="o">||</span>
+                <span class="o">(</span><span class="n">f</span> <span class="o">=</span> <span class="n">tabAt</span><span class="o">(</span><span class="n">tab</span><span class="o">,</span> <span class="n">i</span> <span class="o">=</span> <span class="o">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">1</span><span class="o">)</span> <span class="o">&amp;</span> <span class="n">hash</span><span class="o">))</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span>
+            <span class="c1">// 如果目标key所在的桶不存在，跳出循环返回null
+</span><span class="c1"></span>            <span class="k">break</span><span class="o">;</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="o">((</span><span class="n">fh</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="na">hash</span><span class="o">)</span> <span class="o">==</span> <span class="n">MOVED</span><span class="o">)</span>
+            <span class="c1">// 如果正在扩容中，协助扩容
+</span><span class="c1"></span>            <span class="n">tab</span> <span class="o">=</span> <span class="n">helpTransfer</span><span class="o">(</span><span class="n">tab</span><span class="o">,</span> <span class="n">f</span><span class="o">);</span>
+        <span class="k">else</span> <span class="o">{</span>
+            <span class="n">V</span> <span class="n">oldVal</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+            <span class="c1">// 标记是否处理过
+</span><span class="c1"></span>            <span class="kt">boolean</span> <span class="n">validated</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+            <span class="kd">synchronized</span> <span class="o">(</span><span class="n">f</span><span class="o">)</span> <span class="o">{</span>
+                <span class="c1">// 再次验证当前桶第一个元素是否被修改过
+</span><span class="c1"></span>                <span class="k">if</span> <span class="o">(</span><span class="n">tabAt</span><span class="o">(</span><span class="n">tab</span><span class="o">,</span> <span class="n">i</span><span class="o">)</span> <span class="o">==</span> <span class="n">f</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="k">if</span> <span class="o">(</span><span class="n">fh</span> <span class="o">&gt;=</span> <span class="n">0</span><span class="o">)</span> <span class="o">{</span>
+                        <span class="c1">// fh&gt;=0表示是链表节点
+</span><span class="c1"></span>                        <span class="n">validated</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+                        <span class="c1">// 遍历链表寻找目标节点
+</span><span class="c1"></span>                        <span class="k">for</span> <span class="o">(</span><span class="n">Node</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">e</span> <span class="o">=</span> <span class="n">f</span><span class="o">,</span> <span class="n">pred</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;;)</span> <span class="o">{</span>
+                            <span class="n">K</span> <span class="n">ek</span><span class="o">;</span>
+                            <span class="k">if</span> <span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="na">hash</span> <span class="o">==</span> <span class="n">hash</span> <span class="o">&amp;&amp;</span>
+                                    <span class="o">((</span><span class="n">ek</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">key</span><span class="o">)</span> <span class="o">==</span> <span class="n">key</span> <span class="o">||</span>
+                                            <span class="o">(</span><span class="n">ek</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">key</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">ek</span><span class="o">))))</span> <span class="o">{</span>
+                                <span class="c1">// 找到了目标节点
+</span><span class="c1"></span>                                <span class="n">V</span> <span class="n">ev</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">val</span><span class="o">;</span>
+                                <span class="c1">// 检查目标节点旧value是否等于cv
+</span><span class="c1"></span>                                <span class="k">if</span> <span class="o">(</span><span class="n">cv</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">cv</span> <span class="o">==</span> <span class="n">ev</span> <span class="o">||</span>
+                                        <span class="o">(</span><span class="n">ev</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">cv</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">ev</span><span class="o">)))</span> <span class="o">{</span>
+                                    <span class="n">oldVal</span> <span class="o">=</span> <span class="n">ev</span><span class="o">;</span>
+                                    <span class="k">if</span> <span class="o">(</span><span class="n">value</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span>
+                                        <span class="c1">// 如果value不为空则替换旧值
+</span><span class="c1"></span>                                        <span class="n">e</span><span class="o">.</span><span class="na">val</span> <span class="o">=</span> <span class="n">value</span><span class="o">;</span>
+                                    <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">pred</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span>
+                                        <span class="c1">// 如果前置节点不为空
+</span><span class="c1"></span>                                        <span class="c1">// 删除当前节点
+</span><span class="c1"></span>                                        <span class="n">pred</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+                                    <span class="k">else</span>
+                                        <span class="c1">// 如果前置节点为空
+</span><span class="c1"></span>                                        <span class="c1">// 说明是桶中第一个元素，删除之
+</span><span class="c1"></span>                                        <span class="n">setTabAt</span><span class="o">(</span><span class="n">tab</span><span class="o">,</span> <span class="n">i</span><span class="o">,</span> <span class="n">e</span><span class="o">.</span><span class="na">next</span><span class="o">);</span>
+                                <span class="o">}</span>
+                                <span class="k">break</span><span class="o">;</span>
+                            <span class="o">}</span>
+                            <span class="n">pred</span> <span class="o">=</span> <span class="n">e</span><span class="o">;</span>
+                            <span class="c1">// 遍历到链表尾部还没找到元素，跳出循环
+</span><span class="c1"></span>                            <span class="k">if</span> <span class="o">((</span><span class="n">e</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">next</span><span class="o">)</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span>
+                                <span class="k">break</span><span class="o">;</span>
+                        <span class="o">}</span>
+                    <span class="o">}</span>
+                    <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">f</span> <span class="k">instanceof</span> <span class="n">TreeBin</span><span class="o">)</span> <span class="o">{</span>
+                        <span class="c1">// 如果是树节点
+</span><span class="c1"></span>                        <span class="n">validated</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+                        <span class="n">TreeBin</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">t</span> <span class="o">=</span> <span class="o">(</span><span class="n">TreeBin</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;)</span><span class="n">f</span><span class="o">;</span>
+                        <span class="n">TreeNode</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">r</span><span class="o">,</span> <span class="n">p</span><span class="o">;</span>
+                        <span class="c1">// 遍历树找到了目标节点
+</span><span class="c1"></span>                        <span class="k">if</span> <span class="o">((</span><span class="n">r</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="na">root</span><span class="o">)</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span>
+                                <span class="o">(</span><span class="n">p</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="na">findTreeNode</span><span class="o">(</span><span class="n">hash</span><span class="o">,</span> <span class="n">key</span><span class="o">,</span> <span class="kc">null</span><span class="o">))</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                            <span class="n">V</span> <span class="n">pv</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="na">val</span><span class="o">;</span>
+                            <span class="c1">// 检查目标节点旧value是否等于cv
+</span><span class="c1"></span>                            <span class="k">if</span> <span class="o">(</span><span class="n">cv</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">cv</span> <span class="o">==</span> <span class="n">pv</span> <span class="o">||</span>
+                                    <span class="o">(</span><span class="n">pv</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">cv</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">pv</span><span class="o">)))</span> <span class="o">{</span>
+                                <span class="n">oldVal</span> <span class="o">=</span> <span class="n">pv</span><span class="o">;</span>
+                                <span class="k">if</span> <span class="o">(</span><span class="n">value</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span>
+                                    <span class="c1">// 如果value不为空则替换旧值
+</span><span class="c1"></span>                                    <span class="n">p</span><span class="o">.</span><span class="na">val</span> <span class="o">=</span> <span class="n">value</span><span class="o">;</span>
+                                <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">t</span><span class="o">.</span><span class="na">removeTreeNode</span><span class="o">(</span><span class="n">p</span><span class="o">))</span>
+                                    <span class="c1">// 如果value为空则删除元素
+</span><span class="c1"></span>                                    <span class="c1">// 如果删除后树的元素个数较少则退化成链表
+</span><span class="c1"></span>                                    <span class="c1">// t.removeTreeNode(p)这个方法返回true表示删除节点后树的元素个数较少
+</span><span class="c1"></span>                                    <span class="n">setTabAt</span><span class="o">(</span><span class="n">tab</span><span class="o">,</span> <span class="n">i</span><span class="o">,</span> <span class="n">untreeify</span><span class="o">(</span><span class="n">t</span><span class="o">.</span><span class="na">first</span><span class="o">));</span>
+                            <span class="o">}</span>
+                        <span class="o">}</span>
+                    <span class="o">}</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+            <span class="c1">// 如果处理过，不管有没有找到元素都返回
+</span><span class="c1"></span>            <span class="k">if</span> <span class="o">(</span><span class="n">validated</span><span class="o">)</span> <span class="o">{</span>
+                <span class="c1">// 如果找到了元素，返回其旧值
+</span><span class="c1"></span>                <span class="k">if</span> <span class="o">(</span><span class="n">oldVal</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="c1">// 如果要替换的值为空，元素个数减1
+</span><span class="c1"></span>                    <span class="k">if</span> <span class="o">(</span><span class="n">value</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span>
+                        <span class="n">addCount</span><span class="o">(-</span><span class="n">1L</span><span class="o">,</span> <span class="o">-</span><span class="n">1</span><span class="o">);</span>
+                    <span class="k">return</span> <span class="n">oldVal</span><span class="o">;</span>
+                <span class="o">}</span>
+                <span class="k">break</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="c1">// 没找到元素返回空
+</span><span class="c1"></span>    <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+<span class="o">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><p>（1）计算hash；</p>
+<p>（2）如果所在的桶不存在，表示没有找到目标元素，返回；</p>
+<p>（3）如果正在扩容，则协助扩容完成后再进行删除操作；</p>
+<p>（4）如果是以链表形式存储的，则遍历整个链表查找元素，找到之后再删除；</p>
+<p>（5）如果是以树形式存储的，则遍历树查找元素，找到之后再删除；</p>
+<p>（6）如果是以树形式存储的，删除元素之后树较小，则退化成链表；</p>
+<p>（7）如果确实删除了元素，则整个map元素个数减1，并返回旧值；</p>
+<p>（8）如果没有删除元素，则返回null；</p>
+<h1 id="获取元素">获取元素</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="n">V</span> <span class="nf">get</span><span class="o">(</span><span class="n">Object</span> <span class="n">key</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">Node</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;[]</span> <span class="n">tab</span><span class="o">;</span> <span class="n">Node</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">e</span><span class="o">,</span> <span class="n">p</span><span class="o">;</span> <span class="kt">int</span> <span class="n">n</span><span class="o">,</span> <span class="n">eh</span><span class="o">;</span> <span class="n">K</span> <span class="n">ek</span><span class="o">;</span>
+    <span class="c1">// 计算hash
+</span><span class="c1"></span>    <span class="kt">int</span> <span class="n">h</span> <span class="o">=</span> <span class="n">spread</span><span class="o">(</span><span class="n">key</span><span class="o">.</span><span class="na">hashCode</span><span class="o">());</span>
+    <span class="c1">// 如果元素所在的桶存在且里面有元素
+</span><span class="c1"></span>    <span class="k">if</span> <span class="o">((</span><span class="n">tab</span> <span class="o">=</span> <span class="n">table</span><span class="o">)</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="o">(</span><span class="n">n</span> <span class="o">=</span> <span class="n">tab</span><span class="o">.</span><span class="na">length</span><span class="o">)</span> <span class="o">&gt;</span> <span class="n">0</span> <span class="o">&amp;&amp;</span>
+            <span class="o">(</span><span class="n">e</span> <span class="o">=</span> <span class="n">tabAt</span><span class="o">(</span><span class="n">tab</span><span class="o">,</span> <span class="o">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">1</span><span class="o">)</span> <span class="o">&amp;</span> <span class="n">h</span><span class="o">))</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">// 如果第一个元素就是要找的元素，直接返回
+</span><span class="c1"></span>        <span class="k">if</span> <span class="o">((</span><span class="n">eh</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">hash</span><span class="o">)</span> <span class="o">==</span> <span class="n">h</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">((</span><span class="n">ek</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">key</span><span class="o">)</span> <span class="o">==</span> <span class="n">key</span> <span class="o">||</span> <span class="o">(</span><span class="n">ek</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">key</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">ek</span><span class="o">)))</span>
+                <span class="k">return</span> <span class="n">e</span><span class="o">.</span><span class="na">val</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">eh</span> <span class="o">&lt;</span> <span class="n">0</span><span class="o">)</span>
+            <span class="c1">// hash小于0，说明是树或者正在扩容
+</span><span class="c1"></span>            <span class="c1">// 使用find寻找元素，find的寻找方式依据Node的不同子类有不同的实现方式
+</span><span class="c1"></span>            <span class="k">return</span> <span class="o">(</span><span class="n">p</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">h</span><span class="o">,</span> <span class="n">key</span><span class="o">))</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">?</span> <span class="n">p</span><span class="o">.</span><span class="na">val</span> <span class="o">:</span> <span class="kc">null</span><span class="o">;</span>
+
+        <span class="c1">// 遍历整个链表寻找元素
+</span><span class="c1"></span>        <span class="k">while</span> <span class="o">((</span><span class="n">e</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">next</span><span class="o">)</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="na">hash</span> <span class="o">==</span> <span class="n">h</span> <span class="o">&amp;&amp;</span>
+                    <span class="o">((</span><span class="n">ek</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">key</span><span class="o">)</span> <span class="o">==</span> <span class="n">key</span> <span class="o">||</span> <span class="o">(</span><span class="n">ek</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">key</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">ek</span><span class="o">))))</span>
+                <span class="k">return</span> <span class="n">e</span><span class="o">.</span><span class="na">val</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+<span class="o">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><p>（1）hash到元素所在的桶；</p>
+<p>（2）如果桶中第一个元素就是该找的元素，直接返回；</p>
+<p>（3）如果是树或者正在迁移元素，则调用各自Node子类的find()方法寻找元素；</p>
+<p>（4）如果是链表，遍历整个链表寻找元素；</p>
+<p>（5）获取元素没有加锁；</p>
+<h1 id="获取元素个数">获取元素个数</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kt">int</span> <span class="nf">size</span><span class="o">()</span> <span class="o">{</span>
+    <span class="c1">// 调用sumCount()计算元素个数
+</span><span class="c1"></span>    <span class="kt">long</span> <span class="n">n</span> <span class="o">=</span> <span class="n">sumCount</span><span class="o">();</span>
+    <span class="k">return</span> <span class="o">((</span><span class="n">n</span> <span class="o">&lt;</span> <span class="n">0L</span><span class="o">)</span> <span class="o">?</span> <span class="n">0</span> <span class="o">:</span>
+            <span class="o">(</span><span class="n">n</span> <span class="o">&gt;</span> <span class="o">(</span><span class="kt">long</span><span class="o">)</span><span class="n">Integer</span><span class="o">.</span><span class="na">MAX_VALUE</span><span class="o">)</span> <span class="o">?</span> <span class="n">Integer</span><span class="o">.</span><span class="na">MAX_VALUE</span> <span class="o">:</span>
+                    <span class="o">(</span><span class="kt">int</span><span class="o">)</span><span class="n">n</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="kd">final</span> <span class="kt">long</span> <span class="nf">sumCount</span><span class="o">()</span> <span class="o">{</span>
+    <span class="c1">// 计算CounterCell所有段及baseCount的数量之和
+</span><span class="c1"></span>    <span class="n">CounterCell</span><span class="o">[]</span> <span class="n">as</span> <span class="o">=</span> <span class="n">counterCells</span><span class="o">;</span> <span class="n">CounterCell</span> <span class="n">a</span><span class="o">;</span>
+    <span class="kt">long</span> <span class="n">sum</span> <span class="o">=</span> <span class="n">baseCount</span><span class="o">;</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">as</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">as</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="o">++</span><span class="n">i</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">((</span><span class="n">a</span> <span class="o">=</span> <span class="n">as</span><span class="o">[</span><span class="n">i</span><span class="o">])</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span>
+                <span class="n">sum</span> <span class="o">+=</span> <span class="n">a</span><span class="o">.</span><span class="na">value</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">sum</span><span class="o">;</span>
+<span class="o">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><p>（1）元素的个数依据不同的线程存在在不同的段里；（见addCounter()分析）</p>
+<p>（2）计算CounterCell所有段及baseCount的数量之和；</p>
+<p>（3）获取元素个数没有加锁；</p>
+<h1 id="总结">总结</h1>
+<p>（1）ConcurrentHashMap是HashMap的线程安全版本；</p>
+<p>（2）ConcurrentHashMap采用（数组 + 链表 + 红黑树）的结构存储元素；</p>
+<p>（3）ConcurrentHashMap相比于同样线程安全的HashTable，效率要高很多；</p>
+<p>（4）ConcurrentHashMap采用的锁有 synchronized，CAS，自旋锁，分段锁，volatile等；</p>
+<p>（5）ConcurrentHashMap中没有threshold和loadFactor这两个字段，而是采用sizeCtl来控制；</p>
+<p>（6）sizeCtl = -1，表示正在进行初始化；</p>
+<p>（7）sizeCtl = 0，默认值，表示后续在真正初始化的时候使用默认容量；</p>
+<p>（8）sizeCtl &gt; 0，在初始化之前存储的是传入的容量，在初始化或扩容后存储的是下一次的扩容门槛；</p>
+<p>（9）sizeCtl = (resizeStamp &laquo; 16) + (1 + nThreads)，表示正在进行扩容，高位存储扩容邮戳，低位存储扩容线程数加1；</p>
+<p>（10）更新操作时如果正在进行扩容，当前线程协助扩容；</p>
+<p>（11）更新操作会采用synchronized锁住当前桶的第一个元素，这是分段锁的思想；</p>
+<p>（12）整个扩容过程都是通过CAS控制sizeCtl这个字段来进行的，这很关键；</p>
+<p>（13）迁移完元素的桶会放置一个ForwardingNode节点，以标识该桶迁移完毕；</p>
+<p>（14）元素个数的存储也是采用的分段思想，类似于LongAdder的实现；</p>
+<p>（15）元素个数的更新会把不同的线程hash到不同的段上，减少资源争用；</p>
+<p>（16）元素个数的更新如果还是出现多个线程同时更新一个段，则会扩容段（CounterCell）；</p>
+<p>（17）获取元素个数是把所有的段（包括baseCount和CounterCell）相加起来得到的；</p>
+<p>（18）查询操作是不会加锁的，所以ConcurrentHashMap不是强一致性的；</p>
+<p>（19）ConcurrentHashMap中不能存储key或value为null的元素；</p>
+<h2 id="提问-1">提问</h2>
+<ul>
+<li>
+<p>ConcurrentHashMap是怎么保证线程安全的？</p>
+<p>ConcurrentHashMap内部使用的数据结构与HashMap一样，数组+链表+红黑树。Concurrent采用CAS+Synchronized的方式加锁。主要是在put和remove的时候，CAS是在竞争不激烈的时候使用，而Synchronized是在竞争激烈的时候，即已经在桶里面取链表或者红黑树的时候保证线程安全。</p>
+</li>
+<li>
+<p>ConcurrentHashMap里的分段锁是什么？</p>
+<p>ConcurrentHashMap没有直接使用Synchronized，即时Synchronized已经被优化了，但是在竞争不激烈的时候线程上下文切换的时间相对于CPU原子指令来说开销还是很大的。因此在找桶的时候，还属于竞争不激烈，因此这时使用的是CAS，无锁自旋。而hash取桶冲突时，竞争已经很激烈，此时使用Synchronized比CAS要高效，因为竞争激烈CAS大部分都会更新失败。这里的Synchronized锁的就是桶的头元素，相当于锁了桶，而ConcurentHashMap最外面就是一个桶数组，所以这里的Sync被称为分段锁，在put和remove的时候都会上锁。</p>
+</li>
+<li>
+<p>ConcurrentHashMap强一致性吗？</p>
+<p>不是的，get的时候没有加锁，不是强一致性</p>
+</li>
+<li>
+<p>ConcurrentHashMap怎么计数的</p>
+<p>ConcurrentHashMap在put完元素后会进行计数，并且扩容。计数是通过baseCount+CountCell[]数组来统计的。为了避免如果只使用一个size，多线程高并发情况下对size变更冲突太高。通过一个数组来记每个线程所持有的元素个数，再加上baseCount，在计数的时候，会先CAS一次baseCount，成功则说明并发不高，直接记baseCount，即可。当CountCell发生冲突的时候会直接扩容</p>
+</li>
+<li>
+<p>ConcurrentHashMap是怎么扩容的</p>
+<p>ConcurrentHashMap在扩容的时候固定扩容2倍，而阈值也是默认0.75。与HashMap默认值一样，细节太复杂，ConcurrentHashmap通过sizeCtrl来控制是否在扩容中，还是迁移元素，还是初始化中，这个值还是阈值。最重要的一点是与HashMap会在迁移元素时有优化，会将链表或者树，会将低16位的元素放在原来的位置，高16位迁移到n+oldIndex的地方，减少hash冲突持续在一个链表上，这也是为什么扩容必须是2倍，或者说是右移1位。</p>
+</li>
+<li>
+<p>为什么ConcurrentHashMap的kv不能为null</p>
+<blockquote>
+<p>The main reason that nulls aren&rsquo;t allowed in ConcurrentMaps (ConcurrentHashMaps, ConcurrentSkipListMaps) is that ambiguities that may be just barely tolerable in non-concurrent maps can&rsquo;t be accommodated. The main one is that if <code>map.get(key)</code>returns <code>null</code>, you can&rsquo;t detect whether the key explicitly maps to <code>null</code> vs the key isn&rsquo;t mapped. In a non-concurrent map, you can check this via <code>map.contains(key)</code>, but in a concurrent one, the map might have changed between calls.</p>
+</blockquote>
+<p>主要原因是get方法没有锁，为了高性能，ConcurrentHashMap不是强一致性的，所以get的时候，可以会被其他线程修改了，如果我给了null的一个值，那么get的时候，不知道这个null是本身就不在，还是被其他线程修改成了null。而key不能为null，是这个key可能被人改过，不知道是不是自己的那个nullkey还是别人的nullkey了</p>
+<p>ps: hashTable的key和value都不能为null</p>
+</li>
+<li>
+<p>已经有concurrentHashMap了，为什么还会存在hashTable？直接都用ConcurrentHashMap不行吗</p>
+<p>hashTable的所有方法都带了synchronized，包括<strong>get</strong>，这意味着hashTable是强一致性的，也就意味着当一个线程在获取元素的时候，其他线程是无法修改的！</p>
+</li>
 </ul>
 
     </div>

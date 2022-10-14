@@ -6,7 +6,16 @@
     <description>Recent content in Posts on Luluhome - a blog for sh , &#39;lulu&#39; is my cat</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 13 Oct 2022 09:48:19 +0800</lastBuildDate><atom:link href="http://luluhome.site/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 13 Oct 2022 22:30:06 +0800</lastBuildDate><atom:link href="http://luluhome.site/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>SkipList</title>
+      <link>http://luluhome.site/post/skiplist/</link>
+      <pubDate>Thu, 13 Oct 2022 22:30:06 +0800</pubDate>
+      
+      <guid>http://luluhome.site/post/skiplist/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>Idea Keyboard Shortcuts</title>
       <link>http://luluhome.site/post/idea-keyboard-shortcuts/</link>
@@ -16,6 +25,8 @@
       <description>  resize
   open new file on right split
 shift+enter
+  back to edit main menu
+esc
   </description>
     </item>
     
@@ -196,7 +207,7 @@ shift+enter
       <pubDate>Tue, 12 Oct 2021 21:55:51 +0800</pubDate>
       
       <guid>http://luluhome.site/post/concurrenthashmap/</guid>
-      <description>简介 ConcurrentHashMap是HashMap的线程安全版本，内部也是使用（数组 + 链表 + 红黑树）的结构来存储元素。 相比于同样线程安全</description>
+      <description>摘自：https://www.cnblogs.com/tong-yuan/p/ConcurrentHashMap-resize.html 简介</description>
     </item>
     
     <item>

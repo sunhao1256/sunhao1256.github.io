@@ -11,3 +11,7 @@ tags: ['idea']
 - open new file on right split
 
   shift+enter
+
+- back to edit main menu
+
+  esc

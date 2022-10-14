@@ -6,7 +6,16 @@
     <description>Recent content in 数据结构 on Luluhome - a blog for sh , &#39;lulu&#39; is my cat</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 11 Jan 2022 14:43:18 +0800</lastBuildDate><atom:link href="http://luluhome.site/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 13 Oct 2022 22:30:06 +0800</lastBuildDate><atom:link href="http://luluhome.site/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>SkipList</title>
+      <link>http://luluhome.site/post/skiplist/</link>
+      <pubDate>Thu, 13 Oct 2022 22:30:06 +0800</pubDate>
+      
+      <guid>http://luluhome.site/post/skiplist/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>数据结构</title>
       <link>http://luluhome.site/post/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</link>
