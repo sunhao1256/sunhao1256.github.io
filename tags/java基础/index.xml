@@ -2,26 +2,26 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>java基础 on Luluhome - a blog for sh , &#39;lulu&#39; is my cat</title>
-    <link>http://luluhome.site/tags/java%E5%9F%BA%E7%A1%80/</link>
+    <link>https://luluhome.site/tags/java%E5%9F%BA%E7%A1%80/</link>
     <description>Recent content in java基础 on Luluhome - a blog for sh , &#39;lulu&#39; is my cat</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 12 Oct 2021 21:55:51 +0800</lastBuildDate><atom:link href="http://luluhome.site/tags/java%E5%9F%BA%E7%A1%80/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 12 Oct 2021 21:55:51 +0800</lastBuildDate><atom:link href="https://luluhome.site/tags/java%E5%9F%BA%E7%A1%80/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>ConcurrentHashMap</title>
-      <link>http://luluhome.site/post/concurrenthashmap/</link>
+      <link>https://luluhome.site/post/concurrenthashmap/</link>
       <pubDate>Tue, 12 Oct 2021 21:55:51 +0800</pubDate>
       
-      <guid>http://luluhome.site/post/concurrenthashmap/</guid>
+      <guid>https://luluhome.site/post/concurrenthashmap/</guid>
       <description>摘自：https://www.cnblogs.com/tong-yuan/p/ConcurrentHashMap-resize.html 简介</description>
     </item>
     
     <item>
       <title>JavaCollections</title>
-      <link>http://luluhome.site/post/javacollections/</link>
+      <link>https://luluhome.site/post/javacollections/</link>
       <pubDate>Sun, 26 Sep 2021 21:50:07 +0800</pubDate>
       
-      <guid>http://luluhome.site/post/javacollections/</guid>
+      <guid>https://luluhome.site/post/javacollections/</guid>
       <description>ArrayList ArrayList实现了List，RandomAccess，Cloneable，java.io.Serializable接口 ArrayLi</description>
     </item>
     

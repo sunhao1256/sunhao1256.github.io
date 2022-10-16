@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>data structure on Luluhome - a blog for sh , &#39;lulu&#39; is my cat</title>
+    <link>https://luluhome.site/tags/data-structure/</link>
+    <description>Recent content in data structure on Luluhome - a blog for sh , &#39;lulu&#39; is my cat</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sun, 16 Oct 2022 14:54:06 +0800</lastBuildDate><atom:link href="https://luluhome.site/tags/data-structure/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Binary_search</title>
+      <link>https://luluhome.site/post/binary_search/</link>
+      <pubDate>Sun, 16 Oct 2022 14:54:06 +0800</pubDate>
+      
+      <guid>https://luluhome.site/post/binary_search/</guid>
+      <description>Binary_search </description>
+    </item>
+    
+  </channel>
+</rss>

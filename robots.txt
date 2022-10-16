@@ -1,2 +1,2 @@
 User-agent: *
-Sitemap: http://luluhome.site/sitemap.xml
+Sitemap: https://luluhome.site/sitemap.xml

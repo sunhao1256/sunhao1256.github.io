@@ -2,26 +2,44 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Luluhome - a blog for sh , &#39;lulu&#39; is my cat</title>
-    <link>http://luluhome.site/post/</link>
+    <link>https://luluhome.site/post/</link>
     <description>Recent content in Posts on Luluhome - a blog for sh , &#39;lulu&#39; is my cat</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 13 Oct 2022 22:30:06 +0800</lastBuildDate><atom:link href="http://luluhome.site/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 16 Oct 2022 16:33:56 +0800</lastBuildDate><atom:link href="https://luluhome.site/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>BST_SIKP_ALGORITHM</title>
+      <link>https://luluhome.site/post/bst_sikp_algorithm/</link>
+      <pubDate>Sun, 16 Oct 2022 16:33:56 +0800</pubDate>
+      
+      <guid>https://luluhome.site/post/bst_sikp_algorithm/</guid>
+      <description>#the-canvas { border: 1px solid black; direction: ltr; width: 100%; height: auto; display: none; } #paginator { display: none; text-align: center; margin-bottom: 10px; } #loadingWrapper { display: none; justify-content: center; align-items: center; width: 100%; height: 350px; } #loading { display: inline-block; width: 50px; height: 50px; border: 3px solid #d2d0d0;; border-radius: 50%; border-top-color: #383838; animation: spin 1s ease-in-out infinite; -webkit-animation: spin 1s ease-in-out infinite; } @keyframes spin { to { -webkit-transform: rotate(360deg); } } @-webkit-keyframes spin { to { -webkit-transform: rotate(360deg); } }  Previous Next &amp;nbsp; &amp;nbsp; Page:  /       window.</description>
+    </item>
+    
+    <item>
+      <title>Binary_search</title>
+      <link>https://luluhome.site/post/binary_search/</link>
+      <pubDate>Sun, 16 Oct 2022 14:54:06 +0800</pubDate>
+      
+      <guid>https://luluhome.site/post/binary_search/</guid>
+      <description>Binary_search </description>
+    </item>
+    
     <item>
       <title>SkipList</title>
-      <link>http://luluhome.site/post/skiplist/</link>
+      <link>https://luluhome.site/post/skiplist/</link>
       <pubDate>Thu, 13 Oct 2022 22:30:06 +0800</pubDate>
       
-      <guid>http://luluhome.site/post/skiplist/</guid>
-      <description></description>
+      <guid>https://luluhome.site/post/skiplist/</guid>
+      <description>SkipList 摘自：https://mp.weixin.qq.com/s?__biz=MzkxNDEyOTI0OQ==&amp;amp;mid=22474844</description>
     </item>
     
     <item>
       <title>Idea Keyboard Shortcuts</title>
-      <link>http://luluhome.site/post/idea-keyboard-shortcuts/</link>
+      <link>https://luluhome.site/post/idea-keyboard-shortcuts/</link>
       <pubDate>Thu, 13 Oct 2022 09:48:19 +0800</pubDate>
       
-      <guid>http://luluhome.site/post/idea-keyboard-shortcuts/</guid>
+      <guid>https://luluhome.site/post/idea-keyboard-shortcuts/</guid>
       <description>  resize
   open new file on right split
 shift+enter
@@ -32,199 +50,181 @@ esc
     
     <item>
       <title>Regular_expression</title>
-      <link>http://luluhome.site/post/regular_expression/</link>
+      <link>https://luluhome.site/post/regular_expression/</link>
       <pubDate>Sat, 08 Oct 2022 17:46:07 +0800</pubDate>
       
-      <guid>http://luluhome.site/post/regular_expression/</guid>
+      <guid>https://luluhome.site/post/regular_expression/</guid>
       <description></description>
     </item>
     
     <item>
       <title>MyWordNote</title>
-      <link>http://luluhome.site/post/mywordnote/</link>
+      <link>https://luluhome.site/post/mywordnote/</link>
       <pubDate>Tue, 20 Sep 2022 13:56:19 +0800</pubDate>
       
-      <guid>http://luluhome.site/post/mywordnote/</guid>
+      <guid>https://luluhome.site/post/mywordnote/</guid>
       <description>When i meet some word that I can&amp;rsquo;t known its meaning , i will record it here . Just for my convenience to remember how to write convenient 方便 adj convenience 方便 c layman 外行人 c term 期限，条约，条款，描述，术语，专业名词 in xxxx terms，对x</description>
     </item>
     
     <item>
       <title>VIM Keyboard Shortcuts</title>
-      <link>http://luluhome.site/post/vim-keyboard-shortcuts/</link>
+      <link>https://luluhome.site/post/vim-keyboard-shortcuts/</link>
       <pubDate>Wed, 07 Sep 2022 13:14:35 +0800</pubDate>
       
-      <guid>http://luluhome.site/post/vim-keyboard-shortcuts/</guid>
+      <guid>https://luluhome.site/post/vim-keyboard-shortcuts/</guid>
       <description>VIM Keyboard Shortcuts    Cursor movement      h move left   j move down   k move up   l move right   w jump by start of words (punctuation considered words)   W jump by words (spaces separate words)   e jump to end of words (punctuation considered words)   E jump to end of words (no punctuation)   b jump backward by words (punctuation considered words)   B jump backward by words (no punctuation)   0 (zero) start of line   ^ first non-blank character of line   $ end of line   G Go To command (prefix with number   Note: Prefix a cursor movement command with a number to repeat it.</description>
     </item>
     
     <item>
-      <title>查找算法</title>
-      <link>http://luluhome.site/post/%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95/</link>
-      <pubDate>Mon, 29 Aug 2022 18:03:28 +0800</pubDate>
-      
-      <guid>http://luluhome.site/post/%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>排序算法</title>
-      <link>http://luluhome.site/post/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/</link>
-      <pubDate>Mon, 29 Aug 2022 17:58:40 +0800</pubDate>
-      
-      <guid>http://luluhome.site/post/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>Nginx转发规则</title>
-      <link>http://luluhome.site/post/nginx/</link>
+      <link>https://luluhome.site/post/nginx/</link>
       <pubDate>Thu, 28 Jul 2022 10:14:49 +0800</pubDate>
       
-      <guid>http://luluhome.site/post/nginx/</guid>
+      <guid>https://luluhome.site/post/nginx/</guid>
       <description>在nginx中配置proxy_pass时，当在后面的url加上了/，相当于是绝对根路径，则nginx不会把location中匹配的路径部分代</description>
     </item>
     
     <item>
       <title>Wireshark</title>
-      <link>http://luluhome.site/post/wireshark/</link>
+      <link>https://luluhome.site/post/wireshark/</link>
       <pubDate>Tue, 12 Jul 2022 10:41:41 +0800</pubDate>
       
-      <guid>http://luluhome.site/post/wireshark/</guid>
+      <guid>https://luluhome.site/post/wireshark/</guid>
       <description>WireShark 三次握手四次挥手 TCP 首部包含以下内容，请留意其中的控制位，在三次握手和四次挥手过程中会频繁出现： 端口号 (Source Port and Destination Port)：每个 TCP 报文段都包含</description>
     </item>
     
     <item>
       <title>时间轮</title>
-      <link>http://luluhome.site/post/%E6%97%B6%E9%97%B4%E8%BD%AE/</link>
+      <link>https://luluhome.site/post/%E6%97%B6%E9%97%B4%E8%BD%AE/</link>
       <pubDate>Sun, 10 Jul 2022 15:52:45 +0800</pubDate>
       
-      <guid>http://luluhome.site/post/%E6%97%B6%E9%97%B4%E8%BD%AE/</guid>
+      <guid>https://luluhome.site/post/%E6%97%B6%E9%97%B4%E8%BD%AE/</guid>
       <description></description>
     </item>
     
     <item>
       <title>K8s安装</title>
-      <link>http://luluhome.site/post/k8s%E5%AE%89%E8%A3%85/</link>
+      <link>https://luluhome.site/post/k8s%E5%AE%89%E8%A3%85/</link>
       <pubDate>Sat, 02 Jul 2022 20:01:43 +0800</pubDate>
       
-      <guid>http://luluhome.site/post/k8s%E5%AE%89%E8%A3%85/</guid>
+      <guid>https://luluhome.site/post/k8s%E5%AE%89%E8%A3%85/</guid>
       <description>文章摘自https://k8s.easydoc.net/docs/dRiQjyTY/28366845/6GiNOzyZ/nd7yOvdY 💽安</description>
     </item>
     
     <item>
       <title>all in one配置</title>
-      <link>http://luluhome.site/post/all-in-one/</link>
+      <link>https://luluhome.site/post/all-in-one/</link>
       <pubDate>Mon, 20 Jun 2022 16:57:01 +0800</pubDate>
       
-      <guid>http://luluhome.site/post/all-in-one/</guid>
+      <guid>https://luluhome.site/post/all-in-one/</guid>
       <description>需求 虚拟机 我和对象都是程序员，学新技术的时候得有环境 同时两台 win 用于娱乐 目标是 2 台 win 达到 2k 下中配吃鸡流畅，独立键鼠显示器 带 nas 最好 对我用处不是很</description>
     </item>
     
     <item>
       <title>mac使用</title>
-      <link>http://luluhome.site/post/mac%E4%BD%BF%E7%94%A8/</link>
+      <link>https://luluhome.site/post/mac%E4%BD%BF%E7%94%A8/</link>
       <pubDate>Mon, 20 Jun 2022 16:57:01 +0800</pubDate>
       
-      <guid>http://luluhome.site/post/mac%E4%BD%BF%E7%94%A8/</guid>
+      <guid>https://luluhome.site/post/mac%E4%BD%BF%E7%94%A8/</guid>
       <description>快捷键 Finder绝对路径跳转 command+shift+G Finder绝对路径复制 command+option+C 表情 control+cmmand+space 录屏 Shift-Command-5 截图 command shift 4局部，3全屏 只显示桌面 command f3 finder option+command+空</description>
     </item>
     
     <item>
       <title>Git命令</title>
-      <link>http://luluhome.site/post/git%E5%91%BD%E4%BB%A4/</link>
+      <link>https://luluhome.site/post/git%E5%91%BD%E4%BB%A4/</link>
       <pubDate>Mon, 21 Feb 2022 16:57:01 +0800</pubDate>
       
-      <guid>http://luluhome.site/post/git%E5%91%BD%E4%BB%A4/</guid>
+      <guid>https://luluhome.site/post/git%E5%91%BD%E4%BB%A4/</guid>
       <description>Git常用命令 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63</description>
     </item>
     
     <item>
       <title>Go包管理</title>
-      <link>http://luluhome.site/post/go/</link>
+      <link>https://luluhome.site/post/go/</link>
       <pubDate>Tue, 11 Jan 2022 14:43:18 +0800</pubDate>
       
-      <guid>http://luluhome.site/post/go/</guid>
+      <guid>https://luluhome.site/post/go/</guid>
       <description>Go 包管理 1 2 3 4 5 6 7 8 9 10 11 12 13 14 go mod init:初始化modules go mod download:下载modules到本地cache go mod edit:</description>
     </item>
     
     <item>
       <title>Netty</title>
-      <link>http://luluhome.site/post/netty/</link>
+      <link>https://luluhome.site/post/netty/</link>
       <pubDate>Tue, 11 Jan 2022 14:43:18 +0800</pubDate>
       
-      <guid>http://luluhome.site/post/netty/</guid>
+      <guid>https://luluhome.site/post/netty/</guid>
       <description>netty是在什么地方创建SeverChannel的 在BootStrap调用bind方法时创建 1 2 3 private ChannelFuture doBind(final SocketAddress localAddress) { final ChannelFuture regFuture = this.initAndRegister(); } initAndR</description>
     </item>
     
     <item>
       <title>Reactor响应式编程</title>
-      <link>http://luluhome.site/post/reactor/</link>
+      <link>https://luluhome.site/post/reactor/</link>
       <pubDate>Tue, 11 Jan 2022 14:43:18 +0800</pubDate>
       
-      <guid>http://luluhome.site/post/reactor/</guid>
+      <guid>https://luluhome.site/post/reactor/</guid>
       <description>Reactive Programming 响应式编程 为什么要响应式编程 传统的编程模式应对如今高并发，高响应的需求有很多限制。现在的web应用，越来越需要更高的并发，更快的响应。 每</description>
     </item>
     
     <item>
       <title>Spring问题整理</title>
-      <link>http://luluhome.site/post/spring%E6%95%B4%E7%90%86/</link>
+      <link>https://luluhome.site/post/spring%E6%95%B4%E7%90%86/</link>
       <pubDate>Tue, 11 Jan 2022 14:43:18 +0800</pubDate>
       
-      <guid>http://luluhome.site/post/spring%E6%95%B4%E7%90%86/</guid>
+      <guid>https://luluhome.site/post/spring%E6%95%B4%E7%90%86/</guid>
       <description>1 2 3 4 5 6 7 8 9 10 11 @Override @Nullable public Object invoke(MethodInvocation mi) throws Throwable { if (!(mi instanceof ProxyMethodInvocation)) { throw new IllegalStateException(&amp;#34;MethodInvocation is not a Spring ProxyMethodInvocation: &amp;#34; + mi); } ProxyMethodInvocation pmi = (ProxyMethodInvocation) mi; ProceedingJoinPoint pjp = lazyGetProceedingJoinPoint(pmi); JoinPointMatch jpm = getJoinPointMatch(pmi); return invokeAdviceMethod(pjp, jpm, null, null); } 当在Sping中配置的Bea</description>
     </item>
     
     <item>
       <title>八股文</title>
-      <link>http://luluhome.site/post/%E5%B8%B8%E8%A7%81%E9%A2%98%E7%9B%AE/</link>
+      <link>https://luluhome.site/post/%E5%B8%B8%E8%A7%81%E9%A2%98%E7%9B%AE/</link>
       <pubDate>Tue, 11 Jan 2022 14:43:18 +0800</pubDate>
       
-      <guid>http://luluhome.site/post/%E5%B8%B8%E8%A7%81%E9%A2%98%E7%9B%AE/</guid>
+      <guid>https://luluhome.site/post/%E5%B8%B8%E8%A7%81%E9%A2%98%E7%9B%AE/</guid>
       <description>Redis redis有哪些数据结构，你用过哪些，做过什么事情 String 最简单的数据结构，用于存放字符串，实际上在redis中存放的是字符数组，类似java中</description>
     </item>
     
     <item>
       <title>平时疑问</title>
-      <link>http://luluhome.site/post/%E5%B9%B3%E6%97%B6%E7%96%91%E9%97%AE/</link>
+      <link>https://luluhome.site/post/%E5%B9%B3%E6%97%B6%E7%96%91%E9%97%AE/</link>
       <pubDate>Tue, 11 Jan 2022 14:43:18 +0800</pubDate>
       
-      <guid>http://luluhome.site/post/%E5%B9%B3%E6%97%B6%E7%96%91%E9%97%AE/</guid>
+      <guid>https://luluhome.site/post/%E5%B9%B3%E6%97%B6%E7%96%91%E9%97%AE/</guid>
       <description>平时疑问 浏览器输入一个地址，整个流程 如果线上流量暴增，全都打到一个 upstream 上了，怎么排查 如何在 nginx 的 access log 中查出请求前 10 的 ip 台阶问题，假如对于上台阶，</description>
     </item>
     
     <item>
       <title>数据结构</title>
-      <link>http://luluhome.site/post/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</link>
+      <link>https://luluhome.site/post/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</link>
       <pubDate>Tue, 11 Jan 2022 14:43:18 +0800</pubDate>
       
-      <guid>http://luluhome.site/post/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</guid>
+      <guid>https://luluhome.site/post/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</guid>
       <description>堆 堆是一种非线性结构，可以把堆看作一个数组，也可以被看作一个完全二叉树，通俗来讲堆其实就是利用完全二叉树的结构来维护的一维数组但堆并不一定是</description>
     </item>
     
     <item>
       <title>ConcurrentHashMap</title>
-      <link>http://luluhome.site/post/concurrenthashmap/</link>
+      <link>https://luluhome.site/post/concurrenthashmap/</link>
       <pubDate>Tue, 12 Oct 2021 21:55:51 +0800</pubDate>
       
-      <guid>http://luluhome.site/post/concurrenthashmap/</guid>
+      <guid>https://luluhome.site/post/concurrenthashmap/</guid>
       <description>摘自：https://www.cnblogs.com/tong-yuan/p/ConcurrentHashMap-resize.html 简介</description>
     </item>
     
     <item>
       <title>JavaCollections</title>
-      <link>http://luluhome.site/post/javacollections/</link>
+      <link>https://luluhome.site/post/javacollections/</link>
       <pubDate>Sun, 26 Sep 2021 21:50:07 +0800</pubDate>
       
-      <guid>http://luluhome.site/post/javacollections/</guid>
+      <guid>https://luluhome.site/post/javacollections/</guid>
       <description>ArrayList ArrayList实现了List，RandomAccess，Cloneable，java.io.Serializable接口 ArrayLi</description>
     </item>
     
     <item>
       <title>linux</title>
-      <link>http://luluhome.site/post/linux/</link>
+      <link>https://luluhome.site/post/linux/</link>
       <pubDate>Fri, 31 Jan 2020 20:50:54 +0000</pubDate>
       
-      <guid>http://luluhome.site/post/linux/</guid>
+      <guid>https://luluhome.site/post/linux/</guid>
       <description>终端 [root@LocalHost 桌面]# l root表示当前登录用户名 locahost表示当前登录的主机名 桌面 表示当前的工作目录 # 身份标识符 #表示为超级管理员 $表示为普</description>
     </item>
     
