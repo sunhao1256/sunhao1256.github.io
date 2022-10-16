@@ -322,3 +322,21 @@ tags: ["学外语"]
 - trigger
 
   触发，启动，引起
+  
+- algorithm
+
+  算法
+  
+- approach
+
+  靠近,临近v|对付,着手处理v|方法，态度，路线n|要求，接洽，商谈n
+  
+- probabilistically
+
+  概率的
+
+- scenario
+
+  In a more common scenario
+
+  设想，可能发生的事态n|剧本提纲，剧情梗概，电影脚本n
