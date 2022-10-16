@@ -44,12 +44,12 @@
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://luluhome.site/post/skiplist/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2022-10-13T22:30:06+08:00" />
-<meta property="article:modified_time" content="2022-10-16T16:00:00+08:00" />
+<meta property="article:modified_time" content="2022-10-16T17:05:57+08:00" />
 
 <meta itemprop="name" content="SkipList">
 <meta itemprop="description" content="摘自：https://mp.weixin.qq.com/s?__biz=MzkxNDEyOTI0OQ==&amp;mid=224748445"><meta itemprop="datePublished" content="2022-10-13T22:30:06+08:00" />
-<meta itemprop="dateModified" content="2022-10-16T16:00:00+08:00" />
-<meta itemprop="wordCount" content="2281">
+<meta itemprop="dateModified" content="2022-10-16T17:05:57+08:00" />
+<meta itemprop="wordCount" content="2399">
 <meta itemprop="keywords" content="数据结构," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="SkipList"/>
 <meta name="twitter:description" content="摘自：https://mp.weixin.qq.com/s?__biz=MzkxNDEyOTI0OQ==&amp;mid=224748445"/>
@@ -130,7 +130,7 @@
       <div class="post-meta">
         <span class="post-time"> 2022-10-13 </span>
         
-          <span class="more-meta"> 2281 words </span>
+          <span class="more-meta"> 2399 words </span>
           <span class="more-meta"> 5 mins read </span>
         
       </div>
@@ -143,6 +143,7 @@
   <ul>
     <li>
       <ul>
+        <li><a href="#概述">概述</a></li>
         <li><a href="#提问">提问</a></li>
         <li><a href="#有序链表">有序链表</a></li>
         <li><a href="#跳表的演进">跳表的演进</a></li>
@@ -163,6 +164,7 @@
       <blockquote>
 <p>摘自：https://mp.weixin.qq.com/s?__biz=MzkxNDEyOTI0OQ==&amp;mid=2247484459&amp;idx=1&amp;sn=b4e7db9fdf256dfb312a2a90fcde79b3&amp;source=41#wechat_redirect</p>
 </blockquote>
+<h2 id="概述">概述</h2>
 <p>跳表是一个随机化的数据结构，实质就是一种可以进行<strong>二分</strong>查找的<strong>有序链表</strong>。</p>
 <p>跳表在原有的有序链表上面增加了多级索引，通过索引来实现快速查找。</p>
 <p>跳表不仅能提高搜索性能，同时也可以提高插入和删除操作的性能</p>
@@ -259,7 +261,12 @@
 <p>此外，跳表实现起来很容易且易读，红黑树实现起来相对困难，所以Redis选择使用跳表来实现有序集合。</p>
 </li>
 <li>
-<p>那么红黑树又适合那些场景呢？</p>
+<p>那么跳表有哪些缺点</p>
+<ul>
+<li>跳表每一层的索引需要额外的空间</li>
+<li>不能反向搜索</li>
+<li>因为索引的随机性，cache友好性不够好；比如某个索引路径是一个热点查询，redblack tree再该路径出现一个新节点，则大部分老节点仍然在该查询路径上；而skiplist则可能更换为新的查询路径。</li>
+</ul>
 </li>
 </ul>
 
@@ -274,7 +281,7 @@
     <span class="item-title">LastMod</span>
     <span class="item-content">
         2022-10-16
-        <a href="https://github.com/sunhao1256/sunhao1256.github.io/commit/c50ca2f153f5696ace7a9e29c54ca8811063e975" title="update">(c50ca2f)</a>
+        <a href="https://github.com/sunhao1256/sunhao1256.github.io/commit/8898fb8fb3dd9179edb507fc9bc57f3c2dff2b58" title="update">(8898fb8)</a>
     </span>
   </p>
   
