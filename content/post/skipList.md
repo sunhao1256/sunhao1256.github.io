@@ -4,8 +4,6 @@ date: 2022-10-13T22:30:06+08:00
 tags: ['数据结构']
 ---
 
-# SkipList
-
 >摘自：https://mp.weixin.qq.com/s?__biz=MzkxNDEyOTI0OQ==&mid=2247484459&idx=1&sn=b4e7db9fdf256dfb312a2a90fcde79b3&source=41#wechat_redirect
 
 
