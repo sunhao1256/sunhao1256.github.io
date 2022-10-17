@@ -13,7 +13,7 @@
       <pubDate>Thu, 28 Jul 2022 10:14:49 +0800</pubDate>
       
       <guid>https://luluhome.site/post/nginx/</guid>
-      <description>在nginx中配置proxy_pass时，当在后面的url加上了/，相当于是绝对根路径，则nginx不会把location中匹配的路径部分代</description>
+      <description>Location | Syntax: | **location** [ = | ~ | ~* | ^~ ] *uri* { ... } **location** @*name* { ... } | | :&amp;mdash;&amp;mdash;- | &amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash; | | Default: | — | | Context: | server, location | Sets configuration depending on a request URI. The matching is performed against a normalized URI, after decoding the text encoded in the “%XX” form, resolving references</description>
     </item>
     
   </channel>

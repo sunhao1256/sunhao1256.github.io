@@ -23,7 +23,8 @@ Loser</description>
       <pubDate>Sun, 16 Oct 2022 16:33:56 +0800</pubDate>
       
       <guid>https://luluhome.site/post/bst_sikp_algorithm/</guid>
-      <description>#the-canvas { border: 1px solid black; direction: ltr; width: 100%; height: auto; display: none; } #paginator { display: none; text-align: center; margin-bottom: 10px; } #loadingWrapper { display: none; justify-content: center; align-items: center; width: 100%; height: 350px; } #loading { display: inline-block; width: 50px; height: 50px; border: 3px solid #d2d0d0;; border-radius: 50%; border-top-color: #383838; animation: spin 1s ease-in-out infinite; -webkit-animation: spin 1s ease-in-out infinite; } @keyframes spin { to { -webkit-transform: rotate(360deg); } } @-webkit-keyframes spin { to { -webkit-transform: rotate(360deg); } }  Previous Next &amp;nbsp; &amp;nbsp; Page:  /       window.</description>
+      <description>linked from https://tildesites.bowdoin.edu/~ltoma/teaching/cs231/fall10/Lectures/9-bstAndSkip/bstree.pdf
+    #the-canvas { border: 1px solid black; direction: ltr; width: 100%; height: auto; display: none; } #paginator { display: none; text-align: center; margin-bottom: 10px; } #loadingWrapper { display: none; justify-content: center; align-items: center; width: 100%; height: 350px; } #loading { display: inline-block; width: 50px; height: 50px; border: 3px solid #d2d0d0;; border-radius: 50%; border-top-color: #383838; animation: spin 1s ease-in-out infinite; -webkit-animation: spin 1s ease-in-out infinite; } @keyframes spin { to { -webkit-transform: rotate(360deg); } } @-webkit-keyframes spin { to { -webkit-transform: rotate(360deg); } }  Previous Next &amp;nbsp; &amp;nbsp; Page:  /       window.</description>
     </item>
     
     <item>
@@ -91,7 +92,7 @@ esc
       <pubDate>Thu, 28 Jul 2022 10:14:49 +0800</pubDate>
       
       <guid>https://luluhome.site/post/nginx/</guid>
-      <description>在nginx中配置proxy_pass时，当在后面的url加上了/，相当于是绝对根路径，则nginx不会把location中匹配的路径部分代</description>
+      <description>Location | Syntax: | **location** [ = | ~ | ~* | ^~ ] *uri* { ... } **location** @*name* { ... } | | :&amp;mdash;&amp;mdash;- | &amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash; | | Default: | — | | Context: | server, location | Sets configuration depending on a request URI. The matching is performed against a normalized URI, after decoding the text encoded in the “%XX” form, resolving references</description>
     </item>
     
     <item>
