@@ -28,7 +28,7 @@ tags: ['数据结构']
 
 ## 有序链表
 
-![Image](https://mmbiz.qpic.cn/mmbiz_png/C91PV9BDK3w8hE2weezDu3iaaaptGcWvXw2kDPl3vOOxNse2BGEhZzJs7icS0WW3q8lLia9DLjfV6bibeglibB4FibvQ/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+<img src="https://pic-frank.oss-cn-beijing.aliyuncs.com/img/202210171026260.png" alt="image-20221017102638142" style="zoom:50%;" />
 
 考虑一个有序链表，我们要查找3、7、17这几个元素，我们只能从头开始遍历链表，直到查找到元素为止。
 
@@ -44,7 +44,7 @@ ps：链表的查询，插入删除时间复杂度都是O(n)，因为插入和�
 
 我们把一些节点从有序表中提取出来，缓存一级索引，就组成了下面这样的结构：
 
-![Image](https://mmbiz.qpic.cn/mmbiz_png/C91PV9BDK3w8hE2weezDu3iaaaptGcWvX0d0vS7WVvwmHs67ocOerCZTsXibMoQEkrQiaOUgPQLyhsnpnb24GnI3w/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+<img src="https://pic-frank.oss-cn-beijing.aliyuncs.com/img/202210171026252.png" alt="image-20221017102659220" style="zoom:50%;" />
 
 现在，我们要查找17这个元素是不是要快很多呢？
 
@@ -56,7 +56,7 @@ ps：链表的查询，插入删除时间复杂度都是O(n)，因为插入和�
 
 同样地，一级索引也可以往上再提取一层，组成二级索引，如下：
 
-![Image](https://mmbiz.qpic.cn/mmbiz_png/C91PV9BDK3w8hE2weezDu3iaaaptGcWvX2c13CeEYO99mDF79JkhklwC5ucNPTEibUhVl565ASbGSsyOiaSPLLAYA/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+<img src="https://pic-frank.oss-cn-beijing.aliyuncs.com/img/202210171027228.png" alt="image-20221017102714201" style="zoom:50%;" />
 
 这时候我们再查找17这个元素呢？
 
@@ -87,7 +87,7 @@ ps：链表的查询，插入删除时间复杂度都是O(n)，因为插入和�
 
 最后，就像下面这样：
 
-![Image](https://mmbiz.qpic.cn/mmbiz_png/C91PV9BDK3w8hE2weezDu3iaaaptGcWvXE0Ultm8dNqJxkkEva1QROFicGwQgjw3FP3zglsaQicva1dzxZwejEoibw/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+![image-20221017102733654](https://pic-frank.oss-cn-beijing.aliyuncs.com/img/202210171027674.png)
 
 ## 跳表的删除
 
@@ -99,17 +99,17 @@ ps：链表的查询，插入删除时间复杂度都是O(n)，因为插入和�
 
 比如，要删除17这个元素。
 
-![Image](https://mmbiz.qpic.cn/mmbiz_png/C91PV9BDK3w8hE2weezDu3iaaaptGcWvX7gmAK8WZq0kXB5C1SPyMzglIjUKlYZEBHbr3TVqiaz4ibRA6ibDfCh1Ng/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+![image-20221017102746093](https://pic-frank.oss-cn-beijing.aliyuncs.com/img/202210171027121.png)
 
 ## 标准化的跳表
 
 上面举的例子是完全随机的跳表，那么，如果我们每两个元素提取一个元素作为上一级的索引会怎么样呢？
 
-![Image](https://mmbiz.qpic.cn/mmbiz_png/C91PV9BDK3w8hE2weezDu3iaaaptGcWvXuo3x7D9cicJ07rfoIJmqzJVHZOhxBFtIoiamC4wjkaxBQew1Co7vJOow/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+<img src="https://pic-frank.oss-cn-beijing.aliyuncs.com/img/202210171027413.png" alt="image-20221017102756385" style="zoom:50%;" />
 
 这是不是很像平衡二叉树，现在这颗树元素比较少，可能不太明显，我们来看个元素个数多的情况。
 
-![Image](https://mmbiz.qpic.cn/mmbiz_png/C91PV9BDK3w8hE2weezDu3iaaaptGcWvXdWrxegAddpgmz6bxx6Kauzicjf5269xfbYia98Yk8VLwMqgTSedjo9wQ/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+<img src="https://pic-frank.oss-cn-beijing.aliyuncs.com/img/202210171028512.png" alt="image-20221017102808491" style="zoom:50%;" />
 
 可以看到，上一级元素的个数是下一级的一半，这样每次减少一半，就很接近平衡二叉树了。
 
