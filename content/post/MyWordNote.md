@@ -348,3 +348,27 @@ tags: ["学外语"]
 - Essential
 
   必不可少的
+  
+- retirement
+
+  退休的
+  
+- Literally
+
+  确实的，名副其实的，逐字的，只是，仅仅，就adv
+
+- account
+
+  账户n|报告，记述，描述|原因，处于account of
+
+- poignant
+
+  令人痛苦的，酸楚的；深深打动人的 adj
+
+- especially
+
+  尤其，特别，格外的|专门，特地
+
+- unflinching
+
+  不畏缩的；坚定无畏的；不屈不挠的
