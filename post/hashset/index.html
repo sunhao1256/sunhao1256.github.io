@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Hashset - Luluhome - a blog for sh , &#39;lulu&#39; is my cat</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="sh" /><meta name="description" content="属性 1 2 3 4 5 6 // 内部使用HashMap private transient HashMap&amp;lt;E,Object&amp;gt; map; // 虚拟对象，用来作为value放到map中 private static final Object PRESENT = new Object(); 构造方法 1 2 3 4 5 6 7 8 9 10 11 12 13" /><meta name="keywords" content="luluhome, java, blog" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.89.0 with theme even" />
+
+
+<link rel="canonical" href="https://luluhome.site/post/hashset/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Hashset" />
+<meta property="og:description" content="属性 1 2 3 4 5 6 // 内部使用HashMap private transient HashMap&lt;E,Object&gt; map; // 虚拟对象，用来作为value放到map中 private static final Object PRESENT = new Object(); 构造方法 1 2 3 4 5 6 7 8 9 10 11 12 13" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://luluhome.site/post/hashset/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-10-18T21:42:09+08:00" />
+<meta property="article:modified_time" content="2021-10-18T21:42:09+08:00" />
+
+<meta itemprop="name" content="Hashset">
+<meta itemprop="description" content="属性 1 2 3 4 5 6 // 内部使用HashMap private transient HashMap&lt;E,Object&gt; map; // 虚拟对象，用来作为value放到map中 private static final Object PRESENT = new Object(); 构造方法 1 2 3 4 5 6 7 8 9 10 11 12 13"><meta itemprop="datePublished" content="2021-10-18T21:42:09+08:00" />
+<meta itemprop="dateModified" content="2021-10-18T21:42:09+08:00" />
+<meta itemprop="wordCount" content="1104">
+<meta itemprop="keywords" content="java基础," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Hashset"/>
+<meta name="twitter:description" content="属性 1 2 3 4 5 6 // 内部使用HashMap private transient HashMap&lt;E,Object&gt; map; // 虚拟对象，用来作为value放到map中 private static final Object PRESENT = new Object(); 构造方法 1 2 3 4 5 6 7 8 9 10 11 12 13"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">luluhome</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">luluhome</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Hashset</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-10-18 </span>
+        
+          <span class="more-meta"> 1104 words </span>
+          <span class="more-meta"> 3 mins read </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#属性">属性</a></li>
+    <li><a href="#构造方法">构造方法</a></li>
+    <li><a href="#添加元素">添加元素</a></li>
+    <li><a href="#删除元素">删除元素</a></li>
+    <li><a href="#查找">查找</a></li>
+    <li><a href="#总结">总结</a></li>
+    <li><a href="#提问">提问</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="属性">属性</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java">    <span class="c1">// 内部使用HashMap
+</span><span class="c1"></span>    <span class="kd">private</span> <span class="kd">transient</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">E</span><span class="o">,</span><span class="n">Object</span><span class="o">&gt;</span> <span class="n">map</span><span class="o">;</span>
+
+    <span class="c1">// 虚拟对象，用来作为value放到map中
+</span><span class="c1"></span>    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">Object</span> <span class="n">PRESENT</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Object</span><span class="o">();</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="构造方法">构造方法</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="nf">HashSet</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">map</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;();</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="nf">HashSet</span><span class="o">(</span><span class="n">Collection</span><span class="o">&lt;?</span> <span class="kd">extends</span> <span class="n">E</span><span class="o">&gt;</span> <span class="n">c</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">map</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;(</span><span class="n">Math</span><span class="o">.</span><span class="na">max</span><span class="o">((</span><span class="kt">int</span><span class="o">)</span> <span class="o">(</span><span class="n">c</span><span class="o">.</span><span class="na">size</span><span class="o">()/.</span><span class="na">75f</span><span class="o">)</span> <span class="o">+</span> <span class="n">1</span><span class="o">,</span> <span class="n">16</span><span class="o">));</span>
+    <span class="n">addAll</span><span class="o">(</span><span class="n">c</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="nf">HashSet</span><span class="o">(</span><span class="kt">int</span> <span class="n">initialCapacity</span><span class="o">,</span> <span class="kt">float</span> <span class="n">loadFactor</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">map</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;(</span><span class="n">initialCapacity</span><span class="o">,</span> <span class="n">loadFactor</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="nf">HashSet</span><span class="o">(</span><span class="kt">int</span> <span class="n">initialCapacity</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">map</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;(</span><span class="n">initialCapacity</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="c1">// 非public，主要是给LinkedHashSet使用的 
+</span><span class="c1"></span><span class="n">HashSet</span><span class="o">(</span><span class="kt">int</span> <span class="n">initialCapacity</span><span class="o">,</span> <span class="kt">float</span> <span class="n">loadFactor</span><span class="o">,</span> <span class="kt">boolean</span> <span class="n">dummy</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">map</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LinkedHashMap</span><span class="o">&lt;&gt;(</span><span class="n">initialCapacity</span><span class="o">,</span> <span class="n">loadFactor</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="o">-</span> <span class="kd">public</span> <span class="o">:</span><span class="n">表明该成员变量或者方法是对所有类或者对象都是可见的</span><span class="o">,</span><span class="n">所有类或者对象都可以直接访问</span> 
+<span class="o">-</span> <span class="kd">private</span><span class="o">:</span><span class="n">表明该成员变量或者方法是私有的</span><span class="o">,</span><span class="n">只有当前类对其具有访问权限</span><span class="o">,</span><span class="n">除此之外其他类或者对象都没有访问权限</span><span class="o">.</span><span class="na">子类也没有访问权限</span><span class="o">.</span> 
+<span class="o">-</span> <span class="kd">protected</span><span class="o">:</span><span class="n">表明成员变量或者方法对类自身</span><span class="o">,</span><span class="n">与同在一个包中的其他类可见</span><span class="o">,</span><span class="n">其他包下的类不可访问</span><span class="o">,</span><span class="n">除非是他的子类</span> 
+<span class="o">-</span> <span class="k">default</span><span class="o">:</span><span class="n">表明该成员变量或者方法只有自己和其位于同一个包的内可见</span><span class="o">,</span><span class="n">其他包内的类不能访问</span><span class="o">,</span><span class="n">即便是它的子类</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="添加元素">添加元素</h1>
+<p>直接调用HashMap的put()方法，把元素本身作为key，把PRESENT作为value，也就是这个map中所有的value都是一样的。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">add</span><span class="o">(</span><span class="n">E</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">e</span><span class="o">,</span> <span class="n">PRESENT</span><span class="o">)==</span><span class="kc">null</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="删除元素">删除元素</h1>
+<p>直接调用HashMap的remove()方法，注意map的remove返回是删除元素的value，而Set的remov返回的是boolean类型。</p>
+<p>这里要检查一下，如果是null的话说明没有该元素，如果不是null肯定等于PRESENT。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">remove</span><span class="o">(</span><span class="n">Object</span> <span class="n">o</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">map</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="n">o</span><span class="o">)==</span><span class="n">PRESENT</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="查找">查找</h1>
+<p>不需要get，这里只要一个检查元素是否存在的方法contains()，直接调用map的containsKey()方法。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">contains</span><span class="o">(</span><span class="n">Object</span> <span class="n">o</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">map</span><span class="o">.</span><span class="na">containsKey</span><span class="o">(</span><span class="n">o</span><span class="o">);</span>
+<span class="o">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="总结">总结</h1>
+<p>（1）HashSet内部使用HashMap的key存储元素，以此来保证元素不重复；</p>
+<p>（2）HashSet是无序的，因为HashMap的key是无序的；</p>
+<p>（3）HashSet中允许有一个null元素，因为HashMap允许key为null；</p>
+<p>（4）HashSet是非线程安全的；</p>
+<p>（5）HashSet是没有get()方法的；</p>
+<h1 id="提问">提问</h1>
+<ul>
+<li>
+<p>构造一个指定容量的hashMap如何传</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="nf">HashSet</span><span class="o">(</span><span class="n">Collection</span><span class="o">&lt;?</span> <span class="kd">extends</span> <span class="n">E</span><span class="o">&gt;</span> <span class="n">c</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">map</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;(</span><span class="n">Math</span><span class="o">.</span><span class="na">max</span><span class="o">((</span><span class="kt">int</span><span class="o">)</span> <span class="o">(</span><span class="n">c</span><span class="o">.</span><span class="na">size</span><span class="o">()/.</span><span class="na">75f</span><span class="o">)</span> <span class="o">+</span> <span class="n">1</span><span class="o">,</span> <span class="n">16</span><span class="o">));</span>
+    <span class="n">addAll</span><span class="o">(</span><span class="n">c</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>假如，我们预估HashMap要存储n个元素，那么，它的容量就应该指定为((n/0.75f) + 1)，如果这个值小于16，那就直接使用16得了。</p>
+</li>
+<li>
+<p>hashSet是怎么保证元素不重复的</p>
+<p>通过HashMap来保证的，因为HashMap可以保证key不重复，而hashSet使用HasMap时的value是一个定值</p>
+</li>
+<li>
+<p>hashSet有序吗</p>
+<p>无序，底层用HashMap，hash值&amp;数组长度来定位下标，而iterator迭代器是的实现是对数组遍历。</p>
+</li>
+</ul>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">sh</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2021-10-18
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/java%E5%9F%BA%E7%A1%80/">java基础</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/copyonarrayset/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">CopyonArraySet</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/concurrenthashmap/">
+            <span class="next-text nav-default">ConcurrentHashMap</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:sunhao1256@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://twitter.com/Frank12990735" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://github.com/sunhao1256" class="iconfont icon-github" title="github"></a>
+  <a href="https://luluhome.site/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>sh</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

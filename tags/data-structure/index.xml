@@ -6,7 +6,17 @@
     <description>Recent content in Data structure on Luluhome - a blog for sh , &#39;lulu&#39; is my cat</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 16 Oct 2022 14:54:06 +0800</lastBuildDate><atom:link href="https://luluhome.site/tags/data-structure/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 16 Oct 2022 16:33:56 +0800</lastBuildDate><atom:link href="https://luluhome.site/tags/data-structure/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Binary Search Trees and Skip Lists</title>
+      <link>https://luluhome.site/post/bst_skip_alogithm/</link>
+      <pubDate>Sun, 16 Oct 2022 16:33:56 +0800</pubDate>
+      
+      <guid>https://luluhome.site/post/bst_skip_alogithm/</guid>
+      <description>linked from https://tildesites.bowdoin.edu/~ltoma/teaching/cs231/fall10/Lectures/9-bstAndSkip/bstree.pdf
+    #the-canvas { border: 1px solid black; direction: ltr; width: 100%; height: auto; display: none; } #paginator { display: none; text-align: center; margin-bottom: 10px; } #loadingWrapper { display: none; justify-content: center; align-items: center; width: 100%; height: 350px; } #loading { display: inline-block; width: 50px; height: 50px; border: 3px solid #d2d0d0;; border-radius: 50%; border-top-color: #383838; animation: spin 1s ease-in-out infinite; -webkit-animation: spin 1s ease-in-out infinite; } @keyframes spin { to { -webkit-transform: rotate(360deg); } } @-webkit-keyframes spin { to { -webkit-transform: rotate(360deg); } }  Previous Next &amp;nbsp; &amp;nbsp; Page:  /       window.</description>
+    </item>
+    
     <item>
       <title>Binary Search</title>
       <link>https://luluhome.site/post/binary_search/</link>

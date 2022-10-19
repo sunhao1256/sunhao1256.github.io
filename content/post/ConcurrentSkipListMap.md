@@ -835,4 +835,20 @@ private V doGet(Object key) {
 
 - ConcurrentSkipListMap里没有看到Synchronized或者ReentrantLock，如何保证线程安全的
 
-  通过自旋+CAS操作。并且在查询的时候也会进行CAS操作是强一致性的。在删除的时候并非直接断开链表之间的联系，而是将目标删除的元素标记为已删除状态（***通过设置元素的value为nul***）。在标记目标元素的后面链一个marker节点，
+  通过自旋+CAS操作。并且在查询的时候也会进行CAS操作是强一致性的。在删除的时候并非直接断开链表之间的联系，而是将目标删除的元素标记为已删除状态（***通过设置元素的value为nul***）。在标记目标元素的后面链一个marker节点，用于避免其他线程在链接到目标元素后面
+
+- 为什么value不能为null
+
+  因为ConcurrentSkipListMap标记元素删除的时候，使用过将值设置为null来标记的
+
+- 为什么需要一个marker节点
+
+  ```java
+   CAS n's next pointer to point to a new marker node.
+  *    From this point on, no other nodes can be appended to n.
+  *    which avoids deletion errors in CAS-based linked lists.
+  ```
+
+  避免其他线程在进行删除的时候，又加节点到目标节点后面了。
+
+- 为什么key不能为null，因为key要实现compare，所以不能为空
