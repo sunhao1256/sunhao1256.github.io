@@ -11,4 +11,4 @@ weight: 50
 
 *Loser*
 
-<img src="https://pic-frank.oss-cn-beijing.aliyuncs.com/img/202209301123256.png" alt="image-20220930112318101" style="zoom:50%;" />
+<img src="https://pic-frank.oss-cn-beijing.aliyuncs.com/img/202209301123256.png" alt="image-20220930112318101" style="zoom:30%;" />

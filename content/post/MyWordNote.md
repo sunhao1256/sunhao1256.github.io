@@ -372,3 +372,39 @@ tags: ["学外语"]
 - unflinching
 
   不畏缩的；坚定无畏的；不屈不挠的
+  
+- priority
+
+  优先级
+  
+- hierarchical
+
+  分层的，分等级的，阶级式的adj
+  
+- Edge
+
+  边，边缘
+  
+- traversal
+
+  遍历
+  
+- Manipulate
+
+  操控，控制
+  
+- digital
+
+  数字信息adj，eg：a digital camera，数码相机
+  
+- composite
+
+  混合物，混合物n
+  
+- synthesize
+
+  合成 v
+  
+- moderate
+
+  中等的，适度的，不过分的
