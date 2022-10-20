@@ -6,7 +6,7 @@
     <description>Recent content on Luluhome - a blog for sh , &#39;lulu&#39; is my cat</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 18 Oct 2022 22:25:30 +0800</lastBuildDate><atom:link href="https://luluhome.site/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 20 Oct 2022 11:13:56 +0800</lastBuildDate><atom:link href="https://luluhome.site/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>About</title>
       <link>https://luluhome.site/about/</link>
@@ -15,6 +15,53 @@
       <guid>https://luluhome.site/about/</guid>
       <description>Javaer
 Loser</description>
+    </item>
+    
+    <item>
+      <title>Java How to Write File</title>
+      <link>https://luluhome.site/post/java-how-to-write-file/</link>
+      <pubDate>Thu, 20 Oct 2022 11:13:56 +0800</pubDate>
+      
+      <guid>https://luluhome.site/post/java-how-to-write-file/</guid>
+      <description>if you need to read hugo file one line by one line , how will you to achieve the program ?
+Read all bytes to memory
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22  package io_stream; import org.apache.tomcat.util.http.fileupload.IOUtils; import java.io.*; public class BufferStreamTest { public static void main(String[] args) throws IOException { // try copy large file in 30MB memory  InputStream inputStream = new FileInputStream(&amp;#34;/Users/zero/Downloads/googlechrome.</description>
+    </item>
+    
+    <item>
+      <title>Dictionary Tree</title>
+      <link>https://luluhome.site/post/dictionary-tree/</link>
+      <pubDate>Thu, 20 Oct 2022 08:55:22 +0800</pubDate>
+      
+      <guid>https://luluhome.site/post/dictionary-tree/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Types of Binary Tree</title>
+      <link>https://luluhome.site/post/types-of-binary-tree/</link>
+      <pubDate>Wed, 19 Oct 2022 15:31:44 +0800</pubDate>
+      
+      <guid>https://luluhome.site/post/types-of-binary-tree/</guid>
+      <description>The following are common types of Binary Trees. 以下是常见的二叉树类型 Full Binary Tree: A Binary Tree is a full binary tree if every node has 0 or 2 children. The following are the examples of a full binary tree. We can also say a full binary tree is a binary tree in which all nodes except leaf nodes have two children.</description>
+    </item>
+    
+    <item>
+      <title>Priority Queue</title>
+      <link>https://luluhome.site/post/priority-queue/</link>
+      <pubDate>Wed, 19 Oct 2022 15:14:41 +0800</pubDate>
+      
+      <guid>https://luluhome.site/post/priority-queue/</guid>
+      <description>构造函数</description>
+    </item>
+    
+    <item>
+      <title>Mysql Findinset Multiplevalues</title>
+      <link>https://luluhome.site/post/mysql-findinset-multiplevalues/</link>
+      <pubDate>Wed, 19 Oct 2022 10:54:13 +0800</pubDate>
+      
+      <guid>https://luluhome.site/post/mysql-findinset-multiplevalues/</guid>
+      <description>1 2 3 4 5 6  /* Something likes find_in_set(&amp;#39;a,b,c&amp;#39;, &amp;#39;a,b,c,d&amp;#39;) We can use OR: find_in_set(&amp;#39;a&amp;#39;, &amp;#39;a,b,c,d&amp;#39;) OR find_in_set(&amp;#39;b&amp;#39;, &amp;#39;a,b,c,d&amp;#39;) OR find_in_set(&amp;#39;b&amp;#39;, &amp;#39;a,b,c,d&amp;#39;) */WHERECONCAT(&amp;#34;,&amp;#34;,`setcolumn`,&amp;#34;,&amp;#34;)REGEXP&amp;#34;,(val1|val2|val3),&amp;#34;  </description>
     </item>
     
     <item>
@@ -178,10 +225,10 @@ esc
     
     <item>
       <title>Git命令</title>
-      <link>https://luluhome.site/post/git%E5%91%BD%E4%BB%A4/</link>
+      <link>https://luluhome.site/post/git-command/</link>
       <pubDate>Mon, 21 Feb 2022 16:57:01 +0800</pubDate>
       
-      <guid>https://luluhome.site/post/git%E5%91%BD%E4%BB%A4/</guid>
+      <guid>https://luluhome.site/post/git-command/</guid>
       <description>Git常用命令 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63</description>
     </item>
     
@@ -214,10 +261,10 @@ esc
     
     <item>
       <title>Spring问题整理</title>
-      <link>https://luluhome.site/post/spring%E6%95%B4%E7%90%86/</link>
+      <link>https://luluhome.site/post/spring/</link>
       <pubDate>Tue, 11 Jan 2022 14:43:18 +0800</pubDate>
       
-      <guid>https://luluhome.site/post/spring%E6%95%B4%E7%90%86/</guid>
+      <guid>https://luluhome.site/post/spring/</guid>
       <description>1 2 3 4 5 6 7 8 9 10 11 @Override @Nullable public Object invoke(MethodInvocation mi) throws Throwable { if (!(mi instanceof ProxyMethodInvocation)) { throw new IllegalStateException(&amp;#34;MethodInvocation is not a Spring ProxyMethodInvocation: &amp;#34; + mi); } ProxyMethodInvocation pmi = (ProxyMethodInvocation) mi; ProceedingJoinPoint pjp = lazyGetProceedingJoinPoint(pmi); JoinPointMatch jpm = getJoinPointMatch(pmi); return invokeAdviceMethod(pjp, jpm, null, null); } 当在Sping中配置的Bea</description>
     </item>
     

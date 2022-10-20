@@ -408,3 +408,93 @@ tags: ["学外语"]
 - moderate
 
   中等的，适度的，不过分的
+  
+- lyric
+
+  歌词，抒情诗n|抒情的adj
+  
+- proper
+
+  适合的；适当的；恰当的；正确的|合乎体统的，规矩的|完全的，彻底的|合适地，得体地（有时代替副词 properly，用于描述某人说话的方式）|相当，非常
+  
+- theorem
+
+  （尤指数学中的）定理
+
+  *a [mathematical](https://dictionary.cambridge.org/us/dictionary/english-chinese-simplified/mathematical) theorem*数学定理
+
+- lean
+
+  （使）倾斜，（使）向一侧歪斜
+
+- whisper
+
+  小声低语，耳语 v|私下里说；传闻v|小声说话；低语；耳语n|沙沙声；飒飒声n|传闻；私下的议论n
+
+- sibling
+
+  **a** [brother](https://dictionary.cambridge.org/us/dictionary/english-chinese-simplified/brother) **or** [sister](https://dictionary.cambridge.org/us/dictionary/english-chinese-simplified/sister)
+
+  兄；弟；姐；妹
+
+- implement
+
+  实施，贯彻 v|工具，器具 n
+
+- moved
+
+  难过的，感动的v|
+
+- i.e ; e.g
+
+  换句话说；例如
+
+- achieve
+
+  （尤指经过努力）完成；达到；实现v
+
+- credit
+
+  赞扬；赞许；荣誉n|赊购，赊账，信用贷款n|学分n|给银行账户上存钱v|信任，相信（不大可能的事）v
+
+- satisfy
+
+  使满足，使满意v|使确信；使相信v
+
+- restrictions
+
+  限制
+
+- violate
+
+  违反，违背
+
+- retrieve
+
+  找回；取回；挽回
+
+  *Computers are used to [store](https://dictionary.cambridge.org/us/dictionary/english-chinese-simplified/store) and retrieve **[information](https://dictionary.cambridge.org/us/dictionary/english-chinese-simplified/information)** efficiently.*计算机用于快速高效地存储和检索信息。
+
+- efficient
+
+  效率高的；有能力的；有效的；生效的
+
+- descendant
+
+​		子孙，后代
+
+- sift
+
+  仔细检查；筛查v|筛（面粉、糖等）v
+
+- lift
+
+  电梯，升降机n|举起，抬起，升空
+
+- elevator
+
+  电梯，升降机，吊卡
+
+- exhaust **ɪɡˈzɑːst/**
+
+  使精疲力竭；使疲惫不堪 v

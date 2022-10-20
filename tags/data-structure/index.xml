@@ -6,7 +6,25 @@
     <description>Recent content in Data structure on Luluhome - a blog for sh , &#39;lulu&#39; is my cat</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 16 Oct 2022 16:33:56 +0800</lastBuildDate><atom:link href="https://luluhome.site/tags/data-structure/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 20 Oct 2022 08:55:22 +0800</lastBuildDate><atom:link href="https://luluhome.site/tags/data-structure/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Dictionary Tree</title>
+      <link>https://luluhome.site/post/dictionary-tree/</link>
+      <pubDate>Thu, 20 Oct 2022 08:55:22 +0800</pubDate>
+      
+      <guid>https://luluhome.site/post/dictionary-tree/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Types of Binary Tree</title>
+      <link>https://luluhome.site/post/types-of-binary-tree/</link>
+      <pubDate>Wed, 19 Oct 2022 15:31:44 +0800</pubDate>
+      
+      <guid>https://luluhome.site/post/types-of-binary-tree/</guid>
+      <description>The following are common types of Binary Trees. 以下是常见的二叉树类型 Full Binary Tree: A Binary Tree is a full binary tree if every node has 0 or 2 children. The following are the examples of a full binary tree. We can also say a full binary tree is a binary tree in which all nodes except leaf nodes have two children.</description>
+    </item>
+    
     <item>
       <title>Binary Search Trees and Skip Lists</title>
       <link>https://luluhome.site/post/bst_skip_alogithm/</link>
