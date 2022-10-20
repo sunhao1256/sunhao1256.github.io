@@ -2,8 +2,9 @@
 title: "MyWordNote"
 date: 2022-09-20T13:56:19+08:00
 tags: ["学外语"]
-
 ---
+
+![image-20221020143449393](https://pic-frank.oss-cn-beijing.aliyuncs.com/img/202210201434535.png)
 
 > When i meet some word that I can't known its meaning , i will record it here .
 >
@@ -373,7 +374,7 @@ tags: ["学外语"]
 
   不畏缩的；坚定无畏的；不屈不挠的
   
-- priority
+- priority **/praɪˈɒr.ə.ti/**
 
   优先级
   
@@ -498,3 +499,95 @@ tags: ["学外语"]
 - exhaust **ɪɡˈzɑːst/**
 
   使精疲力竭；使疲惫不堪 v
+
+- concise
+
+  简洁的；简明的；简练的；简明扼要的adj
+
+- decorate
+
+  装饰
+
+- trademark
+
+  商标
+
+- hilarious
+
+  非常滑稽的，引人发笑的
+
+- indeed
+
+  确实，的确
+
+- fabulous
+
+​		极好的；绝佳的adj|虚构的，想象的，虚幻的adj
+
+​		*The* [unicorn](https://dictionary.cambridge.org/us/dictionary/english-chinese-simplified/unicorn) *is a fabulous* **[creature](https://dictionary.cambridge.org/us/dictionary/english-chinese-simplified/creature)***.*
+
+- binomial **/baɪˈnəʊ.mi.əl/**
+
+​		二项式n
+
+​		*4x + y is a binomial.*
+
+- forbes magainze
+
+  福布斯杂志
+
+- variation
+
+  变化；变动n|变种，变体；变化了的东西n
+
+- violate
+
+  违反，违背，违犯（尤指法律、协议、原则等）|侵犯；打扰|强暴，强奸；侮辱
+
+- infinite **/ˈɪn.fɪ.nət/**
+
+​		无限的，无边的；极大的adj|上帝n
+
+- minus 介词 **/ˈmaɪ.nəs/**
+
+  减 *What is 57 minus 39?*|没有，缺少|缺点，不利的条件n|负号n|负的adj|零下的n|略差一些的，稍差的；*I got A minus for my* [English](https://dictionary.cambridge.org/us/dictionary/english-chinese-simplified/english) [homework](https://dictionary.cambridge.org/us/dictionary/english-chinese-simplified/homework)*.*|不利的；不好的
+
+- consent
+
+  许可，允许；同意v|同意；答应；许可，允许n
+
+- reluctant **/rɪˈlʌk.tənt/**
+
+  勉强的；不情愿的 adj
+
+- adjacent **/əˈdʒeɪ.sənt/**
+
+  邻近的；毗连的
+
+- performance
+
+  工作情况；业绩；表现；工作性能n|表演，演出n
+
+- entertaining  **/en.təˈteɪ.nɪŋ/**
+
+  使人愉快的；有趣的adj|（在家）招待，款待，请客
+
+- degenerate **/dɪˈdʒen.ə.reɪt/**
+
+  （质量）下降；退化，衰退v|堕落的，颓废的adj|堕落的人，颓废的人
+
+- moral **/ˈmɒr.əl**
+
+  道德的adj|有道德的，品行端正的adj|道德；品行；道德规范n|道德教训；寓意
+
+- decency **/ˈdiː.sən.si/**
+
+​		正直，正派；正经n;*a [sense](https://dictionary.cambridge.org/us/dictionary/english-chinese-simplified/sense) of decency*正义感|规矩；礼仪；行为准则n
+
+- funeral **/ˈfjuː.nər.əl**
+
+  葬礼，丧礼
+
+- procession
+
+  行列，队伍
