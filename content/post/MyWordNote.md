@@ -520,7 +520,7 @@ tags: ["学外语"]
 
   确实，的确
 
-- fabulous
+- fabulous **** **/ˈfæb.jə.ləs/**
 
 ​		极好的；绝佳的adj|虚构的，想象的，虚幻的adj
 
@@ -591,3 +591,53 @@ tags: ["学外语"]
 - procession
 
   行列，队伍
+
+- pathological **/ˌpæθ.əˈlɒdʒ.ɪ.kəl**
+
+  （行为）无法控制的，病态的，非理智的adj|病理的，病态的adj
+
+- complaint **/kəmˈpleɪnt/**
+
+  抱怨，牢骚；投诉；不满n|病，疾病n
+
+- waist **/weɪst/**
+
+  腰，腰部n|（衣服的）腰部
+
+- definitely **/ˈdef.ɪ.nət.li/**
+
+  肯定，当然，毫无疑问
+
+- shave **/ʃeɪv/**
+
+  剃胡子v
+
+- skewed **/skjuːd/**
+
+  不准确的，不确切的 adj|不直的；不直接了当的adj
+
+- accurate **/ˈæk.jə.rət/**
+
+​		准确的；精确的；正确的adj
+
+- dominate **/ˈdɒm.ɪ.neɪt/**
+
+  统治；控制v|在…中占首要地位；拥有优势；最明显的v
+
+- instrumental **/ˌɪn.strəˈmen.təl/**
+
+  起作用的；有帮助的 adj;
+
+  *She was instrumental **in** [bring](https://dictionary.cambridge.org/us/dictionary/english-chinese-simplified/bring)**ing** about the [prison](https://dictionary.cambridge.org/us/dictionary/english-chinese-simplified/prison) [reform](https://dictionary.cambridge.org/us/dictionary/english-chinese-simplified/reform) [act](https://dictionary.cambridge.org/us/dictionary/english-chinese-simplified/act).*监狱改革条例得以出台多亏她大力促成。
+
+  用乐器演奏的，器乐的 adj;
+
+  *instrumental [music](https://dictionary.cambridge.org/us/dictionary/english-chinese-simplified/music)*器乐
+
+  *an instrumental [piece](https://dictionary.cambridge.org/us/dictionary/english-chinese-simplified/piece)/[arrangement](https://dictionary.cambridge.org/us/dictionary/english-chinese-simplified/arrangement)*器乐曲／器乐编曲
+
+  器乐曲n;
+
+- trim 
+
+  修剪，修整 v|消减，减少v|苗条的 adj|整齐的adj|修剪，修整n  [asked](https://dictionary.cambridge.org/us/dictionary/english-chinese-simplified/ask) *the* [hairdresser](https://dictionary.cambridge.org/us/dictionary/english-chinese-simplified/hairdresser) *for* **a** *trim.*

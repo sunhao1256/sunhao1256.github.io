@@ -16,7 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="sh" /><meta name="description" content="构造函数" /><meta name="keywords" content="luluhome, java, blog" />
+<meta name="author" content="sh" /><meta name="description" content="属性 1 2 3 4 5 6 7 8 9 10 11 // 默认容量 private static final int DEFAULT_INITIAL_CAPACITY = 11; // 存储元素的地方 transient Object[] queue; // non-private to simplify nested class access // 元素个数 private int size = 0; // 比较器 private final Comparator&amp;lt;? super E&amp;gt; comparator; // 修改次数 transient int" /><meta name="keywords" content="luluhome, java, blog" />
 
 
 
@@ -40,19 +40,19 @@
 
 
 <meta property="og:title" content="Priority Queue" />
-<meta property="og:description" content="构造函数" />
+<meta property="og:description" content="属性 1 2 3 4 5 6 7 8 9 10 11 // 默认容量 private static final int DEFAULT_INITIAL_CAPACITY = 11; // 存储元素的地方 transient Object[] queue; // non-private to simplify nested class access // 元素个数 private int size = 0; // 比较器 private final Comparator&lt;? super E&gt; comparator; // 修改次数 transient int" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://luluhome.site/post/priority-queue/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2022-10-19T15:14:41+08:00" />
-<meta property="article:modified_time" content="2022-10-19T16:00:01+08:00" />
+<meta property="article:modified_time" content="2022-10-20T11:22:58+08:00" />
 
 <meta itemprop="name" content="Priority Queue">
-<meta itemprop="description" content="构造函数"><meta itemprop="datePublished" content="2022-10-19T15:14:41+08:00" />
-<meta itemprop="dateModified" content="2022-10-19T16:00:01+08:00" />
-<meta itemprop="wordCount" content="4">
+<meta itemprop="description" content="属性 1 2 3 4 5 6 7 8 9 10 11 // 默认容量 private static final int DEFAULT_INITIAL_CAPACITY = 11; // 存储元素的地方 transient Object[] queue; // non-private to simplify nested class access // 元素个数 private int size = 0; // 比较器 private final Comparator&lt;? super E&gt; comparator; // 修改次数 transient int"><meta itemprop="datePublished" content="2022-10-19T15:14:41+08:00" />
+<meta itemprop="dateModified" content="2022-10-20T11:22:58+08:00" />
+<meta itemprop="wordCount" content="1992">
 <meta itemprop="keywords" content="java基础," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Priority Queue"/>
-<meta name="twitter:description" content="构造函数"/>
+<meta name="twitter:description" content="属性 1 2 3 4 5 6 7 8 9 10 11 // 默认容量 private static final int DEFAULT_INITIAL_CAPACITY = 11; // 存储元素的地方 transient Object[] queue; // non-private to simplify nested class access // 元素个数 private int size = 0; // 比较器 private final Comparator&lt;? super E&gt; comparator; // 修改次数 transient int"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -130,8 +130,8 @@
       <div class="post-meta">
         <span class="post-time"> 2022-10-19 </span>
         
-          <span class="more-meta"> 4 words </span>
-          <span class="more-meta"> 1 min read </span>
+          <span class="more-meta"> 1992 words </span>
+          <span class="more-meta"> 4 mins read </span>
         
       </div>
     </header>
@@ -141,13 +141,441 @@
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
   <ul>
-    <li><a href="#构造函数">构造函数</a></li>
+    <li><a href="#属性">属性</a></li>
+    <li><a href="#入队">入队</a></li>
+    <li><a href="#扩容">扩容</a></li>
+    <li><a href="#出队">出队</a></li>
+    <li><a href="#取元素">取元素</a></li>
+    <li><a href="#总结">总结</a></li>
   </ul>
 </nav>
   </div>
 </div>
     <div class="post-content">
-      <h1 id="构造函数">构造函数</h1>
+      <h1 id="属性">属性</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="c1">// 默认容量
+</span><span class="c1"></span><span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">DEFAULT_INITIAL_CAPACITY</span> <span class="o">=</span> <span class="n">11</span><span class="o">;</span>
+<span class="c1">// 存储元素的地方
+</span><span class="c1"></span><span class="kd">transient</span> <span class="n">Object</span><span class="o">[]</span> <span class="n">queue</span><span class="o">;</span> <span class="c1">// non-private to simplify nested class access
+</span><span class="c1">// 元素个数
+</span><span class="c1"></span><span class="kd">private</span> <span class="kt">int</span> <span class="n">size</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span>
+<span class="c1">// 比较器
+</span><span class="c1"></span><span class="kd">private</span> <span class="kd">final</span> <span class="n">Comparator</span><span class="o">&lt;?</span> <span class="kd">super</span> <span class="n">E</span><span class="o">&gt;</span> <span class="n">comparator</span><span class="o">;</span>
+<span class="c1">// 修改次数
+</span><span class="c1"></span><span class="kd">transient</span> <span class="kt">int</span> <span class="n">modCount</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span> <span class="c1">// non-private to simplify nested class access
+</span><span class="c1"></span>
+</code></pre></td></tr></table>
+</div>
+</div><p>（1）默认容量是11；</p>
+<p>（2）queue，元素存储在数组中，这跟我们之前说的堆一般使用数组来存储是一致的；</p>
+<p>（3）comparator，比较器，在优先级队列中，也有两种方式比较元素，一种是元素的自然顺序，一种是通过比较器来比较；</p>
+<p>（4）modCount，修改次数，有这个属性表示PriorityQueue也是fast-fail的；</p>
+<h1 id="入队">入队</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">add</span><span class="o">(</span><span class="n">E</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">offer</span><span class="o">(</span><span class="n">e</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">offer</span><span class="o">(</span><span class="n">E</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+    <span class="c1">// 不支持null元素
+</span><span class="c1"></span>    <span class="k">if</span> <span class="o">(</span><span class="n">e</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="n">NullPointerException</span><span class="o">();</span>
+    <span class="n">modCount</span><span class="o">++;</span>
+    <span class="c1">// 取size
+</span><span class="c1"></span>    <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">size</span><span class="o">;</span>
+    <span class="c1">// 元素个数达到最大容量了，扩容
+</span><span class="c1"></span>    <span class="k">if</span> <span class="o">(</span><span class="n">i</span> <span class="o">&gt;=</span> <span class="n">queue</span><span class="o">.</span><span class="na">length</span><span class="o">)</span>
+        <span class="n">grow</span><span class="o">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">1</span><span class="o">);</span>
+    <span class="c1">// 元素个数加1
+</span><span class="c1"></span>    <span class="n">size</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="n">1</span><span class="o">;</span>
+    <span class="c1">// 如果还没有元素
+</span><span class="c1"></span>    <span class="c1">// 直接插入到数组第一个位置
+</span><span class="c1"></span>    <span class="c1">// 这里跟我们之前讲堆不一样了
+</span><span class="c1"></span>    <span class="c1">// java里面是从0开始的
+</span><span class="c1"></span>    <span class="c1">// 我们说的堆是从1开始的
+</span><span class="c1"></span>    <span class="k">if</span> <span class="o">(</span><span class="n">i</span> <span class="o">==</span> <span class="n">0</span><span class="o">)</span>
+        <span class="n">queue</span><span class="o">[</span><span class="n">0</span><span class="o">]</span> <span class="o">=</span> <span class="n">e</span><span class="o">;</span>
+    <span class="k">else</span>
+        <span class="c1">// 否则，插入元素到数组size的位置，也就是最后一个元素的下一位
+</span><span class="c1"></span>        <span class="c1">// 注意这里的size不是数组大小，而是元素个数
+</span><span class="c1"></span>        <span class="c1">// 然后，再做自下而上的堆化
+</span><span class="c1"></span>        <span class="n">siftUp</span><span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="n">e</span><span class="o">);</span>
+    <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="kd">private</span> <span class="kt">void</span> <span class="nf">siftUp</span><span class="o">(</span><span class="kt">int</span> <span class="n">k</span><span class="o">,</span> <span class="n">E</span> <span class="n">x</span><span class="o">)</span> <span class="o">{</span>
+    <span class="c1">// 根据是否有比较器，使用不同的方法
+</span><span class="c1"></span>    <span class="k">if</span> <span class="o">(</span><span class="n">comparator</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span>
+        <span class="n">siftUpUsingComparator</span><span class="o">(</span><span class="n">k</span><span class="o">,</span> <span class="n">x</span><span class="o">);</span>
+    <span class="k">else</span>
+        <span class="n">siftUpComparable</span><span class="o">(</span><span class="n">k</span><span class="o">,</span> <span class="n">x</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="nd">@SuppressWarnings</span><span class="o">(</span><span class="s">&#34;unchecked&#34;</span><span class="o">)</span>
+<span class="kd">private</span> <span class="kt">void</span> <span class="nf">siftUpComparable</span><span class="o">(</span><span class="kt">int</span> <span class="n">k</span><span class="o">,</span> <span class="n">E</span> <span class="n">x</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">Comparable</span><span class="o">&lt;?</span> <span class="kd">super</span> <span class="n">E</span><span class="o">&gt;</span> <span class="n">key</span> <span class="o">=</span> <span class="o">(</span><span class="n">Comparable</span><span class="o">&lt;?</span> <span class="kd">super</span> <span class="n">E</span><span class="o">&gt;)</span> <span class="n">x</span><span class="o">;</span>
+    <span class="k">while</span> <span class="o">(</span><span class="n">k</span> <span class="o">&gt;</span> <span class="n">0</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">// 找到父节点的位置
+</span><span class="c1"></span>        <span class="c1">// 因为元素是从0开始的，所以减1之后再除以2
+</span><span class="c1"></span>        <span class="kt">int</span> <span class="n">parent</span> <span class="o">=</span> <span class="o">(</span><span class="n">k</span> <span class="o">-</span> <span class="n">1</span><span class="o">)</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">1</span><span class="o">;</span>
+        <span class="c1">// 父节点的值
+</span><span class="c1"></span>        <span class="n">Object</span> <span class="n">e</span> <span class="o">=</span> <span class="n">queue</span><span class="o">[</span><span class="n">parent</span><span class="o">];</span>
+        <span class="c1">// 比较插入的元素与父节点的值
+</span><span class="c1"></span>        <span class="c1">// 如果比父节点大，则跳出循环
+</span><span class="c1"></span>        <span class="c1">// 否则交换位置
+</span><span class="c1"></span>        <span class="k">if</span> <span class="o">(</span><span class="n">key</span><span class="o">.</span><span class="na">compareTo</span><span class="o">((</span><span class="n">E</span><span class="o">)</span> <span class="n">e</span><span class="o">)</span> <span class="o">&gt;=</span> <span class="n">0</span><span class="o">)</span>
+            <span class="k">break</span><span class="o">;</span>
+        <span class="c1">// 与父节点交换位置
+</span><span class="c1"></span>        <span class="n">queue</span><span class="o">[</span><span class="n">k</span><span class="o">]</span> <span class="o">=</span> <span class="n">e</span><span class="o">;</span>
+        <span class="c1">// 现在插入的元素位置移到了父节点的位置
+</span><span class="c1"></span>        <span class="c1">// 继续与父节点再比较
+</span><span class="c1"></span>        <span class="n">k</span> <span class="o">=</span> <span class="n">parent</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="c1">// 最后找到应该插入的位置，放入元素
+</span><span class="c1"></span>    <span class="n">queue</span><span class="o">[</span><span class="n">k</span><span class="o">]</span> <span class="o">=</span> <span class="n">key</span><span class="o">;</span>
+<span class="o">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><p>（1）入队不允许null元素；</p>
+<p>（2）如果数组不够用了，先扩容；</p>
+<p>（3）如果还没有元素，就插入下标0的位置；</p>
+<p>（4）如果有元素了，就插入到最后一个元素往后的一个位置（实际并没有插入哈）；</p>
+<p>（5）自下而上堆化，一直往上跟父节点比较；</p>
+<p>（6）如果比父节点小，就与父节点交换位置，直到出现比父节点大为止；</p>
+<p>（7）由此可见，PriorityQueue是一个小顶堆。</p>
+<h1 id="扩容">扩容</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">private</span> <span class="kt">void</span> <span class="nf">grow</span><span class="o">(</span><span class="kt">int</span> <span class="n">minCapacity</span><span class="o">)</span> <span class="o">{</span>
+    <span class="c1">// 旧容量
+</span><span class="c1"></span>    <span class="kt">int</span> <span class="n">oldCapacity</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="na">length</span><span class="o">;</span>
+    <span class="c1">// Double size if small; else grow by 50%
+</span><span class="c1"></span>    <span class="c1">// 旧容量小于64时，容量翻倍
+</span><span class="c1"></span>    <span class="c1">// 旧容量大于等于64，容量只增加旧容量的一半
+</span><span class="c1"></span>    <span class="kt">int</span> <span class="n">newCapacity</span> <span class="o">=</span> <span class="n">oldCapacity</span> <span class="o">+</span> <span class="o">((</span><span class="n">oldCapacity</span> <span class="o">&lt;</span> <span class="n">64</span><span class="o">)</span> <span class="o">?</span>
+                                     <span class="o">(</span><span class="n">oldCapacity</span> <span class="o">+</span> <span class="n">2</span><span class="o">)</span> <span class="o">:</span>
+                                     <span class="o">(</span><span class="n">oldCapacity</span> <span class="o">&gt;&gt;</span> <span class="n">1</span><span class="o">));</span>
+    <span class="c1">// overflow-conscious code
+</span><span class="c1"></span>    <span class="c1">// 检查是否溢出
+</span><span class="c1"></span>    <span class="k">if</span> <span class="o">(</span><span class="n">newCapacity</span> <span class="o">-</span> <span class="n">MAX_ARRAY_SIZE</span> <span class="o">&gt;</span> <span class="n">0</span><span class="o">)</span>
+        <span class="n">newCapacity</span> <span class="o">=</span> <span class="n">hugeCapacity</span><span class="o">(</span><span class="n">minCapacity</span><span class="o">);</span>
+        
+    <span class="c1">// 创建出一个新容量大小的新数组并把旧数组元素拷贝过去
+</span><span class="c1"></span>    <span class="n">queue</span> <span class="o">=</span> <span class="n">Arrays</span><span class="o">.</span><span class="na">copyOf</span><span class="o">(</span><span class="n">queue</span><span class="o">,</span> <span class="n">newCapacity</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="kd">private</span> <span class="kd">static</span> <span class="kt">int</span> <span class="nf">hugeCapacity</span><span class="o">(</span><span class="kt">int</span> <span class="n">minCapacity</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">minCapacity</span> <span class="o">&lt;</span> <span class="n">0</span><span class="o">)</span> <span class="c1">// overflow
+</span><span class="c1"></span>        <span class="k">throw</span> <span class="k">new</span> <span class="n">OutOfMemoryError</span><span class="o">();</span>
+    <span class="k">return</span> <span class="o">(</span><span class="n">minCapacity</span> <span class="o">&gt;</span> <span class="n">MAX_ARRAY_SIZE</span><span class="o">)</span> <span class="o">?</span>
+        <span class="n">Integer</span><span class="o">.</span><span class="na">MAX_VALUE</span> <span class="o">:</span>
+        <span class="n">MAX_ARRAY_SIZE</span><span class="o">;</span>
+<span class="o">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><p>（1）当数组比较小（小于64）的时候每次扩容容量翻倍；</p>
+<p>（2）当数组比较大的时候每次扩容只增加一半的容量；</p>
+<h1 id="出队">出队</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="n">E</span> <span class="nf">remove</span><span class="o">()</span> <span class="o">{</span>
+    <span class="c1">// 调用poll弹出队首元素
+</span><span class="c1"></span>    <span class="n">E</span> <span class="n">x</span> <span class="o">=</span> <span class="n">poll</span><span class="o">();</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">x</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span>
+        <span class="c1">// 有元素就返回弹出的元素
+</span><span class="c1"></span>        <span class="k">return</span> <span class="n">x</span><span class="o">;</span>
+    <span class="k">else</span>
+        <span class="c1">// 没有元素就抛出异常
+</span><span class="c1"></span>        <span class="k">throw</span> <span class="k">new</span> <span class="n">NoSuchElementException</span><span class="o">();</span>
+<span class="o">}</span>
+
+<span class="nd">@SuppressWarnings</span><span class="o">(</span><span class="s">&#34;unchecked&#34;</span><span class="o">)</span>
+<span class="kd">public</span> <span class="n">E</span> <span class="nf">poll</span><span class="o">()</span> <span class="o">{</span>
+    <span class="c1">// 如果size为0，说明没有元素
+</span><span class="c1"></span>    <span class="k">if</span> <span class="o">(</span><span class="n">size</span> <span class="o">==</span> <span class="n">0</span><span class="o">)</span>
+        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="c1">// 弹出元素，元素个数减1
+</span><span class="c1"></span>    <span class="kt">int</span> <span class="n">s</span> <span class="o">=</span> <span class="o">--</span><span class="n">size</span><span class="o">;</span>
+    <span class="n">modCount</span><span class="o">++;</span>
+    <span class="c1">// 队列首元素
+</span><span class="c1"></span>    <span class="n">E</span> <span class="n">result</span> <span class="o">=</span> <span class="o">(</span><span class="n">E</span><span class="o">)</span> <span class="n">queue</span><span class="o">[</span><span class="n">0</span><span class="o">];</span>
+    <span class="c1">// 队列末元素
+</span><span class="c1"></span>    <span class="n">E</span> <span class="n">x</span> <span class="o">=</span> <span class="o">(</span><span class="n">E</span><span class="o">)</span> <span class="n">queue</span><span class="o">[</span><span class="n">s</span><span class="o">];</span>
+    <span class="c1">// 将队列末元素删除
+</span><span class="c1"></span>    <span class="n">queue</span><span class="o">[</span><span class="n">s</span><span class="o">]</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="c1">// 如果弹出元素后还有元素
+</span><span class="c1"></span>    <span class="k">if</span> <span class="o">(</span><span class="n">s</span> <span class="o">!=</span> <span class="n">0</span><span class="o">)</span>
+        <span class="c1">// 将队列末元素移到队列首
+</span><span class="c1"></span>        <span class="c1">// 再做自上而下的堆化
+</span><span class="c1"></span>        <span class="n">siftDown</span><span class="o">(</span><span class="n">0</span><span class="o">,</span> <span class="n">x</span><span class="o">);</span>
+    <span class="c1">// 返回弹出的元素
+</span><span class="c1"></span>    <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="kd">private</span> <span class="kt">void</span> <span class="nf">siftDown</span><span class="o">(</span><span class="kt">int</span> <span class="n">k</span><span class="o">,</span> <span class="n">E</span> <span class="n">x</span><span class="o">)</span> <span class="o">{</span>
+    <span class="c1">// 根据是否有比较器，选择不同的方法
+</span><span class="c1"></span>    <span class="k">if</span> <span class="o">(</span><span class="n">comparator</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span>
+        <span class="n">siftDownUsingComparator</span><span class="o">(</span><span class="n">k</span><span class="o">,</span> <span class="n">x</span><span class="o">);</span>
+    <span class="k">else</span>
+        <span class="n">siftDownComparable</span><span class="o">(</span><span class="n">k</span><span class="o">,</span> <span class="n">x</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="nd">@SuppressWarnings</span><span class="o">(</span><span class="s">&#34;unchecked&#34;</span><span class="o">)</span>
+<span class="kd">private</span> <span class="kt">void</span> <span class="nf">siftDownComparable</span><span class="o">(</span><span class="kt">int</span> <span class="n">k</span><span class="o">,</span> <span class="n">E</span> <span class="n">x</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">Comparable</span><span class="o">&lt;?</span> <span class="kd">super</span> <span class="n">E</span><span class="o">&gt;</span> <span class="n">key</span> <span class="o">=</span> <span class="o">(</span><span class="n">Comparable</span><span class="o">&lt;?</span> <span class="kd">super</span> <span class="n">E</span><span class="o">&gt;)</span><span class="n">x</span><span class="o">;</span>
+    <span class="c1">// 只需要比较一半就行了，因为叶子节点占了一半的元素
+</span><span class="c1"></span>    <span class="kt">int</span> <span class="n">half</span> <span class="o">=</span> <span class="n">size</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">1</span><span class="o">;</span>        <span class="c1">// loop while a non-leaf
+</span><span class="c1"></span>    <span class="k">while</span> <span class="o">(</span><span class="n">k</span> <span class="o">&lt;</span> <span class="n">half</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">// 寻找子节点的位置，这里加1是因为元素从0号位置开始
+</span><span class="c1"></span>        <span class="kt">int</span> <span class="n">child</span> <span class="o">=</span> <span class="o">(</span><span class="n">k</span> <span class="o">&lt;&lt;</span> <span class="n">1</span><span class="o">)</span> <span class="o">+</span> <span class="n">1</span><span class="o">;</span> <span class="c1">// assume left child is least
+</span><span class="c1"></span>        <span class="c1">// 左子节点的值
+</span><span class="c1"></span>        <span class="n">Object</span> <span class="n">c</span> <span class="o">=</span> <span class="n">queue</span><span class="o">[</span><span class="n">child</span><span class="o">];</span>
+        <span class="c1">// 右子节点的位置
+</span><span class="c1"></span>        <span class="kt">int</span> <span class="n">right</span> <span class="o">=</span> <span class="n">child</span> <span class="o">+</span> <span class="n">1</span><span class="o">;</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">right</span> <span class="o">&lt;</span> <span class="n">size</span> <span class="o">&amp;&amp;</span>
+            <span class="o">((</span><span class="n">Comparable</span><span class="o">&lt;?</span> <span class="kd">super</span> <span class="n">E</span><span class="o">&gt;)</span> <span class="n">c</span><span class="o">).</span><span class="na">compareTo</span><span class="o">((</span><span class="n">E</span><span class="o">)</span> <span class="n">queue</span><span class="o">[</span><span class="n">right</span><span class="o">])</span> <span class="o">&gt;</span> <span class="n">0</span><span class="o">)</span>
+            <span class="c1">// 左右节点取其小者
+</span><span class="c1"></span>            <span class="n">c</span> <span class="o">=</span> <span class="n">queue</span><span class="o">[</span><span class="n">child</span> <span class="o">=</span> <span class="n">right</span><span class="o">];</span>
+        <span class="c1">// 如果比子节点都小，则结束
+</span><span class="c1"></span>        <span class="k">if</span> <span class="o">(</span><span class="n">key</span><span class="o">.</span><span class="na">compareTo</span><span class="o">((</span><span class="n">E</span><span class="o">)</span> <span class="n">c</span><span class="o">)</span> <span class="o">&lt;=</span> <span class="n">0</span><span class="o">)</span>
+            <span class="k">break</span><span class="o">;</span>
+        <span class="c1">// 如果比最小的子节点大，则交换位置
+</span><span class="c1"></span>        <span class="n">queue</span><span class="o">[</span><span class="n">k</span><span class="o">]</span> <span class="o">=</span> <span class="n">c</span><span class="o">;</span>
+        <span class="c1">// 指针移到最小子节点的位置继续往下比较
+</span><span class="c1"></span>        <span class="n">k</span> <span class="o">=</span> <span class="n">child</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="c1">// 找到正确的位置，放入元素
+</span><span class="c1"></span>    <span class="n">queue</span><span class="o">[</span><span class="n">k</span><span class="o">]</span> <span class="o">=</span> <span class="n">key</span><span class="o">;</span>
+<span class="o">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><p>（1）将队列首元素弹出；</p>
+<p>（2）将队列末元素移到队列首；</p>
+<p>（3）自上而下堆化，一直往下与最小的子节点比较；</p>
+<p>（4）如果比最小的子节点大，就交换位置，再继续与最小的子节点比较；</p>
+<p>（5）如果比最小的子节点小，就不用交换位置了，堆化结束；</p>
+<p>（6）这就是堆中的删除堆顶元素；</p>
+<h1 id="取元素">取元素</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="n">E</span> <span class="nf">element</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">E</span> <span class="n">x</span> <span class="o">=</span> <span class="n">peek</span><span class="o">();</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">x</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span>
+        <span class="k">return</span> <span class="n">x</span><span class="o">;</span>
+    <span class="k">else</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="n">NoSuchElementException</span><span class="o">();</span>
+<span class="o">}</span>
+<span class="kd">public</span> <span class="n">E</span> <span class="nf">peek</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="o">(</span><span class="n">size</span> <span class="o">==</span> <span class="n">0</span><span class="o">)</span> <span class="o">?</span> <span class="kc">null</span> <span class="o">:</span> <span class="o">(</span><span class="n">E</span><span class="o">)</span> <span class="n">queue</span><span class="o">[</span><span class="n">0</span><span class="o">];</span>
+<span class="o">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><p>（1）如果有元素就取下标0的元素；</p>
+<p>（3）如果没有元素就返回null，element()抛出异常；</p>
+<h1 id="总结">总结</h1>
+<p>（1）PriorityQueue是一个小顶堆；</p>
+<p>（2）PriorityQueue是非线程安全的；</p>
+<p>（3）PriorityQueue不是有序的，只有堆顶存储着最小的元素；</p>
+<p>（4）入队就是堆的插入元素的实现；</p>
+<p>（5）出队就是堆的删除元素的实现；</p>
 
     </div>
 
@@ -159,8 +587,8 @@
   <p class="copyright-item">
     <span class="item-title">LastMod</span>
     <span class="item-content">
-        2022-10-19
-        <a href="https://github.com/sunhao1256/sunhao1256.github.io/commit/9754bfa9678771dc5a9f908cf1869f266a3641df" title="update">(9754bfa)</a>
+        2022-10-20
+        <a href="https://github.com/sunhao1256/sunhao1256.github.io/commit/dfd87b5e1c9d61611f1783e6b697e11bfbc5bf02" title="update">(dfd87b5)</a>
     </span>
   </p>
   

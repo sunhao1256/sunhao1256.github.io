@@ -13,7 +13,7 @@
       <pubDate>Wed, 19 Oct 2022 15:14:41 +0800</pubDate>
       
       <guid>https://luluhome.site/post/priority-queue/</guid>
-      <description>构造函数</description>
+      <description>属性 1 2 3 4 5 6 7 8 9 10 11 // 默认容量 private static final int DEFAULT_INITIAL_CAPACITY = 11; // 存储元素的地方 transient Object[] queue; // non-private to simplify nested class access // 元素个数 private int size = 0; // 比较器 private final Comparator&amp;lt;? super E&amp;gt; comparator; // 修改次数 transient int</description>
     </item>
     
     <item>

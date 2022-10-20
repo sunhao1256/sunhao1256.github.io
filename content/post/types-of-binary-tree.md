@@ -4,6 +4,8 @@ date: 2022-10-19T15:31:44+08:00
 tags: ['data structure']
 ---
 
+>translated from https://www.geeksforgeeks.org/binary-tree-set-3-types-of-binary-tree/?ref=gcse
+
 The following are common types of Binary Trees. 
 
 >以下是常见的二叉树类型
@@ -182,4 +184,39 @@ A binary tree is balanced if the height of the tree is O(Log n) where n is the n
 It is a type of binary tree in which the difference between the height of the left and the right subtree for each node is either 0 or 1. In the figure above, the root node having a value 0 is unbalanced with a depth of 2 units.
 
 >这是一种左右子树高度不超过1的，0节点的高度超过1了
+
+**A degenerate (or pathological) tree:-**
+
+A Tree where every internal node has one child. Such trees are performance-wise same as linked list. 
+
+A degenerate or pathological tree is the tree having a single child either left or right.
+
+>一个数，如果他的所有内部节点都只有一个孩子，这种树的性能和链表一样，一个退化的/病态的树，左右一会有一个孩子
+
+```
+      10
+      /
+    20
+     \
+     30
+      \
+      40   
+```
+
+**Skewed Binary Tree:-**
+
+A skewed binary tree is a pathological/degenerate tree in which the tree is either dominated by the left nodes or the right nodes. Thus, there are two types of skewed binary tree: left-skewed binary tree and right-skewed binary tree.
+
+>不直的树是，完全由左边节点或者右边节点组成的一个退化的/病态的树，因此不直的二叉树有两种，左不直二叉树和右不直二叉树
+
+```
+      10                                           10
+      /                                             \
+    20                                               20
+    /                                                 \
+  30                                                   30
+  /                                                     \
+ 40                                                      40
+Left-Skewed Binary Tree                               Right-Skewed Binary Tree
+```
 

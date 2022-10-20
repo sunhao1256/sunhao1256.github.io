@@ -22,7 +22,7 @@
       <pubDate>Wed, 19 Oct 2022 15:31:44 +0800</pubDate>
       
       <guid>https://luluhome.site/post/types-of-binary-tree/</guid>
-      <description>The following are common types of Binary Trees. 以下是常见的二叉树类型 Full Binary Tree: A Binary Tree is a full binary tree if every node has 0 or 2 children. The following are the examples of a full binary tree. We can also say a full binary tree is a binary tree in which all nodes except leaf nodes have two children.</description>
+      <description>translated from https://www.geeksforgeeks.org/binary-tree-set-3-types-of-binary-tree/?ref=gcse The following are common types of Binary Trees. 以下是常见的二叉树类型 Full Binary Tree A Binary Tree is a full binary tree if every node has 0 or 2 children. The following are the examples of a full binary tree. We can also say a full binary tree is a binary tree in which all nodes except leaf nodes</description>
     </item>
     
     <item>
