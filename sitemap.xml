@@ -9,6 +9,62 @@
   </url>
   
   <url>
+    <loc>https://luluhome.site/tags/java-%E5%9F%BA%E7%A1%80/</loc>
+    <lastmod>2022-10-21T16:33:35+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://luluhome.site/</loc>
+    <lastmod>2022-10-21T16:33:35+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://luluhome.site/post/</loc>
+    <lastmod>2022-10-21T16:33:35+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://luluhome.site/post/synchronous-queue/</loc>
+    <lastmod>2022-10-21T16:33:35+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://luluhome.site/tags/</loc>
+    <lastmod>2022-10-21T16:33:35+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://luluhome.site/tags/java%E5%9F%BA%E7%A1%80/</loc>
+    <lastmod>2022-10-21T16:00:00+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://luluhome.site/post/linked-block-queue/</loc>
+    <lastmod>2022-10-21T16:00:00+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://luluhome.site/post/array-block-queue/</loc>
+    <lastmod>2022-10-21T16:00:00+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://luluhome.site/tags/java/</loc>
     <lastmod>2022-10-20T11:22:58+08:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -18,27 +74,6 @@
   <url>
     <loc>https://luluhome.site/post/java-how-to-write-file/</loc>
     <lastmod>2022-10-20T11:22:58+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://luluhome.site/</loc>
-    <lastmod>2022-10-20T17:13:37+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://luluhome.site/post/</loc>
-    <lastmod>2022-10-20T17:13:37+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://luluhome.site/tags/</loc>
-    <lastmod>2022-10-20T17:13:37+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -59,13 +94,6 @@
   
   <url>
     <loc>https://luluhome.site/post/types-of-binary-tree/</loc>
-    <lastmod>2022-10-20T17:13:37+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://luluhome.site/tags/java%E5%9F%BA%E7%A1%80/</loc>
     <lastmod>2022-10-20T17:13:37+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -185,14 +213,14 @@
   
   <url>
     <loc>https://luluhome.site/post/mywordnote/</loc>
-    <lastmod>2022-10-20T17:13:37+08:00</lastmod>
+    <lastmod>2022-10-21T16:00:00+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://luluhome.site/tags/%E5%AD%A6%E5%A4%96%E8%AF%AD/</loc>
-    <lastmod>2022-10-20T17:13:37+08:00</lastmod>
+    <lastmod>2022-10-21T16:00:00+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>

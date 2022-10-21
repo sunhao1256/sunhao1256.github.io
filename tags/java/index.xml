@@ -13,7 +13,7 @@
       <pubDate>Thu, 20 Oct 2022 11:13:56 +0800</pubDate>
       
       <guid>https://luluhome.site/post/java-how-to-write-file/</guid>
-      <description>if you need to read hugo file one line by one line , how will you to achieve the program ?
+      <description>if you need to read huge file one line by one line , how will you to achieve the program ?
 Read all bytes to memory
 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22  package io_stream; import org.apache.tomcat.util.http.fileupload.IOUtils; import java.io.*; public class BufferStreamTest { public static void main(String[] args) throws IOException { // try copy large file in 30MB memory  InputStream inputStream = new FileInputStream(&amp;#34;/Users/zero/Downloads/googlechrome.</description>
     </item>

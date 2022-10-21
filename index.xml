@@ -6,7 +6,7 @@
     <description>Recent content on Luluhome - a blog for sh , &#39;lulu&#39; is my cat</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 20 Oct 2022 11:13:56 +0800</lastBuildDate><atom:link href="https://luluhome.site/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 21 Oct 2022 16:33:35 +0800</lastBuildDate><atom:link href="https://luluhome.site/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>About</title>
       <link>https://luluhome.site/about/</link>
@@ -18,12 +18,39 @@ Loser</description>
     </item>
     
     <item>
+      <title>Synchronous Queue</title>
+      <link>https://luluhome.site/post/synchronous-queue/</link>
+      <pubDate>Fri, 21 Oct 2022 16:33:35 +0800</pubDate>
+      
+      <guid>https://luluhome.site/post/synchronous-queue/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Linked Block Queue</title>
+      <link>https://luluhome.site/post/linked-block-queue/</link>
+      <pubDate>Fri, 21 Oct 2022 15:31:00 +0800</pubDate>
+      
+      <guid>https://luluhome.site/post/linked-block-queue/</guid>
+      <description>linked from https://www.cnblogs.com/tong-yuan/p/LinkedBlockingQueue.html 属性 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 // 容量 private final int capacity; // 元素数量 private final AtomicInteger count = new AtomicInteger(); // 链表头 transient Node&amp;lt;E&amp;gt; head; // 链表尾 private transient Node&amp;lt;E&amp;gt; last; // take</description>
+    </item>
+    
+    <item>
+      <title>Array Block Queue</title>
+      <link>https://luluhome.site/post/array-block-queue/</link>
+      <pubDate>Fri, 21 Oct 2022 14:54:44 +0800</pubDate>
+      
+      <guid>https://luluhome.site/post/array-block-queue/</guid>
+      <description>简介 ArrayBlockingQueue是java并发包下一个以数组实现的阻塞队列，它是线程安全的，至于是否需要扩容，请看下面的分析。 队列 队</description>
+    </item>
+    
+    <item>
       <title>Java How to Write File</title>
       <link>https://luluhome.site/post/java-how-to-write-file/</link>
       <pubDate>Thu, 20 Oct 2022 11:13:56 +0800</pubDate>
       
       <guid>https://luluhome.site/post/java-how-to-write-file/</guid>
-      <description>if you need to read hugo file one line by one line , how will you to achieve the program ?
+      <description>if you need to read huge file one line by one line , how will you to achieve the program ?
 Read all bytes to memory
 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22  package io_stream; import org.apache.tomcat.util.http.fileupload.IOUtils; import java.io.*; public class BufferStreamTest { public static void main(String[] args) throws IOException { // try copy large file in 30MB memory  InputStream inputStream = new FileInputStream(&amp;#34;/Users/zero/Downloads/googlechrome.</description>
     </item>

@@ -4,7 +4,7 @@ date: 2022-10-20T11:13:56+08:00
 tags: ["java"]
 ---
 
-if you need to read hugo file one line by one line , how will you to achieve the program ?
+if you need to read huge file one line by one line , how will you to achieve the program ?
 
 **Read all bytes to memory**
 

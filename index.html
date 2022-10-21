@@ -122,6 +122,69 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/synchronous-queue/">Synchronous Queue</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2022-10-21 </span>
+      
+        <span class="more-meta"> 0 words </span>
+        <span class="more-meta"> 0 mins read </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      
+    </div>
+    <div class="read-more">
+      <a href="/post/synchronous-queue/" class="read-more-link">Read more...</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/linked-block-queue/">Linked Block Queue</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2022-10-21 </span>
+      
+        <span class="more-meta"> 1855 words </span>
+        <span class="more-meta"> 4 mins read </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      linked from https://www.cnblogs.com/tong-yuan/p/LinkedBlockingQueue.html 属性 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 // 容量 private final int capacity; // 元素数量 private final AtomicInteger count = new AtomicInteger(); // 链表头 transient Node&lt;E&gt; head; // 链表尾 private transient Node&lt;E&gt; last; // take
+    </div>
+    <div class="read-more">
+      <a href="/post/linked-block-queue/" class="read-more-link">Read more...</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/array-block-queue/">Array Block Queue</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2022-10-21 </span>
+      
+        <span class="more-meta"> 2166 words </span>
+        <span class="more-meta"> 5 mins read </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      简介 ArrayBlockingQueue是java并发包下一个以数组实现的阻塞队列，它是线程安全的，至于是否需要扩容，请看下面的分析。 队列 队
+    </div>
+    <div class="read-more">
+      <a href="/post/array-block-queue/" class="read-more-link">Read more...</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/java-how-to-write-file/">Java How to Write File</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2022-10-20 </span>
@@ -133,7 +196,7 @@
   
   <div class="post-content">
     <div class="post-summary">
-      if you need to read hugo file one line by one line , how will you to achieve the program ?
+      if you need to read huge file one line by one line , how will you to achieve the program ?
 Read all bytes to memory
 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22  package io_stream; import org.apache.tomcat.util.http.fileupload.IOUtils; import java.io.*; public class BufferStreamTest { public static void main(String[] args) throws IOException { // try copy large file in 30MB memory  InputStream inputStream = new FileInputStream(&#34;/Users/zero/Downloads/googlechrome.
     </div>
@@ -160,69 +223,6 @@ Read all bytes to memory
     </div>
     <div class="read-more">
       <a href="/post/dictionary-tree/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/types-of-binary-tree/">Types of Binary Tree</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2022-10-19 </span>
-      
-        <span class="more-meta"> 2254 words </span>
-        <span class="more-meta"> 5 mins read </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      translated from https://www.geeksforgeeks.org/binary-tree-set-3-types-of-binary-tree/?ref=gcse The following are common types of Binary Trees. 以下是常见的二叉树类型 Full Binary Tree A Binary Tree is a full binary tree if every node has 0 or 2 children. The following are the examples of a full binary tree. We can also say a full binary tree is a binary tree in which all nodes except leaf nodes
-    </div>
-    <div class="read-more">
-      <a href="/post/types-of-binary-tree/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/priority-queue/">Priority Queue</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2022-10-19 </span>
-      
-        <span class="more-meta"> 1992 words </span>
-        <span class="more-meta"> 4 mins read </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      属性 1 2 3 4 5 6 7 8 9 10 11 // 默认容量 private static final int DEFAULT_INITIAL_CAPACITY = 11; // 存储元素的地方 transient Object[] queue; // non-private to simplify nested class access // 元素个数 private int size = 0; // 比较器 private final Comparator&lt;? super E&gt; comparator; // 修改次数 transient int
-    </div>
-    <div class="read-more">
-      <a href="/post/priority-queue/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/mysql-findinset-multiplevalues/">Mysql Findinset Multiplevalues</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2022-10-19 </span>
-      
-        <span class="more-meta"> 24 words </span>
-        <span class="more-meta"> 1 min read </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      1 2 3 4 5 6  /* Something likes find_in_set(&#39;a,b,c&#39;, &#39;a,b,c,d&#39;) We can use OR: find_in_set(&#39;a&#39;, &#39;a,b,c,d&#39;) OR find_in_set(&#39;b&#39;, &#39;a,b,c,d&#39;) OR find_in_set(&#39;b&#39;, &#39;a,b,c,d&#39;) */WHERECONCAT(&#34;,&#34;,`setcolumn`,&#34;,&#34;)REGEXP&#34;,(val1|val2|val3),&#34;  
-    </div>
-    <div class="read-more">
-      <a href="/post/mysql-findinset-multiplevalues/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>

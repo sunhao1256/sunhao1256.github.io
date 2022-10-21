@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>java 基础 on Luluhome - a blog for sh , &#39;lulu&#39; is my cat</title>
+    <link>https://luluhome.site/tags/java-%E5%9F%BA%E7%A1%80/</link>
+    <description>Recent content in java 基础 on Luluhome - a blog for sh , &#39;lulu&#39; is my cat</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Fri, 21 Oct 2022 16:33:35 +0800</lastBuildDate><atom:link href="https://luluhome.site/tags/java-%E5%9F%BA%E7%A1%80/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Synchronous Queue</title>
+      <link>https://luluhome.site/post/synchronous-queue/</link>
+      <pubDate>Fri, 21 Oct 2022 16:33:35 +0800</pubDate>
+      
+      <guid>https://luluhome.site/post/synchronous-queue/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Array Block Queue</title>
+      <link>https://luluhome.site/post/array-block-queue/</link>
+      <pubDate>Fri, 21 Oct 2022 14:54:44 +0800</pubDate>
+      
+      <guid>https://luluhome.site/post/array-block-queue/</guid>
+      <description>简介 ArrayBlockingQueue是java并发包下一个以数组实现的阻塞队列，它是线程安全的，至于是否需要扩容，请看下面的分析。 队列 队</description>
+    </item>
+    
+  </channel>
+</rss>
