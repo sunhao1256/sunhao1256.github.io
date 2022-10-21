@@ -641,3 +641,35 @@ tags: ["学外语"]
 - trim 
 
   修剪，修整 v|消减，减少v|苗条的 adj|整齐的adj|修剪，修整n  [asked](https://dictionary.cambridge.org/us/dictionary/english-chinese-simplified/ask) *the* [hairdresser](https://dictionary.cambridge.org/us/dictionary/english-chinese-simplified/hairdresser) *for* **a** *trim.*
+
+- omit
+
+  疏忽，遗漏；删节，排除
+
+- candidate **/ˈkæn.dɪ.deɪt/**
+
+  申请人；候选人n|考生；应试者，投考者n
+
+- terminate **/ˈtɜː.mɪ.neɪt/**
+
+  （使…）结束，停止，终止
+
+- wound **/wuːnd/**
+
+  （身体上的）伤，伤口n
+
+- flesh **/fleʃ**
+
+  （人或动物的）肉；果肉；蔬菜的可食部分n
+
+- thorn **/θɔːn/**
+
+  （植物茎上的）刺，荆棘
+
+- synchronous **/ˈsɪŋ.krə.nəs/**
+
+  同时的
+
+- sequeue **/ˈsiː.kwəns/**
+
+  一连串；一系列；顺序，次序 n|（影片中的）一组镜头n|安排…的顺序；发现…的顺序v
