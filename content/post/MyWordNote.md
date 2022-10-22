@@ -76,9 +76,9 @@ tags: ["学外语"]
 
   一段时间
 
-- certain
+- certain **/ˈsɜː.tən/**
 
-  肯定的，确定的
+  不可避免地，必然地；极可能地adj|肯定的，确定的adj|某个，某位adj|有限的adj|（没有指明或描述的）某，某个，某些|一些，若干
 
 - bottleneck
 
@@ -685,3 +685,23 @@ tags: ["学外语"]
 - approximation **/əˌprɒk.sɪˈmeɪ.ʃən/**
 
   粗略估计；近似值
+
+- encounter **/ɪnˈkaʊn.tər/**
+
+  偶然相遇，邂逅，不期而遇n|（对象通常为陌生人的）性经历n|（体育）比赛，交锋n|邂逅，不期而遇，偶然碰到v|遭遇，遇到（尤指不愉快的事情）v
+
+- involve **/ɪnˈvɒlv/**
+
+  包括，包含v|涉及v|使参与，牵涉v
+
+- dedicated **/ˈded.ɪ.keɪ.tɪd/**
+
+  尽心尽力的，尽职尽责的 adj|专用的，专门的adj
+
+- illustration **/ˌɪl.əˈstreɪ.ʃən/**
+
+  插图；图解，图示n|例证，实例n
+
+- technical **/ˈtek.nɪ.kəl/**
+
+  技术的adj|技能的，技巧的adj
