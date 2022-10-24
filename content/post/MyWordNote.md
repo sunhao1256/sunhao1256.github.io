@@ -8,11 +8,11 @@ tags: ["学外语"]
 
 > When i meet some word that I can't known its meaning , i will record it here .
 >
-> Just for my convenience to remember how to write
+> Just for my convenience to remember how to spell
 
-- convenient
+- convenient 
 
-  方便 adj
+  方便 adj  
 
 - convenience
 
