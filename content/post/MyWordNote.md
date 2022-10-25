@@ -705,3 +705,23 @@ tags: ["学外语"]
 - technical **/ˈtek.nɪ.kəl/**
 
   技术的adj|技能的，技巧的adj
+  
+- restrict **/rɪˈstrɪkt/**
+
+  限制；限定；妨碍v
+
+- contrash **/ˈkɒn.trɑːst/**
+
+  差别，差异；对照，对比n|对照，对比v|
+
+- demonstrate **/ˈdem.ən.streɪt/**
+
+  显示；表明v|展示，演示v|表达；表露；表现；显露v|示威，游行v
+
+- scratch **/skrætʃ/**
+
+  抓；搔；擦；划v|刻；刮|（动物）用爪子抓，搔v|（用指甲）搔，挠v|（使）退出比赛v|取消（原计划）v
+
+- convention **/kənˈven.ʃən/**
+
+  大会；会议n|传统；（尤指社会）习俗，常规，惯例n|（艺术、写作上的）传统手法n|公约；协定n
