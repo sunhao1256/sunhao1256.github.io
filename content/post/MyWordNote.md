@@ -244,7 +244,7 @@ tags: ["学外语"]
 
   index的复数
 
-- roughly
+- roughly ****
 
   粗略的，大致的|简单的，不精致的|粗暴的
 
@@ -470,7 +470,7 @@ tags: ["学外语"]
 
   违反，违背
 
-- retrieve
+- retrieve **/rɪˈtriːv/**
 
   找回；取回；挽回
 
@@ -725,3 +725,117 @@ tags: ["学外语"]
 - convention **/kənˈven.ʃən/**
 
   大会；会议n|传统；（尤指社会）习俗，常规，惯例n|（艺术、写作上的）传统手法n|公约；协定n
+
+- reserved **/rɪˈzɜːvd/**
+
+  拘谨；矜持；内向adj|保留的，预订的（门票、座位等）adj
+
+- verbose **/vɜːˈbəʊs/**
+
+  啰唆的；冗长的，累赘的adj
+
+- interploate **/ɪnˈtɜː.pə.leɪt/**
+
+  插入（文字）v
+
+- closure **/ˈkləʊ.ʒər/**
+
+  停业，倒闭，关闭 v|解脱，宽慰v|*to **[achieve](https://dictionary.cambridge.org/us/dictionary/english-chinese-simplified/achieve)/[reach](https://dictionary.cambridge.org/us/dictionary/english-chinese-simplified/reach)** closure*获得／达到解脱
+
+- notation **/nəʊˈteɪ.ʃən/**
+
+  （尤指数学中或用于表示音符的）符号系统；数学符号；音乐符号
+
+- slash **/slæʃ/**
+
+  斜杠
+
+- versus **/ˈvɜː.səs/**
+
+  以…为对手；对v|（尤指进行选择时）与…相比
+
+- orientation **/ˌɔː.ri.enˈteɪ.ʃən/**
+
+  （某人的）特别喜好，价值取向，信仰观念n|兴趣；取向；目标n|（对新工作、新活动的）培训，准备n|安排；方向n
+
+- generic **/dʒəˈner.ɪk/**
+
+  一般的，普通的，通用的adj|（尤指药品）无专利的，不受某一厂商控制的adj|
+
+  generics 泛型
+
+- inheritance **/ɪnˈher.ɪ.təns/**
+
+  继承的遗产v|得自遗传的特征；遗传v
+
+- mandatory **/ˈmæn.də.tɔːr.i/**
+
+  强制的；必须履行的；法定的adj
+
+- migrate **/ˈmaɪ.ɡreɪt/**
+
+  （动物）迁徙，移栖v|（指人）大批外出；（暂时）移居，迁移|移动，转移v|迁移（使用新的操作系统，或将资料从一种操作系统移至另一种操作系统）v
+
+- primer **/ˈpraɪ.mɚ/**
+
+  底层涂料；底漆n|妆前乳n|入门书，初学者读物n
+
+- mechanism **/ˈmek.ə.nɪ.zəm/**
+
+  机械部件；机械装置n|体制，结构方式n|（处理棘手情况的）机制n
+
+- unqualified **/ʌnˈkwɒl.ɪ.faɪd/**
+
+  不合格的，不称职的adj|无限制的；绝对的；最大程度的adj
+
+- delegate **/ˈdel.ɪ.ɡət/**
+
+  （尤指会议的）代表n|（把…）委派（给…），（把…）委托（给…）；授权（给…）v|选出（尤指会议的）代表v
+
+- suppress **/səˈpres/**
+
+  （用武力）镇压，压制，制止v|抑制，忍住，压抑；查禁v
+
+- terminology **/ˌtɝː.məˈnɑː.lə.dʒi/**
+
+  术语
+
+- isolation **/ˌaɪ.səlˈeɪ.ʃən/**
+
+  隔离
+
+- constraint **/kənˈstreɪnt/**
+
+  限制；束缚；约束;拘束；局促n
+
+- terminology **/ˌtɝː.məˈnɑː.lə.dʒi/**
+
+  术语；科学术语
+
+- wealth **/welθ/**
+
+  财富，钱财;大量；丰富；充裕n|
+
+- parctical **/ˈpræk.tɪ.kəl/**
+
+  实际的；实干的；有实际经验的adj|适合的，实用的adj|实用的，有效的；能解决问题的adj|可实施的re，切实可行的；切合实际的adj|实践课，实验课；实验考核n
+
+- coordinate **/koʊˈɔːr.dən.eɪt/**
+
+  协调；使相配合v|相配，相称；协调v|坐标n
+
+- identify **/aɪˈden.t̬ə.faɪ/**
+
+  认出，识别v|确定；发现v|
+
+- correspond **/ˌkɔːr.əˈspɑːnd/**
+
+  相称；相类似；相当v|通信v
+
+- compose **/kəmˈpoʊz/**
+
+  作曲；创作（乐曲、诗歌）；著（书）v|组成，构成v|排版v
+
+- rough **/rʌf/**
+
+  高低不平的；崎岖的；难行的adj|（表面）粗糙的，毛糙的，不平滑的adj|（土地）未开垦的，杂草丛生的，荒的adj|粗略的；大致的；近似的adj|（尤指酒类饮料）涩味的，辣嗓子的，劣质的adj|粗制滥造的；简陋的；粗糙的adj|声音粗哑的，难听的adj|粗暴的，粗野的；猛烈的；充斥暴力的，危险的adj|（天气）有狂风大浪的（天气）有狂风大浪的adj|艰难的；艰苦的；令人不快的adj|不舒服的，不适的，生病的adj|（暂时）将就度日，因陋就简地生活v
