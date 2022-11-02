@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Kubernetes Operator - Luluhome - a blog for sh , &#39;lulu&#39; is my cat</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="sh" /><meta name="description" content="Operator Operator is equivalent for Custom Resource definations (crds) with Custom Resource Controller (crc)
+Custom Resources  A resource is an endpoint in the Kubernetes API that stores a collection of API objects of a certain kind; for example, the built-in pods resource contains a collection of Pod objects.
+A custom resource is an extension of the Kubernetes API that is not necessarily available in a default Kubernetes installation. It represents a customization of a particular Kubernetes installation." /><meta name="keywords" content="luluhome, java, blog" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.89.0 with theme even" />
+
+
+<link rel="canonical" href="https://luluhome.site/post/kubernetes-operator/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Kubernetes Operator" />
+<meta property="og:description" content="Operator Operator is equivalent for Custom Resource definations (crds) with Custom Resource Controller (crc)
+Custom Resources  A resource is an endpoint in the Kubernetes API that stores a collection of API objects of a certain kind; for example, the built-in pods resource contains a collection of Pod objects.
+A custom resource is an extension of the Kubernetes API that is not necessarily available in a default Kubernetes installation. It represents a customization of a particular Kubernetes installation." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://luluhome.site/post/kubernetes-operator/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-11-02T11:25:27+08:00" />
+<meta property="article:modified_time" content="2022-11-02T11:25:27+08:00" />
+
+<meta itemprop="name" content="Kubernetes Operator">
+<meta itemprop="description" content="Operator Operator is equivalent for Custom Resource definations (crds) with Custom Resource Controller (crc)
+Custom Resources  A resource is an endpoint in the Kubernetes API that stores a collection of API objects of a certain kind; for example, the built-in pods resource contains a collection of Pod objects.
+A custom resource is an extension of the Kubernetes API that is not necessarily available in a default Kubernetes installation. It represents a customization of a particular Kubernetes installation."><meta itemprop="datePublished" content="2022-11-02T11:25:27+08:00" />
+<meta itemprop="dateModified" content="2022-11-02T11:25:27+08:00" />
+<meta itemprop="wordCount" content="359">
+<meta itemprop="keywords" content="kubernetes," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Kubernetes Operator"/>
+<meta name="twitter:description" content="Operator Operator is equivalent for Custom Resource definations (crds) with Custom Resource Controller (crc)
+Custom Resources  A resource is an endpoint in the Kubernetes API that stores a collection of API objects of a certain kind; for example, the built-in pods resource contains a collection of Pod objects.
+A custom resource is an extension of the Kubernetes API that is not necessarily available in a default Kubernetes installation. It represents a customization of a particular Kubernetes installation."/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">luluhome</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">luluhome</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Kubernetes Operator</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-11-02 </span>
+        
+          <span class="more-meta"> 359 words </span>
+          <span class="more-meta"> 2 mins read </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#operator">Operator</a></li>
+    <li><a href="#custom-resources">Custom Resources</a></li>
+    <li><a href="#custom-controller">Custom Controller</a></li>
+    <li><a href="#user-cases">User Cases</a></li>
+    <li><a href="#kubedb">KubeDB</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="operator">Operator</h1>
+<p>Operator is equivalent for  Custom Resource definations (crds) with  Custom Resource Controller (crc)</p>
+<h1 id="custom-resources">Custom Resources</h1>
+<blockquote>
+<p>A <em>resource</em> is an endpoint in the <a href="https://kubernetes.io/docs/concepts/overview/kubernetes-api/">Kubernetes API</a> that stores a collection of <a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/kubernetes-objects/">API objects</a> of a certain kind; for example, the built-in <em>pods</em> resource contains a collection of Pod objects.</p>
+<p>A <em>custom resource</em> is an extension of the Kubernetes API that is not necessarily available in a default Kubernetes installation. It represents a customization of a particular Kubernetes installation. However, many core Kubernetes functions are now built using custom resources, making Kubernetes more modular.</p>
+<p>Custom resources can appear and disappear in a running cluster through dynamic registration, and cluster admins can update custom resources independently of the cluster itself. Once a custom resource is installed, users can create and access its objects using <a href="https://kubernetes.io/docs/user-guide/kubectl-overview/">kubectl</a>, just as they do for built-in resources like <em>Pods</em>.</p>
+</blockquote>
+<h1 id="custom-controller">Custom Controller</h1>
+<blockquote>
+<p>on their own , custom resources let you store and retrieve structured data. When you combine a custom resource with a <em>custom controller</em>, custom resources provide a true <em>declarative API</em>.</p>
+<p>The Kubernetes <a href="https://kubernetes.io/docs/concepts/overview/kubernetes-api/">declarative API</a> enforces a separation of responsibilities. You declare the desired state of your resource. The Kubernetes controller keeps the current state of Kubernetes objects in sync with your declared desired state. This is in contrast to an imperative API, where you <em>instruct</em> a server what to do.</p>
+<p>You can deploy and update a custom controller on a running cluster, independently of the cluster&rsquo;s lifecycle. Custom controllers can work with any kind of resource, but they are especially effective when combined with custom resources. The <a href="https://kubernetes.io/docs/concepts/extend-kubernetes/operator/">Operator pattern</a> combines custom resources and custom controllers. You can use custom controllers to encode domain knowledge for specific applications into an extension of the Kubernetes API.</p>
+</blockquote>
+<h1 id="user-cases">User Cases</h1>
+<blockquote>
+<p>CustomResourceDefinitions can be used to implement custom resource types for your Kubernetes cluster. These act like most other Resources in Kubernetes, and may be <code>kubectl apply</code>&rsquo;d, etc.</p>
+<p>Some example use cases:</p>
+<ul>
+<li>Provisioning/Management of external datastores/databases (eg. CloudSQL/RDS instances)</li>
+<li>Higher level abstractions around Kubernetes primitives (eg. a single Resource to define an etcd cluster, backed by a Service and a ReplicationController)</li>
+</ul>
+</blockquote>
+<h1 id="kubedb">KubeDB</h1>
+<p>one of User Cases for Provisioning/Management of external datastores/databases</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">sh</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2022-11-02
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/kubernetes/">kubernetes</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/kubernetes-nice-article/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Kubernetes Nice Article</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/synchronous-queue/">
+            <span class="next-text nav-default">Synchronous Queue</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:sunhao1256@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://twitter.com/Frank12990735" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://github.com/sunhao1256" class="iconfont icon-github" title="github"></a>
+  <a href="https://luluhome.site/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>sh</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

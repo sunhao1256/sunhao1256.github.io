@@ -6,7 +6,29 @@
     <description>Recent content in Posts on Luluhome - a blog for sh , &#39;lulu&#39; is my cat</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 21 Oct 2022 16:33:35 +0800</lastBuildDate><atom:link href="https://luluhome.site/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 02 Nov 2022 15:17:34 +0800</lastBuildDate><atom:link href="https://luluhome.site/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Kubernetes Nice Article</title>
+      <link>https://luluhome.site/post/kubernetes-nice-article/</link>
+      <pubDate>Wed, 02 Nov 2022 15:17:34 +0800</pubDate>
+      
+      <guid>https://luluhome.site/post/kubernetes-nice-article/</guid>
+      <description>Working with Kubernetes API
+k8s-client-go
+sample-controller</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes Operator</title>
+      <link>https://luluhome.site/post/kubernetes-operator/</link>
+      <pubDate>Wed, 02 Nov 2022 11:25:27 +0800</pubDate>
+      
+      <guid>https://luluhome.site/post/kubernetes-operator/</guid>
+      <description>Operator Operator is equivalent for Custom Resource definations (crds) with Custom Resource Controller (crc)
+Custom Resources  A resource is an endpoint in the Kubernetes API that stores a collection of API objects of a certain kind; for example, the built-in pods resource contains a collection of Pod objects.
+A custom resource is an extension of the Kubernetes API that is not necessarily available in a default Kubernetes installation. It represents a customization of a particular Kubernetes installation.</description>
+    </item>
+    
     <item>
       <title>Synchronous Queue</title>
       <link>https://luluhome.site/post/synchronous-queue/</link>
