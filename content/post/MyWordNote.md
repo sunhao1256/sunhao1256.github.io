@@ -204,7 +204,7 @@ tags: ["学外语"]
 
   程序|步骤
 
-- vital
+- vital **/ˈvaɪ.təl/**
 
   极其重要的，必不可少的|充满生机的，生机勃勃的
 
@@ -875,3 +875,71 @@ tags: ["学外语"]
 - paralllelism **/ˈpær.ə.lelˌɪz.əm/**
 
   （句子）排比，平行结构
+  
+- folk **/fəʊk/**
+
+  （尤指某一群体或类型的）人们n|民谣，民歌n|传统的；（尤指）普通百姓的，流传民间的adj|（艺术）民间的，民俗的adj
+
+- bells and whistles **/ˌbelz ən ˈwɪs.əlz/**
+
+  华丽的点缀，花里胡哨的东西 n
+
+- overwhelm **/ˌəʊ.vəˈwelm/**
+
+​		（用武力）制服，击败，征服v|（强烈的感情）充溢，使难以承受，使不知所措v|（水）淹没，覆盖，漫过v
+
+- simultaneously **/ˌsɪm.əlˈteɪ.ni.əs.li**
+
+  同时地 adv
+
+- consistent **/kənˈsɪs.tənt/**
+
+  一贯的；坚持的；始终如一的adj|一致的，吻合的；符合的adj
+
+- massive **/ˈmæs.ɪv/**
+
+  巨大的；大量的adj
+
+- extrapolate **/ɪkˈstræp.ə.leɪt/**
+
+  推断；推知
+
+- fundamental **/ˌfʌn.dəˈmen.təl/**
+
+  基础的，基本的adj|主要的，根本的adj
+
+- favor **/ˈfeɪ.vər/**
+
+  支持；赞同v|对…有利，使…处于有利的位置v|判决…无罪v|帮助，善意行为；恩惠n|特别照顾，优惠；偏袒n|（在婚礼、聚会等上发给客人的）小礼物n|赞同；较喜欢v|优惠；偏袒；特别照顾v
+
+- simplicity **/sɪmˈplɪs.ə.ti/**
+
+  简单，简易 n|朴素，简朴n
+
+- digestibility **/dɪˌdʒes.təˈbɪl.ə.ti/**
+
+  易消化（性）；能消化n|懂；能理解n
+
+- indigestibility **/ˌɪn.dɪˌdʒes.təˈbɪl.ə.ti/**
+
+  难消化（性）；不能消化;难懂；不能理解n|
+
+-  academic **/ˌæk.əˈdem.ɪk/**
+
+  学校的；学院的；学术的adj|聪明好学的；学习好的adj|纯理论的；不关联实际的adj|大学教师；学者n|（中学或大学的）学科n
+
+- plural **/ˈplʊə.rəl/**
+
+  复数形式
+
+- correctness **/kəˈrekt.nəs/**
+
+  正确，无误n|言谈考究；举止得体n
+
+- completeness **/kəmˈpliːt.nəs/**
+
+  完整，完备n|
+
+- derive **/dɪˈraɪv/**
+
+  从…中得到，从…中获得 v|
