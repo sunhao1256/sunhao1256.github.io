@@ -943,3 +943,15 @@ tags: ["学外语"]
 - derive **/dɪˈraɪv/**
 
   从…中得到，从…中获得 v|
+
+- legacy **/ˈleɡ.ə.si/**
+
+  遗产，遗赠 n|历史遗产，遗留物n
+
+- intervene **/ˌɪn.təˈviːn/**
+
+  干涉，干预；调停v|
+
+- evaluate
+
+  评估，估值

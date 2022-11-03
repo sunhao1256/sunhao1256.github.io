@@ -9,3 +9,5 @@ tags: ['kubernetes']
 [k8s-client-go](https://github.com/kubernetes/client-go)
 
 [sample-controller](https://github.com/kubernetes/sample-controller)
+
+[helm-gudie](https://helm.sh/docs/chart_template_guide/named_templates/)
