@@ -11,3 +11,5 @@ tags: ['kubernetes']
 [sample-controller](https://github.com/kubernetes/sample-controller)
 
 [helm-gudie](https://helm.sh/docs/chart_template_guide/named_templates/)
+
+[Kubernetes Informer 源码解析](https://cn.wbsnail.com/p/dive-into-kubernetes-informer-shared-informer-factory)
