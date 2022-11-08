@@ -13,3 +13,5 @@ tags: ['kubernetes']
 [helm-gudie](https://helm.sh/docs/chart_template_guide/named_templates/)
 
 [Kubernetes Informer 源码解析](https://cn.wbsnail.com/p/dive-into-kubernetes-informer-shared-informer-factory)
+
+[kubeDB][https://kubedb.com/docs/v2022.10.18/guides/mysql/quickstart/]
