@@ -1480,3 +1480,47 @@ https://www.geek-share.com/detail/2728370984.html
 
 # 设置hostname
 
+控制台内核日志相关命令
+查看内核日志的命令
+    1. dmesg（dmesg -T 带标准时间输出）
+    2. cat /dev/kmsg
+以上两个命令输出是一样的
+日志级别说明
+数字越小级别越高
+
+    0 (KERN_EMERG)        系统不可用
+    1 (KERN_ALERT)        必须立即采取行动
+    2 (KERN_CRIT)        紧急情况
+    3 (KERN_ERR)        错误情况
+    4 (KERN_WARNING)    警告情况
+    5 (KERN_NOTICE)        普通带需要注意的情况
+    6 (KERN_INFO)        信息
+    7 (KERN_DEBUG)        调试级别信息
+调整内核日志输出级别
+    1.查看内核输出级别
+    cat /proc/sys/kernel/printk
+    4 4 1 7
+
+    2.修改内核输出级别
+    echo '1 4 1 7' | sudo tee /proc/sys/kernel/printk
+     
+    四个数字分别代表以下的意思：
+    console_loglevel
+    控制台日志级别：优先级高于该值的消息将被打印至控制台
+    default_message_loglevel
+    缺省的消息日志级别：将用该优先级来打印没有优先级的消息
+    minimum_console_loglevel
+    最低的控制台日志级别：控制台日志级别可被设置的最小值（最高优先级）
+    default_console_loglevel
+    缺省的控制台日志级别：控制台日志级别的缺省值
+     
+    3.通过dmesg调整控制台输出级别
+    dmesg -n <loglevel>
+    该修改只是修改控制台的日志级别，dmesg 还是按照默认级别进行输出。
+     
+    4.通过boot参数来修改
+    loglevel=<level>
+
+————————————————
+版权声明：本文为CSDN博主「Jack's 技术博客」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/samallhorse/article/details/105542670
