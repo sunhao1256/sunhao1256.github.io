@@ -44,12 +44,12 @@
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://luluhome.site/post/linux/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2020-01-31T20:50:54+00:00" />
-<meta property="article:modified_time" content="2022-10-14T16:00:00+08:00" />
+<meta property="article:modified_time" content="2022-11-16T16:00:00+08:00" />
 
 <meta itemprop="name" content="linux">
 <meta itemprop="description" content="终端 [root@LocalHost 桌面]# l root表示当前登录用户名 locahost表示当前登录的主机名 桌面 表示当前的工作目录 # 身份标识符 #表示为超级管理员 $表示为普"><meta itemprop="datePublished" content="2020-01-31T20:50:54+00:00" />
-<meta itemprop="dateModified" content="2022-10-14T16:00:00+08:00" />
-<meta itemprop="wordCount" content="13018">
+<meta itemprop="dateModified" content="2022-11-16T16:00:00+08:00" />
+<meta itemprop="wordCount" content="13536">
 <meta itemprop="keywords" content="linux," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="linux"/>
 <meta name="twitter:description" content="终端 [root@LocalHost 桌面]# l root表示当前登录用户名 locahost表示当前登录的主机名 桌面 表示当前的工作目录 # 身份标识符 #表示为超级管理员 $表示为普"/>
@@ -130,8 +130,8 @@
       <div class="post-meta">
         <span class="post-time"> 2020-01-31 </span>
         
-          <span class="more-meta"> 13018 words </span>
-          <span class="more-meta"> 26 mins read </span>
+          <span class="more-meta"> 13536 words </span>
+          <span class="more-meta"> 28 mins read </span>
         
       </div>
     </header>
@@ -2259,6 +2259,49 @@ service network restart
 <h1 id="man详解">man详解</h1>
 <p><a href="https://www.geek-share.com/detail/2728370984.html">https://www.geek-share.com/detail/2728370984.html</a></p>
 <h1 id="设置hostname">设置hostname</h1>
+<p>控制台内核日志相关命令
+查看内核日志的命令
+1. dmesg（dmesg -T 带标准时间输出）
+2. cat /dev/kmsg
+以上两个命令输出是一样的
+日志级别说明
+数字越小级别越高</p>
+<pre><code>0 (KERN_EMERG)        系统不可用
+1 (KERN_ALERT)        必须立即采取行动
+2 (KERN_CRIT)        紧急情况
+3 (KERN_ERR)        错误情况
+4 (KERN_WARNING)    警告情况
+5 (KERN_NOTICE)        普通带需要注意的情况
+6 (KERN_INFO)        信息
+7 (KERN_DEBUG)        调试级别信息
+</code></pre>
+<p>调整内核日志输出级别
+1.查看内核输出级别
+cat /proc/sys/kernel/printk
+4 4 1 7</p>
+<pre><code>2.修改内核输出级别
+echo '1 4 1 7' | sudo tee /proc/sys/kernel/printk
+ 
+四个数字分别代表以下的意思：
+console_loglevel
+控制台日志级别：优先级高于该值的消息将被打印至控制台
+default_message_loglevel
+缺省的消息日志级别：将用该优先级来打印没有优先级的消息
+minimum_console_loglevel
+最低的控制台日志级别：控制台日志级别可被设置的最小值（最高优先级）
+default_console_loglevel
+缺省的控制台日志级别：控制台日志级别的缺省值
+ 
+3.通过dmesg调整控制台输出级别
+dmesg -n &lt;loglevel&gt;
+该修改只是修改控制台的日志级别，dmesg 还是按照默认级别进行输出。
+ 
+4.通过boot参数来修改
+loglevel=&lt;level&gt;
+</code></pre>
+<p>————————————————
+版权声明：本文为CSDN博主「Jack&rsquo;s 技术博客」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/samallhorse/article/details/105542670</p>
 
     </div>
 
@@ -2270,8 +2313,8 @@ service network restart
   <p class="copyright-item">
     <span class="item-title">LastMod</span>
     <span class="item-content">
-        2022-10-14
-        <a href="https://github.com/sunhao1256/sunhao1256.github.io/commit/1e278352d2d4c066ddde8af04cdf4d81393d45c8" title="update">(1e27835)</a>
+        2022-11-16
+        <a href="https://github.com/sunhao1256/sunhao1256.github.io/commit/eeda1d731582acfffe37b2165053d9c859cf7e37" title="update">(eeda1d7)</a>
     </span>
   </p>
   

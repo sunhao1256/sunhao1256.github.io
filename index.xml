@@ -6,7 +6,7 @@
     <description>Recent content on Luluhome - a blog for sh , &#39;lulu&#39; is my cat</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 02 Nov 2022 15:17:34 +0800</lastBuildDate><atom:link href="https://luluhome.site/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 22 Nov 2022 09:16:30 +0800</lastBuildDate><atom:link href="https://luluhome.site/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>About</title>
       <link>https://luluhome.site/about/</link>
@@ -15,6 +15,15 @@
       <guid>https://luluhome.site/about/</guid>
       <description>Javaer
 Loser</description>
+    </item>
+    
+    <item>
+      <title>OaRoadmap</title>
+      <link>https://luluhome.site/post/oa-roadmap/</link>
+      <pubDate>Tue, 22 Nov 2022 09:16:30 +0800</pubDate>
+      
+      <guid>https://luluhome.site/post/oa-roadmap/</guid>
+      <description> vue3 (done) scss vuetify3 oa front oa server gradle (done)  </description>
     </item>
     
     <item>
