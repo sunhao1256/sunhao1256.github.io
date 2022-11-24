@@ -10,3 +10,4 @@ tags: ['roadmap']
 - oa front
 - oa server
 - gradle (done)
+- kubernetes
