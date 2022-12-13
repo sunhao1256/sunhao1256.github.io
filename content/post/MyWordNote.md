@@ -987,3 +987,7 @@ tags: ["学外语"]
 - underestimate **/ˌʌn.dəˈres.tɪ.meɪt/**
 
   低估；（对…）估计不足 v|低估，轻视（尤指竞争对手）v
+  
+- priniciple **/ˈprɪn.sə.pəl**
+
+  原理，原则n|（行为）准则；道德；为人之道n
