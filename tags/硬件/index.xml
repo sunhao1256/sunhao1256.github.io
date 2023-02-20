@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>硬件 on Luluhome - a blog for sh , &#39;lulu&#39; is my cat</title>
-    <link>https://luluhome.site/tags/%E7%A1%AC%E4%BB%B6/</link>
+    <link>https://sunhao1256.github.io/tags/%E7%A1%AC%E4%BB%B6/</link>
     <description>Recent content in 硬件 on Luluhome - a blog for sh , &#39;lulu&#39; is my cat</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 20 Jun 2022 16:57:01 +0800</lastBuildDate><atom:link href="https://luluhome.site/tags/%E7%A1%AC%E4%BB%B6/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 20 Jun 2022 16:57:01 +0800</lastBuildDate><atom:link href="https://sunhao1256.github.io/tags/%E7%A1%AC%E4%BB%B6/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>all in one配置</title>
-      <link>https://luluhome.site/post/all-in-one/</link>
+      <link>https://sunhao1256.github.io/post/all-in-one/</link>
       <pubDate>Mon, 20 Jun 2022 16:57:01 +0800</pubDate>
       
-      <guid>https://luluhome.site/post/all-in-one/</guid>
+      <guid>https://sunhao1256.github.io/post/all-in-one/</guid>
       <description>需求 虚拟机 我和对象都是程序员，学新技术的时候得有环境 同时两台 win 用于娱乐 目标是 2 台 win 达到 2k 下中配吃鸡流畅，独立键鼠显示器 带 nas 最好 对我用处不是很</description>
     </item>
     

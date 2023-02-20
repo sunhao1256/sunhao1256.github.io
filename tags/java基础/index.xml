@@ -2,89 +2,89 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>java基础 on Luluhome - a blog for sh , &#39;lulu&#39; is my cat</title>
-    <link>https://luluhome.site/tags/java%E5%9F%BA%E7%A1%80/</link>
+    <link>https://sunhao1256.github.io/tags/java%E5%9F%BA%E7%A1%80/</link>
     <description>Recent content in java基础 on Luluhome - a blog for sh , &#39;lulu&#39; is my cat</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 21 Oct 2022 15:31:00 +0800</lastBuildDate><atom:link href="https://luluhome.site/tags/java%E5%9F%BA%E7%A1%80/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 21 Oct 2022 15:31:00 +0800</lastBuildDate><atom:link href="https://sunhao1256.github.io/tags/java%E5%9F%BA%E7%A1%80/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Linked Block Queue</title>
-      <link>https://luluhome.site/post/linked-block-queue/</link>
+      <link>https://sunhao1256.github.io/post/linked-block-queue/</link>
       <pubDate>Fri, 21 Oct 2022 15:31:00 +0800</pubDate>
       
-      <guid>https://luluhome.site/post/linked-block-queue/</guid>
+      <guid>https://sunhao1256.github.io/post/linked-block-queue/</guid>
       <description>linked from https://www.cnblogs.com/tong-yuan/p/LinkedBlockingQueue.html 属性 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 // 容量 private final int capacity; // 元素数量 private final AtomicInteger count = new AtomicInteger(); // 链表头 transient Node&amp;lt;E&amp;gt; head; // 链表尾 private transient Node&amp;lt;E&amp;gt; last; // take</description>
     </item>
     
     <item>
       <title>Priority Queue</title>
-      <link>https://luluhome.site/post/priority-queue/</link>
+      <link>https://sunhao1256.github.io/post/priority-queue/</link>
       <pubDate>Wed, 19 Oct 2022 15:14:41 +0800</pubDate>
       
-      <guid>https://luluhome.site/post/priority-queue/</guid>
+      <guid>https://sunhao1256.github.io/post/priority-queue/</guid>
       <description>属性 1 2 3 4 5 6 7 8 9 10 11 // 默认容量 private static final int DEFAULT_INITIAL_CAPACITY = 11; // 存储元素的地方 transient Object[] queue; // non-private to simplify nested class access // 元素个数 private int size = 0; // 比较器 private final Comparator&amp;lt;? super E&amp;gt; comparator; // 修改次数 transient int</description>
     </item>
     
     <item>
       <title>ConcurrentSkipListSet</title>
-      <link>https://luluhome.site/post/concurrentskiplistset/</link>
+      <link>https://sunhao1256.github.io/post/concurrentskiplistset/</link>
       <pubDate>Tue, 18 Oct 2022 22:25:30 +0800</pubDate>
       
-      <guid>https://luluhome.site/post/concurrentskiplistset/</guid>
+      <guid>https://sunhao1256.github.io/post/concurrentskiplistset/</guid>
       <description>源码 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68</description>
     </item>
     
     <item>
       <title>LinkedHashSet</title>
-      <link>https://luluhome.site/post/linkedhashset/</link>
+      <link>https://sunhao1256.github.io/post/linkedhashset/</link>
       <pubDate>Tue, 18 Oct 2022 22:04:11 +0800</pubDate>
       
-      <guid>https://luluhome.site/post/linkedhashset/</guid>
+      <guid>https://sunhao1256.github.io/post/linkedhashset/</guid>
       <description>1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 package java.util; // LinkedHashSet继承自HashSet public class LinkedHashSet&amp;lt;E&amp;gt;</description>
     </item>
     
     <item>
       <title>ConcurrentSkipListMap</title>
-      <link>https://luluhome.site/post/concurrentskiplistmap/</link>
+      <link>https://sunhao1256.github.io/post/concurrentskiplistmap/</link>
       <pubDate>Mon, 17 Oct 2022 16:22:46 +0800</pubDate>
       
-      <guid>https://luluhome.site/post/concurrentskiplistmap/</guid>
+      <guid>https://sunhao1256.github.io/post/concurrentskiplistmap/</guid>
       <description>Linked from https://www.cnblogs.com/tong-yuan/p/ConcurrentSkipListMap.html 内部类 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 // 数据节点，典型的单链表结构 static final class Node&amp;lt;K,V&amp;gt; { final K</description>
     </item>
     
     <item>
       <title>CopyonArraySet</title>
-      <link>https://luluhome.site/post/copyonarrayset/</link>
+      <link>https://sunhao1256.github.io/post/copyonarrayset/</link>
       <pubDate>Mon, 18 Oct 2021 22:16:25 +0800</pubDate>
       
-      <guid>https://luluhome.site/post/copyonarrayset/</guid>
+      <guid>https://sunhao1256.github.io/post/copyonarrayset/</guid>
       <description>源码 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68</description>
     </item>
     
     <item>
       <title>Hashset</title>
-      <link>https://luluhome.site/post/hashset/</link>
+      <link>https://sunhao1256.github.io/post/hashset/</link>
       <pubDate>Mon, 18 Oct 2021 21:42:09 +0800</pubDate>
       
-      <guid>https://luluhome.site/post/hashset/</guid>
+      <guid>https://sunhao1256.github.io/post/hashset/</guid>
       <description>属性 1 2 3 4 5 6 // 内部使用HashMap private transient HashMap&amp;lt;E,Object&amp;gt; map; // 虚拟对象，用来作为value放到map中 private static final Object PRESENT = new Object(); 构造方法 1 2 3 4 5 6 7 8 9 10 11 12 13</description>
     </item>
     
     <item>
       <title>ConcurrentHashMap</title>
-      <link>https://luluhome.site/post/concurrenthashmap/</link>
+      <link>https://sunhao1256.github.io/post/concurrenthashmap/</link>
       <pubDate>Tue, 12 Oct 2021 21:55:51 +0800</pubDate>
       
-      <guid>https://luluhome.site/post/concurrenthashmap/</guid>
+      <guid>https://sunhao1256.github.io/post/concurrenthashmap/</guid>
       <description>摘自：https://www.cnblogs.com/tong-yuan/p/ConcurrentHashMap-resize.html 简介</description>
     </item>
     
     <item>
       <title>JavaCollections</title>
-      <link>https://luluhome.site/post/javacollections/</link>
+      <link>https://sunhao1256.github.io/post/javacollections/</link>
       <pubDate>Sun, 26 Sep 2021 21:50:07 +0800</pubDate>
       
-      <guid>https://luluhome.site/post/javacollections/</guid>
+      <guid>https://sunhao1256.github.io/post/javacollections/</guid>
       <description>ArrayList ArrayList实现了List，RandomAccess，Cloneable，java.io.Serializable接口 ArrayLi</description>
     </item>
     
