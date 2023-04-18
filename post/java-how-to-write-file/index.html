@@ -4,16 +4,39 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Java How to Write File - Luluhome - a blog for sh , &#39;lulu&#39; is my cat</title>
+	<title>Java How to Write File - Lulu</title>
 	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
 	<meta name="description" content="">
+		<meta property="og:title" content="Java How to Write File" />
+<meta property="og:description" content="if you need to read huge file one line by one line , how will you to achieve the program ?
+Read all bytes to memory
+package io_stream; import org.apache.tomcat.util.http.fileupload.IOUtils; import java.io.*; public class BufferStreamTest { public static void main(String[] args) throws IOException { // try copy large file in 30MB memory  InputStream inputStream = new FileInputStream(&#34;/Users/zero/Downloads/googlechrome.dmg&#34;); long start = System.currentTimeMillis(); // will fill heap memory  OutputStream output = new ByteArrayOutputStream(); inputStream." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sunhao1256.github.io/post/java-how-to-write-file/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-10-20T11:13:56+08:00" />
+<meta property="article:modified_time" content="2022-10-20T11:13:56+08:00" />
+
+
+		<meta itemprop="name" content="Java How to Write File">
+<meta itemprop="description" content="if you need to read huge file one line by one line , how will you to achieve the program ?
+Read all bytes to memory
+package io_stream; import org.apache.tomcat.util.http.fileupload.IOUtils; import java.io.*; public class BufferStreamTest { public static void main(String[] args) throws IOException { // try copy large file in 30MB memory  InputStream inputStream = new FileInputStream(&#34;/Users/zero/Downloads/googlechrome.dmg&#34;); long start = System.currentTimeMillis(); // will fill heap memory  OutputStream output = new ByteArrayOutputStream(); inputStream."><meta itemprop="datePublished" content="2022-10-20T11:13:56+08:00" />
+<meta itemprop="dateModified" content="2022-10-20T11:13:56+08:00" />
+<meta itemprop="wordCount" content="307">
+<meta itemprop="keywords" content="java," />
+		<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Java How to Write File"/>
+<meta name="twitter:description" content="if you need to read huge file one line by one line , how will you to achieve the program ?
+Read all bytes to memory
+package io_stream; import org.apache.tomcat.util.http.fileupload.IOUtils; import java.io.*; public class BufferStreamTest { public static void main(String[] args) throws IOException { // try copy large file in 30MB memory  InputStream inputStream = new FileInputStream(&#34;/Users/zero/Downloads/googlechrome.dmg&#34;); long start = System.currentTimeMillis(); // will fill heap memory  OutputStream output = new ByteArrayOutputStream(); inputStream."/>
+
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link rel="dns-prefetch" href="//fonts.googleapis.com">
 	<link rel="dns-prefetch" href="//fonts.gstatic.com">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
 
 	<link rel="stylesheet" href="/css/style.css">
-	
+	<link rel="stylesheet" href="/css/custom.css">
 
 	<link rel="shortcut icon" href="/favicon.ico">
 		
@@ -23,11 +46,13 @@
 		<header class="header">
 	<div class="container header__container">
 		
-	<div class="logo">
-		<a class="logo__link" href="/" title="Luluhome - a blog for sh , &#39;lulu&#39; is my cat" rel="home">
-			<div class="logo__item logo__text">
-					<div class="logo__title">Luluhome - a blog for sh , &#39;lulu&#39; is my cat</div>
-					
+	<div class="logo logo--mixed">
+		<a class="logo__link" href="/" title="Lulu" rel="home">
+			<div class="logo__item logo__imagebox">
+					<img class="logo__img" src="/img/placeholder.png">
+				</div><div class="logo__item logo__text">
+					<div class="logo__title">Lulu</div>
+					<div class="logo__tagline">Lulu is arrongant cat</div>
 				</div>
 		</a>
 	</div>
@@ -37,27 +62,6 @@
 		<span class="menu__btn-title" tabindex="-1">Menu</span>
 	</button>
 	<ul class="menu__list">
-		<li class="menu__item">
-			<a class="menu__link" href="/">
-				
-				<span class="menu__text">Home</span>
-				
-			</a>
-		</li>
-		<li class="menu__item">
-			<a class="menu__link" href="/post/">
-				
-				<span class="menu__text">Archives</span>
-				
-			</a>
-		</li>
-		<li class="menu__item">
-			<a class="menu__link" href="/tags/">
-				
-				<span class="menu__text">Tags</span>
-				
-			</a>
-		</li>
 		<li class="menu__item">
 			<a class="menu__link" href="/about/">
 				
@@ -77,192 +81,96 @@
 	<article class="post">
 		<header class="post__header">
 			<h1 class="post__title">Java How to Write File</h1>
-			
+			<div class="post__meta meta"><div class="meta__item-author meta__item">
+	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 12 16"><path d="M6 1c2.2 0 3.5 2 3.5 4.5C9.5 7 8.9 8.2 8 9c2.9.8 4 2.5 4 5v1H0v-1c0-2.5 1.1-4.2 4-5-.9-.8-1.5-2-1.5-3.5C2.5 3 3.8 1 6 1z"/></svg><span class="meta__text">Frank Silva</span>
+</div>
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg><time class="meta__text" datetime="2022-10-20T11:13:56&#43;08:00">2022-10-20</time></div></div>
 		</header>
 		<div class="content post__content clearfix">
 			<p>if you need to read huge file one line by one line , how will you to achieve the program ?</p>
 <p><strong>Read all bytes to memory</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nn">io_stream</span><span class="o">;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> io_stream<span style="color:#f92672">;</span>
 
-<span class="kn">import</span> <span class="nn">org.apache.tomcat.util.http.fileupload.IOUtils</span><span class="o">;</span>
+<span style="color:#f92672">import</span> org.apache.tomcat.util.http.fileupload.IOUtils<span style="color:#f92672">;</span>
 
-<span class="kn">import</span> <span class="nn">java.io.*</span><span class="o">;</span>
+<span style="color:#f92672">import</span> java.io.*<span style="color:#f92672">;</span>
 
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">BufferStreamTest</span> <span class="o">{</span>
-    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
-        <span class="c1">// try copy large file in 30MB memory
-</span><span class="c1"></span>        <span class="n">InputStream</span> <span class="n">inputStream</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FileInputStream</span><span class="o">(</span><span class="s">&#34;/Users/zero/Downloads/googlechrome.dmg&#34;</span><span class="o">);</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">BufferStreamTest</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// try copy large file in 30MB memory
+</span><span style="color:#75715e"></span>        InputStream inputStream <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> FileInputStream<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/Users/zero/Downloads/googlechrome.dmg&#34;</span><span style="color:#f92672">);</span>
 
-        <span class="kt">long</span> <span class="n">start</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">();</span>
+        <span style="color:#66d9ef">long</span> start <span style="color:#f92672">=</span> System<span style="color:#f92672">.</span><span style="color:#a6e22e">currentTimeMillis</span><span style="color:#f92672">();</span>
 
-        <span class="c1">// will fill heap memory
-</span><span class="c1"></span>        <span class="n">OutputStream</span> <span class="n">output</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ByteArrayOutputStream</span><span class="o">();</span>
+        <span style="color:#75715e">// will fill heap memory
+</span><span style="color:#75715e"></span>        OutputStream output <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ByteArrayOutputStream<span style="color:#f92672">();</span>
 
-        <span class="n">inputStream</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
-        <span class="n">output</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
-        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;finished cost:&#34;</span> <span class="o">+</span> <span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">()</span> <span class="o">-</span> <span class="n">start</span><span class="o">)</span> <span class="o">+</span> <span class="s">&#34;ms&#34;</span><span class="o">);</span>
-    <span class="o">}</span>
-<span class="o">}</span>
+        inputStream<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
+        output<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;finished cost:&#34;</span> <span style="color:#f92672">+</span> <span style="color:#f92672">(</span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">currentTimeMillis</span><span style="color:#f92672">()</span> <span style="color:#f92672">-</span> start<span style="color:#f92672">)</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;ms&#34;</span><span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
 
-</code></pre></td></tr></table>
-</div>
-</div><p>you wiil get <strong>OutofMemoryException</strong> heap , if set JVM option -Xmx100m</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">zero</span><span class="o">/</span><span class="n">software</span><span class="o">/</span><span class="n">zulu8</span><span class="o">.</span><span class="na">64</span><span class="o">.</span><span class="na">0</span><span class="o">.</span><span class="na">19</span><span class="o">-</span><span class="n">ca</span><span class="o">-</span><span class="n">jdk8</span><span class="o">.</span><span class="na">0</span><span class="o">.</span><span class="na">345</span><span class="o">-</span><span class="n">macosx_aarch64</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">java</span> <span class="o">-</span>
-<span class="n">Connected</span> <span class="n">to</span> <span class="n">the</span> <span class="n">target</span> <span class="n">VM</span><span class="o">,</span> <span class="n">address</span><span class="o">:</span> <span class="err">&#39;</span><span class="n">127</span><span class="o">.</span><span class="na">0</span><span class="o">.</span><span class="na">0</span><span class="o">.</span><span class="na">1</span><span class="o">:</span><span class="n">62181</span><span class="err">&#39;</span><span class="o">,</span> <span class="n">transport</span><span class="o">:</span> <span class="err">&#39;</span><span class="n">socket</span><span class="err">&#39;</span>
-<span class="n">Exception</span> <span class="n">in</span> <span class="n">thread</span> <span class="s">&#34;main&#34;</span> <span class="n">java</span><span class="o">.</span><span class="na">lang</span><span class="o">.</span><span class="na">OutOfMemoryError</span><span class="o">:</span> <span class="n">Java</span> <span class="n">heap</span> <span class="n">space</span>
-	<span class="n">at</span> <span class="n">java</span><span class="o">.</span><span class="na">util</span><span class="o">.</span><span class="na">Arrays</span><span class="o">.</span><span class="na">copyOf</span><span class="o">(</span><span class="n">Arrays</span><span class="o">.</span><span class="na">java</span><span class="o">:</span><span class="n">3236</span><span class="o">)</span>
-	<span class="n">at</span> <span class="n">java</span><span class="o">.</span><span class="na">io</span><span class="o">.</span><span class="na">ByteArrayOutputStream</span><span class="o">.</span><span class="na">grow</span><span class="o">(</span><span class="n">ByteArrayOutputStream</span><span class="o">.</span><span class="na">java</span><span class="o">:</span><span class="n">118</span><span class="o">)</span>
-	<span class="n">at</span> <span class="n">java</span><span class="o">.</span><span class="na">io</span><span class="o">.</span><span class="na">ByteArrayOutputStream</span><span class="o">.</span><span class="na">ensureCapacity</span><span class="o">(</span><span class="n">ByteArrayOutputStream</span><span class="o">.</span><span class="na">java</span><span class="o">:</span><span class="n">93</span><span class="o">)</span>
-	<span class="n">at</span> <span class="n">java</span><span class="o">.</span><span class="na">io</span><span class="o">.</span><span class="na">ByteArrayOutputStream</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">ByteArrayOutputStream</span><span class="o">.</span><span class="na">java</span><span class="o">:</span><span class="n">153</span><span class="o">)</span>
-	<span class="n">at</span> <span class="n">org</span><span class="o">.</span><span class="na">apache</span><span class="o">.</span><span class="na">tomcat</span><span class="o">.</span><span class="na">util</span><span class="o">.</span><span class="na">http</span><span class="o">.</span><span class="na">fileupload</span><span class="o">.</span><span class="na">IOUtils</span><span class="o">.</span><span class="na">copyLarge</span><span class="o">(</span><span class="n">IOUtils</span><span class="o">.</span><span class="na">java</span><span class="o">:</span><span class="n">171</span><span class="o">)</span>
-	<span class="n">at</span> <span class="n">org</span><span class="o">.</span><span class="na">apache</span><span class="o">.</span><span class="na">tomcat</span><span class="o">.</span><span class="na">util</span><span class="o">.</span><span class="na">http</span><span class="o">.</span><span class="na">fileupload</span><span class="o">.</span><span class="na">IOUtils</span><span class="o">.</span><span class="na">copy</span><span class="o">(</span><span class="n">IOUtils</span><span class="o">.</span><span class="na">java</span><span class="o">:</span><span class="n">141</span><span class="o">)</span>
-	<span class="n">at</span> <span class="n">io_stream</span><span class="o">.</span><span class="na">BufferStreamTest</span><span class="o">.</span><span class="na">main</span><span class="o">(</span><span class="n">BufferStreamTest</span><span class="o">.</span><span class="na">java</span><span class="o">:</span><span class="n">18</span><span class="o">)</span>
-<span class="n">Disconnected</span> <span class="n">from</span> <span class="n">the</span> <span class="n">target</span> <span class="n">VM</span><span class="o">,</span> <span class="n">address</span><span class="o">:</span> <span class="err">&#39;</span><span class="n">127</span><span class="o">.</span><span class="na">0</span><span class="o">.</span><span class="na">0</span><span class="o">.</span><span class="na">1</span><span class="o">:</span><span class="n">62181</span><span class="err">&#39;</span><span class="o">,</span> <span class="n">transport</span><span class="o">:</span> <span class="err">&#39;</span><span class="n">socket</span><span class="err">&#39;</span>
+</code></pre></div><p>you wiil get <strong>OutofMemoryException</strong> heap , if set JVM option -Xmx100m</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">/</span>Users<span style="color:#f92672">/</span>zero<span style="color:#f92672">/</span>software<span style="color:#f92672">/</span>zulu8<span style="color:#f92672">.</span><span style="color:#a6e22e">64</span><span style="color:#f92672">.</span><span style="color:#a6e22e">0</span><span style="color:#f92672">.</span><span style="color:#a6e22e">19</span><span style="color:#f92672">-</span>ca<span style="color:#f92672">-</span>jdk8<span style="color:#f92672">.</span><span style="color:#a6e22e">0</span><span style="color:#f92672">.</span><span style="color:#a6e22e">345</span><span style="color:#f92672">-</span>macosx_aarch64<span style="color:#f92672">/</span>bin<span style="color:#f92672">/</span>java <span style="color:#f92672">-</span>
+Connected to the target VM<span style="color:#f92672">,</span> address<span style="color:#f92672">:</span> <span style="color:#960050;background-color:#1e0010">&#39;</span>127<span style="color:#f92672">.</span><span style="color:#a6e22e">0</span><span style="color:#f92672">.</span><span style="color:#a6e22e">0</span><span style="color:#f92672">.</span><span style="color:#a6e22e">1</span><span style="color:#f92672">:</span>62181<span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#f92672">,</span> transport<span style="color:#f92672">:</span> <span style="color:#960050;background-color:#1e0010">&#39;</span>socket<span style="color:#960050;background-color:#1e0010">&#39;</span>
+Exception in thread <span style="color:#e6db74">&#34;main&#34;</span> java<span style="color:#f92672">.</span><span style="color:#a6e22e">lang</span><span style="color:#f92672">.</span><span style="color:#a6e22e">OutOfMemoryError</span><span style="color:#f92672">:</span> Java heap space
+	at java<span style="color:#f92672">.</span><span style="color:#a6e22e">util</span><span style="color:#f92672">.</span><span style="color:#a6e22e">Arrays</span><span style="color:#f92672">.</span><span style="color:#a6e22e">copyOf</span><span style="color:#f92672">(</span>Arrays<span style="color:#f92672">.</span><span style="color:#a6e22e">java</span><span style="color:#f92672">:</span>3236<span style="color:#f92672">)</span>
+	at java<span style="color:#f92672">.</span><span style="color:#a6e22e">io</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ByteArrayOutputStream</span><span style="color:#f92672">.</span><span style="color:#a6e22e">grow</span><span style="color:#f92672">(</span>ByteArrayOutputStream<span style="color:#f92672">.</span><span style="color:#a6e22e">java</span><span style="color:#f92672">:</span>118<span style="color:#f92672">)</span>
+	at java<span style="color:#f92672">.</span><span style="color:#a6e22e">io</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ByteArrayOutputStream</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ensureCapacity</span><span style="color:#f92672">(</span>ByteArrayOutputStream<span style="color:#f92672">.</span><span style="color:#a6e22e">java</span><span style="color:#f92672">:</span>93<span style="color:#f92672">)</span>
+	at java<span style="color:#f92672">.</span><span style="color:#a6e22e">io</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ByteArrayOutputStream</span><span style="color:#f92672">.</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>ByteArrayOutputStream<span style="color:#f92672">.</span><span style="color:#a6e22e">java</span><span style="color:#f92672">:</span>153<span style="color:#f92672">)</span>
+	at org<span style="color:#f92672">.</span><span style="color:#a6e22e">apache</span><span style="color:#f92672">.</span><span style="color:#a6e22e">tomcat</span><span style="color:#f92672">.</span><span style="color:#a6e22e">util</span><span style="color:#f92672">.</span><span style="color:#a6e22e">http</span><span style="color:#f92672">.</span><span style="color:#a6e22e">fileupload</span><span style="color:#f92672">.</span><span style="color:#a6e22e">IOUtils</span><span style="color:#f92672">.</span><span style="color:#a6e22e">copyLarge</span><span style="color:#f92672">(</span>IOUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">java</span><span style="color:#f92672">:</span>171<span style="color:#f92672">)</span>
+	at org<span style="color:#f92672">.</span><span style="color:#a6e22e">apache</span><span style="color:#f92672">.</span><span style="color:#a6e22e">tomcat</span><span style="color:#f92672">.</span><span style="color:#a6e22e">util</span><span style="color:#f92672">.</span><span style="color:#a6e22e">http</span><span style="color:#f92672">.</span><span style="color:#a6e22e">fileupload</span><span style="color:#f92672">.</span><span style="color:#a6e22e">IOUtils</span><span style="color:#f92672">.</span><span style="color:#a6e22e">copy</span><span style="color:#f92672">(</span>IOUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">java</span><span style="color:#f92672">:</span>141<span style="color:#f92672">)</span>
+	at io_stream<span style="color:#f92672">.</span><span style="color:#a6e22e">BufferStreamTest</span><span style="color:#f92672">.</span><span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>BufferStreamTest<span style="color:#f92672">.</span><span style="color:#a6e22e">java</span><span style="color:#f92672">:</span>18<span style="color:#f92672">)</span>
+Disconnected from the target VM<span style="color:#f92672">,</span> address<span style="color:#f92672">:</span> <span style="color:#960050;background-color:#1e0010">&#39;</span>127<span style="color:#f92672">.</span><span style="color:#a6e22e">0</span><span style="color:#f92672">.</span><span style="color:#a6e22e">0</span><span style="color:#f92672">.</span><span style="color:#a6e22e">1</span><span style="color:#f92672">:</span>62181<span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#f92672">,</span> transport<span style="color:#f92672">:</span> <span style="color:#960050;background-color:#1e0010">&#39;</span>socket<span style="color:#960050;background-color:#1e0010">&#39;</span>
 
-<span class="n">Process</span> <span class="n">finished</span> <span class="n">with</span> <span class="n">exit</span> <span class="n">code</span> <span class="n">1</span>
+Process finished with exit code 1
 
-</code></pre></td></tr></table>
-</div>
-</div><p>you need <strong>buffer</strong>, create a byte[] as buffer, or use <strong>BufferedInputStream</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nn">io_stream</span><span class="o">;</span>
+</code></pre></div><p>you need <strong>buffer</strong>, create a byte[] as buffer, or use <strong>BufferedInputStream</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> io_stream<span style="color:#f92672">;</span>
 
-<span class="kn">import</span> <span class="nn">org.apache.tomcat.util.http.fileupload.IOUtils</span><span class="o">;</span>
+<span style="color:#f92672">import</span> org.apache.tomcat.util.http.fileupload.IOUtils<span style="color:#f92672">;</span>
 
-<span class="kn">import</span> <span class="nn">java.io.*</span><span class="o">;</span>
+<span style="color:#f92672">import</span> java.io.*<span style="color:#f92672">;</span>
 
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">BufferStreamTest</span> <span class="o">{</span>
-    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
-        <span class="c1">// try copy large file in 30MB memory
-</span><span class="c1"></span>        <span class="n">InputStream</span> <span class="n">inputStream</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FileInputStream</span><span class="o">(</span><span class="s">&#34;/Users/zero/Downloads/googlechrome.dmg&#34;</span><span class="o">);</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">BufferStreamTest</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// try copy large file in 30MB memory
+</span><span style="color:#75715e"></span>        InputStream inputStream <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> FileInputStream<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/Users/zero/Downloads/googlechrome.dmg&#34;</span><span style="color:#f92672">);</span>
 
-        <span class="kt">long</span> <span class="n">start</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">();</span>
+        <span style="color:#66d9ef">long</span> start <span style="color:#f92672">=</span> System<span style="color:#f92672">.</span><span style="color:#a6e22e">currentTimeMillis</span><span style="color:#f92672">();</span>
 
-        <span class="n">OutputStream</span> <span class="n">output</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FileOutputStream</span><span class="o">(</span><span class="s">&#34;/Users/zero/Projects/Personal/javaDemo/tmp.txt&#34;</span><span class="o">);</span>
+        OutputStream output <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> FileOutputStream<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/Users/zero/Projects/Personal/javaDemo/tmp.txt&#34;</span><span style="color:#f92672">);</span>
 
-        <span class="kt">byte</span><span class="o">[]</span> <span class="n">b</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="o">[</span><span class="n">1024</span><span class="o">];</span>
-        <span class="k">while</span> <span class="o">(</span><span class="n">inputStream</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">b</span><span class="o">)</span> <span class="o">!=</span> <span class="o">-</span><span class="n">1</span><span class="o">)</span> <span class="o">{</span>
-            <span class="n">output</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">b</span><span class="o">);</span>
-        <span class="o">}</span>
-        <span class="n">inputStream</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
-        <span class="n">output</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
-        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;finished cost:&#34;</span> <span class="o">+</span> <span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">()</span> <span class="o">-</span> <span class="n">start</span><span class="o">)</span> <span class="o">+</span> <span class="s">&#34;ms&#34;</span><span class="o">);</span>
-    <span class="o">}</span>
-<span class="o">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><p>so，you must know how to do when need download hugo file in web program</p>
+        <span style="color:#66d9ef">byte</span><span style="color:#f92672">[]</span> b <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">byte</span><span style="color:#f92672">[</span>1024<span style="color:#f92672">];</span>
+        <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>inputStream<span style="color:#f92672">.</span><span style="color:#a6e22e">read</span><span style="color:#f92672">(</span>b<span style="color:#f92672">)</span> <span style="color:#f92672">!=</span> <span style="color:#f92672">-</span>1<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            output<span style="color:#f92672">.</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>b<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+        inputStream<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
+        output<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;finished cost:&#34;</span> <span style="color:#f92672">+</span> <span style="color:#f92672">(</span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">currentTimeMillis</span><span style="color:#f92672">()</span> <span style="color:#f92672">-</span> start<span style="color:#f92672">)</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;ms&#34;</span><span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>so，you must know how to do when need download hugo file in web program</p>
 <p>by the way , Apach Common util  <strong>IOUtils</strong> in same way</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java">   <span class="kd">public</span> <span class="kd">static</span> <span class="kt">int</span> <span class="nf">copy</span><span class="o">(</span><span class="n">InputStream</span> <span class="n">input</span><span class="o">,</span> <span class="n">OutputStream</span> <span class="n">output</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
-        <span class="kt">long</span> <span class="n">count</span> <span class="o">=</span> <span class="n">copyLarge</span><span class="o">(</span><span class="n">input</span><span class="o">,</span> <span class="n">output</span><span class="o">);</span>
-        <span class="k">return</span> <span class="n">count</span> <span class="o">&gt;</span> <span class="n">2147483647L</span> <span class="o">?</span> <span class="o">-</span><span class="n">1</span> <span class="o">:</span> <span class="o">(</span><span class="kt">int</span><span class="o">)</span><span class="n">count</span><span class="o">;</span>
-    <span class="o">}</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">copy</span><span style="color:#f92672">(</span>InputStream input<span style="color:#f92672">,</span> OutputStream output<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">long</span> count <span style="color:#f92672">=</span> copyLarge<span style="color:#f92672">(</span>input<span style="color:#f92672">,</span> output<span style="color:#f92672">);</span>
+        <span style="color:#66d9ef">return</span> count <span style="color:#f92672">&gt;</span> 2147483647L <span style="color:#f92672">?</span> <span style="color:#f92672">-</span>1 <span style="color:#f92672">:</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span><span style="color:#f92672">)</span>count<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
 
-    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">long</span> <span class="nf">copyLarge</span><span class="o">(</span><span class="n">InputStream</span> <span class="n">input</span><span class="o">,</span> <span class="n">OutputStream</span> <span class="n">output</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
-        <span class="kt">byte</span><span class="o">[]</span> <span class="n">buffer</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="o">[</span><span class="n">4096</span><span class="o">];</span>
-        <span class="kt">long</span> <span class="n">count</span> <span class="o">=</span> <span class="n">0L</span><span class="o">;</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">long</span> <span style="color:#a6e22e">copyLarge</span><span style="color:#f92672">(</span>InputStream input<span style="color:#f92672">,</span> OutputStream output<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">byte</span><span style="color:#f92672">[]</span> buffer <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">byte</span><span style="color:#f92672">[</span>4096<span style="color:#f92672">];</span>
+        <span style="color:#66d9ef">long</span> count <span style="color:#f92672">=</span> 0L<span style="color:#f92672">;</span>
 
-        <span class="kt">int</span> <span class="n">n</span><span class="o">;</span>
-        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span> <span class="o">-</span><span class="n">1</span> <span class="o">!=</span> <span class="o">(</span><span class="n">n</span> <span class="o">=</span> <span class="n">input</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">buffer</span><span class="o">));</span> <span class="n">count</span> <span class="o">+=</span> <span class="o">(</span><span class="kt">long</span><span class="o">)</span><span class="n">n</span><span class="o">)</span> <span class="o">{</span>
-            <span class="n">output</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">buffer</span><span class="o">,</span> <span class="n">0</span><span class="o">,</span> <span class="n">n</span><span class="o">);</span>
-        <span class="o">}</span>
+        <span style="color:#66d9ef">int</span> n<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">for</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> n <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span> <span style="color:#f92672">-</span>1 <span style="color:#f92672">!=</span> <span style="color:#f92672">(</span>n <span style="color:#f92672">=</span> input<span style="color:#f92672">.</span><span style="color:#a6e22e">read</span><span style="color:#f92672">(</span>buffer<span style="color:#f92672">));</span> count <span style="color:#f92672">+=</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">long</span><span style="color:#f92672">)</span>n<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            output<span style="color:#f92672">.</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>buffer<span style="color:#f92672">,</span> 0<span style="color:#f92672">,</span> n<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
 
-        <span class="k">return</span> <span class="n">count</span><span class="o">;</span>
-    <span class="o">}</span>
-</code></pre></td></tr></table>
-</div>
-</div>
+        <span style="color:#66d9ef">return</span> count<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+</code></pre></div>
 		</div>
 		<footer class="post__footer">
 			
@@ -278,7 +186,32 @@
 	</article>
 </main>
 
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="Frank Silva avatar" src="/img/avatar.png" class="avatar" height="90" width="90">
+	</figure>
+	<div class="authorbox__header">
+		<span class="authorbox__name">About Frank Silva</span>
+	</div>
+	<div class="authorbox__description">
+		Pursue Consummate Coding.
+	</div>
+</div>
 
+<nav class="pager flex">
+	<div class="pager__item pager__item--prev">
+		<a class="pager__link" href="/post/dictionary-tree/" rel="prev">
+			<span class="pager__subtitle">«&thinsp;Previous</span>
+			<p class="pager__title">Dictionary Tree</p>
+		</a>
+	</div>
+	<div class="pager__item pager__item--next">
+		<a class="pager__link" href="/post/array-block-queue/" rel="next">
+			<span class="pager__subtitle">Next&thinsp;»</span>
+			<p class="pager__title">Array Block Queue</p>
+		</a>
+	</div>
+</nav>
 
 
 			</div>
@@ -288,12 +221,14 @@
 	<div class="container footer__container flex">
 		
 		<div class="footer__copyright">
-			&copy; 2023 Luluhome - a blog for sh , &#39;lulu&#39; is my cat.
+			&copy; 2023 Frank Silva.
 			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
 		</div>
 	</div>
 </footer>
 	</div>
 <script async defer src="/js/menu.js"></script>
+<script src="/js/custom.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
 </body>
 </html>

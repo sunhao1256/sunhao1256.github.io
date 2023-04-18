@@ -4,16 +4,48 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Types of Binary Tree - Luluhome - a blog for sh , &#39;lulu&#39; is my cat</title>
+	<title>Types of Binary Tree - Lulu</title>
 	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
 	<meta name="description" content="">
+		<meta property="og:title" content="Types of Binary Tree" />
+<meta property="og:description" content="translated from https://www.geeksforgeeks.org/binary-tree-set-3-types-of-binary-tree/?ref=gcse
+ The following are common types of Binary Trees.
+ 以下是常见的二叉树类型
+ Full Binary Tree A Binary Tree is a full binary tree if every node has 0 or 2 children. The following are the examples of a full binary tree. We can also say a full binary tree is a binary tree in which all nodes except leaf nodes have two children.
+ 如果一棵树上所有节点都有0或者2个孩子节点，则称为满二叉树，下面是一个满二叉树的事例，我们也可以看到一棵满二叉树实际上是一个除了叶子节点其他节点都有2个孩子的二叉树
+ A full Binary tree is a special type of binary tree in which every parent node/internal node has either two or no children." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sunhao1256.github.io/post/types-of-binary-tree/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-10-19T15:31:44+08:00" />
+<meta property="article:modified_time" content="2022-10-19T15:31:44+08:00" />
+
+
+		<meta itemprop="name" content="Types of Binary Tree">
+<meta itemprop="description" content="translated from https://www.geeksforgeeks.org/binary-tree-set-3-types-of-binary-tree/?ref=gcse
+ The following are common types of Binary Trees.
+ 以下是常见的二叉树类型
+ Full Binary Tree A Binary Tree is a full binary tree if every node has 0 or 2 children. The following are the examples of a full binary tree. We can also say a full binary tree is a binary tree in which all nodes except leaf nodes have two children.
+ 如果一棵树上所有节点都有0或者2个孩子节点，则称为满二叉树，下面是一个满二叉树的事例，我们也可以看到一棵满二叉树实际上是一个除了叶子节点其他节点都有2个孩子的二叉树
+ A full Binary tree is a special type of binary tree in which every parent node/internal node has either two or no children."><meta itemprop="datePublished" content="2022-10-19T15:31:44+08:00" />
+<meta itemprop="dateModified" content="2022-10-19T15:31:44+08:00" />
+<meta itemprop="wordCount" content="1038">
+<meta itemprop="keywords" content="data structure," />
+		<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Types of Binary Tree"/>
+<meta name="twitter:description" content="translated from https://www.geeksforgeeks.org/binary-tree-set-3-types-of-binary-tree/?ref=gcse
+ The following are common types of Binary Trees.
+ 以下是常见的二叉树类型
+ Full Binary Tree A Binary Tree is a full binary tree if every node has 0 or 2 children. The following are the examples of a full binary tree. We can also say a full binary tree is a binary tree in which all nodes except leaf nodes have two children.
+ 如果一棵树上所有节点都有0或者2个孩子节点，则称为满二叉树，下面是一个满二叉树的事例，我们也可以看到一棵满二叉树实际上是一个除了叶子节点其他节点都有2个孩子的二叉树
+ A full Binary tree is a special type of binary tree in which every parent node/internal node has either two or no children."/>
+
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link rel="dns-prefetch" href="//fonts.googleapis.com">
 	<link rel="dns-prefetch" href="//fonts.gstatic.com">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
 
 	<link rel="stylesheet" href="/css/style.css">
-	
+	<link rel="stylesheet" href="/css/custom.css">
 
 	<link rel="shortcut icon" href="/favicon.ico">
 		
@@ -23,11 +55,13 @@
 		<header class="header">
 	<div class="container header__container">
 		
-	<div class="logo">
-		<a class="logo__link" href="/" title="Luluhome - a blog for sh , &#39;lulu&#39; is my cat" rel="home">
-			<div class="logo__item logo__text">
-					<div class="logo__title">Luluhome - a blog for sh , &#39;lulu&#39; is my cat</div>
-					
+	<div class="logo logo--mixed">
+		<a class="logo__link" href="/" title="Lulu" rel="home">
+			<div class="logo__item logo__imagebox">
+					<img class="logo__img" src="/img/placeholder.png">
+				</div><div class="logo__item logo__text">
+					<div class="logo__title">Lulu</div>
+					<div class="logo__tagline">Lulu is arrongant cat</div>
 				</div>
 		</a>
 	</div>
@@ -37,27 +71,6 @@
 		<span class="menu__btn-title" tabindex="-1">Menu</span>
 	</button>
 	<ul class="menu__list">
-		<li class="menu__item">
-			<a class="menu__link" href="/">
-				
-				<span class="menu__text">Home</span>
-				
-			</a>
-		</li>
-		<li class="menu__item">
-			<a class="menu__link" href="/post/">
-				
-				<span class="menu__text">Archives</span>
-				
-			</a>
-		</li>
-		<li class="menu__item">
-			<a class="menu__link" href="/tags/">
-				
-				<span class="menu__text">Tags</span>
-				
-			</a>
-		</li>
 		<li class="menu__item">
 			<a class="menu__link" href="/about/">
 				
@@ -77,7 +90,11 @@
 	<article class="post">
 		<header class="post__header">
 			<h1 class="post__title">Types of Binary Tree</h1>
-			
+			<div class="post__meta meta"><div class="meta__item-author meta__item">
+	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 12 16"><path d="M6 1c2.2 0 3.5 2 3.5 4.5C9.5 7 8.9 8.2 8 9c2.9.8 4 2.5 4 5v1H0v-1c0-2.5 1.1-4.2 4-5-.9-.8-1.5-2-1.5-3.5C2.5 3 3.8 1 6 1z"/></svg><span class="meta__text">Frank Silva</span>
+</div>
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg><time class="meta__text" datetime="2022-10-19T15:31:44&#43;08:00">2022-10-19</time></div></div>
 		</header>
 		
 <div class="post__toc toc">
@@ -85,13 +102,9 @@
 	<div class="toc__menu">
 		<nav id="TableOfContents">
   <ul>
-    <li>
-      <ul>
-        <li><a href="#full-binary-tree">Full Binary Tree</a></li>
-        <li><a href="#complete-binary-tree">Complete Binary Tree</a></li>
-        <li><a href="#balanced-binary-tree">Balanced Binary Tree</a></li>
-      </ul>
-    </li>
+    <li><a href="#full-binary-tree">Full Binary Tree</a></li>
+    <li><a href="#complete-binary-tree">Complete Binary Tree</a></li>
+    <li><a href="#balanced-binary-tree">Balanced Binary Tree</a></li>
   </ul>
 </nav>
 	</div>
@@ -112,30 +125,7 @@
 <blockquote>
 <p>满二叉树是每个父节点和内部节点都有2和或者没有孩子的一种特殊二叉树类型，也被称为“适当二叉树”</p>
 </blockquote>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">               18
+<pre tabindex="0"><code>               18
            /       \  
          15         30  
         /  \        /  \
@@ -154,9 +144,7 @@
           40       30  
                    /  \
                  100   40
-</code></pre></td></tr></table>
-</div>
-</div><h2 id="complete-binary-tree">Complete Binary Tree</h2>
+</code></pre><h2 id="complete-binary-tree">Complete Binary Tree</h2>
 <p>A Binary Tree is a Complete Binary Tree if all the levels are completely filled except possibly the last level and the last level has all keys as left as possible.</p>
 <blockquote>
 <p>如果二叉树的除了最后一层其他都被填满，并且最后一层的节点都在左侧，则被称为完全二叉树</p>
@@ -186,25 +174,7 @@
 </blockquote>
 </li>
 </ul>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">               18
+<pre tabindex="0"><code>               18
            /       \  
          15         30  
         /  \        /  \
@@ -218,9 +188,7 @@
       40    50    100   40
      /  \   /
     8   7  9 
-</code></pre></td></tr></table>
-</div>
-</div><p>Practical example of Complete Binary Tree is <em>Binary Heap</em></p>
+</code></pre><p>Practical example of Complete Binary Tree is <em>Binary Heap</em></p>
 <blockquote>
 <p>完全二叉树的实际例子是<em>二叉树堆</em></p>
 </blockquote>
@@ -242,23 +210,12 @@
 </ol>
 </blockquote>
 <p><strong>Examples of Min Heap:</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">            10                      10
+<pre tabindex="0"><code>            10                      10
          /      \               /       \  
        20        100          15         30  
       /                      /  \        /  \
     30                     40    50    100   40
-</code></pre></td></tr></table>
-</div>
-</div><p><strong>How is Binary Heap represented?</strong>
+</code></pre><p><strong>How is Binary Heap represented?</strong>
 A Binary Heap is a Complete Binary Tree. A binary heap is typically represented as an array.</p>
 <blockquote>
 <p>二叉堆是完全二叉树，二叉堆通常用数组来实现</p>
@@ -299,7 +256,7 @@ A Binary Heap is a Complete Binary Tree. A binary heap is typically represented 
 <blockquote>
 <p>用于实现数组展示的遍历方法就是按等级排序</p>
 </blockquote>
-<img src="https://pic-frank.oss-cn-beijing.aliyuncs.com/img/202210191719814.png" alt="image-20221019171933588" style="zoom:50%;" />
+<!-- raw HTML omitted -->
 <ul>
 <li>
 <p><strong>Applications of Heaps:</strong>
@@ -374,7 +331,7 @@ c) <a href="https://www.geeksforgeeks.org/merge-k-sorted-arrays/">Merge K Sorted
 <blockquote>
 <p>一个元素是n个的，并且树高度是O(logn)的树就是平衡二叉树。例如，平衡二叉树通过去报左右子树高度不超过1来保证O(logn)高度。红黑树通过保证所有到叶子节点路径上的黑节点数字一样，并且没有相邻的红色节点来保证O(logN)的高度，实现平衡。平衡二叉搜索树性能很高，因为查找，插入和删除都能达到O(logn)的程度</p>
 </blockquote>
-<img src="https://pic-frank.oss-cn-beijing.aliyuncs.com/img/202210201549516.png" alt="image-20221020154918407" style="zoom:50%;" />
+<!-- raw HTML omitted -->
 <p>It is a type of binary tree in which the difference between the height of the left and the right subtree for each node is either 0 or 1. In the figure above, the root node having a value 0 is unbalanced with a depth of 2 units.</p>
 <blockquote>
 <p>这是一种左右子树高度不超过1的，0节点的高度超过1了</p>
@@ -385,44 +342,19 @@ c) <a href="https://www.geeksforgeeks.org/merge-k-sorted-arrays/">Merge K Sorted
 <blockquote>
 <p>一个数，如果他的所有内部节点都只有一个孩子，这种树的性能和链表一样，一个退化的/病态的树，左右一会有一个孩子</p>
 </blockquote>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">      10
+<pre tabindex="0"><code>      10
       /
     20
      \
      30
       \
       40   
-</code></pre></td></tr></table>
-</div>
-</div><p><strong>Skewed Binary Tree:-</strong></p>
+</code></pre><p><strong>Skewed Binary Tree:-</strong></p>
 <p>A skewed binary tree is a pathological/degenerate tree in which the tree is either dominated by the left nodes or the right nodes. Thus, there are two types of skewed binary tree: left-skewed binary tree and right-skewed binary tree.</p>
 <blockquote>
 <p>不直的树是，完全由左边节点或者右边节点组成的一个退化的/病态的树，因此不直的二叉树有两种，左不直二叉树和右不直二叉树</p>
 </blockquote>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">      10                                           10
+<pre tabindex="0"><code>      10                                           10
       /                                             \
     20                                               20
     /                                                 \
@@ -430,9 +362,7 @@ c) <a href="https://www.geeksforgeeks.org/merge-k-sorted-arrays/">Merge K Sorted
   /                                                     \
  40                                                      40
 Left-Skewed Binary Tree                               Right-Skewed Binary Tree
-</code></pre></td></tr></table>
-</div>
-</div>
+</code></pre>
 		</div>
 		<footer class="post__footer">
 			
@@ -448,7 +378,32 @@ Left-Skewed Binary Tree                               Right-Skewed Binary Tree
 	</article>
 </main>
 
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="Frank Silva avatar" src="/img/avatar.png" class="avatar" height="90" width="90">
+	</figure>
+	<div class="authorbox__header">
+		<span class="authorbox__name">About Frank Silva</span>
+	</div>
+	<div class="authorbox__description">
+		Pursue Consummate Coding.
+	</div>
+</div>
 
+<nav class="pager flex">
+	<div class="pager__item pager__item--prev">
+		<a class="pager__link" href="/post/priority-queue/" rel="prev">
+			<span class="pager__subtitle">«&thinsp;Previous</span>
+			<p class="pager__title">Priority Queue</p>
+		</a>
+	</div>
+	<div class="pager__item pager__item--next">
+		<a class="pager__link" href="/post/dictionary-tree/" rel="next">
+			<span class="pager__subtitle">Next&thinsp;»</span>
+			<p class="pager__title">Dictionary Tree</p>
+		</a>
+	</div>
+</nav>
 
 
 			</div>
@@ -458,12 +413,14 @@ Left-Skewed Binary Tree                               Right-Skewed Binary Tree
 	<div class="container footer__container flex">
 		
 		<div class="footer__copyright">
-			&copy; 2023 Luluhome - a blog for sh , &#39;lulu&#39; is my cat.
+			&copy; 2023 Frank Silva.
 			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
 		</div>
 	</div>
 </footer>
 	</div>
 <script async defer src="/js/menu.js"></script>
+<script src="/js/custom.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
 </body>
 </html>

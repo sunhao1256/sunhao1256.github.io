@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Data structure on Luluhome - a blog for sh , &#39;lulu&#39; is my cat</title>
+    <title>Data structure on Lulu</title>
     <link>https://sunhao1256.github.io/tags/data-structure/</link>
-    <description>Recent content in Data structure on Luluhome - a blog for sh , &#39;lulu&#39; is my cat</description>
+    <description>Recent content in Data structure on Lulu</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en</language>
+    <language>en-us</language>
     <lastBuildDate>Thu, 20 Oct 2022 08:55:22 +0800</lastBuildDate><atom:link href="https://sunhao1256.github.io/tags/data-structure/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Dictionary Tree</title>
@@ -22,7 +22,12 @@
       <pubDate>Wed, 19 Oct 2022 15:31:44 +0800</pubDate>
       
       <guid>https://sunhao1256.github.io/post/types-of-binary-tree/</guid>
-      <description>translated from https://www.geeksforgeeks.org/binary-tree-set-3-types-of-binary-tree/?ref=gcse The following are common types of Binary Trees. 以下是常见的二叉树类型 Full Binary Tree A Binary Tree is a full binary tree if every node has 0 or 2 children. The following are the examples of a full binary tree. We can also say a full binary tree is a binary tree in which all nodes except leaf nodes</description>
+      <description>translated from https://www.geeksforgeeks.org/binary-tree-set-3-types-of-binary-tree/?ref=gcse
+ The following are common types of Binary Trees.
+ 以下是常见的二叉树类型
+ Full Binary Tree A Binary Tree is a full binary tree if every node has 0 or 2 children. The following are the examples of a full binary tree. We can also say a full binary tree is a binary tree in which all nodes except leaf nodes have two children.
+ 如果一棵树上所有节点都有0或者2个孩子节点，则称为满二叉树，下面是一个满二叉树的事例，我们也可以看到一棵满二叉树实际上是一个除了叶子节点其他节点都有2个孩子的二叉树
+ A full Binary tree is a special type of binary tree in which every parent node/internal node has either two or no children.</description>
     </item>
     
     <item>

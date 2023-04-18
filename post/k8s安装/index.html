@@ -4,16 +4,45 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>K8s安装 - Luluhome - a blog for sh , &#39;lulu&#39; is my cat</title>
+	<title>K8s安装 - Lulu</title>
 	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
 	<meta name="description" content="">
+		<meta property="og:title" content="K8s安装" />
+<meta property="og:description" content="文章摘自https://k8s.easydoc.net/docs/dRiQjyTY/28366845/6GiNOzyZ/nd7yOvdY
+ 💽安装 Kubernetes 集群 安装方式介绍  minikube 只是一个 K8S 集群模拟器，只有一个节点的集群，只为测试用，master 和 worker 都在一起 直接用云平台 Kubernetes 可视化搭建，只需简单几步就可以创建好一个集群。 优点：安装简单，生态齐全，负载均衡器、存储等都给你配套好，简单操作就搞定 裸机安装（Bare Metal） 至少需要两台机器（主节点、工作节点个一台），需要自己安装 Kubernetes 组件，配置会稍微麻烦点。 可以到各云厂商按时租用服务器，费用低，用完就销毁。 缺点：配置麻烦，缺少生态支持，例如负载均衡器、云存储。   本文档课件需配套 视频 一起学习
+ minikube 安装非常简单，支持各种平台，安装方法
+ 需要提前安装好 Docker
+ # 启动集群 minikube start # 查看节点。kubectl 是一个用来跟 K8S 集群进行交互的命令行工具 kubectl get node # 停止集群 minikube stop # 清空集群 minikube delete --all # 安装集群可视化 Web UI 控制台 minikube dashboard 云平台搭建  腾讯云 TKE（控制台搜索容器） 登录阿里云控制台 - 产品搜索 Kubernetes  裸机搭建（Bare Metal） 主节点需要组件  docker（也可以是其他容器运行时） kubectl 集群命令行交互工具 kubeadm 集群初始化工具  工作节点需要组件 文档  docker（也可以是其他容器运行时） kubelet 管理 Pod 和容器，确保他们健康稳定运行。 kube-proxy 网络代理，负责网络相关的工作  开始安装  你也可以试下 这个项目，用脚本快速搭建 K8S 裸机集群 当然，为了更好的理解，你应该先手动搭建一次" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sunhao1256.github.io/post/k8s%E5%AE%89%E8%A3%85/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-07-02T20:01:43+08:00" />
+<meta property="article:modified_time" content="2022-07-02T20:01:43+08:00" />
+
+
+		<meta itemprop="name" content="K8s安装">
+<meta itemprop="description" content="文章摘自https://k8s.easydoc.net/docs/dRiQjyTY/28366845/6GiNOzyZ/nd7yOvdY
+ 💽安装 Kubernetes 集群 安装方式介绍  minikube 只是一个 K8S 集群模拟器，只有一个节点的集群，只为测试用，master 和 worker 都在一起 直接用云平台 Kubernetes 可视化搭建，只需简单几步就可以创建好一个集群。 优点：安装简单，生态齐全，负载均衡器、存储等都给你配套好，简单操作就搞定 裸机安装（Bare Metal） 至少需要两台机器（主节点、工作节点个一台），需要自己安装 Kubernetes 组件，配置会稍微麻烦点。 可以到各云厂商按时租用服务器，费用低，用完就销毁。 缺点：配置麻烦，缺少生态支持，例如负载均衡器、云存储。   本文档课件需配套 视频 一起学习
+ minikube 安装非常简单，支持各种平台，安装方法
+ 需要提前安装好 Docker
+ # 启动集群 minikube start # 查看节点。kubectl 是一个用来跟 K8S 集群进行交互的命令行工具 kubectl get node # 停止集群 minikube stop # 清空集群 minikube delete --all # 安装集群可视化 Web UI 控制台 minikube dashboard 云平台搭建  腾讯云 TKE（控制台搜索容器） 登录阿里云控制台 - 产品搜索 Kubernetes  裸机搭建（Bare Metal） 主节点需要组件  docker（也可以是其他容器运行时） kubectl 集群命令行交互工具 kubeadm 集群初始化工具  工作节点需要组件 文档  docker（也可以是其他容器运行时） kubelet 管理 Pod 和容器，确保他们健康稳定运行。 kube-proxy 网络代理，负责网络相关的工作  开始安装  你也可以试下 这个项目，用脚本快速搭建 K8S 裸机集群 当然，为了更好的理解，你应该先手动搭建一次"><meta itemprop="datePublished" content="2022-07-02T20:01:43+08:00" />
+<meta itemprop="dateModified" content="2022-07-02T20:01:43+08:00" />
+<meta itemprop="wordCount" content="308">
+<meta itemprop="keywords" content="k8s," />
+		<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="K8s安装"/>
+<meta name="twitter:description" content="文章摘自https://k8s.easydoc.net/docs/dRiQjyTY/28366845/6GiNOzyZ/nd7yOvdY
+ 💽安装 Kubernetes 集群 安装方式介绍  minikube 只是一个 K8S 集群模拟器，只有一个节点的集群，只为测试用，master 和 worker 都在一起 直接用云平台 Kubernetes 可视化搭建，只需简单几步就可以创建好一个集群。 优点：安装简单，生态齐全，负载均衡器、存储等都给你配套好，简单操作就搞定 裸机安装（Bare Metal） 至少需要两台机器（主节点、工作节点个一台），需要自己安装 Kubernetes 组件，配置会稍微麻烦点。 可以到各云厂商按时租用服务器，费用低，用完就销毁。 缺点：配置麻烦，缺少生态支持，例如负载均衡器、云存储。   本文档课件需配套 视频 一起学习
+ minikube 安装非常简单，支持各种平台，安装方法
+ 需要提前安装好 Docker
+ # 启动集群 minikube start # 查看节点。kubectl 是一个用来跟 K8S 集群进行交互的命令行工具 kubectl get node # 停止集群 minikube stop # 清空集群 minikube delete --all # 安装集群可视化 Web UI 控制台 minikube dashboard 云平台搭建  腾讯云 TKE（控制台搜索容器） 登录阿里云控制台 - 产品搜索 Kubernetes  裸机搭建（Bare Metal） 主节点需要组件  docker（也可以是其他容器运行时） kubectl 集群命令行交互工具 kubeadm 集群初始化工具  工作节点需要组件 文档  docker（也可以是其他容器运行时） kubelet 管理 Pod 和容器，确保他们健康稳定运行。 kube-proxy 网络代理，负责网络相关的工作  开始安装  你也可以试下 这个项目，用脚本快速搭建 K8S 裸机集群 当然，为了更好的理解，你应该先手动搭建一次"/>
+
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link rel="dns-prefetch" href="//fonts.googleapis.com">
 	<link rel="dns-prefetch" href="//fonts.gstatic.com">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
 
 	<link rel="stylesheet" href="/css/style.css">
-	
+	<link rel="stylesheet" href="/css/custom.css">
 
 	<link rel="shortcut icon" href="/favicon.ico">
 		
@@ -23,11 +52,13 @@
 		<header class="header">
 	<div class="container header__container">
 		
-	<div class="logo">
-		<a class="logo__link" href="/" title="Luluhome - a blog for sh , &#39;lulu&#39; is my cat" rel="home">
-			<div class="logo__item logo__text">
-					<div class="logo__title">Luluhome - a blog for sh , &#39;lulu&#39; is my cat</div>
-					
+	<div class="logo logo--mixed">
+		<a class="logo__link" href="/" title="Lulu" rel="home">
+			<div class="logo__item logo__imagebox">
+					<img class="logo__img" src="/img/placeholder.png">
+				</div><div class="logo__item logo__text">
+					<div class="logo__title">Lulu</div>
+					<div class="logo__tagline">Lulu is arrongant cat</div>
 				</div>
 		</a>
 	</div>
@@ -37,27 +68,6 @@
 		<span class="menu__btn-title" tabindex="-1">Menu</span>
 	</button>
 	<ul class="menu__list">
-		<li class="menu__item">
-			<a class="menu__link" href="/">
-				
-				<span class="menu__text">Home</span>
-				
-			</a>
-		</li>
-		<li class="menu__item">
-			<a class="menu__link" href="/post/">
-				
-				<span class="menu__text">Archives</span>
-				
-			</a>
-		</li>
-		<li class="menu__item">
-			<a class="menu__link" href="/tags/">
-				
-				<span class="menu__text">Tags</span>
-				
-			</a>
-		</li>
 		<li class="menu__item">
 			<a class="menu__link" href="/about/">
 				
@@ -77,7 +87,11 @@
 	<article class="post">
 		<header class="post__header">
 			<h1 class="post__title">K8s安装</h1>
-			
+			<div class="post__meta meta"><div class="meta__item-author meta__item">
+	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 12 16"><path d="M6 1c2.2 0 3.5 2 3.5 4.5C9.5 7 8.9 8.2 8 9c2.9.8 4 2.5 4 5v1H0v-1c0-2.5 1.1-4.2 4-5-.9-.8-1.5-2-1.5-3.5C2.5 3 3.8 1 6 1z"/></svg><span class="meta__text">Frank Silva</span>
+</div>
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg><time class="meta__text" datetime="2022-07-02T20:01:43&#43;08:00">2022-07-02</time></div></div>
 		</header>
 		
 <div class="post__toc toc">
@@ -85,20 +99,14 @@
 	<div class="toc__menu">
 		<nav id="TableOfContents">
   <ul>
-    <li><a href="#安装-kubernetes-集群">💽安装 Kubernetes 集群</a>
+    <li>
       <ul>
-        <li>
-          <ul>
-            <li><a href="#安装方式介绍">安装方式介绍</a></li>
-            <li><a href="#minikube">minikube</a></li>
-            <li><a href="#云平台搭建">云平台搭建</a></li>
-            <li><a href="#裸机搭建bare-metal">裸机搭建（Bare Metal）</a></li>
-          </ul>
-        </li>
+        <li><a href="#安装方式介绍">安装方式介绍</a></li>
+        <li><a href="#minikube">minikube</a></li>
+        <li><a href="#云平台搭建">云平台搭建</a></li>
+        <li><a href="#裸机搭建bare-metal">裸机搭建（Bare Metal）</a></li>
       </ul>
     </li>
-    <li><a href="#更新configmap">更新configmap</a></li>
-    <li><a href="#nodeport-从master节点访问会超时">NodePort 从master节点访问会超时</a></li>
   </ul>
 </nav>
 	</div>
@@ -127,21 +135,7 @@
 <blockquote>
 <p>需要提前安装好 Docker</p>
 </blockquote>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"># 启动集群
+<pre tabindex="0"><code># 启动集群
 minikube start
 # 查看节点。kubectl 是一个用来跟 K8S 集群进行交互的命令行工具
 kubectl get node
@@ -151,9 +145,7 @@ minikube stop
 minikube delete --all
 # 安装集群可视化 Web UI 控制台
 minikube dashboard
-</code></pre></td></tr></table>
-</div>
-</div><h3 id="云平台搭建">云平台搭建</h3>
+</code></pre><h3 id="云平台搭建">云平台搭建</h3>
 <ul>
 <li><a href="https://cloud.tencent.com/product/tke">腾讯云 TKE</a>（控制台搜索容器）</li>
 <li>登录阿里云控制台 - 产品搜索 Kubernetes</li>
@@ -176,23 +168,7 @@ minikube dashboard
 <p>你也可以试下 <a href="https://github.com/lework/kainstall">这个项目</a>，用脚本快速搭建 K8S 裸机集群
 当然，为了更好的理解，你应该先手动搭建一次</p>
 </blockquote>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"># 每个节点分别设置对应主机名
+<pre tabindex="0"><code># 每个节点分别设置对应主机名
 hostnamectl set-hostname master
 hostnamectl set-hostname node1
 hostnamectl set-hostname node2
@@ -203,34 +179,14 @@ vim /etc/hosts
 172.16.0.4 master
 # 所有节点关闭 SELinux
 setenforce 0
-sed -i --follow-symlinks &#39;s/SELINUX=enforcing/SELINUX=disabled/g&#39; /etc/sysconfig/selinux
-</code></pre></td></tr></table>
-</div>
-</div><blockquote>
+sed -i --follow-symlinks 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux
+</code></pre><blockquote>
 <p>所有节点确保防火墙关闭
 systemctl stop firewalld
 systemctl disable firewalld</p>
 </blockquote>
 <p>添加安装源（所有节点）</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"># 添加 k8s 安装源
+<pre tabindex="0"><code># 添加 k8s 安装源
 cat &lt;&lt;EOF &gt; kubernetes.repo
 [kubernetes]
 name=Kubernetes
@@ -244,50 +200,22 @@ mv kubernetes.repo /etc/yum.repos.d/
 
 # 添加 Docker 安装源
 yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
-</code></pre></td></tr></table>
-</div>
-</div><p>安装所需组件（所有节点）
+</code></pre><p>安装所需组件（所有节点）
 <code>yum install -y kubelet-1.22.4 kubectl-1.22.4 kubeadm-1.22.4 docker-ce</code></p>
 <blockquote>
 <p>注意，据学员反馈，1.24 以上的版本会报错，跟教程有差异，所以建议大家指定版本号安装，版本号确保跟老师的一样</p>
 </blockquote>
 <p>启动 kubelet、docker，并设置开机启动（所有节点）</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">systemctl enable kubelet
+<pre tabindex="0"><code>systemctl enable kubelet
 systemctl start kubelet
 systemctl enable docker
 systemctl start docker
-</code></pre></td></tr></table>
-</div>
-</div><p>修改 docker 配置（所有节点）</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"># kubernetes 官方推荐 docker 等使用 systemd 作为 cgroupdriver，否则 kubelet 启动不了
+</code></pre><p>修改 docker 配置（所有节点）</p>
+<pre tabindex="0"><code># kubernetes 官方推荐 docker 等使用 systemd 作为 cgroupdriver，否则 kubelet 启动不了
 cat &lt;&lt;EOF &gt; daemon.json
 {
-  &#34;exec-opts&#34;: [&#34;native.cgroupdriver=systemd&#34;],
-  &#34;registry-mirrors&#34;: [&#34;https://ud6340vz.mirror.aliyuncs.com&#34;]
+  &quot;exec-opts&quot;: [&quot;native.cgroupdriver=systemd&quot;],
+  &quot;registry-mirrors&quot;: [&quot;https://ud6340vz.mirror.aliyuncs.com&quot;]
 }
 EOF
 mv daemon.json /etc/docker/
@@ -295,28 +223,8 @@ mv daemon.json /etc/docker/
 # 重启生效
 systemctl daemon-reload
 systemctl restart docker
-</code></pre></td></tr></table>
-</div>
-</div><p>用 <a href="https://kubernetes.io/docs/reference/setup-tools/kubeadm/">kubeadm</a> 初始化集群（仅在主节点跑），</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"># 初始化集群控制台 Control plane
+</code></pre><p>用 <a href="https://kubernetes.io/docs/reference/setup-tools/kubeadm/">kubeadm</a> 初始化集群（仅在主节点跑），</p>
+<pre tabindex="0"><code># 初始化集群控制台 Control plane
 # 失败了可以用 kubeadm reset 重置
 kubeadm init --image-repository=registry.aliyuncs.com/google_containers
 
@@ -330,43 +238,19 @@ cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 chown $(id -u):$(id -g) $HOME/.kube/config
 
 # 在其他机器上创建 ~/.kube/config 文件也能通过 kubectl 访问到集群
-</code></pre></td></tr></table>
-</div>
-</div><blockquote>
+</code></pre><blockquote>
 <p>有兴趣了解 kubeadm init 具体做了什么的，可以 <a href="https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-init/">查看文档</a></p>
 </blockquote>
 <p>把工作节点加入集群（只在工作节点跑）</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubeadm join 172.16.32.10:6443 --token xxx --discovery-token-ca-cert-hash xxx
-</code></pre></td></tr></table>
-</div>
-</div><p>安装网络插件，否则 node 是 NotReady 状态（主节点跑）</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"># 很有可能国内网络访问不到这个资源，你可以网上找找国内的源安装 flannel
+<pre tabindex="0"><code>kubeadm join 172.16.32.10:6443 --token xxx --discovery-token-ca-cert-hash xxx
+</code></pre><p>安装网络插件，否则 node 是 NotReady 状态（主节点跑）</p>
+<pre tabindex="0"><code># 很有可能国内网络访问不到这个资源，你可以网上找找国内的源安装 flannel
 kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
-</code></pre></td></tr></table>
-</div>
-</div><p>查看节点，要在主节点查看（其他节点有安装 kubectl 也可以查看）
+</code></pre><p>查看节点，要在主节点查看（其他节点有安装 kubectl 也可以查看）
 <img src="https://sjwx.easydoc.xyz/46901064/files/kw8x2qdf.png" alt="image.png"></p>
 <h1 id="更新configmap">更新configmap</h1>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="l">kubectl create configmap foo --from-file foo.properties -o yaml --dry-run | kubectl apply -f -</span><span class="w">
-</span></code></pre></td></tr></table>
-</div>
-</div><h1 id="nodeport-从master节点访问会超时">NodePort 从master节点访问会超时</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#ae81ff">kubectl create configmap foo --from-file foo.properties -o yaml --dry-run | kubectl apply -f -</span>
+</code></pre></div><h1 id="nodeport-从master节点访问会超时">NodePort 从master节点访问会超时</h1>
 
 		</div>
 		<footer class="post__footer">
@@ -383,7 +267,32 @@ kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documen
 	</article>
 </main>
 
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="Frank Silva avatar" src="/img/avatar.png" class="avatar" height="90" width="90">
+	</figure>
+	<div class="authorbox__header">
+		<span class="authorbox__name">About Frank Silva</span>
+	</div>
+	<div class="authorbox__description">
+		Pursue Consummate Coding.
+	</div>
+</div>
 
+<nav class="pager flex">
+	<div class="pager__item pager__item--prev">
+		<a class="pager__link" href="/post/all-in-one/" rel="prev">
+			<span class="pager__subtitle">«&thinsp;Previous</span>
+			<p class="pager__title">all in one配置</p>
+		</a>
+	</div>
+	<div class="pager__item pager__item--next">
+		<a class="pager__link" href="/post/%E6%97%B6%E9%97%B4%E8%BD%AE/" rel="next">
+			<span class="pager__subtitle">Next&thinsp;»</span>
+			<p class="pager__title">时间轮</p>
+		</a>
+	</div>
+</nav>
 
 
 			</div>
@@ -393,12 +302,14 @@ kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documen
 	<div class="container footer__container flex">
 		
 		<div class="footer__copyright">
-			&copy; 2023 Luluhome - a blog for sh , &#39;lulu&#39; is my cat.
+			&copy; 2023 Frank Silva.
 			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
 		</div>
 	</div>
 </footer>
 	</div>
 <script async defer src="/js/menu.js"></script>
+<script src="/js/custom.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
 </body>
 </html>

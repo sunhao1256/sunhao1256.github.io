@@ -4,16 +4,45 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Priority Queue - Luluhome - a blog for sh , &#39;lulu&#39; is my cat</title>
+	<title>Priority Queue - Lulu</title>
 	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
 	<meta name="description" content="">
+		<meta property="og:title" content="Priority Queue" />
+<meta property="og:description" content="属性 // 默认容量 private static final int DEFAULT_INITIAL_CAPACITY = 11; // 存储元素的地方 transient Object[] queue; // non-private to simplify nested class access // 元素个数 private int size = 0; // 比较器 private final Comparator&lt;? super E&gt; comparator; // 修改次数 transient int modCount = 0; // non-private to simplify nested class access  （1）默认容量是11；
+（2）queue，元素存储在数组中，这跟我们之前说的堆一般使用数组来存储是一致的；
+（3）comparator，比较器，在优先级队列中，也有两种方式比较元素，一种是元素的自然顺序，一种是通过比较器来比较；
+（4）modCount，修改次数，有这个属性表示PriorityQueue也是fast-fail的；
+入队 public boolean add(E e) { return offer(e); } public boolean offer(E e) { // 不支持null元素  if (e == null) throw new NullPointerException(); modCount&#43;&#43;; // 取size  int i = size; // 元素个数达到最大容量了，扩容  if (i &gt;= queue." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sunhao1256.github.io/post/priority-queue/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-10-19T15:14:41+08:00" />
+<meta property="article:modified_time" content="2022-10-19T15:14:41+08:00" />
+
+
+		<meta itemprop="name" content="Priority Queue">
+<meta itemprop="description" content="属性 // 默认容量 private static final int DEFAULT_INITIAL_CAPACITY = 11; // 存储元素的地方 transient Object[] queue; // non-private to simplify nested class access // 元素个数 private int size = 0; // 比较器 private final Comparator&lt;? super E&gt; comparator; // 修改次数 transient int modCount = 0; // non-private to simplify nested class access  （1）默认容量是11；
+（2）queue，元素存储在数组中，这跟我们之前说的堆一般使用数组来存储是一致的；
+（3）comparator，比较器，在优先级队列中，也有两种方式比较元素，一种是元素的自然顺序，一种是通过比较器来比较；
+（4）modCount，修改次数，有这个属性表示PriorityQueue也是fast-fail的；
+入队 public boolean add(E e) { return offer(e); } public boolean offer(E e) { // 不支持null元素  if (e == null) throw new NullPointerException(); modCount&#43;&#43;; // 取size  int i = size; // 元素个数达到最大容量了，扩容  if (i &gt;= queue."><meta itemprop="datePublished" content="2022-10-19T15:14:41+08:00" />
+<meta itemprop="dateModified" content="2022-10-19T15:14:41+08:00" />
+<meta itemprop="wordCount" content="572">
+<meta itemprop="keywords" content="java基础," />
+		<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Priority Queue"/>
+<meta name="twitter:description" content="属性 // 默认容量 private static final int DEFAULT_INITIAL_CAPACITY = 11; // 存储元素的地方 transient Object[] queue; // non-private to simplify nested class access // 元素个数 private int size = 0; // 比较器 private final Comparator&lt;? super E&gt; comparator; // 修改次数 transient int modCount = 0; // non-private to simplify nested class access  （1）默认容量是11；
+（2）queue，元素存储在数组中，这跟我们之前说的堆一般使用数组来存储是一致的；
+（3）comparator，比较器，在优先级队列中，也有两种方式比较元素，一种是元素的自然顺序，一种是通过比较器来比较；
+（4）modCount，修改次数，有这个属性表示PriorityQueue也是fast-fail的；
+入队 public boolean add(E e) { return offer(e); } public boolean offer(E e) { // 不支持null元素  if (e == null) throw new NullPointerException(); modCount&#43;&#43;; // 取size  int i = size; // 元素个数达到最大容量了，扩容  if (i &gt;= queue."/>
+
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link rel="dns-prefetch" href="//fonts.googleapis.com">
 	<link rel="dns-prefetch" href="//fonts.gstatic.com">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
 
 	<link rel="stylesheet" href="/css/style.css">
-	
+	<link rel="stylesheet" href="/css/custom.css">
 
 	<link rel="shortcut icon" href="/favicon.ico">
 		
@@ -23,11 +52,13 @@
 		<header class="header">
 	<div class="container header__container">
 		
-	<div class="logo">
-		<a class="logo__link" href="/" title="Luluhome - a blog for sh , &#39;lulu&#39; is my cat" rel="home">
-			<div class="logo__item logo__text">
-					<div class="logo__title">Luluhome - a blog for sh , &#39;lulu&#39; is my cat</div>
-					
+	<div class="logo logo--mixed">
+		<a class="logo__link" href="/" title="Lulu" rel="home">
+			<div class="logo__item logo__imagebox">
+					<img class="logo__img" src="/img/placeholder.png">
+				</div><div class="logo__item logo__text">
+					<div class="logo__title">Lulu</div>
+					<div class="logo__tagline">Lulu is arrongant cat</div>
 				</div>
 		</a>
 	</div>
@@ -37,27 +68,6 @@
 		<span class="menu__btn-title" tabindex="-1">Menu</span>
 	</button>
 	<ul class="menu__list">
-		<li class="menu__item">
-			<a class="menu__link" href="/">
-				
-				<span class="menu__text">Home</span>
-				
-			</a>
-		</li>
-		<li class="menu__item">
-			<a class="menu__link" href="/post/">
-				
-				<span class="menu__text">Archives</span>
-				
-			</a>
-		</li>
-		<li class="menu__item">
-			<a class="menu__link" href="/tags/">
-				
-				<span class="menu__text">Tags</span>
-				
-			</a>
-		</li>
 		<li class="menu__item">
 			<a class="menu__link" href="/about/">
 				
@@ -77,191 +87,94 @@
 	<article class="post">
 		<header class="post__header">
 			<h1 class="post__title">Priority Queue</h1>
-			
-		</header>
-		
-<div class="post__toc toc">
-	<div class="toc__title">Page content</div>
-	<div class="toc__menu">
-		<nav id="TableOfContents">
-  <ul>
-    <li><a href="#属性">属性</a></li>
-    <li><a href="#入队">入队</a></li>
-    <li><a href="#扩容">扩容</a></li>
-    <li><a href="#出队">出队</a></li>
-    <li><a href="#取元素">取元素</a></li>
-    <li><a href="#总结">总结</a></li>
-  </ul>
-</nav>
-	</div>
-</div><div class="content post__content clearfix">
-			<h1 id="属性">属性</h1>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="c1">// 默认容量
-</span><span class="c1"></span><span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">DEFAULT_INITIAL_CAPACITY</span> <span class="o">=</span> <span class="n">11</span><span class="o">;</span>
-<span class="c1">// 存储元素的地方
-</span><span class="c1"></span><span class="kd">transient</span> <span class="n">Object</span><span class="o">[]</span> <span class="n">queue</span><span class="o">;</span> <span class="c1">// non-private to simplify nested class access
-</span><span class="c1">// 元素个数
-</span><span class="c1"></span><span class="kd">private</span> <span class="kt">int</span> <span class="n">size</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span>
-<span class="c1">// 比较器
-</span><span class="c1"></span><span class="kd">private</span> <span class="kd">final</span> <span class="n">Comparator</span><span class="o">&lt;?</span> <span class="kd">super</span> <span class="n">E</span><span class="o">&gt;</span> <span class="n">comparator</span><span class="o">;</span>
-<span class="c1">// 修改次数
-</span><span class="c1"></span><span class="kd">transient</span> <span class="kt">int</span> <span class="n">modCount</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span> <span class="c1">// non-private to simplify nested class access
-</span><span class="c1"></span>
-</code></pre></td></tr></table>
+			<div class="post__meta meta"><div class="meta__item-author meta__item">
+	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 12 16"><path d="M6 1c2.2 0 3.5 2 3.5 4.5C9.5 7 8.9 8.2 8 9c2.9.8 4 2.5 4 5v1H0v-1c0-2.5 1.1-4.2 4-5-.9-.8-1.5-2-1.5-3.5C2.5 3 3.8 1 6 1z"/></svg><span class="meta__text">Frank Silva</span>
 </div>
-</div><p>（1）默认容量是11；</p>
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg><time class="meta__text" datetime="2022-10-19T15:14:41&#43;08:00">2022-10-19</time></div></div>
+		</header>
+		<div class="content post__content clearfix">
+			<h1 id="属性">属性</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// 默认容量
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> DEFAULT_INITIAL_CAPACITY <span style="color:#f92672">=</span> 11<span style="color:#f92672">;</span>
+<span style="color:#75715e">// 存储元素的地方
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">transient</span> Object<span style="color:#f92672">[]</span> queue<span style="color:#f92672">;</span> <span style="color:#75715e">// non-private to simplify nested class access
+</span><span style="color:#75715e">// 元素个数
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> size <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
+<span style="color:#75715e">// 比较器
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> Comparator<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">super</span> E<span style="color:#f92672">&gt;</span> comparator<span style="color:#f92672">;</span>
+<span style="color:#75715e">// 修改次数
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">transient</span> <span style="color:#66d9ef">int</span> modCount <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> <span style="color:#75715e">// non-private to simplify nested class access
+</span><span style="color:#75715e"></span>
+</code></pre></div><p>（1）默认容量是11；</p>
 <p>（2）queue，元素存储在数组中，这跟我们之前说的堆一般使用数组来存储是一致的；</p>
 <p>（3）comparator，比较器，在优先级队列中，也有两种方式比较元素，一种是元素的自然顺序，一种是通过比较器来比较；</p>
 <p>（4）modCount，修改次数，有这个属性表示PriorityQueue也是fast-fail的；</p>
 <h1 id="入队">入队</h1>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span><span class="lnt">56
-</span><span class="lnt">57
-</span><span class="lnt">58
-</span><span class="lnt">59
-</span><span class="lnt">60
-</span><span class="lnt">61
-</span><span class="lnt">62
-</span><span class="lnt">63
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">add</span><span class="o">(</span><span class="n">E</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
-    <span class="k">return</span> <span class="n">offer</span><span class="o">(</span><span class="n">e</span><span class="o">);</span>
-<span class="o">}</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>E e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">return</span> offer<span style="color:#f92672">(</span>e<span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
 
-<span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">offer</span><span class="o">(</span><span class="n">E</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
-    <span class="c1">// 不支持null元素
-</span><span class="c1"></span>    <span class="k">if</span> <span class="o">(</span><span class="n">e</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span>
-        <span class="k">throw</span> <span class="k">new</span> <span class="n">NullPointerException</span><span class="o">();</span>
-    <span class="n">modCount</span><span class="o">++;</span>
-    <span class="c1">// 取size
-</span><span class="c1"></span>    <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">size</span><span class="o">;</span>
-    <span class="c1">// 元素个数达到最大容量了，扩容
-</span><span class="c1"></span>    <span class="k">if</span> <span class="o">(</span><span class="n">i</span> <span class="o">&gt;=</span> <span class="n">queue</span><span class="o">.</span><span class="na">length</span><span class="o">)</span>
-        <span class="n">grow</span><span class="o">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">1</span><span class="o">);</span>
-    <span class="c1">// 元素个数加1
-</span><span class="c1"></span>    <span class="n">size</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="n">1</span><span class="o">;</span>
-    <span class="c1">// 如果还没有元素
-</span><span class="c1"></span>    <span class="c1">// 直接插入到数组第一个位置
-</span><span class="c1"></span>    <span class="c1">// 这里跟我们之前讲堆不一样了
-</span><span class="c1"></span>    <span class="c1">// java里面是从0开始的
-</span><span class="c1"></span>    <span class="c1">// 我们说的堆是从1开始的
-</span><span class="c1"></span>    <span class="k">if</span> <span class="o">(</span><span class="n">i</span> <span class="o">==</span> <span class="n">0</span><span class="o">)</span>
-        <span class="n">queue</span><span class="o">[</span><span class="n">0</span><span class="o">]</span> <span class="o">=</span> <span class="n">e</span><span class="o">;</span>
-    <span class="k">else</span>
-        <span class="c1">// 否则，插入元素到数组size的位置，也就是最后一个元素的下一位
-</span><span class="c1"></span>        <span class="c1">// 注意这里的size不是数组大小，而是元素个数
-</span><span class="c1"></span>        <span class="c1">// 然后，再做自下而上的堆化
-</span><span class="c1"></span>        <span class="n">siftUp</span><span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="n">e</span><span class="o">);</span>
-    <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
-<span class="o">}</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">offer</span><span style="color:#f92672">(</span>E e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">// 不支持null元素
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>e <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span>
+        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> NullPointerException<span style="color:#f92672">();</span>
+    modCount<span style="color:#f92672">++;</span>
+    <span style="color:#75715e">// 取size
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> size<span style="color:#f92672">;</span>
+    <span style="color:#75715e">// 元素个数达到最大容量了，扩容
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>i <span style="color:#f92672">&gt;=</span> queue<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">)</span>
+        grow<span style="color:#f92672">(</span>i <span style="color:#f92672">+</span> 1<span style="color:#f92672">);</span>
+    <span style="color:#75715e">// 元素个数加1
+</span><span style="color:#75715e"></span>    size <span style="color:#f92672">=</span> i <span style="color:#f92672">+</span> 1<span style="color:#f92672">;</span>
+    <span style="color:#75715e">// 如果还没有元素
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 直接插入到数组第一个位置
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 这里跟我们之前讲堆不一样了
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// java里面是从0开始的
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 我们说的堆是从1开始的
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>i <span style="color:#f92672">==</span> 0<span style="color:#f92672">)</span>
+        queue<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> e<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">else</span>
+        <span style="color:#75715e">// 否则，插入元素到数组size的位置，也就是最后一个元素的下一位
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// 注意这里的size不是数组大小，而是元素个数
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// 然后，再做自下而上的堆化
+</span><span style="color:#75715e"></span>        siftUp<span style="color:#f92672">(</span>i<span style="color:#f92672">,</span> e<span style="color:#f92672">);</span>
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
 
-<span class="kd">private</span> <span class="kt">void</span> <span class="nf">siftUp</span><span class="o">(</span><span class="kt">int</span> <span class="n">k</span><span class="o">,</span> <span class="n">E</span> <span class="n">x</span><span class="o">)</span> <span class="o">{</span>
-    <span class="c1">// 根据是否有比较器，使用不同的方法
-</span><span class="c1"></span>    <span class="k">if</span> <span class="o">(</span><span class="n">comparator</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span>
-        <span class="n">siftUpUsingComparator</span><span class="o">(</span><span class="n">k</span><span class="o">,</span> <span class="n">x</span><span class="o">);</span>
-    <span class="k">else</span>
-        <span class="n">siftUpComparable</span><span class="o">(</span><span class="n">k</span><span class="o">,</span> <span class="n">x</span><span class="o">);</span>
-<span class="o">}</span>
+<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">siftUp</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> k<span style="color:#f92672">,</span> E x<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">// 根据是否有比较器，使用不同的方法
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>comparator <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span>
+        siftUpUsingComparator<span style="color:#f92672">(</span>k<span style="color:#f92672">,</span> x<span style="color:#f92672">);</span>
+    <span style="color:#66d9ef">else</span>
+        siftUpComparable<span style="color:#f92672">(</span>k<span style="color:#f92672">,</span> x<span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
 
-<span class="nd">@SuppressWarnings</span><span class="o">(</span><span class="s">&#34;unchecked&#34;</span><span class="o">)</span>
-<span class="kd">private</span> <span class="kt">void</span> <span class="nf">siftUpComparable</span><span class="o">(</span><span class="kt">int</span> <span class="n">k</span><span class="o">,</span> <span class="n">E</span> <span class="n">x</span><span class="o">)</span> <span class="o">{</span>
-    <span class="n">Comparable</span><span class="o">&lt;?</span> <span class="kd">super</span> <span class="n">E</span><span class="o">&gt;</span> <span class="n">key</span> <span class="o">=</span> <span class="o">(</span><span class="n">Comparable</span><span class="o">&lt;?</span> <span class="kd">super</span> <span class="n">E</span><span class="o">&gt;)</span> <span class="n">x</span><span class="o">;</span>
-    <span class="k">while</span> <span class="o">(</span><span class="n">k</span> <span class="o">&gt;</span> <span class="n">0</span><span class="o">)</span> <span class="o">{</span>
-        <span class="c1">// 找到父节点的位置
-</span><span class="c1"></span>        <span class="c1">// 因为元素是从0开始的，所以减1之后再除以2
-</span><span class="c1"></span>        <span class="kt">int</span> <span class="n">parent</span> <span class="o">=</span> <span class="o">(</span><span class="n">k</span> <span class="o">-</span> <span class="n">1</span><span class="o">)</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">1</span><span class="o">;</span>
-        <span class="c1">// 父节点的值
-</span><span class="c1"></span>        <span class="n">Object</span> <span class="n">e</span> <span class="o">=</span> <span class="n">queue</span><span class="o">[</span><span class="n">parent</span><span class="o">];</span>
-        <span class="c1">// 比较插入的元素与父节点的值
-</span><span class="c1"></span>        <span class="c1">// 如果比父节点大，则跳出循环
-</span><span class="c1"></span>        <span class="c1">// 否则交换位置
-</span><span class="c1"></span>        <span class="k">if</span> <span class="o">(</span><span class="n">key</span><span class="o">.</span><span class="na">compareTo</span><span class="o">((</span><span class="n">E</span><span class="o">)</span> <span class="n">e</span><span class="o">)</span> <span class="o">&gt;=</span> <span class="n">0</span><span class="o">)</span>
-            <span class="k">break</span><span class="o">;</span>
-        <span class="c1">// 与父节点交换位置
-</span><span class="c1"></span>        <span class="n">queue</span><span class="o">[</span><span class="n">k</span><span class="o">]</span> <span class="o">=</span> <span class="n">e</span><span class="o">;</span>
-        <span class="c1">// 现在插入的元素位置移到了父节点的位置
-</span><span class="c1"></span>        <span class="c1">// 继续与父节点再比较
-</span><span class="c1"></span>        <span class="n">k</span> <span class="o">=</span> <span class="n">parent</span><span class="o">;</span>
-    <span class="o">}</span>
-    <span class="c1">// 最后找到应该插入的位置，放入元素
-</span><span class="c1"></span>    <span class="n">queue</span><span class="o">[</span><span class="n">k</span><span class="o">]</span> <span class="o">=</span> <span class="n">key</span><span class="o">;</span>
-<span class="o">}</span>
+<span style="color:#a6e22e">@SuppressWarnings</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;unchecked&#34;</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">siftUpComparable</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> k<span style="color:#f92672">,</span> E x<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    Comparable<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">super</span> E<span style="color:#f92672">&gt;</span> key <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>Comparable<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">super</span> E<span style="color:#f92672">&gt;)</span> x<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>k <span style="color:#f92672">&gt;</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// 找到父节点的位置
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// 因为元素是从0开始的，所以减1之后再除以2
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">int</span> parent <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>k <span style="color:#f92672">-</span> 1<span style="color:#f92672">)</span> <span style="color:#f92672">&gt;&gt;&gt;</span> 1<span style="color:#f92672">;</span>
+        <span style="color:#75715e">// 父节点的值
+</span><span style="color:#75715e"></span>        Object e <span style="color:#f92672">=</span> queue<span style="color:#f92672">[</span>parent<span style="color:#f92672">];</span>
+        <span style="color:#75715e">// 比较插入的元素与父节点的值
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// 如果比父节点大，则跳出循环
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// 否则交换位置
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>key<span style="color:#f92672">.</span><span style="color:#a6e22e">compareTo</span><span style="color:#f92672">((</span>E<span style="color:#f92672">)</span> e<span style="color:#f92672">)</span> <span style="color:#f92672">&gt;=</span> 0<span style="color:#f92672">)</span>
+            <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
+        <span style="color:#75715e">// 与父节点交换位置
+</span><span style="color:#75715e"></span>        queue<span style="color:#f92672">[</span>k<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> e<span style="color:#f92672">;</span>
+        <span style="color:#75715e">// 现在插入的元素位置移到了父节点的位置
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// 继续与父节点再比较
+</span><span style="color:#75715e"></span>        k <span style="color:#f92672">=</span> parent<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#75715e">// 最后找到应该插入的位置，放入元素
+</span><span style="color:#75715e"></span>    queue<span style="color:#f92672">[</span>k<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> key<span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
 
-</code></pre></td></tr></table>
-</div>
-</div><p>（1）入队不允许null元素；</p>
+</code></pre></div><p>（1）入队不允许null元素；</p>
 <p>（2）如果数组不够用了，先扩容；</p>
 <p>（3）如果还没有元素，就插入下标0的位置；</p>
 <p>（4）如果有元素了，就插入到最后一个元素往后的一个位置（实际并没有插入哈）；</p>
@@ -269,249 +182,124 @@
 <p>（6）如果比父节点小，就与父节点交换位置，直到出现比父节点大为止；</p>
 <p>（7）由此可见，PriorityQueue是一个小顶堆。</p>
 <h1 id="扩容">扩容</h1>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">private</span> <span class="kt">void</span> <span class="nf">grow</span><span class="o">(</span><span class="kt">int</span> <span class="n">minCapacity</span><span class="o">)</span> <span class="o">{</span>
-    <span class="c1">// 旧容量
-</span><span class="c1"></span>    <span class="kt">int</span> <span class="n">oldCapacity</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="na">length</span><span class="o">;</span>
-    <span class="c1">// Double size if small; else grow by 50%
-</span><span class="c1"></span>    <span class="c1">// 旧容量小于64时，容量翻倍
-</span><span class="c1"></span>    <span class="c1">// 旧容量大于等于64，容量只增加旧容量的一半
-</span><span class="c1"></span>    <span class="kt">int</span> <span class="n">newCapacity</span> <span class="o">=</span> <span class="n">oldCapacity</span> <span class="o">+</span> <span class="o">((</span><span class="n">oldCapacity</span> <span class="o">&lt;</span> <span class="n">64</span><span class="o">)</span> <span class="o">?</span>
-                                     <span class="o">(</span><span class="n">oldCapacity</span> <span class="o">+</span> <span class="n">2</span><span class="o">)</span> <span class="o">:</span>
-                                     <span class="o">(</span><span class="n">oldCapacity</span> <span class="o">&gt;&gt;</span> <span class="n">1</span><span class="o">));</span>
-    <span class="c1">// overflow-conscious code
-</span><span class="c1"></span>    <span class="c1">// 检查是否溢出
-</span><span class="c1"></span>    <span class="k">if</span> <span class="o">(</span><span class="n">newCapacity</span> <span class="o">-</span> <span class="n">MAX_ARRAY_SIZE</span> <span class="o">&gt;</span> <span class="n">0</span><span class="o">)</span>
-        <span class="n">newCapacity</span> <span class="o">=</span> <span class="n">hugeCapacity</span><span class="o">(</span><span class="n">minCapacity</span><span class="o">);</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">grow</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> minCapacity<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">// 旧容量
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">int</span> oldCapacity <span style="color:#f92672">=</span> queue<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">;</span>
+    <span style="color:#75715e">// Double size if small; else grow by 50%
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 旧容量小于64时，容量翻倍
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 旧容量大于等于64，容量只增加旧容量的一半
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">int</span> newCapacity <span style="color:#f92672">=</span> oldCapacity <span style="color:#f92672">+</span> <span style="color:#f92672">((</span>oldCapacity <span style="color:#f92672">&lt;</span> 64<span style="color:#f92672">)</span> <span style="color:#f92672">?</span>
+                                     <span style="color:#f92672">(</span>oldCapacity <span style="color:#f92672">+</span> 2<span style="color:#f92672">)</span> <span style="color:#f92672">:</span>
+                                     <span style="color:#f92672">(</span>oldCapacity <span style="color:#f92672">&gt;&gt;</span> 1<span style="color:#f92672">));</span>
+    <span style="color:#75715e">// overflow-conscious code
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 检查是否溢出
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>newCapacity <span style="color:#f92672">-</span> MAX_ARRAY_SIZE <span style="color:#f92672">&gt;</span> 0<span style="color:#f92672">)</span>
+        newCapacity <span style="color:#f92672">=</span> hugeCapacity<span style="color:#f92672">(</span>minCapacity<span style="color:#f92672">);</span>
         
-    <span class="c1">// 创建出一个新容量大小的新数组并把旧数组元素拷贝过去
-</span><span class="c1"></span>    <span class="n">queue</span> <span class="o">=</span> <span class="n">Arrays</span><span class="o">.</span><span class="na">copyOf</span><span class="o">(</span><span class="n">queue</span><span class="o">,</span> <span class="n">newCapacity</span><span class="o">);</span>
-<span class="o">}</span>
+    <span style="color:#75715e">// 创建出一个新容量大小的新数组并把旧数组元素拷贝过去
+</span><span style="color:#75715e"></span>    queue <span style="color:#f92672">=</span> Arrays<span style="color:#f92672">.</span><span style="color:#a6e22e">copyOf</span><span style="color:#f92672">(</span>queue<span style="color:#f92672">,</span> newCapacity<span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
 
-<span class="kd">private</span> <span class="kd">static</span> <span class="kt">int</span> <span class="nf">hugeCapacity</span><span class="o">(</span><span class="kt">int</span> <span class="n">minCapacity</span><span class="o">)</span> <span class="o">{</span>
-    <span class="k">if</span> <span class="o">(</span><span class="n">minCapacity</span> <span class="o">&lt;</span> <span class="n">0</span><span class="o">)</span> <span class="c1">// overflow
-</span><span class="c1"></span>        <span class="k">throw</span> <span class="k">new</span> <span class="n">OutOfMemoryError</span><span class="o">();</span>
-    <span class="k">return</span> <span class="o">(</span><span class="n">minCapacity</span> <span class="o">&gt;</span> <span class="n">MAX_ARRAY_SIZE</span><span class="o">)</span> <span class="o">?</span>
-        <span class="n">Integer</span><span class="o">.</span><span class="na">MAX_VALUE</span> <span class="o">:</span>
-        <span class="n">MAX_ARRAY_SIZE</span><span class="o">;</span>
-<span class="o">}</span>
+<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">hugeCapacity</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> minCapacity<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>minCapacity <span style="color:#f92672">&lt;</span> 0<span style="color:#f92672">)</span> <span style="color:#75715e">// overflow
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> OutOfMemoryError<span style="color:#f92672">();</span>
+    <span style="color:#66d9ef">return</span> <span style="color:#f92672">(</span>minCapacity <span style="color:#f92672">&gt;</span> MAX_ARRAY_SIZE<span style="color:#f92672">)</span> <span style="color:#f92672">?</span>
+        Integer<span style="color:#f92672">.</span><span style="color:#a6e22e">MAX_VALUE</span> <span style="color:#f92672">:</span>
+        MAX_ARRAY_SIZE<span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
 
-</code></pre></td></tr></table>
-</div>
-</div><p>（1）当数组比较小（小于64）的时候每次扩容容量翻倍；</p>
+</code></pre></div><p>（1）当数组比较小（小于64）的时候每次扩容容量翻倍；</p>
 <p>（2）当数组比较大的时候每次扩容只增加一半的容量；</p>
 <h1 id="出队">出队</h1>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span><span class="lnt">56
-</span><span class="lnt">57
-</span><span class="lnt">58
-</span><span class="lnt">59
-</span><span class="lnt">60
-</span><span class="lnt">61
-</span><span class="lnt">62
-</span><span class="lnt">63
-</span><span class="lnt">64
-</span><span class="lnt">65
-</span><span class="lnt">66
-</span><span class="lnt">67
-</span><span class="lnt">68
-</span><span class="lnt">69
-</span><span class="lnt">70
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="n">E</span> <span class="nf">remove</span><span class="o">()</span> <span class="o">{</span>
-    <span class="c1">// 调用poll弹出队首元素
-</span><span class="c1"></span>    <span class="n">E</span> <span class="n">x</span> <span class="o">=</span> <span class="n">poll</span><span class="o">();</span>
-    <span class="k">if</span> <span class="o">(</span><span class="n">x</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span>
-        <span class="c1">// 有元素就返回弹出的元素
-</span><span class="c1"></span>        <span class="k">return</span> <span class="n">x</span><span class="o">;</span>
-    <span class="k">else</span>
-        <span class="c1">// 没有元素就抛出异常
-</span><span class="c1"></span>        <span class="k">throw</span> <span class="k">new</span> <span class="n">NoSuchElementException</span><span class="o">();</span>
-<span class="o">}</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> E <span style="color:#a6e22e">remove</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">// 调用poll弹出队首元素
+</span><span style="color:#75715e"></span>    E x <span style="color:#f92672">=</span> poll<span style="color:#f92672">();</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>x <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span>
+        <span style="color:#75715e">// 有元素就返回弹出的元素
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">return</span> x<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">else</span>
+        <span style="color:#75715e">// 没有元素就抛出异常
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> NoSuchElementException<span style="color:#f92672">();</span>
+<span style="color:#f92672">}</span>
 
-<span class="nd">@SuppressWarnings</span><span class="o">(</span><span class="s">&#34;unchecked&#34;</span><span class="o">)</span>
-<span class="kd">public</span> <span class="n">E</span> <span class="nf">poll</span><span class="o">()</span> <span class="o">{</span>
-    <span class="c1">// 如果size为0，说明没有元素
-</span><span class="c1"></span>    <span class="k">if</span> <span class="o">(</span><span class="n">size</span> <span class="o">==</span> <span class="n">0</span><span class="o">)</span>
-        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
-    <span class="c1">// 弹出元素，元素个数减1
-</span><span class="c1"></span>    <span class="kt">int</span> <span class="n">s</span> <span class="o">=</span> <span class="o">--</span><span class="n">size</span><span class="o">;</span>
-    <span class="n">modCount</span><span class="o">++;</span>
-    <span class="c1">// 队列首元素
-</span><span class="c1"></span>    <span class="n">E</span> <span class="n">result</span> <span class="o">=</span> <span class="o">(</span><span class="n">E</span><span class="o">)</span> <span class="n">queue</span><span class="o">[</span><span class="n">0</span><span class="o">];</span>
-    <span class="c1">// 队列末元素
-</span><span class="c1"></span>    <span class="n">E</span> <span class="n">x</span> <span class="o">=</span> <span class="o">(</span><span class="n">E</span><span class="o">)</span> <span class="n">queue</span><span class="o">[</span><span class="n">s</span><span class="o">];</span>
-    <span class="c1">// 将队列末元素删除
-</span><span class="c1"></span>    <span class="n">queue</span><span class="o">[</span><span class="n">s</span><span class="o">]</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
-    <span class="c1">// 如果弹出元素后还有元素
-</span><span class="c1"></span>    <span class="k">if</span> <span class="o">(</span><span class="n">s</span> <span class="o">!=</span> <span class="n">0</span><span class="o">)</span>
-        <span class="c1">// 将队列末元素移到队列首
-</span><span class="c1"></span>        <span class="c1">// 再做自上而下的堆化
-</span><span class="c1"></span>        <span class="n">siftDown</span><span class="o">(</span><span class="n">0</span><span class="o">,</span> <span class="n">x</span><span class="o">);</span>
-    <span class="c1">// 返回弹出的元素
-</span><span class="c1"></span>    <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
-<span class="o">}</span>
+<span style="color:#a6e22e">@SuppressWarnings</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;unchecked&#34;</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> E <span style="color:#a6e22e">poll</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">// 如果size为0，说明没有元素
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>size <span style="color:#f92672">==</span> 0<span style="color:#f92672">)</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+    <span style="color:#75715e">// 弹出元素，元素个数减1
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">int</span> s <span style="color:#f92672">=</span> <span style="color:#f92672">--</span>size<span style="color:#f92672">;</span>
+    modCount<span style="color:#f92672">++;</span>
+    <span style="color:#75715e">// 队列首元素
+</span><span style="color:#75715e"></span>    E result <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>E<span style="color:#f92672">)</span> queue<span style="color:#f92672">[</span>0<span style="color:#f92672">];</span>
+    <span style="color:#75715e">// 队列末元素
+</span><span style="color:#75715e"></span>    E x <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>E<span style="color:#f92672">)</span> queue<span style="color:#f92672">[</span>s<span style="color:#f92672">];</span>
+    <span style="color:#75715e">// 将队列末元素删除
+</span><span style="color:#75715e"></span>    queue<span style="color:#f92672">[</span>s<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+    <span style="color:#75715e">// 如果弹出元素后还有元素
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>s <span style="color:#f92672">!=</span> 0<span style="color:#f92672">)</span>
+        <span style="color:#75715e">// 将队列末元素移到队列首
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// 再做自上而下的堆化
+</span><span style="color:#75715e"></span>        siftDown<span style="color:#f92672">(</span>0<span style="color:#f92672">,</span> x<span style="color:#f92672">);</span>
+    <span style="color:#75715e">// 返回弹出的元素
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> result<span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
 
-<span class="kd">private</span> <span class="kt">void</span> <span class="nf">siftDown</span><span class="o">(</span><span class="kt">int</span> <span class="n">k</span><span class="o">,</span> <span class="n">E</span> <span class="n">x</span><span class="o">)</span> <span class="o">{</span>
-    <span class="c1">// 根据是否有比较器，选择不同的方法
-</span><span class="c1"></span>    <span class="k">if</span> <span class="o">(</span><span class="n">comparator</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span>
-        <span class="n">siftDownUsingComparator</span><span class="o">(</span><span class="n">k</span><span class="o">,</span> <span class="n">x</span><span class="o">);</span>
-    <span class="k">else</span>
-        <span class="n">siftDownComparable</span><span class="o">(</span><span class="n">k</span><span class="o">,</span> <span class="n">x</span><span class="o">);</span>
-<span class="o">}</span>
+<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">siftDown</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> k<span style="color:#f92672">,</span> E x<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">// 根据是否有比较器，选择不同的方法
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>comparator <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span>
+        siftDownUsingComparator<span style="color:#f92672">(</span>k<span style="color:#f92672">,</span> x<span style="color:#f92672">);</span>
+    <span style="color:#66d9ef">else</span>
+        siftDownComparable<span style="color:#f92672">(</span>k<span style="color:#f92672">,</span> x<span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
 
-<span class="nd">@SuppressWarnings</span><span class="o">(</span><span class="s">&#34;unchecked&#34;</span><span class="o">)</span>
-<span class="kd">private</span> <span class="kt">void</span> <span class="nf">siftDownComparable</span><span class="o">(</span><span class="kt">int</span> <span class="n">k</span><span class="o">,</span> <span class="n">E</span> <span class="n">x</span><span class="o">)</span> <span class="o">{</span>
-    <span class="n">Comparable</span><span class="o">&lt;?</span> <span class="kd">super</span> <span class="n">E</span><span class="o">&gt;</span> <span class="n">key</span> <span class="o">=</span> <span class="o">(</span><span class="n">Comparable</span><span class="o">&lt;?</span> <span class="kd">super</span> <span class="n">E</span><span class="o">&gt;)</span><span class="n">x</span><span class="o">;</span>
-    <span class="c1">// 只需要比较一半就行了，因为叶子节点占了一半的元素
-</span><span class="c1"></span>    <span class="kt">int</span> <span class="n">half</span> <span class="o">=</span> <span class="n">size</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">1</span><span class="o">;</span>        <span class="c1">// loop while a non-leaf
-</span><span class="c1"></span>    <span class="k">while</span> <span class="o">(</span><span class="n">k</span> <span class="o">&lt;</span> <span class="n">half</span><span class="o">)</span> <span class="o">{</span>
-        <span class="c1">// 寻找子节点的位置，这里加1是因为元素从0号位置开始
-</span><span class="c1"></span>        <span class="kt">int</span> <span class="n">child</span> <span class="o">=</span> <span class="o">(</span><span class="n">k</span> <span class="o">&lt;&lt;</span> <span class="n">1</span><span class="o">)</span> <span class="o">+</span> <span class="n">1</span><span class="o">;</span> <span class="c1">// assume left child is least
-</span><span class="c1"></span>        <span class="c1">// 左子节点的值
-</span><span class="c1"></span>        <span class="n">Object</span> <span class="n">c</span> <span class="o">=</span> <span class="n">queue</span><span class="o">[</span><span class="n">child</span><span class="o">];</span>
-        <span class="c1">// 右子节点的位置
-</span><span class="c1"></span>        <span class="kt">int</span> <span class="n">right</span> <span class="o">=</span> <span class="n">child</span> <span class="o">+</span> <span class="n">1</span><span class="o">;</span>
-        <span class="k">if</span> <span class="o">(</span><span class="n">right</span> <span class="o">&lt;</span> <span class="n">size</span> <span class="o">&amp;&amp;</span>
-            <span class="o">((</span><span class="n">Comparable</span><span class="o">&lt;?</span> <span class="kd">super</span> <span class="n">E</span><span class="o">&gt;)</span> <span class="n">c</span><span class="o">).</span><span class="na">compareTo</span><span class="o">((</span><span class="n">E</span><span class="o">)</span> <span class="n">queue</span><span class="o">[</span><span class="n">right</span><span class="o">])</span> <span class="o">&gt;</span> <span class="n">0</span><span class="o">)</span>
-            <span class="c1">// 左右节点取其小者
-</span><span class="c1"></span>            <span class="n">c</span> <span class="o">=</span> <span class="n">queue</span><span class="o">[</span><span class="n">child</span> <span class="o">=</span> <span class="n">right</span><span class="o">];</span>
-        <span class="c1">// 如果比子节点都小，则结束
-</span><span class="c1"></span>        <span class="k">if</span> <span class="o">(</span><span class="n">key</span><span class="o">.</span><span class="na">compareTo</span><span class="o">((</span><span class="n">E</span><span class="o">)</span> <span class="n">c</span><span class="o">)</span> <span class="o">&lt;=</span> <span class="n">0</span><span class="o">)</span>
-            <span class="k">break</span><span class="o">;</span>
-        <span class="c1">// 如果比最小的子节点大，则交换位置
-</span><span class="c1"></span>        <span class="n">queue</span><span class="o">[</span><span class="n">k</span><span class="o">]</span> <span class="o">=</span> <span class="n">c</span><span class="o">;</span>
-        <span class="c1">// 指针移到最小子节点的位置继续往下比较
-</span><span class="c1"></span>        <span class="n">k</span> <span class="o">=</span> <span class="n">child</span><span class="o">;</span>
-    <span class="o">}</span>
-    <span class="c1">// 找到正确的位置，放入元素
-</span><span class="c1"></span>    <span class="n">queue</span><span class="o">[</span><span class="n">k</span><span class="o">]</span> <span class="o">=</span> <span class="n">key</span><span class="o">;</span>
-<span class="o">}</span>
+<span style="color:#a6e22e">@SuppressWarnings</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;unchecked&#34;</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">siftDownComparable</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> k<span style="color:#f92672">,</span> E x<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    Comparable<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">super</span> E<span style="color:#f92672">&gt;</span> key <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>Comparable<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">super</span> E<span style="color:#f92672">&gt;)</span>x<span style="color:#f92672">;</span>
+    <span style="color:#75715e">// 只需要比较一半就行了，因为叶子节点占了一半的元素
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">int</span> half <span style="color:#f92672">=</span> size <span style="color:#f92672">&gt;&gt;&gt;</span> 1<span style="color:#f92672">;</span>        <span style="color:#75715e">// loop while a non-leaf
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>k <span style="color:#f92672">&lt;</span> half<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// 寻找子节点的位置，这里加1是因为元素从0号位置开始
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">int</span> child <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>k <span style="color:#f92672">&lt;&lt;</span> 1<span style="color:#f92672">)</span> <span style="color:#f92672">+</span> 1<span style="color:#f92672">;</span> <span style="color:#75715e">// assume left child is least
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// 左子节点的值
+</span><span style="color:#75715e"></span>        Object c <span style="color:#f92672">=</span> queue<span style="color:#f92672">[</span>child<span style="color:#f92672">];</span>
+        <span style="color:#75715e">// 右子节点的位置
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">int</span> right <span style="color:#f92672">=</span> child <span style="color:#f92672">+</span> 1<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>right <span style="color:#f92672">&lt;</span> size <span style="color:#f92672">&amp;&amp;</span>
+            <span style="color:#f92672">((</span>Comparable<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">super</span> E<span style="color:#f92672">&gt;)</span> c<span style="color:#f92672">).</span><span style="color:#a6e22e">compareTo</span><span style="color:#f92672">((</span>E<span style="color:#f92672">)</span> queue<span style="color:#f92672">[</span>right<span style="color:#f92672">])</span> <span style="color:#f92672">&gt;</span> 0<span style="color:#f92672">)</span>
+            <span style="color:#75715e">// 左右节点取其小者
+</span><span style="color:#75715e"></span>            c <span style="color:#f92672">=</span> queue<span style="color:#f92672">[</span>child <span style="color:#f92672">=</span> right<span style="color:#f92672">];</span>
+        <span style="color:#75715e">// 如果比子节点都小，则结束
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>key<span style="color:#f92672">.</span><span style="color:#a6e22e">compareTo</span><span style="color:#f92672">((</span>E<span style="color:#f92672">)</span> c<span style="color:#f92672">)</span> <span style="color:#f92672">&lt;=</span> 0<span style="color:#f92672">)</span>
+            <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
+        <span style="color:#75715e">// 如果比最小的子节点大，则交换位置
+</span><span style="color:#75715e"></span>        queue<span style="color:#f92672">[</span>k<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> c<span style="color:#f92672">;</span>
+        <span style="color:#75715e">// 指针移到最小子节点的位置继续往下比较
+</span><span style="color:#75715e"></span>        k <span style="color:#f92672">=</span> child<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#75715e">// 找到正确的位置，放入元素
+</span><span style="color:#75715e"></span>    queue<span style="color:#f92672">[</span>k<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> key<span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
 
-</code></pre></td></tr></table>
-</div>
-</div><p>（1）将队列首元素弹出；</p>
+</code></pre></div><p>（1）将队列首元素弹出；</p>
 <p>（2）将队列末元素移到队列首；</p>
 <p>（3）自上而下堆化，一直往下与最小的子节点比较；</p>
 <p>（4）如果比最小的子节点大，就交换位置，再继续与最小的子节点比较；</p>
 <p>（5）如果比最小的子节点小，就不用交换位置了，堆化结束；</p>
 <p>（6）这就是堆中的删除堆顶元素；</p>
 <h1 id="取元素">取元素</h1>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="n">E</span> <span class="nf">element</span><span class="o">()</span> <span class="o">{</span>
-    <span class="n">E</span> <span class="n">x</span> <span class="o">=</span> <span class="n">peek</span><span class="o">();</span>
-    <span class="k">if</span> <span class="o">(</span><span class="n">x</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span>
-        <span class="k">return</span> <span class="n">x</span><span class="o">;</span>
-    <span class="k">else</span>
-        <span class="k">throw</span> <span class="k">new</span> <span class="n">NoSuchElementException</span><span class="o">();</span>
-<span class="o">}</span>
-<span class="kd">public</span> <span class="n">E</span> <span class="nf">peek</span><span class="o">()</span> <span class="o">{</span>
-    <span class="k">return</span> <span class="o">(</span><span class="n">size</span> <span class="o">==</span> <span class="n">0</span><span class="o">)</span> <span class="o">?</span> <span class="kc">null</span> <span class="o">:</span> <span class="o">(</span><span class="n">E</span><span class="o">)</span> <span class="n">queue</span><span class="o">[</span><span class="n">0</span><span class="o">];</span>
-<span class="o">}</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> E <span style="color:#a6e22e">element</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    E x <span style="color:#f92672">=</span> peek<span style="color:#f92672">();</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>x <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span>
+        <span style="color:#66d9ef">return</span> x<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">else</span>
+        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> NoSuchElementException<span style="color:#f92672">();</span>
+<span style="color:#f92672">}</span>
+<span style="color:#66d9ef">public</span> E <span style="color:#a6e22e">peek</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">return</span> <span style="color:#f92672">(</span>size <span style="color:#f92672">==</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">?</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">:</span> <span style="color:#f92672">(</span>E<span style="color:#f92672">)</span> queue<span style="color:#f92672">[</span>0<span style="color:#f92672">];</span>
+<span style="color:#f92672">}</span>
 
-</code></pre></td></tr></table>
-</div>
-</div><p>（1）如果有元素就取下标0的元素；</p>
+</code></pre></div><p>（1）如果有元素就取下标0的元素；</p>
 <p>（3）如果没有元素就返回null，element()抛出异常；</p>
 <h1 id="总结">总结</h1>
 <p>（1）PriorityQueue是一个小顶堆；</p>
@@ -535,7 +323,32 @@
 	</article>
 </main>
 
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="Frank Silva avatar" src="/img/avatar.png" class="avatar" height="90" width="90">
+	</figure>
+	<div class="authorbox__header">
+		<span class="authorbox__name">About Frank Silva</span>
+	</div>
+	<div class="authorbox__description">
+		Pursue Consummate Coding.
+	</div>
+</div>
 
+<nav class="pager flex">
+	<div class="pager__item pager__item--prev">
+		<a class="pager__link" href="/post/mysql-findinset-multiplevalues/" rel="prev">
+			<span class="pager__subtitle">«&thinsp;Previous</span>
+			<p class="pager__title">Mysql Findinset Multiplevalues</p>
+		</a>
+	</div>
+	<div class="pager__item pager__item--next">
+		<a class="pager__link" href="/post/types-of-binary-tree/" rel="next">
+			<span class="pager__subtitle">Next&thinsp;»</span>
+			<p class="pager__title">Types of Binary Tree</p>
+		</a>
+	</div>
+</nav>
 
 
 			</div>
@@ -545,12 +358,14 @@
 	<div class="container footer__container flex">
 		
 		<div class="footer__copyright">
-			&copy; 2023 Luluhome - a blog for sh , &#39;lulu&#39; is my cat.
+			&copy; 2023 Frank Silva.
 			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
 		</div>
 	</div>
 </footer>
 	</div>
 <script async defer src="/js/menu.js"></script>
+<script src="/js/custom.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
 </body>
 </html>

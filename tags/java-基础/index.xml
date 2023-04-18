@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>java 基础 on Luluhome - a blog for sh , &#39;lulu&#39; is my cat</title>
+    <title>java 基础 on Lulu</title>
     <link>https://sunhao1256.github.io/tags/java-%E5%9F%BA%E7%A1%80/</link>
-    <description>Recent content in java 基础 on Luluhome - a blog for sh , &#39;lulu&#39; is my cat</description>
+    <description>Recent content in java 基础 on Lulu</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en</language>
+    <language>en-us</language>
     <lastBuildDate>Fri, 21 Oct 2022 16:33:35 +0800</lastBuildDate><atom:link href="https://sunhao1256.github.io/tags/java-%E5%9F%BA%E7%A1%80/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Synchronous Queue</title>
@@ -22,7 +22,13 @@
       <pubDate>Fri, 21 Oct 2022 14:54:44 +0800</pubDate>
       
       <guid>https://sunhao1256.github.io/post/array-block-queue/</guid>
-      <description>简介 ArrayBlockingQueue是java并发包下一个以数组实现的阻塞队列，它是线程安全的，至于是否需要扩容，请看下面的分析。 队列 队</description>
+      <description>简介 ArrayBlockingQueue是java并发包下一个以数组实现的阻塞队列，它是线程安全的，至于是否需要扩容，请看下面的分析。
+队列 队列，是一种线性表，它的特点是先进先出，又叫FIFO，就像我们平常排队一样，先到先得，即先进入队列的人先出队。
+属性 // 使用数组存储元素 final Object[] items; // 取元素的指针 int takeIndex; // 放元素的指针 int putIndex; // 元素数量 int count; // 保证并发访问的锁 final ReentrantLock lock; // 非空条件 private final Condition notEmpty; // 非满条件 private final Condition notFull; 通过属性我们可以得出以下几个重要信息：
+（1）利用数组存储元素；
+（2）通过放指针和取指针来标记下一次操作的位置；
+（3）利用重入锁来保证并发安全；
+构造方法 public ArrayBlockingQueue(int capacity) { this(capacity, false); } public ArrayBlockingQueue(int capacity, boolean fair) { if (capacity &amp;lt;= 0) throw new IllegalArgumentException(); // 初始化数组  this.items = new Object[capacity]; // 创建重入锁及两个条件  lock = new ReentrantLock(fair); notEmpty = lock.</description>
     </item>
     
   </channel>

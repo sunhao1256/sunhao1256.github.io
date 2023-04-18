@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Nginx on Luluhome - a blog for sh , &#39;lulu&#39; is my cat</title>
+    <title>Nginx on Lulu</title>
     <link>https://sunhao1256.github.io/tags/nginx/</link>
-    <description>Recent content in Nginx on Luluhome - a blog for sh , &#39;lulu&#39; is my cat</description>
+    <description>Recent content in Nginx on Lulu</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en</language>
+    <language>en-us</language>
     <lastBuildDate>Thu, 28 Jul 2022 10:14:49 +0800</lastBuildDate><atom:link href="https://sunhao1256.github.io/tags/nginx/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Nginx转发规则</title>
@@ -13,7 +13,9 @@
       <pubDate>Thu, 28 Jul 2022 10:14:49 +0800</pubDate>
       
       <guid>https://sunhao1256.github.io/post/nginx/</guid>
-      <description>Location | Syntax: | **location** [ = | ~ | ~* | ^~ ] *uri* { ... } **location** @*name* { ... } | | :&amp;mdash;&amp;mdash;- | &amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash; | | Default: | — | | Context: | server, location | Sets configuration depending on a request URI. The matching is performed against a normalized URI, after decoding the text encoded in the “%XX” form, resolving references</description>
+      <description>Location | Syntax: | **location** [ = | ~ | ~* | ^~ ] *uri* { ... } **location** @*name* { ... } | | :&amp;mdash;&amp;mdash;- | &amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash; | | Default: | — | | Context: | server, location |
+Sets configuration depending on a request URI.
+The matching is performed against a normalized URI, after decoding the text encoded in the “%XX” form, resolving references to relative path components “.</description>
     </item>
     
   </channel>

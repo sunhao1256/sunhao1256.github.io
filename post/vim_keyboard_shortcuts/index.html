@@ -4,16 +4,33 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>VIM Keyboard Shortcuts - Luluhome - a blog for sh , &#39;lulu&#39; is my cat</title>
+	<title>VIM Keyboard Shortcuts - Lulu</title>
 	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
 	<meta name="description" content="">
+		<meta property="og:title" content="VIM Keyboard Shortcuts" />
+<meta property="og:description" content="VIM Keyboard Shortcuts    Cursor movement      h move left   j move down   k move up   l move right   w jump by start of words (punctuation considered words)   W jump by words (spaces separate words)   e jump to end of words (punctuation considered words)   E jump to end of words (no punctuation)   b jump backward by words (punctuation considered words)   B jump backward by words (no punctuation)   0 (zero) start of line   ^ first non-blank character of line   $ end of line   G Go To command (prefix with number   Note: Prefix a cursor movement command with a number to repeat it." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sunhao1256.github.io/post/vim_keyboard_shortcuts/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-09-07T13:14:35+08:00" />
+<meta property="article:modified_time" content="2022-09-07T13:14:35+08:00" />
+
+
+		<meta itemprop="name" content="VIM Keyboard Shortcuts">
+<meta itemprop="description" content="VIM Keyboard Shortcuts    Cursor movement      h move left   j move down   k move up   l move right   w jump by start of words (punctuation considered words)   W jump by words (spaces separate words)   e jump to end of words (punctuation considered words)   E jump to end of words (no punctuation)   b jump backward by words (punctuation considered words)   B jump backward by words (no punctuation)   0 (zero) start of line   ^ first non-blank character of line   $ end of line   G Go To command (prefix with number   Note: Prefix a cursor movement command with a number to repeat it."><meta itemprop="datePublished" content="2022-09-07T13:14:35+08:00" />
+<meta itemprop="dateModified" content="2022-09-07T13:14:35+08:00" />
+<meta itemprop="wordCount" content="1103">
+<meta itemprop="keywords" content="Linux," />
+		<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="VIM Keyboard Shortcuts"/>
+<meta name="twitter:description" content="VIM Keyboard Shortcuts    Cursor movement      h move left   j move down   k move up   l move right   w jump by start of words (punctuation considered words)   W jump by words (spaces separate words)   e jump to end of words (punctuation considered words)   E jump to end of words (no punctuation)   b jump backward by words (punctuation considered words)   B jump backward by words (no punctuation)   0 (zero) start of line   ^ first non-blank character of line   $ end of line   G Go To command (prefix with number   Note: Prefix a cursor movement command with a number to repeat it."/>
+
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link rel="dns-prefetch" href="//fonts.googleapis.com">
 	<link rel="dns-prefetch" href="//fonts.gstatic.com">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
 
 	<link rel="stylesheet" href="/css/style.css">
-	
+	<link rel="stylesheet" href="/css/custom.css">
 
 	<link rel="shortcut icon" href="/favicon.ico">
 		
@@ -23,11 +40,13 @@
 		<header class="header">
 	<div class="container header__container">
 		
-	<div class="logo">
-		<a class="logo__link" href="/" title="Luluhome - a blog for sh , &#39;lulu&#39; is my cat" rel="home">
-			<div class="logo__item logo__text">
-					<div class="logo__title">Luluhome - a blog for sh , &#39;lulu&#39; is my cat</div>
-					
+	<div class="logo logo--mixed">
+		<a class="logo__link" href="/" title="Lulu" rel="home">
+			<div class="logo__item logo__imagebox">
+					<img class="logo__img" src="/img/placeholder.png">
+				</div><div class="logo__item logo__text">
+					<div class="logo__title">Lulu</div>
+					<div class="logo__tagline">Lulu is arrongant cat</div>
 				</div>
 		</a>
 	</div>
@@ -37,27 +56,6 @@
 		<span class="menu__btn-title" tabindex="-1">Menu</span>
 	</button>
 	<ul class="menu__list">
-		<li class="menu__item">
-			<a class="menu__link" href="/">
-				
-				<span class="menu__text">Home</span>
-				
-			</a>
-		</li>
-		<li class="menu__item">
-			<a class="menu__link" href="/post/">
-				
-				<span class="menu__text">Archives</span>
-				
-			</a>
-		</li>
-		<li class="menu__item">
-			<a class="menu__link" href="/tags/">
-				
-				<span class="menu__text">Tags</span>
-				
-			</a>
-		</li>
 		<li class="menu__item">
 			<a class="menu__link" href="/about/">
 				
@@ -77,7 +75,11 @@
 	<article class="post">
 		<header class="post__header">
 			<h1 class="post__title">VIM Keyboard Shortcuts</h1>
-			
+			<div class="post__meta meta"><div class="meta__item-author meta__item">
+	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 12 16"><path d="M6 1c2.2 0 3.5 2 3.5 4.5C9.5 7 8.9 8.2 8 9c2.9.8 4 2.5 4 5v1H0v-1c0-2.5 1.1-4.2 4-5-.9-.8-1.5-2-1.5-3.5C2.5 3 3.8 1 6 1z"/></svg><span class="meta__text">Frank Silva</span>
+</div>
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg><time class="meta__text" datetime="2022-09-07T13:14:35&#43;08:00">2022-09-07</time></div></div>
 		</header>
 		
 <div class="post__toc toc">
@@ -85,14 +87,10 @@
 	<div class="toc__menu">
 		<nav id="TableOfContents">
   <ul>
-    <li><a href="#vim-keyboard-shortcuts">VIM Keyboard Shortcuts</a>
-      <ul>
-        <li><a href="#visual-mode">visual mode</a></li>
-        <li><a href="#srolling-around">Srolling around</a></li>
-        <li><a href="#scrolling-releative-to-cursor">Scrolling releative to cursor</a></li>
-        <li><a href="#find-char-in-line">Find char in line</a></li>
-      </ul>
-    </li>
+    <li><a href="#visual-mode">visual mode</a></li>
+    <li><a href="#srolling-around">Srolling around</a></li>
+    <li><a href="#scrolling-releative-to-cursor">Scrolling releative to cursor</a></li>
+    <li><a href="#find-char-in-line">Find char in line</a></li>
   </ul>
 </nav>
 	</div>
@@ -516,7 +514,7 @@
 </tr>
 <tr>
 <td>Ctrl+W</td>
-<td>set width (ex. `50<C-w></td>
+<td>set width (ex. `50<!-- raw HTML omitted --></td>
 </tr>
 <tr>
 <td>Ctrl+W =</td>
@@ -541,250 +539,115 @@
 </tbody>
 </table>
 <h2 id="visual-mode">visual mode</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">The operators that can be used are:
-        ~       switch <span class="k">case</span>                                     v_~
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">The operators that can be used are:
+        ~       switch <span style="color:#66d9ef">case</span>                                     v_~
         d       delete                                          v_d
-        c       change <span class="o">(</span>4<span class="o">)</span>                                      v_c
+        c       change <span style="color:#f92672">(</span>4<span style="color:#f92672">)</span>                                      v_c
         y       yank                                            v_y
-        &gt;       <span class="nb">shift</span> right <span class="o">(</span>4<span class="o">)</span>                                 v_&gt;
-        &lt;       <span class="nb">shift</span> left <span class="o">(</span>4<span class="o">)</span>                                  v_&lt;
-        !       filter through external <span class="nb">command</span> <span class="o">(</span>1<span class="o">)</span>             v_!
-        <span class="o">=</span>       filter through <span class="s1">&#39;equalprg&#39;</span> option <span class="nb">command</span> <span class="o">(</span>1<span class="o">)</span>    <span class="nv">v_</span><span class="o">=</span>
-        gq      format lines to <span class="s1">&#39;textwidth&#39;</span> length <span class="o">(</span>1<span class="o">)</span>          v_gq
+        &gt;       shift right <span style="color:#f92672">(</span>4<span style="color:#f92672">)</span>                                 v_&gt;
+        &lt;       shift left <span style="color:#f92672">(</span>4<span style="color:#f92672">)</span>                                  v_&lt;
+        !       filter through external command <span style="color:#f92672">(</span>1<span style="color:#f92672">)</span>             v_!
+        <span style="color:#f92672">=</span>       filter through <span style="color:#e6db74">&#39;equalprg&#39;</span> option command <span style="color:#f92672">(</span>1<span style="color:#f92672">)</span>    v_<span style="color:#f92672">=</span>
+        gq      format lines to <span style="color:#e6db74">&#39;textwidth&#39;</span> length <span style="color:#f92672">(</span>1<span style="color:#f92672">)</span>          v_gq
 
 The objects that can be used are:
-        aw      a word <span class="o">(</span>with white space<span class="o">)</span>                       v_aw
+        aw      a word <span style="color:#f92672">(</span>with white space<span style="color:#f92672">)</span>                       v_aw
         iw      inner word                                      v_iw
-        aW      a WORD <span class="o">(</span>with white space<span class="o">)</span>                       v_aW
+        aW      a WORD <span style="color:#f92672">(</span>with white space<span style="color:#f92672">)</span>                       v_aW
         iW      inner WORD                                      v_iW
-        as      a sentence <span class="o">(</span>with white space<span class="o">)</span>                   v_as
+        as      a sentence <span style="color:#f92672">(</span>with white space<span style="color:#f92672">)</span>                   v_as
         is      inner sentence                                  v_is
-        ap      a paragraph <span class="o">(</span>with white space<span class="o">)</span>                  v_ap
+        ap      a paragraph <span style="color:#f92672">(</span>with white space<span style="color:#f92672">)</span>                  v_ap
         ip      inner paragraph                                 v_ip
-        ab      a <span class="o">()</span> block <span class="o">(</span>with parentheses<span class="o">)</span>                   v_ab
-        ib      inner <span class="o">()</span> block                                  v_ib
-        aB      a <span class="o">{}</span> block <span class="o">(</span>with braces<span class="o">)</span>                        v_aB
-        iB      inner <span class="o">{}</span> block                                  v_iB
-        at      a &lt;tag&gt; &lt;/tag&gt; block <span class="o">(</span>withjj tags<span class="o">)</span>                v_at
+        ab      a <span style="color:#f92672">()</span> block <span style="color:#f92672">(</span>with parentheses<span style="color:#f92672">)</span>                   v_ab
+        ib      inner <span style="color:#f92672">()</span> block                                  v_ib
+        aB      a <span style="color:#f92672">{}</span> block <span style="color:#f92672">(</span>with braces<span style="color:#f92672">)</span>                        v_aB
+        iB      inner <span style="color:#f92672">{}</span> block                                  v_iB
+        at      a &lt;tag&gt; &lt;/tag&gt; block <span style="color:#f92672">(</span>withjj tags<span style="color:#f92672">)</span>                v_at
         it      inner &lt;tag&gt; &lt;/tag&gt; block                        v_it
-        a&lt;      a &lt;&gt; block <span class="o">(</span>with &lt;&gt;<span class="o">)</span>                            v_a&lt;
+        a&lt;      a &lt;&gt; block <span style="color:#f92672">(</span>with &lt;&gt;<span style="color:#f92672">)</span>                            v_a&lt;
         i&lt;      inner &lt;&gt; block                                  v_i&lt;
-        a<span class="o">[</span>      a <span class="o">[]</span> block <span class="o">(</span>with <span class="o">[])</span>                            v_a<span class="o">[</span>
-        i<span class="o">[</span>      inner <span class="o">[]</span> block                                  v_i<span class="o">[</span>
-        a<span class="s2">&#34;      a double quoted string (with quotes)            v_aquote
-</span><span class="s2">        i&#34;</span>      inner double quoted string                      v_iquote
-        a<span class="s1">&#39;      a single quoted string (with quotes)            v_a&#39;</span>
-        i<span class="s1">&#39;      inner simple quoted string                      v_i&#39;</span>
-        a<span class="sb">`</span>      a string in backticks <span class="o">(</span>with backticks<span class="o">)</span>          v_a<span class="sb">`</span>
-        i<span class="sb">`</span>      inner string in backticks                       v_i<span class="sb">`</span>
-</code></pre></td></tr></table>
-</div>
-</div><h2 id="srolling-around">Srolling around</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">ctrl+d u <span class="c1"># one line</span>
-ctrl+e y <span class="c1"># half of screen of text</span>
-ctrl+f b <span class="c1"># whole screen</span>
-</code></pre></td></tr></table>
-</div>
-</div><h2 id="scrolling-releative-to-cursor">Scrolling releative to cursor</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">                                                        z&lt;CR&gt;
-z&lt;CR&gt;                   Redraw, line <span class="o">[</span>count<span class="o">]</span> at top of window <span class="o">(</span>default
-                        cursor line<span class="o">)</span>.  Put cursor at first non-blank in the
+        a<span style="color:#f92672">[</span>      a <span style="color:#f92672">[]</span> block <span style="color:#f92672">(</span>with <span style="color:#f92672">[])</span>                            v_a<span style="color:#f92672">[</span>
+        i<span style="color:#f92672">[</span>      inner <span style="color:#f92672">[]</span> block                                  v_i<span style="color:#f92672">[</span>
+        a<span style="color:#e6db74">&#34;      a double quoted string (with quotes)            v_aquote
+</span><span style="color:#e6db74">        i&#34;</span>      inner double quoted string                      v_iquote
+        a<span style="color:#e6db74">&#39;      a single quoted string (with quotes)            v_a&#39;</span>
+        i<span style="color:#e6db74">&#39;      inner simple quoted string                      v_i&#39;</span>
+        a<span style="color:#e6db74">`</span>      a string in backticks <span style="color:#f92672">(</span>with backticks<span style="color:#f92672">)</span>          v_a<span style="color:#e6db74">`</span>
+        i<span style="color:#e6db74">`</span>      inner string in backticks                       v_i<span style="color:#e6db74">`</span>
+</code></pre></div><h2 id="srolling-around">Srolling around</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">ctrl+d u <span style="color:#75715e"># one line</span>
+ctrl+e y <span style="color:#75715e"># half of screen of text</span>
+ctrl+f b <span style="color:#75715e"># whole screen</span>
+</code></pre></div><h2 id="scrolling-releative-to-cursor">Scrolling releative to cursor</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">                                                        z&lt;CR&gt;
+z&lt;CR&gt;                   Redraw, line <span style="color:#f92672">[</span>count<span style="color:#f92672">]</span> at top of window <span style="color:#f92672">(</span>default
+                        cursor line<span style="color:#f92672">)</span>.  Put cursor at first non-blank in the
                         line.
 
                                                         zt
-zt                      Like <span class="s2">&#34;z&lt;CR&gt;&#34;</span>, but leave the cursor in the same
+zt                      Like <span style="color:#e6db74">&#34;z&lt;CR&gt;&#34;</span>, but leave the cursor in the same
                         column.
 
                                                         zN&lt;CR&gt;
-z<span class="o">{</span>height<span class="o">}</span>&lt;CR&gt;           Redraw, make window <span class="o">{</span>height<span class="o">}</span> lines tall.  This is
+z<span style="color:#f92672">{</span>height<span style="color:#f92672">}</span>&lt;CR&gt;           Redraw, make window <span style="color:#f92672">{</span>height<span style="color:#f92672">}</span> lines tall.  This is
                         useful to make the number of lines small when screen
                         updating is very slow.  Cannot make the height more
                         than the physical screen height.
 
                                                         z.
-z.                      Redraw, line <span class="o">[</span>count<span class="o">]</span> at center of window <span class="o">(</span>default
-                        cursor line<span class="o">)</span>.  Put cursor at first non-blank in the
+z.                      Redraw, line <span style="color:#f92672">[</span>count<span style="color:#f92672">]</span> at center of window <span style="color:#f92672">(</span>default
+                        cursor line<span style="color:#f92672">)</span>.  Put cursor at first non-blank in the
                         line.
 
                                                         zz
-zz                      Like <span class="s2">&#34;z.&#34;</span>, but leavke the cursor in the same column.
-                        Careful: If caps-lock is on, this <span class="nb">command</span> becomes
-                        <span class="s2">&#34;ZZ&#34;</span>: write buffer and exit!
+zz                      Like <span style="color:#e6db74">&#34;z.&#34;</span>, but leavke the cursor in the same column.
+                        Careful: If caps-lock is on, this command becomes
+                        <span style="color:#e6db74">&#34;ZZ&#34;</span>: write buffer and exit!
 
                                                         z-
-z-                      Redraw, line <span class="o">[</span>count<span class="o">]</span> at bottom of window <span class="o">(</span>default
-                        cursor line<span class="o">)</span>.  Put cursor at first non-blank in the
+z-                      Redraw, line <span style="color:#f92672">[</span>count<span style="color:#f92672">]</span> at bottom of window <span style="color:#f92672">(</span>default
+                        cursor line<span style="color:#f92672">)</span>.  Put cursor at first non-blank in the
                         line.
 
                                                         zb
-zb                      Like <span class="s2">&#34;z-&#34;</span>, but leave the cursor in the same column.
-</code></pre></td></tr></table>
-</div>
-</div><h2 id="find-char-in-line">Find char in line</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">f<span class="o">{</span>char<span class="o">}</span>                 To <span class="o">[</span>count<span class="o">]</span><span class="s1">&#39;th occurrence of {char} to the right.  The
-</span><span class="s1">                        cursor is placed on {char} inclusive.
-</span><span class="s1">                        {char} can be entered as a digraph digraph-arg.
-</span><span class="s1">                        When &#39;</span>encoding<span class="s1">&#39; is set to Unicode, composing
-</span><span class="s1">                        characters may be used, see utf-8-char-arg.
-</span><span class="s1">                        :lmap mappings apply to {char}.  The CTRL-^ command
-</span><span class="s1">                        in Insert mode can be used to switch this on/off
-</span><span class="s1">                        i_CTRL-^.
-</span><span class="s1">
-</span><span class="s1">                                                        F
-</span><span class="s1">F{char}                 To the [count]&#39;</span>th occurrence of <span class="o">{</span>char<span class="o">}</span> to the left.
-                        The cursor is placed on <span class="o">{</span>char<span class="o">}</span> exclusive.
-                        <span class="o">{</span>char<span class="o">}</span> can be entered like with the f command.
+zb                      Like <span style="color:#e6db74">&#34;z-&#34;</span>, but leave the cursor in the same column.
+</code></pre></div><h2 id="find-char-in-line">Find char in line</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">f<span style="color:#f92672">{</span>char<span style="color:#f92672">}</span>                 To <span style="color:#f92672">[</span>count<span style="color:#f92672">]</span><span style="color:#e6db74">&#39;th occurrence of {char} to the right.  The
+</span><span style="color:#e6db74">                        cursor is placed on {char} inclusive.
+</span><span style="color:#e6db74">                        {char} can be entered as a digraph digraph-arg.
+</span><span style="color:#e6db74">                        When &#39;</span>encoding<span style="color:#e6db74">&#39; is set to Unicode, composing
+</span><span style="color:#e6db74">                        characters may be used, see utf-8-char-arg.
+</span><span style="color:#e6db74">                        :lmap mappings apply to {char}.  The CTRL-^ command
+</span><span style="color:#e6db74">                        in Insert mode can be used to switch this on/off
+</span><span style="color:#e6db74">                        i_CTRL-^.
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">                                                        F
+</span><span style="color:#e6db74">F{char}                 To the [count]&#39;</span>th occurrence of <span style="color:#f92672">{</span>char<span style="color:#f92672">}</span> to the left.
+                        The cursor is placed on <span style="color:#f92672">{</span>char<span style="color:#f92672">}</span> exclusive.
+                        <span style="color:#f92672">{</span>char<span style="color:#f92672">}</span> can be entered like with the f command.
 
                                                         t
-t<span class="o">{</span>char<span class="o">}</span>                 Till before <span class="o">[</span>count<span class="o">]</span><span class="s1">&#39;th occurrence of {char} to the
-</span><span class="s1">                        right.  The cursor is placed on the character left of
-</span><span class="s1">                        {char} inclusive.
-</span><span class="s1">                        {char} can be entered like with the f command.
-</span><span class="s1">
-</span><span class="s1">                                                        T
-</span><span class="s1">T{char}                 Till after [count]&#39;</span>th occurrence of <span class="o">{</span>char<span class="o">}</span> to the
+t<span style="color:#f92672">{</span>char<span style="color:#f92672">}</span>                 Till before <span style="color:#f92672">[</span>count<span style="color:#f92672">]</span><span style="color:#e6db74">&#39;th occurrence of {char} to the
+</span><span style="color:#e6db74">                        right.  The cursor is placed on the character left of
+</span><span style="color:#e6db74">                        {char} inclusive.
+</span><span style="color:#e6db74">                        {char} can be entered like with the f command.
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">                                                        T
+</span><span style="color:#e6db74">T{char}                 Till after [count]&#39;</span>th occurrence of <span style="color:#f92672">{</span>char<span style="color:#f92672">}</span> to the
                         left.  The cursor is placed on the character right of
-                        <span class="o">{</span>char<span class="o">}</span> exclusive.
-                        <span class="o">{</span>char<span class="o">}</span> can be entered like with the f command.
+                        <span style="color:#f92672">{</span>char<span style="color:#f92672">}</span> exclusive.
+                        <span style="color:#f92672">{</span>char<span style="color:#f92672">}</span> can be entered like with the f command.
 
-                                                        <span class="p">;</span>
-<span class="p">;</span>                       Repeat latest f, t, F or T <span class="o">[</span>count<span class="o">]</span> times. See cpo-<span class="p">;</span>
+                                                        ;
+;                       Repeat latest f, t, F or T <span style="color:#f92672">[</span>count<span style="color:#f92672">]</span> times. See cpo-;
 
                                                         ,
 ,                       Repeat latest f, t, F or T in opposite direction
-                        <span class="o">[</span>count<span class="o">]</span> times. See also cpo-<span class="p">;</span>
+                        <span style="color:#f92672">[</span>count<span style="color:#f92672">]</span> times. See also cpo-;
                         
-</code></pre></td></tr></table>
-</div>
-</div><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">:set matchpairs+=&lt;:&gt;
-</code></pre></td></tr></table>
-</div>
-</div>
+</code></pre></div><pre tabindex="0"><code>:set matchpairs+=&lt;:&gt;
+</code></pre>
 		</div>
 		<footer class="post__footer">
 			
@@ -800,7 +663,32 @@ t<span class="o">{</span>char<span class="o">}</span>                 Till befor
 	</article>
 </main>
 
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="Frank Silva avatar" src="/img/avatar.png" class="avatar" height="90" width="90">
+	</figure>
+	<div class="authorbox__header">
+		<span class="authorbox__name">About Frank Silva</span>
+	</div>
+	<div class="authorbox__description">
+		Pursue Consummate Coding.
+	</div>
+</div>
 
+<nav class="pager flex">
+	<div class="pager__item pager__item--prev">
+		<a class="pager__link" href="/post/nginx/" rel="prev">
+			<span class="pager__subtitle">«&thinsp;Previous</span>
+			<p class="pager__title">Nginx转发规则</p>
+		</a>
+	</div>
+	<div class="pager__item pager__item--next">
+		<a class="pager__link" href="/post/mywordnote/" rel="next">
+			<span class="pager__subtitle">Next&thinsp;»</span>
+			<p class="pager__title">MyWordNote</p>
+		</a>
+	</div>
+</nav>
 
 
 			</div>
@@ -810,12 +698,14 @@ t<span class="o">{</span>char<span class="o">}</span>                 Till befor
 	<div class="container footer__container flex">
 		
 		<div class="footer__copyright">
-			&copy; 2023 Luluhome - a blog for sh , &#39;lulu&#39; is my cat.
+			&copy; 2023 Frank Silva.
 			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
 		</div>
 	</div>
 </footer>
 	</div>
 <script async defer src="/js/menu.js"></script>
+<script src="/js/custom.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
 </body>
 </html>

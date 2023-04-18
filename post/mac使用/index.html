@@ -4,16 +4,90 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>mac使用 - Luluhome - a blog for sh , &#39;lulu&#39; is my cat</title>
+	<title>mac使用 - Lulu</title>
 	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
 	<meta name="description" content="">
+		<meta property="og:title" content="mac使用" />
+<meta property="og:description" content="快捷键   Finder绝对路径跳转
+command&#43;shift&#43;G
+  Finder绝对路径复制
+command&#43;option&#43;C
+  表情
+control&#43;cmmand&#43;space
+  录屏
+Shift-Command-5
+  截图
+command shift 4局部，3全屏
+  只显示桌面
+command f3
+  finder
+option&#43;command&#43;空格
+  space&#43;command
+打开聚焦搜索，按住command再点击结果，是进入文件夹
+  from current terminal open finder
+tap open   环境变量 加载顺序
+/etc/profile /etc/paths ~/.zprofile ~/.zshrc /etc/profile和/etc/paths是系统级别的，系统启动就会加载，zprofile是用户级别的 ~/.zshrc没有上述规则，它是zsh shell打开的时候载入的。
+# System-wide .profile for sh(1) if [ -x /usr/libexec/path_helper ]; then eval `/usr/libexec/path_helper -s` fi if [ &#34;${BASH-no}&#34; !" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sunhao1256.github.io/post/mac%E4%BD%BF%E7%94%A8/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-06-20T16:57:01+08:00" />
+<meta property="article:modified_time" content="2022-06-20T16:57:01+08:00" />
+
+
+		<meta itemprop="name" content="mac使用">
+<meta itemprop="description" content="快捷键   Finder绝对路径跳转
+command&#43;shift&#43;G
+  Finder绝对路径复制
+command&#43;option&#43;C
+  表情
+control&#43;cmmand&#43;space
+  录屏
+Shift-Command-5
+  截图
+command shift 4局部，3全屏
+  只显示桌面
+command f3
+  finder
+option&#43;command&#43;空格
+  space&#43;command
+打开聚焦搜索，按住command再点击结果，是进入文件夹
+  from current terminal open finder
+tap open   环境变量 加载顺序
+/etc/profile /etc/paths ~/.zprofile ~/.zshrc /etc/profile和/etc/paths是系统级别的，系统启动就会加载，zprofile是用户级别的 ~/.zshrc没有上述规则，它是zsh shell打开的时候载入的。
+# System-wide .profile for sh(1) if [ -x /usr/libexec/path_helper ]; then eval `/usr/libexec/path_helper -s` fi if [ &#34;${BASH-no}&#34; !"><meta itemprop="datePublished" content="2022-06-20T16:57:01+08:00" />
+<meta itemprop="dateModified" content="2022-06-20T16:57:01+08:00" />
+<meta itemprop="wordCount" content="83">
+<meta itemprop="keywords" content="mac," />
+		<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="mac使用"/>
+<meta name="twitter:description" content="快捷键   Finder绝对路径跳转
+command&#43;shift&#43;G
+  Finder绝对路径复制
+command&#43;option&#43;C
+  表情
+control&#43;cmmand&#43;space
+  录屏
+Shift-Command-5
+  截图
+command shift 4局部，3全屏
+  只显示桌面
+command f3
+  finder
+option&#43;command&#43;空格
+  space&#43;command
+打开聚焦搜索，按住command再点击结果，是进入文件夹
+  from current terminal open finder
+tap open   环境变量 加载顺序
+/etc/profile /etc/paths ~/.zprofile ~/.zshrc /etc/profile和/etc/paths是系统级别的，系统启动就会加载，zprofile是用户级别的 ~/.zshrc没有上述规则，它是zsh shell打开的时候载入的。
+# System-wide .profile for sh(1) if [ -x /usr/libexec/path_helper ]; then eval `/usr/libexec/path_helper -s` fi if [ &#34;${BASH-no}&#34; !"/>
+
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link rel="dns-prefetch" href="//fonts.googleapis.com">
 	<link rel="dns-prefetch" href="//fonts.gstatic.com">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
 
 	<link rel="stylesheet" href="/css/style.css">
-	
+	<link rel="stylesheet" href="/css/custom.css">
 
 	<link rel="shortcut icon" href="/favicon.ico">
 		
@@ -23,11 +97,13 @@
 		<header class="header">
 	<div class="container header__container">
 		
-	<div class="logo">
-		<a class="logo__link" href="/" title="Luluhome - a blog for sh , &#39;lulu&#39; is my cat" rel="home">
-			<div class="logo__item logo__text">
-					<div class="logo__title">Luluhome - a blog for sh , &#39;lulu&#39; is my cat</div>
-					
+	<div class="logo logo--mixed">
+		<a class="logo__link" href="/" title="Lulu" rel="home">
+			<div class="logo__item logo__imagebox">
+					<img class="logo__img" src="/img/placeholder.png">
+				</div><div class="logo__item logo__text">
+					<div class="logo__title">Lulu</div>
+					<div class="logo__tagline">Lulu is arrongant cat</div>
 				</div>
 		</a>
 	</div>
@@ -37,27 +113,6 @@
 		<span class="menu__btn-title" tabindex="-1">Menu</span>
 	</button>
 	<ul class="menu__list">
-		<li class="menu__item">
-			<a class="menu__link" href="/">
-				
-				<span class="menu__text">Home</span>
-				
-			</a>
-		</li>
-		<li class="menu__item">
-			<a class="menu__link" href="/post/">
-				
-				<span class="menu__text">Archives</span>
-				
-			</a>
-		</li>
-		<li class="menu__item">
-			<a class="menu__link" href="/tags/">
-				
-				<span class="menu__text">Tags</span>
-				
-			</a>
-		</li>
 		<li class="menu__item">
 			<a class="menu__link" href="/about/">
 				
@@ -77,23 +132,13 @@
 	<article class="post">
 		<header class="post__header">
 			<h1 class="post__title">mac使用</h1>
-			
+			<div class="post__meta meta"><div class="meta__item-author meta__item">
+	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 12 16"><path d="M6 1c2.2 0 3.5 2 3.5 4.5C9.5 7 8.9 8.2 8 9c2.9.8 4 2.5 4 5v1H0v-1c0-2.5 1.1-4.2 4-5-.9-.8-1.5-2-1.5-3.5C2.5 3 3.8 1 6 1z"/></svg><span class="meta__text">Frank Silva</span>
+</div>
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg><time class="meta__text" datetime="2022-06-20T16:57:01&#43;08:00">2022-06-20</time></div></div>
 		</header>
-		
-<div class="post__toc toc">
-	<div class="toc__title">Page content</div>
-	<div class="toc__menu">
-		<nav id="TableOfContents">
-  <ul>
-    <li><a href="#快捷键">快捷键</a></li>
-    <li><a href="#环境变量">环境变量</a></li>
-    <li><a href="#iterm2">Iterm2</a></li>
-    <li><a href="#chrome">Chrome</a></li>
-    <li><a href="#karabiner">Karabiner</a></li>
-  </ul>
-</nav>
-	</div>
-</div><div class="content post__content clearfix">
+		<div class="content post__content clearfix">
 			<h1 id="快捷键">快捷键</h1>
 <ul>
 <li>
@@ -130,52 +175,27 @@
 </li>
 <li>
 <p>from current terminal open finder</p>
-<p>tap open <path></p>
+<p>tap open <!-- raw HTML omitted --></p>
 </li>
 </ul>
 <h1 id="环境变量">环境变量</h1>
 <p>加载顺序</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">/etc/profile
+<pre tabindex="0"><code>/etc/profile
 /etc/paths 
 ~/.zprofile 
 ~/.zshrc
-</code></pre></td></tr></table>
-</div>
-</div><p>/etc/profile和/etc/paths是系统级别的，系统启动就会加载，zprofile是用户级别的
+</code></pre><p>/etc/profile和/etc/paths是系统级别的，系统启动就会加载，zprofile是用户级别的
 ~/.zshrc没有上述规则，它是zsh shell打开的时候载入的。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span><span class="lnt">9
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># System-wide .profile for sh(1)</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># System-wide .profile for sh(1)</span>
 
-<span class="k">if</span> <span class="o">[</span> -x /usr/libexec/path_helper <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-        <span class="nb">eval</span> <span class="sb">`</span>/usr/libexec/path_helper -s<span class="sb">`</span>
-<span class="k">fi</span>
+<span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> -x /usr/libexec/path_helper <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+        eval <span style="color:#e6db74">`</span>/usr/libexec/path_helper -s<span style="color:#e6db74">`</span>
+<span style="color:#66d9ef">fi</span>
 
-<span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">BASH</span><span class="p">-no</span><span class="si">}</span><span class="s2">&#34;</span> !<span class="o">=</span> <span class="s2">&#34;no&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-        <span class="o">[</span> -r /etc/bashrc <span class="o">]</span> <span class="o">&amp;&amp;</span> . /etc/bashrc
-<span class="k">fi</span>
-</code></pre></td></tr></table>
-</div>
-</div><p><strong>path_helper</strong>是将/etc/paths和/etc/paths.d中定义的路径,加入环境变量. 苹果推荐使用这个</p>
+<span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>BASH-no<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span> !<span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;no&#34;</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+        <span style="color:#f92672">[</span> -r /etc/bashrc <span style="color:#f92672">]</span> <span style="color:#f92672">&amp;&amp;</span> . /etc/bashrc
+<span style="color:#66d9ef">fi</span>
+</code></pre></div><p><strong>path_helper</strong>是将/etc/paths和/etc/paths.d中定义的路径,加入环境变量. 苹果推荐使用这个</p>
 <p>Mac下的Java,默认会直接装好Java命令.是通过**/usr/libexec/java_home**命令找环境变量中的JAVA_HOME变量,用于输出Java</p>
 <h1 id="iterm2">Iterm2</h1>
 <p>command快捷键</p>
@@ -217,7 +237,32 @@
 	</article>
 </main>
 
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="Frank Silva avatar" src="/img/avatar.png" class="avatar" height="90" width="90">
+	</figure>
+	<div class="authorbox__header">
+		<span class="authorbox__name">About Frank Silva</span>
+	</div>
+	<div class="authorbox__description">
+		Pursue Consummate Coding.
+	</div>
+</div>
 
+<nav class="pager flex">
+	<div class="pager__item pager__item--prev">
+		<a class="pager__link" href="/post/git-command/" rel="prev">
+			<span class="pager__subtitle">«&thinsp;Previous</span>
+			<p class="pager__title">Git命令</p>
+		</a>
+	</div>
+	<div class="pager__item pager__item--next">
+		<a class="pager__link" href="/post/all-in-one/" rel="next">
+			<span class="pager__subtitle">Next&thinsp;»</span>
+			<p class="pager__title">all in one配置</p>
+		</a>
+	</div>
+</nav>
 
 
 			</div>
@@ -227,12 +272,14 @@
 	<div class="container footer__container flex">
 		
 		<div class="footer__copyright">
-			&copy; 2023 Luluhome - a blog for sh , &#39;lulu&#39; is my cat.
+			&copy; 2023 Frank Silva.
 			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
 		</div>
 	</div>
 </footer>
 	</div>
 <script async defer src="/js/menu.js"></script>
+<script src="/js/custom.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
 </body>
 </html>

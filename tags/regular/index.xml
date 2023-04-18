@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>regular on Luluhome - a blog for sh , &#39;lulu&#39; is my cat</title>
+    <title>regular on Lulu</title>
     <link>https://sunhao1256.github.io/tags/regular/</link>
-    <description>Recent content in regular on Luluhome - a blog for sh , &#39;lulu&#39; is my cat</description>
+    <description>Recent content in regular on Lulu</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en</language>
+    <language>en-us</language>
     <lastBuildDate>Sat, 08 Oct 2022 17:46:07 +0800</lastBuildDate><atom:link href="https://sunhao1256.github.io/tags/regular/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Regular_expression</title>

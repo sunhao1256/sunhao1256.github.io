@@ -4,16 +4,42 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Spring问题整理 - Luluhome - a blog for sh , &#39;lulu&#39; is my cat</title>
+	<title>Spring问题整理 - Lulu</title>
 	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
 	<meta name="description" content="">
+		<meta property="og:title" content="Spring问题整理" />
+<meta property="og:description" content="@Override @Nullable public Object invoke(MethodInvocation mi) throws Throwable { if (!(mi instanceof ProxyMethodInvocation)) { throw new IllegalStateException(&#34;MethodInvocation is not a Spring ProxyMethodInvocation: &#34; &#43; mi); } ProxyMethodInvocation pmi = (ProxyMethodInvocation) mi; ProceedingJoinPoint pjp = lazyGetProceedingJoinPoint(pmi); JoinPointMatch jpm = getJoinPointMatch(pmi); return invokeAdviceMethod(pjp, jpm, null, null); } 当在Sping中配置的Bean存在相互依赖，Spring是怎么处理的 针对原型Bean直接抛出异常，不支持。
+单例Bean，Spring使用3个Map做缓存，来处理。
+分别是：一级缓存Spring最终保存的单例对象Map，二级缓存建造Spring单例对象的匿名工厂对象返回的就是三级缓存需要的，三级缓存是允许提前被依赖的单例对象。
+阐述一个Bean获取的流程  尝试获取单例Bean 检查一级缓存是否有，没有的话，检查当前获取的Bean是否正在创建，如果正在创建即出现了Bean互相依赖情况，检查三级缓存是否已经有提前可被依赖的对象，如果没有的话，检查二级缓存是否有其工厂，有的话，使用工厂，实例化这个Bean，放入三级缓存里。供其他Bean依赖使用 没获取到，可能是原型Bean，也可能是单例Bean没有实例化 检查如果是原型Bean，而且正在创建中，即出现了原型Bean被依赖的情况，直接抛出异常 准备BeanDefinition，如果档期工厂没有相应的BD，而且父工厂又存在BD，使用父工厂的getBean方法去获取Bean 标记Bean创建过了 从当前工厂读取BD,并且转为RootBeanDefinition，获取期间，还要检查父工厂是否也有该Bean的BD，有的话，以父工厂得BD为基础，子工厂得BD覆盖掉其属性 检查BD是不是抽象的，无法实例化的类，抛出异常 检查BD中得DependsOn属性，针对所有Depend，循环实例化，如果检查到有Depend得Bean又依赖于当前目标Bean，抛出异常，互相提前依赖了。并且建立相关关系，所以DependOn意义是，依赖于一个完全实例化完成后的Bean 如果是单例的话，开始创建单例Bean，创建匿名工厂对象 标记单例Bean正在被创建 使用工厂对象去调用getObject方法 实际上执行了createBean方法 根据之前的RootBD，解析出需要实例化的Class对象 检查MethodOverrides目标方法是否存在Class对象中 在实例化对象之前，给InstantiationAwareBeanPostProcessor机会去改变实例，调用其postProcessBeforeInstantiation，AOP就是在这里实现的，此外，如果返回了，还会调用BPP的postProcessAfterInitialization，但不会调用postProcessBeforeInitialization了 如果没有被InstantiationAwareBeanPostProcessor改变了的话，开始进入真正的实例化方法 实例化一个BeanWrapperImpl去封装实例 解析Class对象，确定Class对象有Public修饰符 如果有FactoryMethod的话，直接调用FactoryMethod返回实例，封装在BeanWrapperImpl，这里面也会初始化initBeanWrapper，将属性编辑器注入到BeanWrapperImpl身上，用于后续的属性注入 开始解析构造函数或者是FactoryMethod，如果解析过了，直接去实例化 否则进入构造函数解析 解析之前，看BPP有没有提供了构造函数，即SmartInstantiationAwareBeanPostProcessor的determineCandidateConstructors方法执行，如果返回了构造函数，就用BPP的了。 没有的话，进入默认的解析，依赖先看缓存里有没有解析过的参数，因为构造方法注入的话，很消耗性能，没有缓存的话，先看用户获取bean时有没有传入args，即构造函数的参数。没有的话，而且只有一个候选的构造函数，就直接用使用无参的了，没有的话，先去解析参数，construct-arg，既可以时Index，也可以是name。根据用户传入的arg长度，去解析。 最后解析完成后，使用实例化策略去实例化即可，这里也可使用cglib去处理，然后封装在BeanWrapperImpl中 至此，BeanWapper里已经包含了我们的目标对象的实例了 然后创建二级缓存，将上一步BeanWapper里的实例，作为二级缓存返回的对象，加载缓存里 至此，二级缓存的工厂加入 了。当在一开始获bean，一级获取不到，获取二级有工厂的时候，就会把BeanWapper的实例暴露出去，供后续使用 然后开始初始化实例 将上面暴露出来的示例进行属性注入 给InstantiationAwareBeanPostProcessor的postProcessAfterInstantiation在属性注入之前最后一次机会，去改变Bean，并且阻止Bean的属性注入 判断属性注入的是byName还是byType，针对所有的非简单的属性，还有排除所有的ignoredDependencyInterfaces中的接口。进行getBean操作，保存到PropertyValues中 使用InstantiationAwareBeanPostProcessor的postProcessProperties，可以进行修改属性。继续使用postProcessPropertyValues，继续可以更该属性 得到所有属性后，应用属性到Bean实例身上，在应用属性的时候，会找到前工厂里的所有的TypeConverter去将属性变为需要的属性，如果变不成会报错 至此，属性赋值完毕 复制完毕后，开始初始化Bean，先激活所有的aware方法， 调用BPP的postProcessBeforeInitialization初始化之前方法，记住，这里的初始化，是Bean已经实例化之后的事情了，是执行其他事情的初始化 执行afterPropertiesSet方法，在执行init-methods方法 调用BPP的postProcessAfterInitialization初始化以后方法 至此返回暴露的bean，即getBean结束 最后处理销毁的方法，即出发destory-method的方法  Spring是如何处理掉循环依赖的  针对非单例Bean出现循环依赖直接抛出异常 单例Bean Spring存在3个缓存Map  Spring完全生成好的BeanMap，key是Bean的name，Value是实例对象 Spring生成Bean的工厂Map，key是Bean的name，value是实现了ObjectFactory接口的实例对象 Spring尚未初始化，即赋予属性或者其他初始化动作的Bean实例Map，key是Bean的name，value是工厂map的工厂的返回值，即ObjectFactory的getObject方法结果   假设存在对象A依赖于对象B，对象Bean依赖于对象A  Spring根据A的name，首先取BeanMap里找是否有A的实例，没有的话，检查A是否正在创建，如果正在创建，则说明出现了循环依赖。（需要获取A，发现A又在创建，表名有其他bean需要A），尝试从可提前依赖的BeanMap获取EarlyBeanReference，如果没有，则尝试从工厂Map里找A对应的工厂对象，如果有工厂对象，则调用工厂对象进行返回，并且将工厂返回的Bean实例作为EarlyBeanReference，放入未完全实例化结束BeanMap里，删除工厂Map对应的value。此时工厂Map为空。 此时，A没有正在创建，继续 标记A正在创建，根绝BeanDefinition生成Bean实例对象，（此时对象实例已经生成完毕，但是还没有初始化），并且把A的创建工厂，放入工厂Map，而这个创建工厂getObject返回值就是刚才生成的实例对象，并且给SmartInstantiationAwareBeanPostProcessor接口机会取改变这个EarlyBeanReference对象。 得到实例化后的A对象，开始注入A的属性，发现A的属性b，需要B对象。 B对象开始获取（此时，A还没有结束，即一级缓存中没有A，二级缓存中有A的工厂Map） B的获取如上述一致， 直至B实例化结束，开始注入B的属性，发现B的属性a，需要A对象 又到了A对象开始获取 此时，进入第一个流程，发现一级缓存里没有A，而A又正在创建中，出现循环依赖，去二级缓存里找A的工厂Map，调用工厂Map方法去，得到了EarlyBeanReference，放入三级缓存里，返回回去 即此时，B注入属性成功，并且返回了一个EarlyBeanReference，即当前正在创建的A对象实例。 B注入成功属性后，B实例化完全结束，结束后，清除B的二三级缓存，加入一级缓存并返回 此时回到了A的注入B属性逻辑中，A得到了B实例。而这个实例里的A属性对象，和当前获取A的对象是一个 A继续完成初始化动作，最后A实例化完全结束，清楚A的二三级缓存，加入一级缓存并返回   只有2个缓存行吗？为什么一定要3个  BeanMap无用质疑是需要的 如果只有工厂Map而没有，可提前依赖的BeanMap的话，那么在一开始从缓存中获取Bean，一级缓存无法获取到，直接就有工厂Bean，一旦有工厂就调用工厂返回的值，这样是不行的，因为在工厂调用Bean的时候，有很多动作就会进行重复，比如工厂获取的时候，可以给SmartInstantiationAwareBeanPostProcessor机会去更改EarlyBeanReference对象，重复执行了。第二，与工厂模式的思想违背，工厂只需要制造一次，而不是每次都制造。 如果只有可提前依赖的BeanMap，而没有工厂Map。实际上是可以的，只不过没有工厂的话，会将大部分工作都抛给创建Bean的流程里，例如SmartInstantiationAwareBeanPostProcessor等工厂应该负责的工作    ApplicationContext的Refresh方法  Enviroment，环境参数，根据不同的环境，实现Environment不同的子类，例如Web环境会实现，StandardServletEnvironment，默认是实现StandardEnvironment，包含很多环境变量，系统变量，java环境变量，Servlet环境变量 创建beanFactory作为成员变量，ApplicationContext自身也实现了BeanFactory接口，只不过具体实现的方法是成员变量的beanFactory的方法、 填充工厂  增加SPEL表达式解析器 属性编辑器注入 增加一个ApplicationContextAwareProcessor的BPP，在Bean实例化之后，激活实现了aware接口的方法的一个BPP 配置忽略某些类型的属性自动注入，增加某些类型自动注入   postProcessBeanFactory：留给子类去实现 记录启动路径 激活BeanFactoryPostProcessor，invokeBeanFactoryPostProcessors 注册BeanPostProcessor 初始化国际化文件 初始化initApplicationEventMulticaster，事件传送器，用于发送事件 注册事件监听器 设置ConversionService 锁定所有BeanDefinitions，防止改变 实例化剩下所有的no-lazy实例 调用所有实现LifeCycle接口的bean 发送ContextRefreshedEvent事件  BeanFactoryPostProcessor和BeanPostProcessor区别   BeanFactoryPostProcessor是可以修改Bean的元数据，是控制BeanFactory的，而BeanPostProcessor是Bean实例的处理器，可以修改Bean的实例" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sunhao1256.github.io/post/spring/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-01-11T14:43:18+08:00" />
+<meta property="article:modified_time" content="2022-01-11T14:43:18+08:00" />
+
+
+		<meta itemprop="name" content="Spring问题整理">
+<meta itemprop="description" content="@Override @Nullable public Object invoke(MethodInvocation mi) throws Throwable { if (!(mi instanceof ProxyMethodInvocation)) { throw new IllegalStateException(&#34;MethodInvocation is not a Spring ProxyMethodInvocation: &#34; &#43; mi); } ProxyMethodInvocation pmi = (ProxyMethodInvocation) mi; ProceedingJoinPoint pjp = lazyGetProceedingJoinPoint(pmi); JoinPointMatch jpm = getJoinPointMatch(pmi); return invokeAdviceMethod(pjp, jpm, null, null); } 当在Sping中配置的Bean存在相互依赖，Spring是怎么处理的 针对原型Bean直接抛出异常，不支持。
+单例Bean，Spring使用3个Map做缓存，来处理。
+分别是：一级缓存Spring最终保存的单例对象Map，二级缓存建造Spring单例对象的匿名工厂对象返回的就是三级缓存需要的，三级缓存是允许提前被依赖的单例对象。
+阐述一个Bean获取的流程  尝试获取单例Bean 检查一级缓存是否有，没有的话，检查当前获取的Bean是否正在创建，如果正在创建即出现了Bean互相依赖情况，检查三级缓存是否已经有提前可被依赖的对象，如果没有的话，检查二级缓存是否有其工厂，有的话，使用工厂，实例化这个Bean，放入三级缓存里。供其他Bean依赖使用 没获取到，可能是原型Bean，也可能是单例Bean没有实例化 检查如果是原型Bean，而且正在创建中，即出现了原型Bean被依赖的情况，直接抛出异常 准备BeanDefinition，如果档期工厂没有相应的BD，而且父工厂又存在BD，使用父工厂的getBean方法去获取Bean 标记Bean创建过了 从当前工厂读取BD,并且转为RootBeanDefinition，获取期间，还要检查父工厂是否也有该Bean的BD，有的话，以父工厂得BD为基础，子工厂得BD覆盖掉其属性 检查BD是不是抽象的，无法实例化的类，抛出异常 检查BD中得DependsOn属性，针对所有Depend，循环实例化，如果检查到有Depend得Bean又依赖于当前目标Bean，抛出异常，互相提前依赖了。并且建立相关关系，所以DependOn意义是，依赖于一个完全实例化完成后的Bean 如果是单例的话，开始创建单例Bean，创建匿名工厂对象 标记单例Bean正在被创建 使用工厂对象去调用getObject方法 实际上执行了createBean方法 根据之前的RootBD，解析出需要实例化的Class对象 检查MethodOverrides目标方法是否存在Class对象中 在实例化对象之前，给InstantiationAwareBeanPostProcessor机会去改变实例，调用其postProcessBeforeInstantiation，AOP就是在这里实现的，此外，如果返回了，还会调用BPP的postProcessAfterInitialization，但不会调用postProcessBeforeInitialization了 如果没有被InstantiationAwareBeanPostProcessor改变了的话，开始进入真正的实例化方法 实例化一个BeanWrapperImpl去封装实例 解析Class对象，确定Class对象有Public修饰符 如果有FactoryMethod的话，直接调用FactoryMethod返回实例，封装在BeanWrapperImpl，这里面也会初始化initBeanWrapper，将属性编辑器注入到BeanWrapperImpl身上，用于后续的属性注入 开始解析构造函数或者是FactoryMethod，如果解析过了，直接去实例化 否则进入构造函数解析 解析之前，看BPP有没有提供了构造函数，即SmartInstantiationAwareBeanPostProcessor的determineCandidateConstructors方法执行，如果返回了构造函数，就用BPP的了。 没有的话，进入默认的解析，依赖先看缓存里有没有解析过的参数，因为构造方法注入的话，很消耗性能，没有缓存的话，先看用户获取bean时有没有传入args，即构造函数的参数。没有的话，而且只有一个候选的构造函数，就直接用使用无参的了，没有的话，先去解析参数，construct-arg，既可以时Index，也可以是name。根据用户传入的arg长度，去解析。 最后解析完成后，使用实例化策略去实例化即可，这里也可使用cglib去处理，然后封装在BeanWrapperImpl中 至此，BeanWapper里已经包含了我们的目标对象的实例了 然后创建二级缓存，将上一步BeanWapper里的实例，作为二级缓存返回的对象，加载缓存里 至此，二级缓存的工厂加入 了。当在一开始获bean，一级获取不到，获取二级有工厂的时候，就会把BeanWapper的实例暴露出去，供后续使用 然后开始初始化实例 将上面暴露出来的示例进行属性注入 给InstantiationAwareBeanPostProcessor的postProcessAfterInstantiation在属性注入之前最后一次机会，去改变Bean，并且阻止Bean的属性注入 判断属性注入的是byName还是byType，针对所有的非简单的属性，还有排除所有的ignoredDependencyInterfaces中的接口。进行getBean操作，保存到PropertyValues中 使用InstantiationAwareBeanPostProcessor的postProcessProperties，可以进行修改属性。继续使用postProcessPropertyValues，继续可以更该属性 得到所有属性后，应用属性到Bean实例身上，在应用属性的时候，会找到前工厂里的所有的TypeConverter去将属性变为需要的属性，如果变不成会报错 至此，属性赋值完毕 复制完毕后，开始初始化Bean，先激活所有的aware方法， 调用BPP的postProcessBeforeInitialization初始化之前方法，记住，这里的初始化，是Bean已经实例化之后的事情了，是执行其他事情的初始化 执行afterPropertiesSet方法，在执行init-methods方法 调用BPP的postProcessAfterInitialization初始化以后方法 至此返回暴露的bean，即getBean结束 最后处理销毁的方法，即出发destory-method的方法  Spring是如何处理掉循环依赖的  针对非单例Bean出现循环依赖直接抛出异常 单例Bean Spring存在3个缓存Map  Spring完全生成好的BeanMap，key是Bean的name，Value是实例对象 Spring生成Bean的工厂Map，key是Bean的name，value是实现了ObjectFactory接口的实例对象 Spring尚未初始化，即赋予属性或者其他初始化动作的Bean实例Map，key是Bean的name，value是工厂map的工厂的返回值，即ObjectFactory的getObject方法结果   假设存在对象A依赖于对象B，对象Bean依赖于对象A  Spring根据A的name，首先取BeanMap里找是否有A的实例，没有的话，检查A是否正在创建，如果正在创建，则说明出现了循环依赖。（需要获取A，发现A又在创建，表名有其他bean需要A），尝试从可提前依赖的BeanMap获取EarlyBeanReference，如果没有，则尝试从工厂Map里找A对应的工厂对象，如果有工厂对象，则调用工厂对象进行返回，并且将工厂返回的Bean实例作为EarlyBeanReference，放入未完全实例化结束BeanMap里，删除工厂Map对应的value。此时工厂Map为空。 此时，A没有正在创建，继续 标记A正在创建，根绝BeanDefinition生成Bean实例对象，（此时对象实例已经生成完毕，但是还没有初始化），并且把A的创建工厂，放入工厂Map，而这个创建工厂getObject返回值就是刚才生成的实例对象，并且给SmartInstantiationAwareBeanPostProcessor接口机会取改变这个EarlyBeanReference对象。 得到实例化后的A对象，开始注入A的属性，发现A的属性b，需要B对象。 B对象开始获取（此时，A还没有结束，即一级缓存中没有A，二级缓存中有A的工厂Map） B的获取如上述一致， 直至B实例化结束，开始注入B的属性，发现B的属性a，需要A对象 又到了A对象开始获取 此时，进入第一个流程，发现一级缓存里没有A，而A又正在创建中，出现循环依赖，去二级缓存里找A的工厂Map，调用工厂Map方法去，得到了EarlyBeanReference，放入三级缓存里，返回回去 即此时，B注入属性成功，并且返回了一个EarlyBeanReference，即当前正在创建的A对象实例。 B注入成功属性后，B实例化完全结束，结束后，清除B的二三级缓存，加入一级缓存并返回 此时回到了A的注入B属性逻辑中，A得到了B实例。而这个实例里的A属性对象，和当前获取A的对象是一个 A继续完成初始化动作，最后A实例化完全结束，清楚A的二三级缓存，加入一级缓存并返回   只有2个缓存行吗？为什么一定要3个  BeanMap无用质疑是需要的 如果只有工厂Map而没有，可提前依赖的BeanMap的话，那么在一开始从缓存中获取Bean，一级缓存无法获取到，直接就有工厂Bean，一旦有工厂就调用工厂返回的值，这样是不行的，因为在工厂调用Bean的时候，有很多动作就会进行重复，比如工厂获取的时候，可以给SmartInstantiationAwareBeanPostProcessor机会去更改EarlyBeanReference对象，重复执行了。第二，与工厂模式的思想违背，工厂只需要制造一次，而不是每次都制造。 如果只有可提前依赖的BeanMap，而没有工厂Map。实际上是可以的，只不过没有工厂的话，会将大部分工作都抛给创建Bean的流程里，例如SmartInstantiationAwareBeanPostProcessor等工厂应该负责的工作    ApplicationContext的Refresh方法  Enviroment，环境参数，根据不同的环境，实现Environment不同的子类，例如Web环境会实现，StandardServletEnvironment，默认是实现StandardEnvironment，包含很多环境变量，系统变量，java环境变量，Servlet环境变量 创建beanFactory作为成员变量，ApplicationContext自身也实现了BeanFactory接口，只不过具体实现的方法是成员变量的beanFactory的方法、 填充工厂  增加SPEL表达式解析器 属性编辑器注入 增加一个ApplicationContextAwareProcessor的BPP，在Bean实例化之后，激活实现了aware接口的方法的一个BPP 配置忽略某些类型的属性自动注入，增加某些类型自动注入   postProcessBeanFactory：留给子类去实现 记录启动路径 激活BeanFactoryPostProcessor，invokeBeanFactoryPostProcessors 注册BeanPostProcessor 初始化国际化文件 初始化initApplicationEventMulticaster，事件传送器，用于发送事件 注册事件监听器 设置ConversionService 锁定所有BeanDefinitions，防止改变 实例化剩下所有的no-lazy实例 调用所有实现LifeCycle接口的bean 发送ContextRefreshedEvent事件  BeanFactoryPostProcessor和BeanPostProcessor区别   BeanFactoryPostProcessor是可以修改Bean的元数据，是控制BeanFactory的，而BeanPostProcessor是Bean实例的处理器，可以修改Bean的实例"><meta itemprop="datePublished" content="2022-01-11T14:43:18+08:00" />
+<meta itemprop="dateModified" content="2022-01-11T14:43:18+08:00" />
+<meta itemprop="wordCount" content="715">
+<meta itemprop="keywords" content="Spring," />
+		<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Spring问题整理"/>
+<meta name="twitter:description" content="@Override @Nullable public Object invoke(MethodInvocation mi) throws Throwable { if (!(mi instanceof ProxyMethodInvocation)) { throw new IllegalStateException(&#34;MethodInvocation is not a Spring ProxyMethodInvocation: &#34; &#43; mi); } ProxyMethodInvocation pmi = (ProxyMethodInvocation) mi; ProceedingJoinPoint pjp = lazyGetProceedingJoinPoint(pmi); JoinPointMatch jpm = getJoinPointMatch(pmi); return invokeAdviceMethod(pjp, jpm, null, null); } 当在Sping中配置的Bean存在相互依赖，Spring是怎么处理的 针对原型Bean直接抛出异常，不支持。
+单例Bean，Spring使用3个Map做缓存，来处理。
+分别是：一级缓存Spring最终保存的单例对象Map，二级缓存建造Spring单例对象的匿名工厂对象返回的就是三级缓存需要的，三级缓存是允许提前被依赖的单例对象。
+阐述一个Bean获取的流程  尝试获取单例Bean 检查一级缓存是否有，没有的话，检查当前获取的Bean是否正在创建，如果正在创建即出现了Bean互相依赖情况，检查三级缓存是否已经有提前可被依赖的对象，如果没有的话，检查二级缓存是否有其工厂，有的话，使用工厂，实例化这个Bean，放入三级缓存里。供其他Bean依赖使用 没获取到，可能是原型Bean，也可能是单例Bean没有实例化 检查如果是原型Bean，而且正在创建中，即出现了原型Bean被依赖的情况，直接抛出异常 准备BeanDefinition，如果档期工厂没有相应的BD，而且父工厂又存在BD，使用父工厂的getBean方法去获取Bean 标记Bean创建过了 从当前工厂读取BD,并且转为RootBeanDefinition，获取期间，还要检查父工厂是否也有该Bean的BD，有的话，以父工厂得BD为基础，子工厂得BD覆盖掉其属性 检查BD是不是抽象的，无法实例化的类，抛出异常 检查BD中得DependsOn属性，针对所有Depend，循环实例化，如果检查到有Depend得Bean又依赖于当前目标Bean，抛出异常，互相提前依赖了。并且建立相关关系，所以DependOn意义是，依赖于一个完全实例化完成后的Bean 如果是单例的话，开始创建单例Bean，创建匿名工厂对象 标记单例Bean正在被创建 使用工厂对象去调用getObject方法 实际上执行了createBean方法 根据之前的RootBD，解析出需要实例化的Class对象 检查MethodOverrides目标方法是否存在Class对象中 在实例化对象之前，给InstantiationAwareBeanPostProcessor机会去改变实例，调用其postProcessBeforeInstantiation，AOP就是在这里实现的，此外，如果返回了，还会调用BPP的postProcessAfterInitialization，但不会调用postProcessBeforeInitialization了 如果没有被InstantiationAwareBeanPostProcessor改变了的话，开始进入真正的实例化方法 实例化一个BeanWrapperImpl去封装实例 解析Class对象，确定Class对象有Public修饰符 如果有FactoryMethod的话，直接调用FactoryMethod返回实例，封装在BeanWrapperImpl，这里面也会初始化initBeanWrapper，将属性编辑器注入到BeanWrapperImpl身上，用于后续的属性注入 开始解析构造函数或者是FactoryMethod，如果解析过了，直接去实例化 否则进入构造函数解析 解析之前，看BPP有没有提供了构造函数，即SmartInstantiationAwareBeanPostProcessor的determineCandidateConstructors方法执行，如果返回了构造函数，就用BPP的了。 没有的话，进入默认的解析，依赖先看缓存里有没有解析过的参数，因为构造方法注入的话，很消耗性能，没有缓存的话，先看用户获取bean时有没有传入args，即构造函数的参数。没有的话，而且只有一个候选的构造函数，就直接用使用无参的了，没有的话，先去解析参数，construct-arg，既可以时Index，也可以是name。根据用户传入的arg长度，去解析。 最后解析完成后，使用实例化策略去实例化即可，这里也可使用cglib去处理，然后封装在BeanWrapperImpl中 至此，BeanWapper里已经包含了我们的目标对象的实例了 然后创建二级缓存，将上一步BeanWapper里的实例，作为二级缓存返回的对象，加载缓存里 至此，二级缓存的工厂加入 了。当在一开始获bean，一级获取不到，获取二级有工厂的时候，就会把BeanWapper的实例暴露出去，供后续使用 然后开始初始化实例 将上面暴露出来的示例进行属性注入 给InstantiationAwareBeanPostProcessor的postProcessAfterInstantiation在属性注入之前最后一次机会，去改变Bean，并且阻止Bean的属性注入 判断属性注入的是byName还是byType，针对所有的非简单的属性，还有排除所有的ignoredDependencyInterfaces中的接口。进行getBean操作，保存到PropertyValues中 使用InstantiationAwareBeanPostProcessor的postProcessProperties，可以进行修改属性。继续使用postProcessPropertyValues，继续可以更该属性 得到所有属性后，应用属性到Bean实例身上，在应用属性的时候，会找到前工厂里的所有的TypeConverter去将属性变为需要的属性，如果变不成会报错 至此，属性赋值完毕 复制完毕后，开始初始化Bean，先激活所有的aware方法， 调用BPP的postProcessBeforeInitialization初始化之前方法，记住，这里的初始化，是Bean已经实例化之后的事情了，是执行其他事情的初始化 执行afterPropertiesSet方法，在执行init-methods方法 调用BPP的postProcessAfterInitialization初始化以后方法 至此返回暴露的bean，即getBean结束 最后处理销毁的方法，即出发destory-method的方法  Spring是如何处理掉循环依赖的  针对非单例Bean出现循环依赖直接抛出异常 单例Bean Spring存在3个缓存Map  Spring完全生成好的BeanMap，key是Bean的name，Value是实例对象 Spring生成Bean的工厂Map，key是Bean的name，value是实现了ObjectFactory接口的实例对象 Spring尚未初始化，即赋予属性或者其他初始化动作的Bean实例Map，key是Bean的name，value是工厂map的工厂的返回值，即ObjectFactory的getObject方法结果   假设存在对象A依赖于对象B，对象Bean依赖于对象A  Spring根据A的name，首先取BeanMap里找是否有A的实例，没有的话，检查A是否正在创建，如果正在创建，则说明出现了循环依赖。（需要获取A，发现A又在创建，表名有其他bean需要A），尝试从可提前依赖的BeanMap获取EarlyBeanReference，如果没有，则尝试从工厂Map里找A对应的工厂对象，如果有工厂对象，则调用工厂对象进行返回，并且将工厂返回的Bean实例作为EarlyBeanReference，放入未完全实例化结束BeanMap里，删除工厂Map对应的value。此时工厂Map为空。 此时，A没有正在创建，继续 标记A正在创建，根绝BeanDefinition生成Bean实例对象，（此时对象实例已经生成完毕，但是还没有初始化），并且把A的创建工厂，放入工厂Map，而这个创建工厂getObject返回值就是刚才生成的实例对象，并且给SmartInstantiationAwareBeanPostProcessor接口机会取改变这个EarlyBeanReference对象。 得到实例化后的A对象，开始注入A的属性，发现A的属性b，需要B对象。 B对象开始获取（此时，A还没有结束，即一级缓存中没有A，二级缓存中有A的工厂Map） B的获取如上述一致， 直至B实例化结束，开始注入B的属性，发现B的属性a，需要A对象 又到了A对象开始获取 此时，进入第一个流程，发现一级缓存里没有A，而A又正在创建中，出现循环依赖，去二级缓存里找A的工厂Map，调用工厂Map方法去，得到了EarlyBeanReference，放入三级缓存里，返回回去 即此时，B注入属性成功，并且返回了一个EarlyBeanReference，即当前正在创建的A对象实例。 B注入成功属性后，B实例化完全结束，结束后，清除B的二三级缓存，加入一级缓存并返回 此时回到了A的注入B属性逻辑中，A得到了B实例。而这个实例里的A属性对象，和当前获取A的对象是一个 A继续完成初始化动作，最后A实例化完全结束，清楚A的二三级缓存，加入一级缓存并返回   只有2个缓存行吗？为什么一定要3个  BeanMap无用质疑是需要的 如果只有工厂Map而没有，可提前依赖的BeanMap的话，那么在一开始从缓存中获取Bean，一级缓存无法获取到，直接就有工厂Bean，一旦有工厂就调用工厂返回的值，这样是不行的，因为在工厂调用Bean的时候，有很多动作就会进行重复，比如工厂获取的时候，可以给SmartInstantiationAwareBeanPostProcessor机会去更改EarlyBeanReference对象，重复执行了。第二，与工厂模式的思想违背，工厂只需要制造一次，而不是每次都制造。 如果只有可提前依赖的BeanMap，而没有工厂Map。实际上是可以的，只不过没有工厂的话，会将大部分工作都抛给创建Bean的流程里，例如SmartInstantiationAwareBeanPostProcessor等工厂应该负责的工作    ApplicationContext的Refresh方法  Enviroment，环境参数，根据不同的环境，实现Environment不同的子类，例如Web环境会实现，StandardServletEnvironment，默认是实现StandardEnvironment，包含很多环境变量，系统变量，java环境变量，Servlet环境变量 创建beanFactory作为成员变量，ApplicationContext自身也实现了BeanFactory接口，只不过具体实现的方法是成员变量的beanFactory的方法、 填充工厂  增加SPEL表达式解析器 属性编辑器注入 增加一个ApplicationContextAwareProcessor的BPP，在Bean实例化之后，激活实现了aware接口的方法的一个BPP 配置忽略某些类型的属性自动注入，增加某些类型自动注入   postProcessBeanFactory：留给子类去实现 记录启动路径 激活BeanFactoryPostProcessor，invokeBeanFactoryPostProcessors 注册BeanPostProcessor 初始化国际化文件 初始化initApplicationEventMulticaster，事件传送器，用于发送事件 注册事件监听器 设置ConversionService 锁定所有BeanDefinitions，防止改变 实例化剩下所有的no-lazy实例 调用所有实现LifeCycle接口的bean 发送ContextRefreshedEvent事件  BeanFactoryPostProcessor和BeanPostProcessor区别   BeanFactoryPostProcessor是可以修改Bean的元数据，是控制BeanFactory的，而BeanPostProcessor是Bean实例的处理器，可以修改Bean的实例"/>
+
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link rel="dns-prefetch" href="//fonts.googleapis.com">
 	<link rel="dns-prefetch" href="//fonts.gstatic.com">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
 
 	<link rel="stylesheet" href="/css/style.css">
-	
+	<link rel="stylesheet" href="/css/custom.css">
 
 	<link rel="shortcut icon" href="/favicon.ico">
 		
@@ -23,11 +49,13 @@
 		<header class="header">
 	<div class="container header__container">
 		
-	<div class="logo">
-		<a class="logo__link" href="/" title="Luluhome - a blog for sh , &#39;lulu&#39; is my cat" rel="home">
-			<div class="logo__item logo__text">
-					<div class="logo__title">Luluhome - a blog for sh , &#39;lulu&#39; is my cat</div>
-					
+	<div class="logo logo--mixed">
+		<a class="logo__link" href="/" title="Lulu" rel="home">
+			<div class="logo__item logo__imagebox">
+					<img class="logo__img" src="/img/placeholder.png">
+				</div><div class="logo__item logo__text">
+					<div class="logo__title">Lulu</div>
+					<div class="logo__tagline">Lulu is arrongant cat</div>
 				</div>
 		</a>
 	</div>
@@ -37,27 +65,6 @@
 		<span class="menu__btn-title" tabindex="-1">Menu</span>
 	</button>
 	<ul class="menu__list">
-		<li class="menu__item">
-			<a class="menu__link" href="/">
-				
-				<span class="menu__text">Home</span>
-				
-			</a>
-		</li>
-		<li class="menu__item">
-			<a class="menu__link" href="/post/">
-				
-				<span class="menu__text">Archives</span>
-				
-			</a>
-		</li>
-		<li class="menu__item">
-			<a class="menu__link" href="/tags/">
-				
-				<span class="menu__text">Tags</span>
-				
-			</a>
-		</li>
 		<li class="menu__item">
 			<a class="menu__link" href="/about/">
 				
@@ -77,7 +84,11 @@
 	<article class="post">
 		<header class="post__header">
 			<h1 class="post__title">Spring问题整理</h1>
-			
+			<div class="post__meta meta"><div class="meta__item-author meta__item">
+	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 12 16"><path d="M6 1c2.2 0 3.5 2 3.5 4.5C9.5 7 8.9 8.2 8 9c2.9.8 4 2.5 4 5v1H0v-1c0-2.5 1.1-4.2 4-5-.9-.8-1.5-2-1.5-3.5C2.5 3 3.8 1 6 1z"/></svg><span class="meta__text">Frank Silva</span>
+</div>
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg><time class="meta__text" datetime="2022-01-11T14:43:18&#43;08:00">2022-01-11</time></div></div>
 		</header>
 		
 <div class="post__toc toc">
@@ -85,88 +96,32 @@
 	<div class="toc__menu">
 		<nav id="TableOfContents">
   <ul>
-    <li><a href="#当在sping中配置的bean存在相互依赖spring是怎么处理的">当在Sping中配置的Bean存在相互依赖，Spring是怎么处理的</a></li>
-    <li><a href="#阐述一个bean获取的流程">阐述一个Bean获取的流程</a></li>
-    <li><a href="#spring是如何处理掉循环依赖的">Spring是如何处理掉循环依赖的</a></li>
-    <li><a href="#applicationcontext的refresh方法">ApplicationContext的Refresh方法</a></li>
-    <li><a href="#beanfactorypostprocessor和beanpostprocessor区别">BeanFactoryPostProcessor和BeanPostProcessor区别</a></li>
-    <li><a href="#原理spring-aop">原理Spring AOP</a></li>
-    <li><a href="#springmvc流程">SpringMVC流程</a>
-      <ul>
-        <li><a href="#为什么在controller的方法参数里写httpservletrequest就可以获得到请求对象以及requestbody和requestparam">为什么在Controller的方法参数里，写HttpServletRequest就可以获得到请求对象，以及@RequestBody和@RequestParam</a></li>
-      </ul>
-    </li>
-    <li><a href="#springboot的工作原理">SpringBoot的工作原理</a></li>
-    <li><a href="#spring事务">Spring事务</a></li>
-    <li><a href="#讲讲你会的设计模式spring里面用到了哪些设计模式">讲讲你会的设计模式，Spring里面用到了哪些设计模式</a></li>
-    <li><a href="#java中的date是线程安全的吗你是如何保证线程安全的">Java中的Date是线程安全的吗？你是如何保证线程安全的</a></li>
-    <li><a href="#讲讲threadlocal-和java的内存模型吧">讲讲ThreadLocal 和java的内存模型吧</a></li>
-    <li><a href="#webasynctask">WebAsyncTask</a>
-      <ul>
-        <li><a href="#拦截器和过滤器的区别">拦截器和过滤器的区别</a></li>
-      </ul>
-    </li>
-    <li><a href="#聊一下mybatis">聊一下mybatis</a>
-      <ul>
-        <li><a href="#什么是mybatis的懒加载">什么是mybatis的懒加载</a></li>
-        <li><a href="#mybatis的mapper是如何与数据库连接的">mybatis的mapper是如何与数据库连接的</a></li>
-      </ul>
-    </li>
-    <li><a href="#什么是索引索引为什么可以加查询">什么是索引，索引为什么可以加查询</a></li>
-    <li><a href="#innodb索引实现">Innodb索引实现</a></li>
-    <li><a href="#b树和b树">B树和B+树</a></li>
-    <li><a href="#redis使用部署哨兵">Redis使用，部署，哨兵</a></li>
-    <li><a href="#tcp三次握手">TCP三次握手</a></li>
-    <li><a href="#乐观锁悲观锁举例">乐观锁，悲观锁，举例</a></li>
-    <li><a href="#设计模式">设计模式</a></li>
-    <li><a href="#redis扩容">Redis扩容</a></li>
-    <li><a href="#cas概念原子类的实现">CAS概念，原子类的实现</a></li>
-    <li><a href="#synchronize-底层原理">Synchronize 底层原理</a></li>
-    <li><a href="#aqs">AQS</a></li>
-    <li><a href="#网络模型你知道的网络协议">网络模型，你知道的网络协议</a></li>
-    <li><a href="#https的连接过程ssl">HTTPS的连接过程，SSL</a></li>
-    <li><a href="#单链表算法反转查找">单链表算法，反转，查找</a></li>
-    <li><a href="#jvm垃圾回收机制">jvm垃圾回收机制</a></li>
-    <li><a href="#工作流引擎">工作流引擎</a></li>
-    <li><a href="#spring-mvc-webflux">Spring MVC webFlux</a></li>
-    <li><a href="#netty">netty</a></li>
-    <li><a href="#redis为什么这么快">redis为什么这么快</a></li>
-    <li><a href="#mysql的explain">Mysql的explain</a></li>
-    <li><a href="#k8s">K8S</a></li>
-    <li><a href="#讲一讲反射以及你工作中用到的地方">讲一讲反射，以及你工作中用到的地方</a></li>
+    <li><a href="#为什么在controller的方法参数里写httpservletrequest就可以获得到请求对象以及requestbody和requestparam">为什么在Controller的方法参数里，写HttpServletRequest就可以获得到请求对象，以及@RequestBody和@RequestParam</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#拦截器和过滤器的区别">拦截器和过滤器的区别</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#什么是mybatis的懒加载">什么是mybatis的懒加载</a></li>
+    <li><a href="#mybatis的mapper是如何与数据库连接的">mybatis的mapper是如何与数据库连接的</a></li>
   </ul>
 </nav>
 	</div>
 </div><div class="content post__content clearfix">
-			<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Override</span>
-<span class="nd">@Nullable</span>
-<span class="kd">public</span> <span class="n">Object</span> <span class="nf">invoke</span><span class="o">(</span><span class="n">MethodInvocation</span> <span class="n">mi</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Throwable</span> <span class="o">{</span>
-   <span class="k">if</span> <span class="o">(!(</span><span class="n">mi</span> <span class="k">instanceof</span> <span class="n">ProxyMethodInvocation</span><span class="o">))</span> <span class="o">{</span>
-      <span class="k">throw</span> <span class="k">new</span> <span class="n">IllegalStateException</span><span class="o">(</span><span class="s">&#34;MethodInvocation is not a Spring ProxyMethodInvocation: &#34;</span> <span class="o">+</span> <span class="n">mi</span><span class="o">);</span>
-   <span class="o">}</span>
-   <span class="n">ProxyMethodInvocation</span> <span class="n">pmi</span> <span class="o">=</span> <span class="o">(</span><span class="n">ProxyMethodInvocation</span><span class="o">)</span> <span class="n">mi</span><span class="o">;</span>
-   <span class="n">ProceedingJoinPoint</span> <span class="n">pjp</span> <span class="o">=</span> <span class="n">lazyGetProceedingJoinPoint</span><span class="o">(</span><span class="n">pmi</span><span class="o">);</span>
-   <span class="n">JoinPointMatch</span> <span class="n">jpm</span> <span class="o">=</span> <span class="n">getJoinPointMatch</span><span class="o">(</span><span class="n">pmi</span><span class="o">);</span>
-   <span class="k">return</span> <span class="n">invokeAdviceMethod</span><span class="o">(</span><span class="n">pjp</span><span class="o">,</span> <span class="n">jpm</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
-<span class="o">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><h1 id="当在sping中配置的bean存在相互依赖spring是怎么处理的">当在Sping中配置的Bean存在相互依赖，Spring是怎么处理的</h1>
+			<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Override</span>
+<span style="color:#a6e22e">@Nullable</span>
+<span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">invoke</span><span style="color:#f92672">(</span>MethodInvocation mi<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Throwable <span style="color:#f92672">{</span>
+   <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!(</span>mi <span style="color:#66d9ef">instanceof</span> ProxyMethodInvocation<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+      <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalStateException<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;MethodInvocation is not a Spring ProxyMethodInvocation: &#34;</span> <span style="color:#f92672">+</span> mi<span style="color:#f92672">);</span>
+   <span style="color:#f92672">}</span>
+   ProxyMethodInvocation pmi <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>ProxyMethodInvocation<span style="color:#f92672">)</span> mi<span style="color:#f92672">;</span>
+   ProceedingJoinPoint pjp <span style="color:#f92672">=</span> lazyGetProceedingJoinPoint<span style="color:#f92672">(</span>pmi<span style="color:#f92672">);</span>
+   JoinPointMatch jpm <span style="color:#f92672">=</span> getJoinPointMatch<span style="color:#f92672">(</span>pmi<span style="color:#f92672">);</span>
+   <span style="color:#66d9ef">return</span> invokeAdviceMethod<span style="color:#f92672">(</span>pjp<span style="color:#f92672">,</span> jpm<span style="color:#f92672">,</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h1 id="当在sping中配置的bean存在相互依赖spring是怎么处理的">当在Sping中配置的Bean存在相互依赖，Spring是怎么处理的</h1>
 <p>针对原型Bean直接抛出异常，不支持。</p>
 <p>单例Bean，Spring使用3个Map做缓存，来处理。</p>
 <p>分别是：一级缓存Spring最终保存的单例对象Map，二级缓存建造Spring单例对象的匿名工厂对象返回的就是三级缓存需要的，三级缓存是允许提前被依赖的单例对象。</p>
@@ -283,151 +238,76 @@
 <li>
 <p>以PropertySourcesPlaceholderConfigurer为例</p>
 <p>很明显，作用就是对于Beanfactory的所有Beandefintion进行处理，即在xml里中配置的${}属性</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span><span class="lnt">56
-</span><span class="lnt">57
-</span><span class="lnt">58
-</span><span class="lnt">59
-</span><span class="lnt">60
-</span><span class="lnt">61
-</span><span class="lnt">62
-</span><span class="lnt">63
-</span><span class="lnt">64
-</span><span class="lnt">65
-</span><span class="lnt">66
-</span><span class="lnt">67
-</span><span class="lnt">68
-</span><span class="lnt">69
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java">	<span class="nd">@Override</span>
-	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">postProcessBeanFactory</span><span class="o">(</span><span class="n">ConfigurableListableBeanFactory</span> <span class="n">beanFactory</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">BeansException</span> <span class="o">{</span>
-		<span class="k">try</span> <span class="o">{</span>
-			<span class="n">Properties</span> <span class="n">mergedProps</span> <span class="o">=</span> <span class="n">mergeProperties</span><span class="o">();</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">	<span style="color:#a6e22e">@Override</span>
+	<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">postProcessBeanFactory</span><span style="color:#f92672">(</span>ConfigurableListableBeanFactory beanFactory<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> BeansException <span style="color:#f92672">{</span>
+		<span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+			Properties mergedProps <span style="color:#f92672">=</span> mergeProperties<span style="color:#f92672">();</span>
 
-			<span class="c1">// Convert the merged properties, if necessary.
-</span><span class="c1"></span>			<span class="n">convertProperties</span><span class="o">(</span><span class="n">mergedProps</span><span class="o">);</span>
+			<span style="color:#75715e">// Convert the merged properties, if necessary.
+</span><span style="color:#75715e"></span>			convertProperties<span style="color:#f92672">(</span>mergedProps<span style="color:#f92672">);</span>
 
-			<span class="c1">// Let the subclass process the properties.
-</span><span class="c1"></span>			<span class="n">processProperties</span><span class="o">(</span><span class="n">beanFactory</span><span class="o">,</span> <span class="n">mergedProps</span><span class="o">);</span>
-		<span class="o">}</span>
-		<span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span>
-			<span class="k">throw</span> <span class="k">new</span> <span class="n">BeanInitializationException</span><span class="o">(</span><span class="s">&#34;Could not load properties&#34;</span><span class="o">,</span> <span class="n">ex</span><span class="o">);</span>
-		<span class="o">}</span>
-	<span class="o">}</span>
+			<span style="color:#75715e">// Let the subclass process the properties.
+</span><span style="color:#75715e"></span>			processProperties<span style="color:#f92672">(</span>beanFactory<span style="color:#f92672">,</span> mergedProps<span style="color:#f92672">);</span>
+		<span style="color:#f92672">}</span>
+		<span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>IOException ex<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+			<span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> BeanInitializationException<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Could not load properties&#34;</span><span style="color:#f92672">,</span> ex<span style="color:#f92672">);</span>
+		<span style="color:#f92672">}</span>
+	<span style="color:#f92672">}</span>
 
 
-	<span class="nd">@Override</span>
-	<span class="kd">protected</span> <span class="kt">void</span> <span class="nf">processProperties</span><span class="o">(</span><span class="n">ConfigurableListableBeanFactory</span> <span class="n">beanFactoryToProcess</span><span class="o">,</span> <span class="n">Properties</span> <span class="n">props</span><span class="o">)</span>
-			<span class="kd">throws</span> <span class="n">BeansException</span> <span class="o">{</span>
+	<span style="color:#a6e22e">@Override</span>
+	<span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">processProperties</span><span style="color:#f92672">(</span>ConfigurableListableBeanFactory beanFactoryToProcess<span style="color:#f92672">,</span> Properties props<span style="color:#f92672">)</span>
+			<span style="color:#66d9ef">throws</span> BeansException <span style="color:#f92672">{</span>
 
-		<span class="n">StringValueResolver</span> <span class="n">valueResolver</span> <span class="o">=</span> <span class="k">new</span> <span class="n">PlaceholderResolvingStringValueResolver</span><span class="o">(</span><span class="n">props</span><span class="o">);</span>
-		<span class="n">doProcessProperties</span><span class="o">(</span><span class="n">beanFactoryToProcess</span><span class="o">,</span> <span class="n">valueResolver</span><span class="o">);</span>
-	<span class="o">}</span>
+		StringValueResolver valueResolver <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> PlaceholderResolvingStringValueResolver<span style="color:#f92672">(</span>props<span style="color:#f92672">);</span>
+		doProcessProperties<span style="color:#f92672">(</span>beanFactoryToProcess<span style="color:#f92672">,</span> valueResolver<span style="color:#f92672">);</span>
+	<span style="color:#f92672">}</span>
 
-	<span class="kd">protected</span> <span class="kt">void</span> <span class="nf">doProcessProperties</span><span class="o">(</span><span class="n">ConfigurableListableBeanFactory</span> <span class="n">beanFactoryToProcess</span><span class="o">,</span>
-			<span class="n">StringValueResolver</span> <span class="n">valueResolver</span><span class="o">)</span> <span class="o">{</span>
+	<span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doProcessProperties</span><span style="color:#f92672">(</span>ConfigurableListableBeanFactory beanFactoryToProcess<span style="color:#f92672">,</span>
+			StringValueResolver valueResolver<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
 
-		<span class="n">BeanDefinitionVisitor</span> <span class="n">visitor</span> <span class="o">=</span> <span class="k">new</span> <span class="n">BeanDefinitionVisitor</span><span class="o">(</span><span class="n">valueResolver</span><span class="o">);</span>
+		BeanDefinitionVisitor visitor <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> BeanDefinitionVisitor<span style="color:#f92672">(</span>valueResolver<span style="color:#f92672">);</span>
 
-		<span class="n">String</span><span class="o">[]</span> <span class="n">beanNames</span> <span class="o">=</span> <span class="n">beanFactoryToProcess</span><span class="o">.</span><span class="na">getBeanDefinitionNames</span><span class="o">();</span>
-		<span class="k">for</span> <span class="o">(</span><span class="n">String</span> <span class="n">curName</span> <span class="o">:</span> <span class="n">beanNames</span><span class="o">)</span> <span class="o">{</span>
-			<span class="c1">// Check that we&#39;re not parsing our own bean definition,
-</span><span class="c1"></span>			<span class="c1">// to avoid failing on unresolvable placeholders in properties file locations.
-</span><span class="c1"></span>			<span class="k">if</span> <span class="o">(!(</span><span class="n">curName</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">beanName</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="n">beanFactoryToProcess</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">beanFactory</span><span class="o">)))</span> <span class="o">{</span>
-				<span class="n">BeanDefinition</span> <span class="n">bd</span> <span class="o">=</span> <span class="n">beanFactoryToProcess</span><span class="o">.</span><span class="na">getBeanDefinition</span><span class="o">(</span><span class="n">curName</span><span class="o">);</span>
-				<span class="k">try</span> <span class="o">{</span>
-					<span class="n">visitor</span><span class="o">.</span><span class="na">visitBeanDefinition</span><span class="o">(</span><span class="n">bd</span><span class="o">);</span>
-				<span class="o">}</span>
-				<span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span>
-					<span class="k">throw</span> <span class="k">new</span> <span class="n">BeanDefinitionStoreException</span><span class="o">(</span><span class="n">bd</span><span class="o">.</span><span class="na">getResourceDescription</span><span class="o">(),</span> <span class="n">curName</span><span class="o">,</span> <span class="n">ex</span><span class="o">.</span><span class="na">getMessage</span><span class="o">(),</span> <span class="n">ex</span><span class="o">);</span>
-				<span class="o">}</span>
-			<span class="o">}</span>
-		<span class="o">}</span>
+		String<span style="color:#f92672">[]</span> beanNames <span style="color:#f92672">=</span> beanFactoryToProcess<span style="color:#f92672">.</span><span style="color:#a6e22e">getBeanDefinitionNames</span><span style="color:#f92672">();</span>
+		<span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>String curName <span style="color:#f92672">:</span> beanNames<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+			<span style="color:#75715e">// Check that we&#39;re not parsing our own bean definition,
+</span><span style="color:#75715e"></span>			<span style="color:#75715e">// to avoid failing on unresolvable placeholders in properties file locations.
+</span><span style="color:#75715e"></span>			<span style="color:#66d9ef">if</span> <span style="color:#f92672">(!(</span>curName<span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">beanName</span><span style="color:#f92672">)</span> <span style="color:#f92672">&amp;&amp;</span> beanFactoryToProcess<span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">beanFactory</span><span style="color:#f92672">)))</span> <span style="color:#f92672">{</span>
+				BeanDefinition bd <span style="color:#f92672">=</span> beanFactoryToProcess<span style="color:#f92672">.</span><span style="color:#a6e22e">getBeanDefinition</span><span style="color:#f92672">(</span>curName<span style="color:#f92672">);</span>
+				<span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+					visitor<span style="color:#f92672">.</span><span style="color:#a6e22e">visitBeanDefinition</span><span style="color:#f92672">(</span>bd<span style="color:#f92672">);</span>
+				<span style="color:#f92672">}</span>
+				<span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception ex<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+					<span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> BeanDefinitionStoreException<span style="color:#f92672">(</span>bd<span style="color:#f92672">.</span><span style="color:#a6e22e">getResourceDescription</span><span style="color:#f92672">(),</span> curName<span style="color:#f92672">,</span> ex<span style="color:#f92672">.</span><span style="color:#a6e22e">getMessage</span><span style="color:#f92672">(),</span> ex<span style="color:#f92672">);</span>
+				<span style="color:#f92672">}</span>
+			<span style="color:#f92672">}</span>
+		<span style="color:#f92672">}</span>
 
-		<span class="c1">// New in Spring 2.5: resolve placeholders in alias target names and aliases as well.
-</span><span class="c1"></span>		<span class="n">beanFactoryToProcess</span><span class="o">.</span><span class="na">resolveAliases</span><span class="o">(</span><span class="n">valueResolver</span><span class="o">);</span>
+		<span style="color:#75715e">// New in Spring 2.5: resolve placeholders in alias target names and aliases as well.
+</span><span style="color:#75715e"></span>		beanFactoryToProcess<span style="color:#f92672">.</span><span style="color:#a6e22e">resolveAliases</span><span style="color:#f92672">(</span>valueResolver<span style="color:#f92672">);</span>
 
-		<span class="c1">// New in Spring 3.0: resolve placeholders in embedded values such as annotation attributes.
-</span><span class="c1"></span>		<span class="n">beanFactoryToProcess</span><span class="o">.</span><span class="na">addEmbeddedValueResolver</span><span class="o">(</span><span class="n">valueResolver</span><span class="o">);</span>
-	<span class="o">}</span>
+		<span style="color:#75715e">// New in Spring 3.0: resolve placeholders in embedded values such as annotation attributes.
+</span><span style="color:#75715e"></span>		beanFactoryToProcess<span style="color:#f92672">.</span><span style="color:#a6e22e">addEmbeddedValueResolver</span><span style="color:#f92672">(</span>valueResolver<span style="color:#f92672">);</span>
+	<span style="color:#f92672">}</span>
 
 
-	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">visitBeanDefinition</span><span class="o">(</span><span class="n">BeanDefinition</span> <span class="n">beanDefinition</span><span class="o">)</span> <span class="o">{</span>
-		<span class="n">visitParentName</span><span class="o">(</span><span class="n">beanDefinition</span><span class="o">);</span>
-		<span class="n">visitBeanClassName</span><span class="o">(</span><span class="n">beanDefinition</span><span class="o">);</span>
-		<span class="n">visitFactoryBeanName</span><span class="o">(</span><span class="n">beanDefinition</span><span class="o">);</span>
-		<span class="n">visitFactoryMethodName</span><span class="o">(</span><span class="n">beanDefinition</span><span class="o">);</span>
-		<span class="n">visitScope</span><span class="o">(</span><span class="n">beanDefinition</span><span class="o">);</span>
-		<span class="k">if</span> <span class="o">(</span><span class="n">beanDefinition</span><span class="o">.</span><span class="na">hasPropertyValues</span><span class="o">())</span> <span class="o">{</span>
-			<span class="n">visitPropertyValues</span><span class="o">(</span><span class="n">beanDefinition</span><span class="o">.</span><span class="na">getPropertyValues</span><span class="o">());</span>
-		<span class="o">}</span>
-		<span class="k">if</span> <span class="o">(</span><span class="n">beanDefinition</span><span class="o">.</span><span class="na">hasConstructorArgumentValues</span><span class="o">())</span> <span class="o">{</span>
-			<span class="n">ConstructorArgumentValues</span> <span class="n">cas</span> <span class="o">=</span> <span class="n">beanDefinition</span><span class="o">.</span><span class="na">getConstructorArgumentValues</span><span class="o">();</span>
-			<span class="n">visitIndexedArgumentValues</span><span class="o">(</span><span class="n">cas</span><span class="o">.</span><span class="na">getIndexedArgumentValues</span><span class="o">());</span>
-			<span class="n">visitGenericArgumentValues</span><span class="o">(</span><span class="n">cas</span><span class="o">.</span><span class="na">getGenericArgumentValues</span><span class="o">());</span>
-		<span class="o">}</span>
-	<span class="o">}</span>
+	<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">visitBeanDefinition</span><span style="color:#f92672">(</span>BeanDefinition beanDefinition<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+		visitParentName<span style="color:#f92672">(</span>beanDefinition<span style="color:#f92672">);</span>
+		visitBeanClassName<span style="color:#f92672">(</span>beanDefinition<span style="color:#f92672">);</span>
+		visitFactoryBeanName<span style="color:#f92672">(</span>beanDefinition<span style="color:#f92672">);</span>
+		visitFactoryMethodName<span style="color:#f92672">(</span>beanDefinition<span style="color:#f92672">);</span>
+		visitScope<span style="color:#f92672">(</span>beanDefinition<span style="color:#f92672">);</span>
+		<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>beanDefinition<span style="color:#f92672">.</span><span style="color:#a6e22e">hasPropertyValues</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+			visitPropertyValues<span style="color:#f92672">(</span>beanDefinition<span style="color:#f92672">.</span><span style="color:#a6e22e">getPropertyValues</span><span style="color:#f92672">());</span>
+		<span style="color:#f92672">}</span>
+		<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>beanDefinition<span style="color:#f92672">.</span><span style="color:#a6e22e">hasConstructorArgumentValues</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+			ConstructorArgumentValues cas <span style="color:#f92672">=</span> beanDefinition<span style="color:#f92672">.</span><span style="color:#a6e22e">getConstructorArgumentValues</span><span style="color:#f92672">();</span>
+			visitIndexedArgumentValues<span style="color:#f92672">(</span>cas<span style="color:#f92672">.</span><span style="color:#a6e22e">getIndexedArgumentValues</span><span style="color:#f92672">());</span>
+			visitGenericArgumentValues<span style="color:#f92672">(</span>cas<span style="color:#f92672">.</span><span style="color:#a6e22e">getGenericArgumentValues</span><span style="color:#f92672">());</span>
+		<span style="color:#f92672">}</span>
+	<span style="color:#f92672">}</span>
 
-</code></pre></td></tr></table>
-</div>
-</div></li>
+</code></pre></div></li>
 <li>
 <p>上面的例子即可以看出BeanFactoryPostProcessor是对BeanFactory进行操作，是Bean还没实例化之前的动作</p>
 </li>
@@ -482,89 +362,39 @@
 <ul>
 <li>
 <p>使用JDK自带的Proxy.newProxyInstance方式创建代理对象</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="n">Proxy</span><span class="o">.</span><span class="na">newProxyInstance</span><span class="o">(</span><span class="n">classLoader</span><span class="o">,</span> <span class="k">this</span><span class="o">.</span><span class="na">proxiedInterfaces</span><span class="o">,</span> <span class="k">this</span><span class="o">);</span>
-</code></pre></td></tr></table>
-</div>
-</div></li>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Proxy<span style="color:#f92672">.</span><span style="color:#a6e22e">newProxyInstance</span><span style="color:#f92672">(</span>classLoader<span style="color:#f92672">,</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">proxiedInterfaces</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">);</span>
+</code></pre></div></li>
 <li>
 <p>最后一个参数this，说明JdkDynamicAopProxy肯定实现了InvocationHandler，最后执行的目标方法就是invoke方法</p>
 </li>
 <li>
 <p>在这里面处理了expose-proxy属性</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="c1">//AopContext 自身无法获取代理对象的处理 exposeProxy
-</span><span class="c1"></span><span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">advised</span><span class="o">.</span><span class="na">exposeProxy</span><span class="o">)</span> <span class="o">{</span>
-   <span class="c1">// Make invocation available if necessary.
-</span><span class="c1"></span>   <span class="n">oldProxy</span> <span class="o">=</span> <span class="n">AopContext</span><span class="o">.</span><span class="na">setCurrentProxy</span><span class="o">(</span><span class="n">proxy</span><span class="o">);</span>
-   <span class="n">setProxyContext</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
-<span class="o">}</span>
-</code></pre></td></tr></table>
-</div>
-</div></li>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">//AopContext 自身无法获取代理对象的处理 exposeProxy
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">advised</span><span style="color:#f92672">.</span><span style="color:#a6e22e">exposeProxy</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+   <span style="color:#75715e">// Make invocation available if necessary.
+</span><span style="color:#75715e"></span>   oldProxy <span style="color:#f92672">=</span> AopContext<span style="color:#f92672">.</span><span style="color:#a6e22e">setCurrentProxy</span><span style="color:#f92672">(</span>proxy<span style="color:#f92672">);</span>
+   setProxyContext <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div></li>
 <li>
 <p>然后根据传入的增强器，使用ReflectiveMethodInvocation封装，方法链，逐个调用。不同的advistor使用不同的实现类去实现，例如</p>
 <ul>
 <li>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">AspectJAroundAdvice
-</code></pre></td></tr></table>
-</div>
-</div><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Override</span>
-<span class="nd">@Nullable</span>
-<span class="kd">public</span> <span class="n">Object</span> <span class="nf">invoke</span><span class="o">(</span><span class="n">MethodInvocation</span> <span class="n">mi</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Throwable</span> <span class="o">{</span>
-   <span class="k">if</span> <span class="o">(!(</span><span class="n">mi</span> <span class="k">instanceof</span> <span class="n">ProxyMethodInvocation</span><span class="o">))</span> <span class="o">{</span>
-      <span class="k">throw</span> <span class="k">new</span> <span class="n">IllegalStateException</span><span class="o">(</span><span class="s">&#34;MethodInvocation is not a Spring ProxyMethodInvocation: &#34;</span> <span class="o">+</span> <span class="n">mi</span><span class="o">);</span>
-   <span class="o">}</span>
-   <span class="n">ProxyMethodInvocation</span> <span class="n">pmi</span> <span class="o">=</span> <span class="o">(</span><span class="n">ProxyMethodInvocation</span><span class="o">)</span> <span class="n">mi</span><span class="o">;</span>
-   <span class="n">ProceedingJoinPoint</span> <span class="n">pjp</span> <span class="o">=</span> <span class="n">lazyGetProceedingJoinPoint</span><span class="o">(</span><span class="n">pmi</span><span class="o">);</span>
-   <span class="n">JoinPointMatch</span> <span class="n">jpm</span> <span class="o">=</span> <span class="n">getJoinPointMatch</span><span class="o">(</span><span class="n">pmi</span><span class="o">);</span>
-   <span class="k">return</span> <span class="n">invokeAdviceMethod</span><span class="o">(</span><span class="n">pjp</span><span class="o">,</span> <span class="n">jpm</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
-<span class="o">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><p>这也就是为什么@Around的方法，入参可以是ProceedingJoinPoint</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="n">invokeAdviceMethodWithGivenArgs</span><span class="o">(</span><span class="n">argBinding</span><span class="o">(</span><span class="n">jp</span><span class="o">,</span> <span class="n">jpMatch</span><span class="o">,</span> <span class="n">returnValue</span><span class="o">,</span> <span class="n">t</span><span class="o">));</span>
-</code></pre></td></tr></table>
-</div>
-</div></li>
+<pre tabindex="0"><code>AspectJAroundAdvice
+</code></pre><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Override</span>
+<span style="color:#a6e22e">@Nullable</span>
+<span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">invoke</span><span style="color:#f92672">(</span>MethodInvocation mi<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Throwable <span style="color:#f92672">{</span>
+   <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!(</span>mi <span style="color:#66d9ef">instanceof</span> ProxyMethodInvocation<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+      <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalStateException<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;MethodInvocation is not a Spring ProxyMethodInvocation: &#34;</span> <span style="color:#f92672">+</span> mi<span style="color:#f92672">);</span>
+   <span style="color:#f92672">}</span>
+   ProxyMethodInvocation pmi <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>ProxyMethodInvocation<span style="color:#f92672">)</span> mi<span style="color:#f92672">;</span>
+   ProceedingJoinPoint pjp <span style="color:#f92672">=</span> lazyGetProceedingJoinPoint<span style="color:#f92672">(</span>pmi<span style="color:#f92672">);</span>
+   JoinPointMatch jpm <span style="color:#f92672">=</span> getJoinPointMatch<span style="color:#f92672">(</span>pmi<span style="color:#f92672">);</span>
+   <span style="color:#66d9ef">return</span> invokeAdviceMethod<span style="color:#f92672">(</span>pjp<span style="color:#f92672">,</span> jpm<span style="color:#f92672">,</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>这也就是为什么@Around的方法，入参可以是ProceedingJoinPoint</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">invokeAdviceMethodWithGivenArgs<span style="color:#f92672">(</span>argBinding<span style="color:#f92672">(</span>jp<span style="color:#f92672">,</span> jpMatch<span style="color:#f92672">,</span> returnValue<span style="color:#f92672">,</span> t<span style="color:#f92672">));</span>
+</code></pre></div></li>
 </ul>
 </li>
 <li>
@@ -595,105 +425,53 @@
 <p>hanlder方法的核心是，invokeHandlerMethod，通过反射调用目标方法，并且通过一些列配置，将方法需要的配置传入进去，其中解析方法参数的就是一些列的argumentResolvers。</p>
 <p>Spring依然是在RequestMappingHandlerAdapter的afterPropertiesSet()方法之后，。初始化了argumentResolvers</p>
 <p>如下</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">private</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">HandlerMethodArgumentResolver</span><span class="o">&gt;</span> <span class="nf">getDefaultArgumentResolvers</span><span class="o">()</span> <span class="o">{</span>
-   <span class="n">List</span><span class="o">&lt;</span><span class="n">HandlerMethodArgumentResolver</span><span class="o">&gt;</span> <span class="n">resolvers</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;(</span><span class="n">30</span><span class="o">);</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">private</span> List<span style="color:#f92672">&lt;</span>HandlerMethodArgumentResolver<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getDefaultArgumentResolvers</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+   List<span style="color:#f92672">&lt;</span>HandlerMethodArgumentResolver<span style="color:#f92672">&gt;</span> resolvers <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;&gt;(</span>30<span style="color:#f92672">);</span>
 
-   <span class="c1">// Annotation-based argument resolution
-</span><span class="c1"></span>   <span class="n">resolvers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">RequestParamMethodArgumentResolver</span><span class="o">(</span><span class="n">getBeanFactory</span><span class="o">(),</span> <span class="kc">false</span><span class="o">));</span>
-   <span class="n">resolvers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">RequestParamMapMethodArgumentResolver</span><span class="o">());</span>
-   <span class="n">resolvers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">PathVariableMethodArgumentResolver</span><span class="o">());</span>
-   <span class="n">resolvers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">PathVariableMapMethodArgumentResolver</span><span class="o">());</span>
-   <span class="n">resolvers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">MatrixVariableMethodArgumentResolver</span><span class="o">());</span>
-   <span class="n">resolvers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">MatrixVariableMapMethodArgumentResolver</span><span class="o">());</span>
-   <span class="n">resolvers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">ServletModelAttributeMethodProcessor</span><span class="o">(</span><span class="kc">false</span><span class="o">));</span>
-   <span class="n">resolvers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">RequestResponseBodyMethodProcessor</span><span class="o">(</span><span class="n">getMessageConverters</span><span class="o">(),</span> <span class="k">this</span><span class="o">.</span><span class="na">requestResponseBodyAdvice</span><span class="o">));</span>
-   <span class="n">resolvers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">RequestPartMethodArgumentResolver</span><span class="o">(</span><span class="n">getMessageConverters</span><span class="o">(),</span> <span class="k">this</span><span class="o">.</span><span class="na">requestResponseBodyAdvice</span><span class="o">));</span>
-   <span class="n">resolvers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">RequestHeaderMethodArgumentResolver</span><span class="o">(</span><span class="n">getBeanFactory</span><span class="o">()));</span>
-   <span class="n">resolvers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">RequestHeaderMapMethodArgumentResolver</span><span class="o">());</span>
-   <span class="n">resolvers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">ServletCookieValueMethodArgumentResolver</span><span class="o">(</span><span class="n">getBeanFactory</span><span class="o">()));</span>
-   <span class="n">resolvers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">ExpressionValueMethodArgumentResolver</span><span class="o">(</span><span class="n">getBeanFactory</span><span class="o">()));</span>
-   <span class="n">resolvers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">SessionAttributeMethodArgumentResolver</span><span class="o">());</span>
-   <span class="n">resolvers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">RequestAttributeMethodArgumentResolver</span><span class="o">());</span>
+   <span style="color:#75715e">// Annotation-based argument resolution
+</span><span style="color:#75715e"></span>   resolvers<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> RequestParamMethodArgumentResolver<span style="color:#f92672">(</span>getBeanFactory<span style="color:#f92672">(),</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">));</span>
+   resolvers<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> RequestParamMapMethodArgumentResolver<span style="color:#f92672">());</span>
+   resolvers<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> PathVariableMethodArgumentResolver<span style="color:#f92672">());</span>
+   resolvers<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> PathVariableMapMethodArgumentResolver<span style="color:#f92672">());</span>
+   resolvers<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> MatrixVariableMethodArgumentResolver<span style="color:#f92672">());</span>
+   resolvers<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> MatrixVariableMapMethodArgumentResolver<span style="color:#f92672">());</span>
+   resolvers<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ServletModelAttributeMethodProcessor<span style="color:#f92672">(</span><span style="color:#66d9ef">false</span><span style="color:#f92672">));</span>
+   resolvers<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> RequestResponseBodyMethodProcessor<span style="color:#f92672">(</span>getMessageConverters<span style="color:#f92672">(),</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">requestResponseBodyAdvice</span><span style="color:#f92672">));</span>
+   resolvers<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> RequestPartMethodArgumentResolver<span style="color:#f92672">(</span>getMessageConverters<span style="color:#f92672">(),</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">requestResponseBodyAdvice</span><span style="color:#f92672">));</span>
+   resolvers<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> RequestHeaderMethodArgumentResolver<span style="color:#f92672">(</span>getBeanFactory<span style="color:#f92672">()));</span>
+   resolvers<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> RequestHeaderMapMethodArgumentResolver<span style="color:#f92672">());</span>
+   resolvers<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ServletCookieValueMethodArgumentResolver<span style="color:#f92672">(</span>getBeanFactory<span style="color:#f92672">()));</span>
+   resolvers<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ExpressionValueMethodArgumentResolver<span style="color:#f92672">(</span>getBeanFactory<span style="color:#f92672">()));</span>
+   resolvers<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> SessionAttributeMethodArgumentResolver<span style="color:#f92672">());</span>
+   resolvers<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> RequestAttributeMethodArgumentResolver<span style="color:#f92672">());</span>
 
-   <span class="c1">// Type-based argument resolution
-</span><span class="c1"></span>   <span class="n">resolvers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">ServletRequestMethodArgumentResolver</span><span class="o">());</span>
-   <span class="n">resolvers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">ServletResponseMethodArgumentResolver</span><span class="o">());</span>
-   <span class="n">resolvers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">HttpEntityMethodProcessor</span><span class="o">(</span><span class="n">getMessageConverters</span><span class="o">(),</span> <span class="k">this</span><span class="o">.</span><span class="na">requestResponseBodyAdvice</span><span class="o">));</span>
-   <span class="n">resolvers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">RedirectAttributesMethodArgumentResolver</span><span class="o">());</span>
-   <span class="n">resolvers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">ModelMethodProcessor</span><span class="o">());</span>
-   <span class="n">resolvers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">MapMethodProcessor</span><span class="o">());</span>
-   <span class="n">resolvers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">ErrorsMethodArgumentResolver</span><span class="o">());</span>
-   <span class="n">resolvers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">SessionStatusMethodArgumentResolver</span><span class="o">());</span>
-   <span class="n">resolvers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">UriComponentsBuilderMethodArgumentResolver</span><span class="o">());</span>
-   <span class="k">if</span> <span class="o">(</span><span class="n">KotlinDetector</span><span class="o">.</span><span class="na">isKotlinPresent</span><span class="o">())</span> <span class="o">{</span>
-      <span class="n">resolvers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">ContinuationHandlerMethodArgumentResolver</span><span class="o">());</span>
-   <span class="o">}</span>
+   <span style="color:#75715e">// Type-based argument resolution
+</span><span style="color:#75715e"></span>   resolvers<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ServletRequestMethodArgumentResolver<span style="color:#f92672">());</span>
+   resolvers<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ServletResponseMethodArgumentResolver<span style="color:#f92672">());</span>
+   resolvers<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> HttpEntityMethodProcessor<span style="color:#f92672">(</span>getMessageConverters<span style="color:#f92672">(),</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">requestResponseBodyAdvice</span><span style="color:#f92672">));</span>
+   resolvers<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> RedirectAttributesMethodArgumentResolver<span style="color:#f92672">());</span>
+   resolvers<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ModelMethodProcessor<span style="color:#f92672">());</span>
+   resolvers<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> MapMethodProcessor<span style="color:#f92672">());</span>
+   resolvers<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ErrorsMethodArgumentResolver<span style="color:#f92672">());</span>
+   resolvers<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> SessionStatusMethodArgumentResolver<span style="color:#f92672">());</span>
+   resolvers<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> UriComponentsBuilderMethodArgumentResolver<span style="color:#f92672">());</span>
+   <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>KotlinDetector<span style="color:#f92672">.</span><span style="color:#a6e22e">isKotlinPresent</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+      resolvers<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ContinuationHandlerMethodArgumentResolver<span style="color:#f92672">());</span>
+   <span style="color:#f92672">}</span>
 
-   <span class="c1">// Custom arguments
-</span><span class="c1"></span>   <span class="k">if</span> <span class="o">(</span><span class="n">getCustomArgumentResolvers</span><span class="o">()</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
-      <span class="n">resolvers</span><span class="o">.</span><span class="na">addAll</span><span class="o">(</span><span class="n">getCustomArgumentResolvers</span><span class="o">());</span>
-   <span class="o">}</span>
+   <span style="color:#75715e">// Custom arguments
+</span><span style="color:#75715e"></span>   <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>getCustomArgumentResolvers<span style="color:#f92672">()</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+      resolvers<span style="color:#f92672">.</span><span style="color:#a6e22e">addAll</span><span style="color:#f92672">(</span>getCustomArgumentResolvers<span style="color:#f92672">());</span>
+   <span style="color:#f92672">}</span>
 
-   <span class="c1">// Catch-all
-</span><span class="c1"></span>   <span class="n">resolvers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">PrincipalMethodArgumentResolver</span><span class="o">());</span>
-   <span class="n">resolvers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">RequestParamMethodArgumentResolver</span><span class="o">(</span><span class="n">getBeanFactory</span><span class="o">(),</span> <span class="kc">true</span><span class="o">));</span>
-   <span class="n">resolvers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">ServletModelAttributeMethodProcessor</span><span class="o">(</span><span class="kc">true</span><span class="o">));</span>
+   <span style="color:#75715e">// Catch-all
+</span><span style="color:#75715e"></span>   resolvers<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> PrincipalMethodArgumentResolver<span style="color:#f92672">());</span>
+   resolvers<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> RequestParamMethodArgumentResolver<span style="color:#f92672">(</span>getBeanFactory<span style="color:#f92672">(),</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">));</span>
+   resolvers<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ServletModelAttributeMethodProcessor<span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">));</span>
 
-   <span class="k">return</span> <span class="n">resolvers</span><span class="o">;</span>
-<span class="o">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><p>通过 HandlerMethodArgumentResolver的supportsParameter方法</p>
+   <span style="color:#66d9ef">return</span> resolvers<span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>通过 HandlerMethodArgumentResolver的supportsParameter方法</p>
 <p>以RequestParam为例</p>
 <p>首先RequestParamMethodArgumentResolver的父类AbstractNamedValueMethodArgumentResolver，进行校验，校验Hanlder的参数是否是必填，会将@RequestParams的required进行校验，从HttpServletRequest里的parameter进行校验。校验成功，会通过反射执行handler，并将参数传入Handler中。</p>
 <p>@RequestBody也是一样，使用的RequestResponseBodyMethodProcessor去处理参数的</p>
@@ -741,83 +519,39 @@
 <p>加载启动类的注解信息，即启动类也可以是一个组件，<strong>注入到容器中</strong>，默认情况下，@SpringBootApplication里的@SpringBootConfiguration里有@Component注解，Spring会通过注解方式将其注入到容器中，细节就不说了，核心是@SpringBootConfiguration身上有@Configuration，而且有@Import注解，引入的是AutoConfigurationImportSelector</p>
 <p>SpringBoot在启动的时候，注入了ConfigurationClassPostProcessor该类实现了BeanDefinitionRegistryPostProcessor会在容器的refresh里的invokeBeanFactoryPostProcesser，里触发</p>
 <p>postProcessBeanDefinitionRegistry方法，会找到容器里所有的@Configuration实例，这里此时容器里有的就是启动类本身，然后会处理，@Configuration上的@Import，并且执行@Import类的process方法，即，最后依然调用的是selectImports方法，得到的就是Spring.factories里配置的**org.springframework.boot.autoconfigure.EnableAutoConfiguration=**的值，然后逐步解析所有的类，这样容器里就有第三方调用的所有信息了</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kt">void</span> <span class="nf">process</span><span class="o">(</span><span class="n">AnnotationMetadata</span> <span class="n">annotationMetadata</span><span class="o">,</span>
-      <span class="n">DeferredImportSelector</span> <span class="n">deferredImportSelector</span><span class="o">)</span> <span class="o">{</span>
-   <span class="n">Assert</span><span class="o">.</span><span class="na">state</span><span class="o">(</span>
-         <span class="n">deferredImportSelector</span> <span class="k">instanceof</span> <span class="n">AutoConfigurationImportSelector</span><span class="o">,</span>
-         <span class="o">()</span> <span class="o">-&gt;</span> <span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">&#34;Only %s implementations are supported, got %s&#34;</span><span class="o">,</span>
-               <span class="n">AutoConfigurationImportSelector</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">getSimpleName</span><span class="o">(),</span>
-               <span class="n">deferredImportSelector</span><span class="o">.</span><span class="na">getClass</span><span class="o">().</span><span class="na">getName</span><span class="o">()));</span>
-   <span class="n">AutoConfigurationEntry</span> <span class="n">autoConfigurationEntry</span> <span class="o">=</span> <span class="o">((</span><span class="n">AutoConfigurationImportSelector</span><span class="o">)</span> <span class="n">deferredImportSelector</span><span class="o">)</span>
-         <span class="o">.</span><span class="na">getAutoConfigurationEntry</span><span class="o">(</span><span class="n">getAutoConfigurationMetadata</span><span class="o">(),</span>
-               <span class="n">annotationMetadata</span><span class="o">);</span>
-   <span class="k">this</span><span class="o">.</span><span class="na">autoConfigurationEntries</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">autoConfigurationEntry</span><span class="o">);</span>
-   <span class="k">for</span> <span class="o">(</span><span class="n">String</span> <span class="n">importClassName</span> <span class="o">:</span> <span class="n">autoConfigurationEntry</span><span class="o">.</span><span class="na">getConfigurations</span><span class="o">())</span> <span class="o">{</span>
-      <span class="k">this</span><span class="o">.</span><span class="na">entries</span><span class="o">.</span><span class="na">putIfAbsent</span><span class="o">(</span><span class="n">importClassName</span><span class="o">,</span> <span class="n">annotationMetadata</span><span class="o">);</span>
-   <span class="o">}</span>
-<span class="o">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">protected</span> <span class="n">AutoConfigurationEntry</span> <span class="nf">getAutoConfigurationEntry</span><span class="o">(</span>
-      <span class="n">AutoConfigurationMetadata</span> <span class="n">autoConfigurationMetadata</span><span class="o">,</span>
-      <span class="n">AnnotationMetadata</span> <span class="n">annotationMetadata</span><span class="o">)</span> <span class="o">{</span>
-   <span class="k">if</span> <span class="o">(!</span><span class="n">isEnabled</span><span class="o">(</span><span class="n">annotationMetadata</span><span class="o">))</span> <span class="o">{</span>
-      <span class="k">return</span> <span class="n">EMPTY_ENTRY</span><span class="o">;</span>
-   <span class="o">}</span>
-   <span class="n">AnnotationAttributes</span> <span class="n">attributes</span> <span class="o">=</span> <span class="n">getAttributes</span><span class="o">(</span><span class="n">annotationMetadata</span><span class="o">);</span>
-   <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">configurations</span> <span class="o">=</span> <span class="n">getCandidateConfigurations</span><span class="o">(</span><span class="n">annotationMetadata</span><span class="o">,</span><span class="c1">//获取到所有的/META-INF/spring-factories中的configuration
-</span><span class="c1"></span>         <span class="n">attributes</span><span class="o">);</span>
-   <span class="n">configurations</span> <span class="o">=</span> <span class="n">removeDuplicates</span><span class="o">(</span><span class="n">configurations</span><span class="o">);</span><span class="c1">//删除重复的
-</span><span class="c1"></span>   <span class="n">Set</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">exclusions</span> <span class="o">=</span> <span class="n">getExclusions</span><span class="o">(</span><span class="n">annotationMetadata</span><span class="o">,</span> <span class="n">attributes</span><span class="o">);</span>
-   <span class="n">checkExcludedClasses</span><span class="o">(</span><span class="n">configurations</span><span class="o">,</span> <span class="n">exclusions</span><span class="o">);</span><span class="c1">//根据上面的属性excclusion
-</span><span class="c1"></span>   <span class="n">configurations</span><span class="o">.</span><span class="na">removeAll</span><span class="o">(</span><span class="n">exclusions</span><span class="o">);</span>
-   <span class="n">configurations</span> <span class="o">=</span> <span class="n">filter</span><span class="o">(</span><span class="n">configurations</span><span class="o">,</span> <span class="n">autoConfigurationMetadata</span><span class="o">);</span>
-   <span class="n">fireAutoConfigurationImportEvents</span><span class="o">(</span><span class="n">configurations</span><span class="o">,</span> <span class="n">exclusions</span><span class="o">);</span><span class="c1">//通知导入成功
-</span><span class="c1"></span>   <span class="k">return</span> <span class="k">new</span> <span class="n">AutoConfigurationEntry</span><span class="o">(</span><span class="n">configurations</span><span class="o">,</span> <span class="n">exclusions</span><span class="o">);</span>
-<span class="o">}</span>
-</code></pre></td></tr></table>
-</div>
-</div></li>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">process</span><span style="color:#f92672">(</span>AnnotationMetadata annotationMetadata<span style="color:#f92672">,</span>
+      DeferredImportSelector deferredImportSelector<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+   Assert<span style="color:#f92672">.</span><span style="color:#a6e22e">state</span><span style="color:#f92672">(</span>
+         deferredImportSelector <span style="color:#66d9ef">instanceof</span> AutoConfigurationImportSelector<span style="color:#f92672">,</span>
+         <span style="color:#f92672">()</span> <span style="color:#f92672">-&gt;</span> String<span style="color:#f92672">.</span><span style="color:#a6e22e">format</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Only %s implementations are supported, got %s&#34;</span><span style="color:#f92672">,</span>
+               AutoConfigurationImportSelector<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getSimpleName</span><span style="color:#f92672">(),</span>
+               deferredImportSelector<span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">()));</span>
+   AutoConfigurationEntry autoConfigurationEntry <span style="color:#f92672">=</span> <span style="color:#f92672">((</span>AutoConfigurationImportSelector<span style="color:#f92672">)</span> deferredImportSelector<span style="color:#f92672">)</span>
+         <span style="color:#f92672">.</span><span style="color:#a6e22e">getAutoConfigurationEntry</span><span style="color:#f92672">(</span>getAutoConfigurationMetadata<span style="color:#f92672">(),</span>
+               annotationMetadata<span style="color:#f92672">);</span>
+   <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">autoConfigurationEntries</span><span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>autoConfigurationEntry<span style="color:#f92672">);</span>
+   <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>String importClassName <span style="color:#f92672">:</span> autoConfigurationEntry<span style="color:#f92672">.</span><span style="color:#a6e22e">getConfigurations</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+      <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">entries</span><span style="color:#f92672">.</span><span style="color:#a6e22e">putIfAbsent</span><span style="color:#f92672">(</span>importClassName<span style="color:#f92672">,</span> annotationMetadata<span style="color:#f92672">);</span>
+   <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">protected</span> AutoConfigurationEntry <span style="color:#a6e22e">getAutoConfigurationEntry</span><span style="color:#f92672">(</span>
+      AutoConfigurationMetadata autoConfigurationMetadata<span style="color:#f92672">,</span>
+      AnnotationMetadata annotationMetadata<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+   <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>isEnabled<span style="color:#f92672">(</span>annotationMetadata<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+      <span style="color:#66d9ef">return</span> EMPTY_ENTRY<span style="color:#f92672">;</span>
+   <span style="color:#f92672">}</span>
+   AnnotationAttributes attributes <span style="color:#f92672">=</span> getAttributes<span style="color:#f92672">(</span>annotationMetadata<span style="color:#f92672">);</span>
+   List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> configurations <span style="color:#f92672">=</span> getCandidateConfigurations<span style="color:#f92672">(</span>annotationMetadata<span style="color:#f92672">,</span><span style="color:#75715e">//获取到所有的/META-INF/spring-factories中的configuration
+</span><span style="color:#75715e"></span>         attributes<span style="color:#f92672">);</span>
+   configurations <span style="color:#f92672">=</span> removeDuplicates<span style="color:#f92672">(</span>configurations<span style="color:#f92672">);</span><span style="color:#75715e">//删除重复的
+</span><span style="color:#75715e"></span>   Set<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> exclusions <span style="color:#f92672">=</span> getExclusions<span style="color:#f92672">(</span>annotationMetadata<span style="color:#f92672">,</span> attributes<span style="color:#f92672">);</span>
+   checkExcludedClasses<span style="color:#f92672">(</span>configurations<span style="color:#f92672">,</span> exclusions<span style="color:#f92672">);</span><span style="color:#75715e">//根据上面的属性excclusion
+</span><span style="color:#75715e"></span>   configurations<span style="color:#f92672">.</span><span style="color:#a6e22e">removeAll</span><span style="color:#f92672">(</span>exclusions<span style="color:#f92672">);</span>
+   configurations <span style="color:#f92672">=</span> filter<span style="color:#f92672">(</span>configurations<span style="color:#f92672">,</span> autoConfigurationMetadata<span style="color:#f92672">);</span>
+   fireAutoConfigurationImportEvents<span style="color:#f92672">(</span>configurations<span style="color:#f92672">,</span> exclusions<span style="color:#f92672">);</span><span style="color:#75715e">//通知导入成功
+</span><span style="color:#75715e"></span>   <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> AutoConfigurationEntry<span style="color:#f92672">(</span>configurations<span style="color:#f92672">,</span> exclusions<span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+</code></pre></div></li>
 </ul>
 <h1 id="spring事务">Spring事务</h1>
 <ul>
@@ -908,7 +642,32 @@
 	</article>
 </main>
 
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="Frank Silva avatar" src="/img/avatar.png" class="avatar" height="90" width="90">
+	</figure>
+	<div class="authorbox__header">
+		<span class="authorbox__name">About Frank Silva</span>
+	</div>
+	<div class="authorbox__description">
+		Pursue Consummate Coding.
+	</div>
+</div>
 
+<nav class="pager flex">
+	<div class="pager__item pager__item--prev">
+		<a class="pager__link" href="/post/%E5%B8%B8%E8%A7%81%E9%A2%98%E7%9B%AE/" rel="prev">
+			<span class="pager__subtitle">«&thinsp;Previous</span>
+			<p class="pager__title">八股文</p>
+		</a>
+	</div>
+	<div class="pager__item pager__item--next">
+		<a class="pager__link" href="/post/reactor/" rel="next">
+			<span class="pager__subtitle">Next&thinsp;»</span>
+			<p class="pager__title">Reactor响应式编程</p>
+		</a>
+	</div>
+</nav>
 
 
 			</div>
@@ -918,12 +677,14 @@
 	<div class="container footer__container flex">
 		
 		<div class="footer__copyright">
-			&copy; 2023 Luluhome - a blog for sh , &#39;lulu&#39; is my cat.
+			&copy; 2023 Frank Silva.
 			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
 		</div>
 	</div>
 </footer>
 	</div>
 <script async defer src="/js/menu.js"></script>
+<script src="/js/custom.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
 </body>
 </html>

@@ -4,16 +4,33 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>CopyonArraySet - Luluhome - a blog for sh , &#39;lulu&#39; is my cat</title>
+	<title>CopyonArraySet - Lulu</title>
 	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
 	<meta name="description" content="">
+		<meta property="og:title" content="CopyonArraySet" />
+<meta property="og:description" content="源码 public class CopyOnWriteArraySet&lt;E&gt; extends AbstractSet&lt;E&gt; implements java.io.Serializable { private static final long serialVersionUID = 5457747651344034263L; // 内部使用CopyOnWriteArrayList存储元素  private final CopyOnWriteArrayList&lt;E&gt; al; // 构造方法  public CopyOnWriteArraySet() { al = new CopyOnWriteArrayList&lt;E&gt;(); } // 将集合c中的元素初始化到CopyOnWriteArraySet中  public CopyOnWriteArraySet(Collection&lt;? extends E&gt; c) { if (c.getClass() == CopyOnWriteArraySet.class) { // 如果c是CopyOnWriteArraySet类型，说明没有重复元素，  // 直接调用CopyOnWriteArrayList的构造方法初始化  @SuppressWarnings(&#34;unchecked&#34;) CopyOnWriteArraySet&lt;E&gt; cc = (CopyOnWriteArraySet&lt;E&gt;)c; al = new CopyOnWriteArrayList&lt;E&gt;(cc.al); } else { // 如果c不是CopyOnWriteArraySet类型，说明有重复元素  // 调用CopyOnWriteArrayList的addAllAbsent()方法初始化  // 它会把重复元素排除掉  al = new CopyOnWriteArrayList&lt;E&gt;(); al." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sunhao1256.github.io/post/copyonarrayset/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-10-18T22:16:25+08:00" />
+<meta property="article:modified_time" content="2021-10-18T22:16:25+08:00" />
+
+
+		<meta itemprop="name" content="CopyonArraySet">
+<meta itemprop="description" content="源码 public class CopyOnWriteArraySet&lt;E&gt; extends AbstractSet&lt;E&gt; implements java.io.Serializable { private static final long serialVersionUID = 5457747651344034263L; // 内部使用CopyOnWriteArrayList存储元素  private final CopyOnWriteArrayList&lt;E&gt; al; // 构造方法  public CopyOnWriteArraySet() { al = new CopyOnWriteArrayList&lt;E&gt;(); } // 将集合c中的元素初始化到CopyOnWriteArraySet中  public CopyOnWriteArraySet(Collection&lt;? extends E&gt; c) { if (c.getClass() == CopyOnWriteArraySet.class) { // 如果c是CopyOnWriteArraySet类型，说明没有重复元素，  // 直接调用CopyOnWriteArrayList的构造方法初始化  @SuppressWarnings(&#34;unchecked&#34;) CopyOnWriteArraySet&lt;E&gt; cc = (CopyOnWriteArraySet&lt;E&gt;)c; al = new CopyOnWriteArrayList&lt;E&gt;(cc.al); } else { // 如果c不是CopyOnWriteArraySet类型，说明有重复元素  // 调用CopyOnWriteArrayList的addAllAbsent()方法初始化  // 它会把重复元素排除掉  al = new CopyOnWriteArrayList&lt;E&gt;(); al."><meta itemprop="datePublished" content="2021-10-18T22:16:25+08:00" />
+<meta itemprop="dateModified" content="2021-10-18T22:16:25+08:00" />
+<meta itemprop="wordCount" content="385">
+<meta itemprop="keywords" content="java基础," />
+		<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="CopyonArraySet"/>
+<meta name="twitter:description" content="源码 public class CopyOnWriteArraySet&lt;E&gt; extends AbstractSet&lt;E&gt; implements java.io.Serializable { private static final long serialVersionUID = 5457747651344034263L; // 内部使用CopyOnWriteArrayList存储元素  private final CopyOnWriteArrayList&lt;E&gt; al; // 构造方法  public CopyOnWriteArraySet() { al = new CopyOnWriteArrayList&lt;E&gt;(); } // 将集合c中的元素初始化到CopyOnWriteArraySet中  public CopyOnWriteArraySet(Collection&lt;? extends E&gt; c) { if (c.getClass() == CopyOnWriteArraySet.class) { // 如果c是CopyOnWriteArraySet类型，说明没有重复元素，  // 直接调用CopyOnWriteArrayList的构造方法初始化  @SuppressWarnings(&#34;unchecked&#34;) CopyOnWriteArraySet&lt;E&gt; cc = (CopyOnWriteArraySet&lt;E&gt;)c; al = new CopyOnWriteArrayList&lt;E&gt;(cc.al); } else { // 如果c不是CopyOnWriteArraySet类型，说明有重复元素  // 调用CopyOnWriteArrayList的addAllAbsent()方法初始化  // 它会把重复元素排除掉  al = new CopyOnWriteArrayList&lt;E&gt;(); al."/>
+
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link rel="dns-prefetch" href="//fonts.googleapis.com">
 	<link rel="dns-prefetch" href="//fonts.gstatic.com">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
 
 	<link rel="stylesheet" href="/css/style.css">
-	
+	<link rel="stylesheet" href="/css/custom.css">
 
 	<link rel="shortcut icon" href="/favicon.ico">
 		
@@ -23,11 +40,13 @@
 		<header class="header">
 	<div class="container header__container">
 		
-	<div class="logo">
-		<a class="logo__link" href="/" title="Luluhome - a blog for sh , &#39;lulu&#39; is my cat" rel="home">
-			<div class="logo__item logo__text">
-					<div class="logo__title">Luluhome - a blog for sh , &#39;lulu&#39; is my cat</div>
-					
+	<div class="logo logo--mixed">
+		<a class="logo__link" href="/" title="Lulu" rel="home">
+			<div class="logo__item logo__imagebox">
+					<img class="logo__img" src="/img/placeholder.png">
+				</div><div class="logo__item logo__text">
+					<div class="logo__title">Lulu</div>
+					<div class="logo__tagline">Lulu is arrongant cat</div>
 				</div>
 		</a>
 	</div>
@@ -37,27 +56,6 @@
 		<span class="menu__btn-title" tabindex="-1">Menu</span>
 	</button>
 	<ul class="menu__list">
-		<li class="menu__item">
-			<a class="menu__link" href="/">
-				
-				<span class="menu__text">Home</span>
-				
-			</a>
-		</li>
-		<li class="menu__item">
-			<a class="menu__link" href="/post/">
-				
-				<span class="menu__text">Archives</span>
-				
-			</a>
-		</li>
-		<li class="menu__item">
-			<a class="menu__link" href="/tags/">
-				
-				<span class="menu__text">Tags</span>
-				
-			</a>
-		</li>
 		<li class="menu__item">
 			<a class="menu__link" href="/about/">
 				
@@ -77,348 +75,175 @@
 	<article class="post">
 		<header class="post__header">
 			<h1 class="post__title">CopyonArraySet</h1>
-			
-		</header>
-		
-<div class="post__toc toc">
-	<div class="toc__title">Page content</div>
-	<div class="toc__menu">
-		<nav id="TableOfContents">
-  <ul>
-    <li><a href="#源码">源码</a></li>
-    <li><a href="#提问">提问</a></li>
-  </ul>
-</nav>
-	</div>
-</div><div class="content post__content clearfix">
-			<h1 id="源码">源码</h1>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">  1
-</span><span class="lnt">  2
-</span><span class="lnt">  3
-</span><span class="lnt">  4
-</span><span class="lnt">  5
-</span><span class="lnt">  6
-</span><span class="lnt">  7
-</span><span class="lnt">  8
-</span><span class="lnt">  9
-</span><span class="lnt"> 10
-</span><span class="lnt"> 11
-</span><span class="lnt"> 12
-</span><span class="lnt"> 13
-</span><span class="lnt"> 14
-</span><span class="lnt"> 15
-</span><span class="lnt"> 16
-</span><span class="lnt"> 17
-</span><span class="lnt"> 18
-</span><span class="lnt"> 19
-</span><span class="lnt"> 20
-</span><span class="lnt"> 21
-</span><span class="lnt"> 22
-</span><span class="lnt"> 23
-</span><span class="lnt"> 24
-</span><span class="lnt"> 25
-</span><span class="lnt"> 26
-</span><span class="lnt"> 27
-</span><span class="lnt"> 28
-</span><span class="lnt"> 29
-</span><span class="lnt"> 30
-</span><span class="lnt"> 31
-</span><span class="lnt"> 32
-</span><span class="lnt"> 33
-</span><span class="lnt"> 34
-</span><span class="lnt"> 35
-</span><span class="lnt"> 36
-</span><span class="lnt"> 37
-</span><span class="lnt"> 38
-</span><span class="lnt"> 39
-</span><span class="lnt"> 40
-</span><span class="lnt"> 41
-</span><span class="lnt"> 42
-</span><span class="lnt"> 43
-</span><span class="lnt"> 44
-</span><span class="lnt"> 45
-</span><span class="lnt"> 46
-</span><span class="lnt"> 47
-</span><span class="lnt"> 48
-</span><span class="lnt"> 49
-</span><span class="lnt"> 50
-</span><span class="lnt"> 51
-</span><span class="lnt"> 52
-</span><span class="lnt"> 53
-</span><span class="lnt"> 54
-</span><span class="lnt"> 55
-</span><span class="lnt"> 56
-</span><span class="lnt"> 57
-</span><span class="lnt"> 58
-</span><span class="lnt"> 59
-</span><span class="lnt"> 60
-</span><span class="lnt"> 61
-</span><span class="lnt"> 62
-</span><span class="lnt"> 63
-</span><span class="lnt"> 64
-</span><span class="lnt"> 65
-</span><span class="lnt"> 66
-</span><span class="lnt"> 67
-</span><span class="lnt"> 68
-</span><span class="lnt"> 69
-</span><span class="lnt"> 70
-</span><span class="lnt"> 71
-</span><span class="lnt"> 72
-</span><span class="lnt"> 73
-</span><span class="lnt"> 74
-</span><span class="lnt"> 75
-</span><span class="lnt"> 76
-</span><span class="lnt"> 77
-</span><span class="lnt"> 78
-</span><span class="lnt"> 79
-</span><span class="lnt"> 80
-</span><span class="lnt"> 81
-</span><span class="lnt"> 82
-</span><span class="lnt"> 83
-</span><span class="lnt"> 84
-</span><span class="lnt"> 85
-</span><span class="lnt"> 86
-</span><span class="lnt"> 87
-</span><span class="lnt"> 88
-</span><span class="lnt"> 89
-</span><span class="lnt"> 90
-</span><span class="lnt"> 91
-</span><span class="lnt"> 92
-</span><span class="lnt"> 93
-</span><span class="lnt"> 94
-</span><span class="lnt"> 95
-</span><span class="lnt"> 96
-</span><span class="lnt"> 97
-</span><span class="lnt"> 98
-</span><span class="lnt"> 99
-</span><span class="lnt">100
-</span><span class="lnt">101
-</span><span class="lnt">102
-</span><span class="lnt">103
-</span><span class="lnt">104
-</span><span class="lnt">105
-</span><span class="lnt">106
-</span><span class="lnt">107
-</span><span class="lnt">108
-</span><span class="lnt">109
-</span><span class="lnt">110
-</span><span class="lnt">111
-</span><span class="lnt">112
-</span><span class="lnt">113
-</span><span class="lnt">114
-</span><span class="lnt">115
-</span><span class="lnt">116
-</span><span class="lnt">117
-</span><span class="lnt">118
-</span><span class="lnt">119
-</span><span class="lnt">120
-</span><span class="lnt">121
-</span><span class="lnt">122
-</span><span class="lnt">123
-</span><span class="lnt">124
-</span><span class="lnt">125
-</span><span class="lnt">126
-</span><span class="lnt">127
-</span><span class="lnt">128
-</span><span class="lnt">129
-</span><span class="lnt">130
-</span><span class="lnt">131
-</span><span class="lnt">132
-</span><span class="lnt">133
-</span><span class="lnt">134
-</span><span class="lnt">135
-</span><span class="lnt">136
-</span><span class="lnt">137
-</span><span class="lnt">138
-</span><span class="lnt">139
-</span><span class="lnt">140
-</span><span class="lnt">141
-</span><span class="lnt">142
-</span><span class="lnt">143
-</span><span class="lnt">144
-</span><span class="lnt">145
-</span><span class="lnt">146
-</span><span class="lnt">147
-</span><span class="lnt">148
-</span><span class="lnt">149
-</span><span class="lnt">150
-</span><span class="lnt">151
-</span><span class="lnt">152
-</span><span class="lnt">153
-</span><span class="lnt">154
-</span><span class="lnt">155
-</span><span class="lnt">156
-</span><span class="lnt">157
-</span><span class="lnt">158
-</span><span class="lnt">159
-</span><span class="lnt">160
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CopyOnWriteArraySet</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="kd">extends</span> <span class="n">AbstractSet</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span>
-        <span class="kd">implements</span> <span class="n">java</span><span class="o">.</span><span class="na">io</span><span class="o">.</span><span class="na">Serializable</span> <span class="o">{</span>
-    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">long</span> <span class="n">serialVersionUID</span> <span class="o">=</span> <span class="n">5457747651344034263L</span><span class="o">;</span>
-
-    <span class="c1">// 内部使用CopyOnWriteArrayList存储元素
-</span><span class="c1"></span>    <span class="kd">private</span> <span class="kd">final</span> <span class="n">CopyOnWriteArrayList</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="n">al</span><span class="o">;</span>
-
-    <span class="c1">// 构造方法
-</span><span class="c1"></span>    <span class="kd">public</span> <span class="nf">CopyOnWriteArraySet</span><span class="o">()</span> <span class="o">{</span>
-        <span class="n">al</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CopyOnWriteArrayList</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;();</span>
-    <span class="o">}</span>
-    
-    <span class="c1">// 将集合c中的元素初始化到CopyOnWriteArraySet中
-</span><span class="c1"></span>    <span class="kd">public</span> <span class="nf">CopyOnWriteArraySet</span><span class="o">(</span><span class="n">Collection</span><span class="o">&lt;?</span> <span class="kd">extends</span> <span class="n">E</span><span class="o">&gt;</span> <span class="n">c</span><span class="o">)</span> <span class="o">{</span>
-        <span class="k">if</span> <span class="o">(</span><span class="n">c</span><span class="o">.</span><span class="na">getClass</span><span class="o">()</span> <span class="o">==</span> <span class="n">CopyOnWriteArraySet</span><span class="o">.</span><span class="na">class</span><span class="o">)</span> <span class="o">{</span>
-            <span class="c1">// 如果c是CopyOnWriteArraySet类型，说明没有重复元素，
-</span><span class="c1"></span>            <span class="c1">// 直接调用CopyOnWriteArrayList的构造方法初始化
-</span><span class="c1"></span>            <span class="nd">@SuppressWarnings</span><span class="o">(</span><span class="s">&#34;unchecked&#34;</span><span class="o">)</span> <span class="n">CopyOnWriteArraySet</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="n">cc</span> <span class="o">=</span>
-                <span class="o">(</span><span class="n">CopyOnWriteArraySet</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;)</span><span class="n">c</span><span class="o">;</span>
-            <span class="n">al</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CopyOnWriteArrayList</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;(</span><span class="n">cc</span><span class="o">.</span><span class="na">al</span><span class="o">);</span>
-        <span class="o">}</span>
-        <span class="k">else</span> <span class="o">{</span>
-            <span class="c1">// 如果c不是CopyOnWriteArraySet类型，说明有重复元素
-</span><span class="c1"></span>            <span class="c1">// 调用CopyOnWriteArrayList的addAllAbsent()方法初始化
-</span><span class="c1"></span>            <span class="c1">// 它会把重复元素排除掉
-</span><span class="c1"></span>            <span class="n">al</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CopyOnWriteArrayList</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;();</span>
-            <span class="n">al</span><span class="o">.</span><span class="na">addAllAbsent</span><span class="o">(</span><span class="n">c</span><span class="o">);</span>
-        <span class="o">}</span>
-    <span class="o">}</span>
-    
-    <span class="c1">// 获取元素个数
-</span><span class="c1"></span>    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">size</span><span class="o">()</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="n">al</span><span class="o">.</span><span class="na">size</span><span class="o">();</span>
-    <span class="o">}</span>
-
-    <span class="c1">// 检查集合是否为空
-</span><span class="c1"></span>    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isEmpty</span><span class="o">()</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="n">al</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">();</span>
-    <span class="o">}</span>
-    
-    <span class="c1">// 检查是否包含某个元素
-</span><span class="c1"></span>    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">contains</span><span class="o">(</span><span class="n">Object</span> <span class="n">o</span><span class="o">)</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="n">al</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">o</span><span class="o">);</span>
-    <span class="o">}</span>
-
-    <span class="c1">// 集合转数组
-</span><span class="c1"></span>    <span class="kd">public</span> <span class="n">Object</span><span class="o">[]</span> <span class="nf">toArray</span><span class="o">()</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="n">al</span><span class="o">.</span><span class="na">toArray</span><span class="o">();</span>
-    <span class="o">}</span>
-
-    <span class="c1">// 集合转数组，这里是可能有bug的，详情见ArrayList中分析
-</span><span class="c1"></span>    <span class="kd">public</span> <span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">T</span><span class="o">[]</span> <span class="nf">toArray</span><span class="o">(</span><span class="n">T</span><span class="o">[]</span> <span class="n">a</span><span class="o">)</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="n">al</span><span class="o">.</span><span class="na">toArray</span><span class="o">(</span><span class="n">a</span><span class="o">);</span>
-    <span class="o">}</span>
-    
-    <span class="c1">// 清空所有元素
-</span><span class="c1"></span>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">clear</span><span class="o">()</span> <span class="o">{</span>
-        <span class="n">al</span><span class="o">.</span><span class="na">clear</span><span class="o">();</span>
-    <span class="o">}</span>
-    
-    <span class="c1">// 删除元素
-</span><span class="c1"></span>    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">remove</span><span class="o">(</span><span class="n">Object</span> <span class="n">o</span><span class="o">)</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="n">al</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="n">o</span><span class="o">);</span>
-    <span class="o">}</span>
-    
-    <span class="c1">// 添加元素
-</span><span class="c1"></span>    <span class="c1">// 这里是调用CopyOnWriteArrayList的addIfAbsent()方法
-</span><span class="c1"></span>    <span class="c1">// 它会检测元素不存在的时候才添加
-</span><span class="c1"></span>    <span class="c1">// 还记得这个方法吗？当时有分析过的，建议把CopyOnWriteArrayList拿出来再看看
-</span><span class="c1"></span>    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">add</span><span class="o">(</span><span class="n">E</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="n">al</span><span class="o">.</span><span class="na">addIfAbsent</span><span class="o">(</span><span class="n">e</span><span class="o">);</span>
-    <span class="o">}</span>
-    
-    <span class="c1">// 是否包含c中的所有元素
-</span><span class="c1"></span>    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">containsAll</span><span class="o">(</span><span class="n">Collection</span><span class="o">&lt;?&gt;</span> <span class="n">c</span><span class="o">)</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="n">al</span><span class="o">.</span><span class="na">containsAll</span><span class="o">(</span><span class="n">c</span><span class="o">);</span>
-    <span class="o">}</span>
-    
-    <span class="c1">// 并集
-</span><span class="c1"></span>    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">addAll</span><span class="o">(</span><span class="n">Collection</span><span class="o">&lt;?</span> <span class="kd">extends</span> <span class="n">E</span><span class="o">&gt;</span> <span class="n">c</span><span class="o">)</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="n">al</span><span class="o">.</span><span class="na">addAllAbsent</span><span class="o">(</span><span class="n">c</span><span class="o">)</span> <span class="o">&gt;</span> <span class="n">0</span><span class="o">;</span>
-    <span class="o">}</span>
-
-    <span class="c1">// 单方向差集
-</span><span class="c1"></span>    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">removeAll</span><span class="o">(</span><span class="n">Collection</span><span class="o">&lt;?&gt;</span> <span class="n">c</span><span class="o">)</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="n">al</span><span class="o">.</span><span class="na">removeAll</span><span class="o">(</span><span class="n">c</span><span class="o">);</span>
-    <span class="o">}</span>
-
-    <span class="c1">// 交集
-</span><span class="c1"></span>    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">retainAll</span><span class="o">(</span><span class="n">Collection</span><span class="o">&lt;?&gt;</span> <span class="n">c</span><span class="o">)</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="n">al</span><span class="o">.</span><span class="na">retainAll</span><span class="o">(</span><span class="n">c</span><span class="o">);</span>
-    <span class="o">}</span>
-    
-    <span class="c1">// 迭代器
-</span><span class="c1"></span>    <span class="kd">public</span> <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="nf">iterator</span><span class="o">()</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="n">al</span><span class="o">.</span><span class="na">iterator</span><span class="o">();</span>
-    <span class="o">}</span>
-    
-    <span class="c1">// equals()方法
-</span><span class="c1"></span>    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">equals</span><span class="o">(</span><span class="n">Object</span> <span class="n">o</span><span class="o">)</span> <span class="o">{</span>
-        <span class="c1">// 如果两者是同一个对象，返回true
-</span><span class="c1"></span>        <span class="k">if</span> <span class="o">(</span><span class="n">o</span> <span class="o">==</span> <span class="k">this</span><span class="o">)</span>
-            <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
-        <span class="c1">// 如果o不是Set对象，返回false
-</span><span class="c1"></span>        <span class="k">if</span> <span class="o">(!(</span><span class="n">o</span> <span class="k">instanceof</span> <span class="n">Set</span><span class="o">))</span>
-            <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
-        <span class="n">Set</span><span class="o">&lt;?&gt;</span> <span class="n">set</span> <span class="o">=</span> <span class="o">(</span><span class="n">Set</span><span class="o">&lt;?&gt;)(</span><span class="n">o</span><span class="o">);</span>
-        <span class="n">Iterator</span><span class="o">&lt;?&gt;</span> <span class="n">it</span> <span class="o">=</span> <span class="n">set</span><span class="o">.</span><span class="na">iterator</span><span class="o">();</span>
-
-        <span class="c1">// 集合元素数组的快照
-</span><span class="c1"></span>        <span class="n">Object</span><span class="o">[]</span> <span class="n">elements</span> <span class="o">=</span> <span class="n">al</span><span class="o">.</span><span class="na">getArray</span><span class="o">();</span>
-        <span class="kt">int</span> <span class="n">len</span> <span class="o">=</span> <span class="n">elements</span><span class="o">.</span><span class="na">length</span><span class="o">;</span>
-        
-        <span class="c1">// 我觉得这里的设计不太好
-</span><span class="c1"></span>        <span class="c1">// 首先，Set中的元素本来就是不重复的，所以不需要再用个matched[]数组记录有没有出现过
-</span><span class="c1"></span>        <span class="c1">// 其次，两个集合的元素个数如果不相等，那肯定不相等了，这个是不是应该作为第一要素先检查
-</span><span class="c1"></span>        <span class="kt">boolean</span><span class="o">[]</span> <span class="n">matched</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">boolean</span><span class="o">[</span><span class="n">len</span><span class="o">];</span>
-        <span class="kt">int</span> <span class="n">k</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span>
-        <span class="c1">// 从o这个集合开始遍历
-</span><span class="c1"></span>        <span class="n">outer</span><span class="o">:</span> <span class="k">while</span> <span class="o">(</span><span class="n">it</span><span class="o">.</span><span class="na">hasNext</span><span class="o">())</span> <span class="o">{</span>
-            <span class="c1">// 如果k&gt;len了，说明o中元素多了
-</span><span class="c1"></span>            <span class="k">if</span> <span class="o">(++</span><span class="n">k</span> <span class="o">&gt;</span> <span class="n">len</span><span class="o">)</span>
-                <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
-            <span class="c1">// 取值
-</span><span class="c1"></span>            <span class="n">Object</span> <span class="n">x</span> <span class="o">=</span> <span class="n">it</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
-            <span class="c1">// 遍历检查是否在当前集合中
-</span><span class="c1"></span>            <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">len</span><span class="o">;</span> <span class="o">++</span><span class="n">i</span><span class="o">)</span> <span class="o">{</span>
-                <span class="k">if</span> <span class="o">(!</span><span class="n">matched</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="n">eq</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">elements</span><span class="o">[</span><span class="n">i</span><span class="o">]))</span> <span class="o">{</span>
-                    <span class="n">matched</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
-                    <span class="k">continue</span> <span class="n">outer</span><span class="o">;</span>
-                <span class="o">}</span>
-            <span class="o">}</span>
-            <span class="c1">// 如果不在当前集合中，返回false
-</span><span class="c1"></span>            <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
-        <span class="o">}</span>
-        <span class="k">return</span> <span class="n">k</span> <span class="o">==</span> <span class="n">len</span><span class="o">;</span>
-    <span class="o">}</span>
-
-    <span class="c1">// 移除满足过滤条件的元素
-</span><span class="c1"></span>    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">removeIf</span><span class="o">(</span><span class="n">Predicate</span><span class="o">&lt;?</span> <span class="kd">super</span> <span class="n">E</span><span class="o">&gt;</span> <span class="n">filter</span><span class="o">)</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="n">al</span><span class="o">.</span><span class="na">removeIf</span><span class="o">(</span><span class="n">filter</span><span class="o">);</span>
-    <span class="o">}</span>
-
-    <span class="c1">// 遍历元素
-</span><span class="c1"></span>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">forEach</span><span class="o">(</span><span class="n">Consumer</span><span class="o">&lt;?</span> <span class="kd">super</span> <span class="n">E</span><span class="o">&gt;</span> <span class="n">action</span><span class="o">)</span> <span class="o">{</span>
-        <span class="n">al</span><span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="n">action</span><span class="o">);</span>
-    <span class="o">}</span>
-
-    <span class="c1">// 分割的迭代器
-</span><span class="c1"></span>    <span class="kd">public</span> <span class="n">Spliterator</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="nf">spliterator</span><span class="o">()</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="n">Spliterators</span><span class="o">.</span><span class="na">spliterator</span>
-            <span class="o">(</span><span class="n">al</span><span class="o">.</span><span class="na">getArray</span><span class="o">(),</span> <span class="n">Spliterator</span><span class="o">.</span><span class="na">IMMUTABLE</span> <span class="o">|</span> <span class="n">Spliterator</span><span class="o">.</span><span class="na">DISTINCT</span><span class="o">);</span>
-    <span class="o">}</span>
-    
-    <span class="c1">// 比较两个元素是否相等
-</span><span class="c1"></span>    <span class="kd">private</span> <span class="kd">static</span> <span class="kt">boolean</span> <span class="nf">eq</span><span class="o">(</span><span class="n">Object</span> <span class="n">o1</span><span class="o">,</span> <span class="n">Object</span> <span class="n">o2</span><span class="o">)</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="o">(</span><span class="n">o1</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">?</span> <span class="n">o2</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">:</span> <span class="n">o1</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">o2</span><span class="o">);</span>
-    <span class="o">}</span>
-<span class="o">}</span>
-
-</code></pre></td></tr></table>
+			<div class="post__meta meta"><div class="meta__item-author meta__item">
+	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 12 16"><path d="M6 1c2.2 0 3.5 2 3.5 4.5C9.5 7 8.9 8.2 8 9c2.9.8 4 2.5 4 5v1H0v-1c0-2.5 1.1-4.2 4-5-.9-.8-1.5-2-1.5-3.5C2.5 3 3.8 1 6 1z"/></svg><span class="meta__text">Frank Silva</span>
 </div>
-</div><h1 id="提问">提问</h1>
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg><time class="meta__text" datetime="2021-10-18T22:16:25&#43;08:00">2021-10-18</time></div></div>
+		</header>
+		<div class="content post__content clearfix">
+			<h1 id="源码">源码</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CopyOnWriteArraySet</span><span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">extends</span> AbstractSet<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span>
+        <span style="color:#66d9ef">implements</span> java<span style="color:#f92672">.</span><span style="color:#a6e22e">io</span><span style="color:#f92672">.</span><span style="color:#a6e22e">Serializable</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">long</span> serialVersionUID <span style="color:#f92672">=</span> 5457747651344034263L<span style="color:#f92672">;</span>
+
+    <span style="color:#75715e">// 内部使用CopyOnWriteArrayList存储元素
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> CopyOnWriteArrayList<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> al<span style="color:#f92672">;</span>
+
+    <span style="color:#75715e">// 构造方法
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">CopyOnWriteArraySet</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        al <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> CopyOnWriteArrayList<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;();</span>
+    <span style="color:#f92672">}</span>
+    
+    <span style="color:#75715e">// 将集合c中的元素初始化到CopyOnWriteArraySet中
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">CopyOnWriteArraySet</span><span style="color:#f92672">(</span>Collection<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">extends</span> E<span style="color:#f92672">&gt;</span> c<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>c<span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">()</span> <span style="color:#f92672">==</span> CopyOnWriteArraySet<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#75715e">// 如果c是CopyOnWriteArraySet类型，说明没有重复元素，
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// 直接调用CopyOnWriteArrayList的构造方法初始化
+</span><span style="color:#75715e"></span>            <span style="color:#a6e22e">@SuppressWarnings</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;unchecked&#34;</span><span style="color:#f92672">)</span> CopyOnWriteArraySet<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> cc <span style="color:#f92672">=</span>
+                <span style="color:#f92672">(</span>CopyOnWriteArraySet<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;)</span>c<span style="color:#f92672">;</span>
+            al <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> CopyOnWriteArrayList<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;(</span>cc<span style="color:#f92672">.</span><span style="color:#a6e22e">al</span><span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+            <span style="color:#75715e">// 如果c不是CopyOnWriteArraySet类型，说明有重复元素
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// 调用CopyOnWriteArrayList的addAllAbsent()方法初始化
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// 它会把重复元素排除掉
+</span><span style="color:#75715e"></span>            al <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> CopyOnWriteArrayList<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;();</span>
+            al<span style="color:#f92672">.</span><span style="color:#a6e22e">addAllAbsent</span><span style="color:#f92672">(</span>c<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+    
+    <span style="color:#75715e">// 获取元素个数
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">size</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> al<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#75715e">// 检查集合是否为空
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> al<span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+    
+    <span style="color:#75715e">// 检查是否包含某个元素
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">contains</span><span style="color:#f92672">(</span>Object o<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> al<span style="color:#f92672">.</span><span style="color:#a6e22e">contains</span><span style="color:#f92672">(</span>o<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#75715e">// 集合转数组
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">public</span> Object<span style="color:#f92672">[]</span> <span style="color:#a6e22e">toArray</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> al<span style="color:#f92672">.</span><span style="color:#a6e22e">toArray</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#75715e">// 集合转数组，这里是可能有bug的，详情见ArrayList中分析
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">public</span> <span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> T<span style="color:#f92672">[]</span> <span style="color:#a6e22e">toArray</span><span style="color:#f92672">(</span>T<span style="color:#f92672">[]</span> a<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> al<span style="color:#f92672">.</span><span style="color:#a6e22e">toArray</span><span style="color:#f92672">(</span>a<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+    
+    <span style="color:#75715e">// 清空所有元素
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">clear</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        al<span style="color:#f92672">.</span><span style="color:#a6e22e">clear</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+    
+    <span style="color:#75715e">// 删除元素
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">remove</span><span style="color:#f92672">(</span>Object o<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> al<span style="color:#f92672">.</span><span style="color:#a6e22e">remove</span><span style="color:#f92672">(</span>o<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+    
+    <span style="color:#75715e">// 添加元素
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 这里是调用CopyOnWriteArrayList的addIfAbsent()方法
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 它会检测元素不存在的时候才添加
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 还记得这个方法吗？当时有分析过的，建议把CopyOnWriteArrayList拿出来再看看
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>E e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> al<span style="color:#f92672">.</span><span style="color:#a6e22e">addIfAbsent</span><span style="color:#f92672">(</span>e<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+    
+    <span style="color:#75715e">// 是否包含c中的所有元素
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">containsAll</span><span style="color:#f92672">(</span>Collection<span style="color:#f92672">&lt;?&gt;</span> c<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> al<span style="color:#f92672">.</span><span style="color:#a6e22e">containsAll</span><span style="color:#f92672">(</span>c<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+    
+    <span style="color:#75715e">// 并集
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">addAll</span><span style="color:#f92672">(</span>Collection<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">extends</span> E<span style="color:#f92672">&gt;</span> c<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> al<span style="color:#f92672">.</span><span style="color:#a6e22e">addAllAbsent</span><span style="color:#f92672">(</span>c<span style="color:#f92672">)</span> <span style="color:#f92672">&gt;</span> 0<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#75715e">// 单方向差集
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">removeAll</span><span style="color:#f92672">(</span>Collection<span style="color:#f92672">&lt;?&gt;</span> c<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> al<span style="color:#f92672">.</span><span style="color:#a6e22e">removeAll</span><span style="color:#f92672">(</span>c<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#75715e">// 交集
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">retainAll</span><span style="color:#f92672">(</span>Collection<span style="color:#f92672">&lt;?&gt;</span> c<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> al<span style="color:#f92672">.</span><span style="color:#a6e22e">retainAll</span><span style="color:#f92672">(</span>c<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+    
+    <span style="color:#75715e">// 迭代器
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">public</span> Iterator<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">iterator</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> al<span style="color:#f92672">.</span><span style="color:#a6e22e">iterator</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+    
+    <span style="color:#75715e">// equals()方法
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>Object o<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// 如果两者是同一个对象，返回true
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>o <span style="color:#f92672">==</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">)</span>
+            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+        <span style="color:#75715e">// 如果o不是Set对象，返回false
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!(</span>o <span style="color:#66d9ef">instanceof</span> Set<span style="color:#f92672">))</span>
+            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+        Set<span style="color:#f92672">&lt;?&gt;</span> set <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>Set<span style="color:#f92672">&lt;?&gt;)(</span>o<span style="color:#f92672">);</span>
+        Iterator<span style="color:#f92672">&lt;?&gt;</span> it <span style="color:#f92672">=</span> set<span style="color:#f92672">.</span><span style="color:#a6e22e">iterator</span><span style="color:#f92672">();</span>
+
+        <span style="color:#75715e">// 集合元素数组的快照
+</span><span style="color:#75715e"></span>        Object<span style="color:#f92672">[]</span> elements <span style="color:#f92672">=</span> al<span style="color:#f92672">.</span><span style="color:#a6e22e">getArray</span><span style="color:#f92672">();</span>
+        <span style="color:#66d9ef">int</span> len <span style="color:#f92672">=</span> elements<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">;</span>
+        
+        <span style="color:#75715e">// 我觉得这里的设计不太好
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// 首先，Set中的元素本来就是不重复的，所以不需要再用个matched[]数组记录有没有出现过
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// 其次，两个集合的元素个数如果不相等，那肯定不相等了，这个是不是应该作为第一要素先检查
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">boolean</span><span style="color:#f92672">[]</span> matched <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">boolean</span><span style="color:#f92672">[</span>len<span style="color:#f92672">];</span>
+        <span style="color:#66d9ef">int</span> k <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
+        <span style="color:#75715e">// 从o这个集合开始遍历
+</span><span style="color:#75715e"></span>        outer<span style="color:#f92672">:</span> <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>it<span style="color:#f92672">.</span><span style="color:#a6e22e">hasNext</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+            <span style="color:#75715e">// 如果k&gt;len了，说明o中元素多了
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(++</span>k <span style="color:#f92672">&gt;</span> len<span style="color:#f92672">)</span>
+                <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+            <span style="color:#75715e">// 取值
+</span><span style="color:#75715e"></span>            Object x <span style="color:#f92672">=</span> it<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">();</span>
+            <span style="color:#75715e">// 遍历检查是否在当前集合中
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> len<span style="color:#f92672">;</span> <span style="color:#f92672">++</span>i<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>matched<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span> <span style="color:#f92672">&amp;&amp;</span> eq<span style="color:#f92672">(</span>x<span style="color:#f92672">,</span> elements<span style="color:#f92672">[</span>i<span style="color:#f92672">]))</span> <span style="color:#f92672">{</span>
+                    matched<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+                    <span style="color:#66d9ef">continue</span> outer<span style="color:#f92672">;</span>
+                <span style="color:#f92672">}</span>
+            <span style="color:#f92672">}</span>
+            <span style="color:#75715e">// 如果不在当前集合中，返回false
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">return</span> k <span style="color:#f92672">==</span> len<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#75715e">// 移除满足过滤条件的元素
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">removeIf</span><span style="color:#f92672">(</span>Predicate<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">super</span> E<span style="color:#f92672">&gt;</span> filter<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> al<span style="color:#f92672">.</span><span style="color:#a6e22e">removeIf</span><span style="color:#f92672">(</span>filter<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#75715e">// 遍历元素
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">forEach</span><span style="color:#f92672">(</span>Consumer<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">super</span> E<span style="color:#f92672">&gt;</span> action<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        al<span style="color:#f92672">.</span><span style="color:#a6e22e">forEach</span><span style="color:#f92672">(</span>action<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#75715e">// 分割的迭代器
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">public</span> Spliterator<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">spliterator</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> Spliterators<span style="color:#f92672">.</span><span style="color:#a6e22e">spliterator</span>
+            <span style="color:#f92672">(</span>al<span style="color:#f92672">.</span><span style="color:#a6e22e">getArray</span><span style="color:#f92672">(),</span> Spliterator<span style="color:#f92672">.</span><span style="color:#a6e22e">IMMUTABLE</span> <span style="color:#f92672">|</span> Spliterator<span style="color:#f92672">.</span><span style="color:#a6e22e">DISTINCT</span><span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+    
+    <span style="color:#75715e">// 比较两个元素是否相等
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">eq</span><span style="color:#f92672">(</span>Object o1<span style="color:#f92672">,</span> Object o2<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#f92672">(</span>o1 <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">?</span> o2 <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">:</span> o1<span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>o2<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+
+</code></pre></div><h1 id="提问">提问</h1>
 <ul>
 <li>
 <p>CopyOnArraySet是如何保证数据不重复</p>
@@ -449,7 +274,32 @@
 	</article>
 </main>
 
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="Frank Silva avatar" src="/img/avatar.png" class="avatar" height="90" width="90">
+	</figure>
+	<div class="authorbox__header">
+		<span class="authorbox__name">About Frank Silva</span>
+	</div>
+	<div class="authorbox__description">
+		Pursue Consummate Coding.
+	</div>
+</div>
 
+<nav class="pager flex">
+	<div class="pager__item pager__item--prev">
+		<a class="pager__link" href="/post/hashset/" rel="prev">
+			<span class="pager__subtitle">«&thinsp;Previous</span>
+			<p class="pager__title">Hashset</p>
+		</a>
+	</div>
+	<div class="pager__item pager__item--next">
+		<a class="pager__link" href="/post/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="next">
+			<span class="pager__subtitle">Next&thinsp;»</span>
+			<p class="pager__title">数据结构</p>
+		</a>
+	</div>
+</nav>
 
 
 			</div>
@@ -459,12 +309,14 @@
 	<div class="container footer__container flex">
 		
 		<div class="footer__copyright">
-			&copy; 2023 Luluhome - a blog for sh , &#39;lulu&#39; is my cat.
+			&copy; 2023 Frank Silva.
 			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
 		</div>
 	</div>
 </footer>
 	</div>
 <script async defer src="/js/menu.js"></script>
+<script src="/js/custom.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
 </body>
 </html>

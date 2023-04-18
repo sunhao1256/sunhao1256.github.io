@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>kubernetes on Luluhome - a blog for sh , &#39;lulu&#39; is my cat</title>
+    <title>kubernetes on Lulu</title>
     <link>https://sunhao1256.github.io/tags/kubernetes/</link>
-    <description>Recent content in kubernetes on Luluhome - a blog for sh , &#39;lulu&#39; is my cat</description>
+    <description>Recent content in kubernetes on Lulu</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en</language>
+    <language>en-us</language>
     <lastBuildDate>Wed, 02 Nov 2022 15:17:34 +0800</lastBuildDate><atom:link href="https://sunhao1256.github.io/tags/kubernetes/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Kubernetes Nice Article</title>
@@ -13,7 +13,12 @@
       <pubDate>Wed, 02 Nov 2022 15:17:34 +0800</pubDate>
       
       <guid>https://sunhao1256.github.io/post/kubernetes-nice-article/</guid>
-      <description>Working with Kubernetes API k8s-client-go sample-controller helm-gudie Kubernetes Informer 源码解析 [kubeDB][https://kubedb.com/docs/v2022.10.18/guides/mysql/quickstart/]</description>
+      <description>Working with Kubernetes API
+k8s-client-go
+sample-controller
+helm-gudie
+Kubernetes Informer 源码解析
+[kubeDB][https://kubedb.com/docs/v2022.10.18/guides/mysql/quickstart/]</description>
     </item>
     
     <item>

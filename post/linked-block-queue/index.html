@@ -4,16 +4,36 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Linked Block Queue - Luluhome - a blog for sh , &#39;lulu&#39; is my cat</title>
+	<title>Linked Block Queue - Lulu</title>
 	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
 	<meta name="description" content="">
+		<meta property="og:title" content="Linked Block Queue" />
+<meta property="og:description" content="linked from https://www.cnblogs.com/tong-yuan/p/LinkedBlockingQueue.html
+ 属性 // 容量 private final int capacity; // 元素数量 private final AtomicInteger count = new AtomicInteger(); // 链表头 transient Node&lt;E&gt; head; // 链表尾 private transient Node&lt;E&gt; last; // take锁 private final ReentrantLock takeLock = new ReentrantLock(); // notEmpty条件 // 当队列无元素时，take锁会阻塞在notEmpty条件上，等待其它线程唤醒 private final Condition notEmpty = takeLock.newCondition(); // 放锁 private final ReentrantLock putLock = new ReentrantLock(); // notFull条件 // 当队列满了时，put锁会会阻塞在notFull上，等待其它线程唤醒 private final Condition notFull = putLock.newCondition(); （1）capacity，有容量，可以理解为LinkedBlockingQueue是有界队列" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sunhao1256.github.io/post/linked-block-queue/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-10-21T15:31:00+08:00" />
+<meta property="article:modified_time" content="2022-10-21T15:31:00+08:00" />
+
+
+		<meta itemprop="name" content="Linked Block Queue">
+<meta itemprop="description" content="linked from https://www.cnblogs.com/tong-yuan/p/LinkedBlockingQueue.html
+ 属性 // 容量 private final int capacity; // 元素数量 private final AtomicInteger count = new AtomicInteger(); // 链表头 transient Node&lt;E&gt; head; // 链表尾 private transient Node&lt;E&gt; last; // take锁 private final ReentrantLock takeLock = new ReentrantLock(); // notEmpty条件 // 当队列无元素时，take锁会阻塞在notEmpty条件上，等待其它线程唤醒 private final Condition notEmpty = takeLock.newCondition(); // 放锁 private final ReentrantLock putLock = new ReentrantLock(); // notFull条件 // 当队列满了时，put锁会会阻塞在notFull上，等待其它线程唤醒 private final Condition notFull = putLock.newCondition(); （1）capacity，有容量，可以理解为LinkedBlockingQueue是有界队列"><meta itemprop="datePublished" content="2022-10-21T15:31:00+08:00" />
+<meta itemprop="dateModified" content="2022-10-21T15:31:00+08:00" />
+<meta itemprop="wordCount" content="399">
+<meta itemprop="keywords" content="java基础," />
+		<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Linked Block Queue"/>
+<meta name="twitter:description" content="linked from https://www.cnblogs.com/tong-yuan/p/LinkedBlockingQueue.html
+ 属性 // 容量 private final int capacity; // 元素数量 private final AtomicInteger count = new AtomicInteger(); // 链表头 transient Node&lt;E&gt; head; // 链表尾 private transient Node&lt;E&gt; last; // take锁 private final ReentrantLock takeLock = new ReentrantLock(); // notEmpty条件 // 当队列无元素时，take锁会阻塞在notEmpty条件上，等待其它线程唤醒 private final Condition notEmpty = takeLock.newCondition(); // 放锁 private final ReentrantLock putLock = new ReentrantLock(); // notFull条件 // 当队列满了时，put锁会会阻塞在notFull上，等待其它线程唤醒 private final Condition notFull = putLock.newCondition(); （1）capacity，有容量，可以理解为LinkedBlockingQueue是有界队列"/>
+
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link rel="dns-prefetch" href="//fonts.googleapis.com">
 	<link rel="dns-prefetch" href="//fonts.gstatic.com">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
 
 	<link rel="stylesheet" href="/css/style.css">
-	
+	<link rel="stylesheet" href="/css/custom.css">
 
 	<link rel="shortcut icon" href="/favicon.ico">
 		
@@ -23,11 +43,13 @@
 		<header class="header">
 	<div class="container header__container">
 		
-	<div class="logo">
-		<a class="logo__link" href="/" title="Luluhome - a blog for sh , &#39;lulu&#39; is my cat" rel="home">
-			<div class="logo__item logo__text">
-					<div class="logo__title">Luluhome - a blog for sh , &#39;lulu&#39; is my cat</div>
-					
+	<div class="logo logo--mixed">
+		<a class="logo__link" href="/" title="Lulu" rel="home">
+			<div class="logo__item logo__imagebox">
+					<img class="logo__img" src="/img/placeholder.png">
+				</div><div class="logo__item logo__text">
+					<div class="logo__title">Lulu</div>
+					<div class="logo__tagline">Lulu is arrongant cat</div>
 				</div>
 		</a>
 	</div>
@@ -37,27 +59,6 @@
 		<span class="menu__btn-title" tabindex="-1">Menu</span>
 	</button>
 	<ul class="menu__list">
-		<li class="menu__item">
-			<a class="menu__link" href="/">
-				
-				<span class="menu__text">Home</span>
-				
-			</a>
-		</li>
-		<li class="menu__item">
-			<a class="menu__link" href="/post/">
-				
-				<span class="menu__text">Archives</span>
-				
-			</a>
-		</li>
-		<li class="menu__item">
-			<a class="menu__link" href="/tags/">
-				
-				<span class="menu__text">Tags</span>
-				
-			</a>
-		</li>
 		<li class="menu__item">
 			<a class="menu__link" href="/about/">
 				
@@ -77,7 +78,11 @@
 	<article class="post">
 		<header class="post__header">
 			<h1 class="post__title">Linked Block Queue</h1>
-			
+			<div class="post__meta meta"><div class="meta__item-author meta__item">
+	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 12 16"><path d="M6 1c2.2 0 3.5 2 3.5 4.5C9.5 7 8.9 8.2 8 9c2.9.8 4 2.5 4 5v1H0v-1c0-2.5 1.1-4.2 4-5-.9-.8-1.5-2-1.5-3.5C2.5 3 3.8 1 6 1z"/></svg><span class="meta__text">Frank Silva</span>
+</div>
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg><time class="meta__text" datetime="2022-10-21T15:31:00&#43;08:00">2022-10-21</time></div></div>
 		</header>
 		
 <div class="post__toc toc">
@@ -85,16 +90,12 @@
 	<div class="toc__menu">
 		<nav id="TableOfContents">
   <ul>
-    <li>
-      <ul>
-        <li><a href="#属性">属性</a></li>
-        <li><a href="#构造函数">构造函数</a></li>
-        <li><a href="#入队">入队</a></li>
-        <li><a href="#出队">出队</a></li>
-        <li><a href="#总结">总结</a></li>
-        <li><a href="#彩蛋">彩蛋</a></li>
-      </ul>
-    </li>
+    <li><a href="#属性">属性</a></li>
+    <li><a href="#构造函数">构造函数</a></li>
+    <li><a href="#入队">入队</a></li>
+    <li><a href="#出队">出队</a></li>
+    <li><a href="#总结">总结</a></li>
+    <li><a href="#彩蛋">彩蛋</a></li>
   </ul>
 </nav>
 	</div>
@@ -103,345 +104,171 @@
 <p>linked from <a href="https://www.cnblogs.com/tong-yuan/p/LinkedBlockingQueue.html">https://www.cnblogs.com/tong-yuan/p/LinkedBlockingQueue.html</a></p>
 </blockquote>
 <h2 id="属性">属性</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="c1">// 容量
-</span><span class="c1"></span><span class="kd">private</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">capacity</span><span class="o">;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// 容量
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> capacity<span style="color:#f92672">;</span>
 
-<span class="c1">// 元素数量
-</span><span class="c1"></span><span class="kd">private</span> <span class="kd">final</span> <span class="n">AtomicInteger</span> <span class="n">count</span> <span class="o">=</span> <span class="k">new</span> <span class="n">AtomicInteger</span><span class="o">();</span>
+<span style="color:#75715e">// 元素数量
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> AtomicInteger count <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> AtomicInteger<span style="color:#f92672">();</span>
 
-<span class="c1">// 链表头
-</span><span class="c1"></span><span class="kd">transient</span> <span class="n">Node</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="n">head</span><span class="o">;</span>
+<span style="color:#75715e">// 链表头
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">transient</span> Node<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> head<span style="color:#f92672">;</span>
 
-<span class="c1">// 链表尾
-</span><span class="c1"></span><span class="kd">private</span> <span class="kd">transient</span> <span class="n">Node</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="n">last</span><span class="o">;</span>
+<span style="color:#75715e">// 链表尾
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">transient</span> Node<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> last<span style="color:#f92672">;</span>
 
-<span class="c1">// take锁
-</span><span class="c1"></span><span class="kd">private</span> <span class="kd">final</span> <span class="n">ReentrantLock</span> <span class="n">takeLock</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ReentrantLock</span><span class="o">();</span>
+<span style="color:#75715e">// take锁
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> ReentrantLock takeLock <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ReentrantLock<span style="color:#f92672">();</span>
 
-<span class="c1">// notEmpty条件
-</span><span class="c1">// 当队列无元素时，take锁会阻塞在notEmpty条件上，等待其它线程唤醒
-</span><span class="c1"></span><span class="kd">private</span> <span class="kd">final</span> <span class="n">Condition</span> <span class="n">notEmpty</span> <span class="o">=</span> <span class="n">takeLock</span><span class="o">.</span><span class="na">newCondition</span><span class="o">();</span>
+<span style="color:#75715e">// notEmpty条件
+</span><span style="color:#75715e">// 当队列无元素时，take锁会阻塞在notEmpty条件上，等待其它线程唤醒
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> Condition notEmpty <span style="color:#f92672">=</span> takeLock<span style="color:#f92672">.</span><span style="color:#a6e22e">newCondition</span><span style="color:#f92672">();</span>
 
-<span class="c1">// 放锁
-</span><span class="c1"></span><span class="kd">private</span> <span class="kd">final</span> <span class="n">ReentrantLock</span> <span class="n">putLock</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ReentrantLock</span><span class="o">();</span>
+<span style="color:#75715e">// 放锁
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> ReentrantLock putLock <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ReentrantLock<span style="color:#f92672">();</span>
 
-<span class="c1">// notFull条件
-</span><span class="c1">// 当队列满了时，put锁会会阻塞在notFull上，等待其它线程唤醒
-</span><span class="c1"></span><span class="kd">private</span> <span class="kd">final</span> <span class="n">Condition</span> <span class="n">notFull</span> <span class="o">=</span> <span class="n">putLock</span><span class="o">.</span><span class="na">newCondition</span><span class="o">();</span>
+<span style="color:#75715e">// notFull条件
+</span><span style="color:#75715e">// 当队列满了时，put锁会会阻塞在notFull上，等待其它线程唤醒
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> Condition notFull <span style="color:#f92672">=</span> putLock<span style="color:#f92672">.</span><span style="color:#a6e22e">newCondition</span><span style="color:#f92672">();</span>
 
-</code></pre></td></tr></table>
-</div>
-</div><p>（1）capacity，有容量，可以理解为LinkedBlockingQueue是有界队列</p>
+</code></pre></div><p>（1）capacity，有容量，可以理解为LinkedBlockingQueue是有界队列</p>
 <p>（2）head, last，链表头、链表尾指针</p>
 <p>（3）takeLock，notEmpty，take锁及其对应的条件</p>
 <p>（4）putLock, notFull，put锁及其对应的条件</p>
 <p>（5）入队、出队使用两个不同的锁控制，锁分离，提高效率</p>
 <h2 id="构造函数">构造函数</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="nf">LinkedBlockingQueue</span><span class="o">()</span> <span class="o">{</span>
-    <span class="c1">// 如果没传容量，就使用最大int值初始化其容量
-</span><span class="c1"></span>    <span class="k">this</span><span class="o">(</span><span class="n">Integer</span><span class="o">.</span><span class="na">MAX_VALUE</span><span class="o">);</span>
-<span class="o">}</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#a6e22e">LinkedBlockingQueue</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">// 如果没传容量，就使用最大int值初始化其容量
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">this</span><span style="color:#f92672">(</span>Integer<span style="color:#f92672">.</span><span style="color:#a6e22e">MAX_VALUE</span><span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
 
-<span class="kd">public</span> <span class="nf">LinkedBlockingQueue</span><span class="o">(</span><span class="kt">int</span> <span class="n">capacity</span><span class="o">)</span> <span class="o">{</span>
-    <span class="k">if</span> <span class="o">(</span><span class="n">capacity</span> <span class="o">&lt;=</span> <span class="n">0</span><span class="o">)</span> <span class="k">throw</span> <span class="k">new</span> <span class="n">IllegalArgumentException</span><span class="o">();</span>
-    <span class="k">this</span><span class="o">.</span><span class="na">capacity</span> <span class="o">=</span> <span class="n">capacity</span><span class="o">;</span>
-    <span class="c1">// 初始化head和last指针为空值节点
-</span><span class="c1"></span>    <span class="n">last</span> <span class="o">=</span> <span class="n">head</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Node</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;(</span><span class="kc">null</span><span class="o">);</span>
-<span class="o">}</span>
+<span style="color:#66d9ef">public</span> <span style="color:#a6e22e">LinkedBlockingQueue</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> capacity<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>capacity <span style="color:#f92672">&lt;=</span> 0<span style="color:#f92672">)</span> <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalArgumentException<span style="color:#f92672">();</span>
+    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">capacity</span> <span style="color:#f92672">=</span> capacity<span style="color:#f92672">;</span>
+    <span style="color:#75715e">// 初始化head和last指针为空值节点
+</span><span style="color:#75715e"></span>    last <span style="color:#f92672">=</span> head <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Node<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;(</span><span style="color:#66d9ef">null</span><span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
 
-</code></pre></td></tr></table>
-</div>
-</div><h2 id="入队">入队</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span><span class="lnt">56
-</span><span class="lnt">57
-</span><span class="lnt">58
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kt">void</span> <span class="nf">put</span><span class="o">(</span><span class="n">E</span> <span class="n">e</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">InterruptedException</span> <span class="o">{</span>
-    <span class="c1">// 不允许null元素
-</span><span class="c1"></span>    <span class="k">if</span> <span class="o">(</span><span class="n">e</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="k">throw</span> <span class="k">new</span> <span class="n">NullPointerException</span><span class="o">();</span>
-    <span class="kt">int</span> <span class="n">c</span> <span class="o">=</span> <span class="o">-</span><span class="n">1</span><span class="o">;</span>
-    <span class="c1">// 新建一个节点
-</span><span class="c1"></span>    <span class="n">Node</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="n">node</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Node</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;(</span><span class="n">e</span><span class="o">);</span>
-    <span class="kd">final</span> <span class="n">ReentrantLock</span> <span class="n">putLock</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">putLock</span><span class="o">;</span>
-    <span class="kd">final</span> <span class="n">AtomicInteger</span> <span class="n">count</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">count</span><span class="o">;</span>
-    <span class="c1">// 使用put锁加锁
-</span><span class="c1"></span>    <span class="n">putLock</span><span class="o">.</span><span class="na">lockInterruptibly</span><span class="o">();</span>
-    <span class="k">try</span> <span class="o">{</span>
-        <span class="c1">// 如果队列满了，就阻塞在notFull条件上
-</span><span class="c1"></span>        <span class="c1">// 等待被其它线程唤醒
-</span><span class="c1"></span>        <span class="k">while</span> <span class="o">(</span><span class="n">count</span><span class="o">.</span><span class="na">get</span><span class="o">()</span> <span class="o">==</span> <span class="n">capacity</span><span class="o">)</span> <span class="o">{</span>
-            <span class="n">notFull</span><span class="o">.</span><span class="na">await</span><span class="o">();</span>
-        <span class="o">}</span>
-        <span class="c1">// 队列不满了，就入队
-</span><span class="c1"></span>        <span class="n">enqueue</span><span class="o">(</span><span class="n">node</span><span class="o">);</span>
-        <span class="c1">// 队列长度加1
-</span><span class="c1"></span>        <span class="n">c</span> <span class="o">=</span> <span class="n">count</span><span class="o">.</span><span class="na">getAndIncrement</span><span class="o">();</span>
-        <span class="c1">// 如果现队列长度如果小于容量
-</span><span class="c1"></span>        <span class="c1">// 就再唤醒一个阻塞在notFull条件上的线程
-</span><span class="c1"></span>        <span class="c1">// 这里为啥要唤醒一下呢？
-</span><span class="c1"></span>        <span class="c1">// 因为可能有很多线程阻塞在notFull这个条件上的
-</span><span class="c1"></span>        <span class="c1">// 而取元素时只有取之前队列是满的才会唤醒notFull
-</span><span class="c1"></span>        <span class="c1">// 为什么队列满的才唤醒notFull呢？
-</span><span class="c1"></span>        <span class="c1">// 因为唤醒是需要加putLock的，这是为了减少锁的次数
-</span><span class="c1"></span>        <span class="c1">// 所以，这里索性在放完元素就检测一下，未满就唤醒其它notFull上的线程
-</span><span class="c1"></span>        <span class="c1">// 说白了，这也是锁分离带来的代价
-</span><span class="c1"></span>        <span class="k">if</span> <span class="o">(</span><span class="n">c</span> <span class="o">+</span> <span class="n">1</span> <span class="o">&lt;</span> <span class="n">capacity</span><span class="o">)</span>
-            <span class="n">notFull</span><span class="o">.</span><span class="na">signal</span><span class="o">();</span>
-    <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
-        <span class="c1">// 释放锁
-</span><span class="c1"></span>        <span class="n">putLock</span><span class="o">.</span><span class="na">unlock</span><span class="o">();</span>
-    <span class="o">}</span>
-    <span class="c1">// 如果原队列长度为0，现在加了一个元素后立即唤醒notEmpty条件
-</span><span class="c1"></span>    <span class="k">if</span> <span class="o">(</span><span class="n">c</span> <span class="o">==</span> <span class="n">0</span><span class="o">)</span>
-        <span class="n">signalNotEmpty</span><span class="o">();</span>
-<span class="o">}</span>
+</code></pre></div><h2 id="入队">入队</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>E e<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> InterruptedException <span style="color:#f92672">{</span>
+    <span style="color:#75715e">// 不允许null元素
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>e <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> NullPointerException<span style="color:#f92672">();</span>
+    <span style="color:#66d9ef">int</span> c <span style="color:#f92672">=</span> <span style="color:#f92672">-</span>1<span style="color:#f92672">;</span>
+    <span style="color:#75715e">// 新建一个节点
+</span><span style="color:#75715e"></span>    Node<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> node <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Node<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;(</span>e<span style="color:#f92672">);</span>
+    <span style="color:#66d9ef">final</span> ReentrantLock putLock <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">putLock</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">final</span> AtomicInteger count <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">count</span><span style="color:#f92672">;</span>
+    <span style="color:#75715e">// 使用put锁加锁
+</span><span style="color:#75715e"></span>    putLock<span style="color:#f92672">.</span><span style="color:#a6e22e">lockInterruptibly</span><span style="color:#f92672">();</span>
+    <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// 如果队列满了，就阻塞在notFull条件上
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// 等待被其它线程唤醒
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>count<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">()</span> <span style="color:#f92672">==</span> capacity<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            notFull<span style="color:#f92672">.</span><span style="color:#a6e22e">await</span><span style="color:#f92672">();</span>
+        <span style="color:#f92672">}</span>
+        <span style="color:#75715e">// 队列不满了，就入队
+</span><span style="color:#75715e"></span>        enqueue<span style="color:#f92672">(</span>node<span style="color:#f92672">);</span>
+        <span style="color:#75715e">// 队列长度加1
+</span><span style="color:#75715e"></span>        c <span style="color:#f92672">=</span> count<span style="color:#f92672">.</span><span style="color:#a6e22e">getAndIncrement</span><span style="color:#f92672">();</span>
+        <span style="color:#75715e">// 如果现队列长度如果小于容量
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// 就再唤醒一个阻塞在notFull条件上的线程
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// 这里为啥要唤醒一下呢？
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// 因为可能有很多线程阻塞在notFull这个条件上的
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// 而取元素时只有取之前队列是满的才会唤醒notFull
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// 为什么队列满的才唤醒notFull呢？
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// 因为唤醒是需要加putLock的，这是为了减少锁的次数
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// 所以，这里索性在放完元素就检测一下，未满就唤醒其它notFull上的线程
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// 说白了，这也是锁分离带来的代价
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>c <span style="color:#f92672">+</span> 1 <span style="color:#f92672">&lt;</span> capacity<span style="color:#f92672">)</span>
+            notFull<span style="color:#f92672">.</span><span style="color:#a6e22e">signal</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span> <span style="color:#66d9ef">finally</span> <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// 释放锁
+</span><span style="color:#75715e"></span>        putLock<span style="color:#f92672">.</span><span style="color:#a6e22e">unlock</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#75715e">// 如果原队列长度为0，现在加了一个元素后立即唤醒notEmpty条件
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>c <span style="color:#f92672">==</span> 0<span style="color:#f92672">)</span>
+        signalNotEmpty<span style="color:#f92672">();</span>
+<span style="color:#f92672">}</span>
 
-<span class="kd">private</span> <span class="kt">void</span> <span class="nf">enqueue</span><span class="o">(</span><span class="n">Node</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="n">node</span><span class="o">)</span> <span class="o">{</span>
-    <span class="c1">// 直接加到last后面
-</span><span class="c1"></span>    <span class="n">last</span> <span class="o">=</span> <span class="n">last</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="n">node</span><span class="o">;</span>
-<span class="o">}</span>    
+<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">enqueue</span><span style="color:#f92672">(</span>Node<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> node<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">// 直接加到last后面
+</span><span style="color:#75715e"></span>    last <span style="color:#f92672">=</span> last<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span> <span style="color:#f92672">=</span> node<span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>    
 
-<span class="kd">private</span> <span class="kt">void</span> <span class="nf">signalNotEmpty</span><span class="o">()</span> <span class="o">{</span>
-    <span class="kd">final</span> <span class="n">ReentrantLock</span> <span class="n">takeLock</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">takeLock</span><span class="o">;</span>
-    <span class="c1">// 加take锁
-</span><span class="c1"></span>    <span class="n">takeLock</span><span class="o">.</span><span class="na">lock</span><span class="o">();</span>
-    <span class="k">try</span> <span class="o">{</span>
-        <span class="c1">// 唤醒notEmpty条件
-</span><span class="c1"></span>        <span class="n">notEmpty</span><span class="o">.</span><span class="na">signal</span><span class="o">();</span>
-    <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
-        <span class="c1">// 解锁
-</span><span class="c1"></span>        <span class="n">takeLock</span><span class="o">.</span><span class="na">unlock</span><span class="o">();</span>
-    <span class="o">}</span>
-<span class="o">}</span>
+<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">signalNotEmpty</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">final</span> ReentrantLock takeLock <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">takeLock</span><span style="color:#f92672">;</span>
+    <span style="color:#75715e">// 加take锁
+</span><span style="color:#75715e"></span>    takeLock<span style="color:#f92672">.</span><span style="color:#a6e22e">lock</span><span style="color:#f92672">();</span>
+    <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// 唤醒notEmpty条件
+</span><span style="color:#75715e"></span>        notEmpty<span style="color:#f92672">.</span><span style="color:#a6e22e">signal</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span> <span style="color:#66d9ef">finally</span> <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// 解锁
+</span><span style="color:#75715e"></span>        takeLock<span style="color:#f92672">.</span><span style="color:#a6e22e">unlock</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
 
-</code></pre></td></tr></table>
-</div>
-</div><p>（1）使用putLock加锁；</p>
+</code></pre></div><p>（1）使用putLock加锁；</p>
 <p>（2）如果队列满了就阻塞在notFull条件上；</p>
 <p>（3）否则就入队；</p>
 <p>（4）如果入队后元素数量小于容量，唤醒其它阻塞在notFull条件上的线程；</p>
 <p>（5）释放锁；</p>
 <p>（6）如果放元素之前队列长度为0，就唤醒notEmpty条件；</p>
 <h2 id="出队">出队</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="n">E</span> <span class="nf">take</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">InterruptedException</span> <span class="o">{</span>
-    <span class="n">E</span> <span class="n">x</span><span class="o">;</span>
-    <span class="kt">int</span> <span class="n">c</span> <span class="o">=</span> <span class="o">-</span><span class="n">1</span><span class="o">;</span>
-    <span class="kd">final</span> <span class="n">AtomicInteger</span> <span class="n">count</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">count</span><span class="o">;</span>
-    <span class="kd">final</span> <span class="n">ReentrantLock</span> <span class="n">takeLock</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">takeLock</span><span class="o">;</span>
-    <span class="c1">// 使用takeLock加锁
-</span><span class="c1"></span>    <span class="n">takeLock</span><span class="o">.</span><span class="na">lockInterruptibly</span><span class="o">();</span>
-    <span class="k">try</span> <span class="o">{</span>
-        <span class="c1">// 如果队列无元素，则阻塞在notEmpty条件上
-</span><span class="c1"></span>        <span class="k">while</span> <span class="o">(</span><span class="n">count</span><span class="o">.</span><span class="na">get</span><span class="o">()</span> <span class="o">==</span> <span class="n">0</span><span class="o">)</span> <span class="o">{</span>
-            <span class="n">notEmpty</span><span class="o">.</span><span class="na">await</span><span class="o">();</span>
-        <span class="o">}</span>
-        <span class="c1">// 否则，出队
-</span><span class="c1"></span>        <span class="n">x</span> <span class="o">=</span> <span class="n">dequeue</span><span class="o">();</span>
-        <span class="c1">// 获取出队前队列的长度
-</span><span class="c1"></span>        <span class="n">c</span> <span class="o">=</span> <span class="n">count</span><span class="o">.</span><span class="na">getAndDecrement</span><span class="o">();</span>
-        <span class="c1">// 如果取之前队列长度大于1，则唤醒notEmpty
-</span><span class="c1"></span>        <span class="k">if</span> <span class="o">(</span><span class="n">c</span> <span class="o">&gt;</span> <span class="n">1</span><span class="o">)</span>
-            <span class="n">notEmpty</span><span class="o">.</span><span class="na">signal</span><span class="o">();</span>
-    <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
-        <span class="c1">// 释放锁
-</span><span class="c1"></span>        <span class="n">takeLock</span><span class="o">.</span><span class="na">unlock</span><span class="o">();</span>
-    <span class="o">}</span>
-    <span class="c1">// 如果取之前队列长度等于容量
-</span><span class="c1"></span>    <span class="c1">// 则唤醒notFull
-</span><span class="c1"></span>    <span class="k">if</span> <span class="o">(</span><span class="n">c</span> <span class="o">==</span> <span class="n">capacity</span><span class="o">)</span>
-        <span class="n">signalNotFull</span><span class="o">();</span>
-    <span class="k">return</span> <span class="n">x</span><span class="o">;</span>
-<span class="o">}</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> E <span style="color:#a6e22e">take</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> InterruptedException <span style="color:#f92672">{</span>
+    E x<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">int</span> c <span style="color:#f92672">=</span> <span style="color:#f92672">-</span>1<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">final</span> AtomicInteger count <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">count</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">final</span> ReentrantLock takeLock <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">takeLock</span><span style="color:#f92672">;</span>
+    <span style="color:#75715e">// 使用takeLock加锁
+</span><span style="color:#75715e"></span>    takeLock<span style="color:#f92672">.</span><span style="color:#a6e22e">lockInterruptibly</span><span style="color:#f92672">();</span>
+    <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// 如果队列无元素，则阻塞在notEmpty条件上
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>count<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">()</span> <span style="color:#f92672">==</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            notEmpty<span style="color:#f92672">.</span><span style="color:#a6e22e">await</span><span style="color:#f92672">();</span>
+        <span style="color:#f92672">}</span>
+        <span style="color:#75715e">// 否则，出队
+</span><span style="color:#75715e"></span>        x <span style="color:#f92672">=</span> dequeue<span style="color:#f92672">();</span>
+        <span style="color:#75715e">// 获取出队前队列的长度
+</span><span style="color:#75715e"></span>        c <span style="color:#f92672">=</span> count<span style="color:#f92672">.</span><span style="color:#a6e22e">getAndDecrement</span><span style="color:#f92672">();</span>
+        <span style="color:#75715e">// 如果取之前队列长度大于1，则唤醒notEmpty
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>c <span style="color:#f92672">&gt;</span> 1<span style="color:#f92672">)</span>
+            notEmpty<span style="color:#f92672">.</span><span style="color:#a6e22e">signal</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span> <span style="color:#66d9ef">finally</span> <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// 释放锁
+</span><span style="color:#75715e"></span>        takeLock<span style="color:#f92672">.</span><span style="color:#a6e22e">unlock</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#75715e">// 如果取之前队列长度等于容量
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 则唤醒notFull
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>c <span style="color:#f92672">==</span> capacity<span style="color:#f92672">)</span>
+        signalNotFull<span style="color:#f92672">();</span>
+    <span style="color:#66d9ef">return</span> x<span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
 
-<span class="kd">private</span> <span class="n">E</span> <span class="nf">dequeue</span><span class="o">()</span> <span class="o">{</span>
-    <span class="c1">// head节点本身是不存储任何元素的
-</span><span class="c1"></span>    <span class="c1">// 这里把head删除，并把head下一个节点作为新的值
-</span><span class="c1"></span>    <span class="c1">// 并把其值置空，返回原来的值
-</span><span class="c1"></span>    <span class="n">Node</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="n">h</span> <span class="o">=</span> <span class="n">head</span><span class="o">;</span>
-    <span class="n">Node</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="n">first</span> <span class="o">=</span> <span class="n">h</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
-    <span class="n">h</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="n">h</span><span class="o">;</span> <span class="c1">// help GC
-</span><span class="c1"></span>    <span class="n">head</span> <span class="o">=</span> <span class="n">first</span><span class="o">;</span>
-    <span class="n">E</span> <span class="n">x</span> <span class="o">=</span> <span class="n">first</span><span class="o">.</span><span class="na">item</span><span class="o">;</span>
-    <span class="n">first</span><span class="o">.</span><span class="na">item</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
-    <span class="k">return</span> <span class="n">x</span><span class="o">;</span>
-<span class="o">}</span>
+<span style="color:#66d9ef">private</span> E <span style="color:#a6e22e">dequeue</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">// head节点本身是不存储任何元素的
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 这里把head删除，并把head下一个节点作为新的值
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 并把其值置空，返回原来的值
+</span><span style="color:#75715e"></span>    Node<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> h <span style="color:#f92672">=</span> head<span style="color:#f92672">;</span>
+    Node<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> first <span style="color:#f92672">=</span> h<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">;</span>
+    h<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span> <span style="color:#f92672">=</span> h<span style="color:#f92672">;</span> <span style="color:#75715e">// help GC
+</span><span style="color:#75715e"></span>    head <span style="color:#f92672">=</span> first<span style="color:#f92672">;</span>
+    E x <span style="color:#f92672">=</span> first<span style="color:#f92672">.</span><span style="color:#a6e22e">item</span><span style="color:#f92672">;</span>
+    first<span style="color:#f92672">.</span><span style="color:#a6e22e">item</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">return</span> x<span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
 
-<span class="kd">private</span> <span class="kt">void</span> <span class="nf">signalNotFull</span><span class="o">()</span> <span class="o">{</span>
-    <span class="kd">final</span> <span class="n">ReentrantLock</span> <span class="n">putLock</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">putLock</span><span class="o">;</span>
-    <span class="n">putLock</span><span class="o">.</span><span class="na">lock</span><span class="o">();</span>
-    <span class="k">try</span> <span class="o">{</span>
-        <span class="c1">// 唤醒notFull
-</span><span class="c1"></span>        <span class="n">notFull</span><span class="o">.</span><span class="na">signal</span><span class="o">();</span>
-    <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
-        <span class="n">putLock</span><span class="o">.</span><span class="na">unlock</span><span class="o">();</span>
-    <span class="o">}</span>
-<span class="o">}</span>
+<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">signalNotFull</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">final</span> ReentrantLock putLock <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">putLock</span><span style="color:#f92672">;</span>
+    putLock<span style="color:#f92672">.</span><span style="color:#a6e22e">lock</span><span style="color:#f92672">();</span>
+    <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// 唤醒notFull
+</span><span style="color:#75715e"></span>        notFull<span style="color:#f92672">.</span><span style="color:#a6e22e">signal</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span> <span style="color:#66d9ef">finally</span> <span style="color:#f92672">{</span>
+        putLock<span style="color:#f92672">.</span><span style="color:#a6e22e">unlock</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
 
-</code></pre></td></tr></table>
-</div>
-</div><p>（1）使用takeLock加锁；</p>
+</code></pre></div><p>（1）使用takeLock加锁；</p>
 <p>（2）如果队列空了就阻塞在notEmpty条件上；</p>
 <p>（3）否则就出队；</p>
 <p>（4）如果出队前元素数量大于1，唤醒其它阻塞在notEmpty条件上的线程；</p>
@@ -473,7 +300,32 @@
 	</article>
 </main>
 
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="Frank Silva avatar" src="/img/avatar.png" class="avatar" height="90" width="90">
+	</figure>
+	<div class="authorbox__header">
+		<span class="authorbox__name">About Frank Silva</span>
+	</div>
+	<div class="authorbox__description">
+		Pursue Consummate Coding.
+	</div>
+</div>
 
+<nav class="pager flex">
+	<div class="pager__item pager__item--prev">
+		<a class="pager__link" href="/post/array-block-queue/" rel="prev">
+			<span class="pager__subtitle">«&thinsp;Previous</span>
+			<p class="pager__title">Array Block Queue</p>
+		</a>
+	</div>
+	<div class="pager__item pager__item--next">
+		<a class="pager__link" href="/post/synchronous-queue/" rel="next">
+			<span class="pager__subtitle">Next&thinsp;»</span>
+			<p class="pager__title">Synchronous Queue</p>
+		</a>
+	</div>
+</nav>
 
 
 			</div>
@@ -483,12 +335,14 @@
 	<div class="container footer__container flex">
 		
 		<div class="footer__copyright">
-			&copy; 2023 Luluhome - a blog for sh , &#39;lulu&#39; is my cat.
+			&copy; 2023 Frank Silva.
 			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
 		</div>
 	</div>
 </footer>
 	</div>
 <script async defer src="/js/menu.js"></script>
+<script src="/js/custom.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
 </body>
 </html>
