@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Posts - Luluhome - a blog for sh , &#39;lulu&#39; is my cat</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+
+	<link rel="stylesheet" href="/css/style.css">
+	
+	<link rel="alternate" type="application/rss+xml" href="/post/index.xml" title="Luluhome - a blog for sh , 'lulu' is my cat">
+
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container header__container">
+		
+	<div class="logo">
+		<a class="logo__link" href="/" title="Luluhome - a blog for sh , &#39;lulu&#39; is my cat" rel="home">
+			<div class="logo__item logo__text">
+					<div class="logo__title">Luluhome - a blog for sh , &#39;lulu&#39; is my cat</div>
+					
+				</div>
+		</a>
+	</div>
+		
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+	<ul class="menu__list">
+		<li class="menu__item">
+			<a class="menu__link" href="/">
+				
+				<span class="menu__text">Home</span>
+				
+			</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/">
+				
+				<span class="menu__text">Archives</span>
+				
+			</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/tags/">
+				
+				<span class="menu__text">Tags</span>
+				
+			</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/about/">
+				
+				<span class="menu__text">About</span>
+				
+			</a>
+		</li>
+	</ul>
+</nav>
+
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main list" role="main">
+	<header class="main__header">
+		<h1 class="main__title">Posts</h1>
+	</header><article class="list__item post">
+	
+	<header class="list__header">
+		<h2 class="list__title post__title">
+			<a href="/post/netty/" rel="bookmark">
+			Netty
+			</a>
+		</h2>
+		
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+		netty是在什么地方创建SeverChannel的 在BootStrap调用bind方法时创建 1 2 3 private ChannelFuture doBind(final SocketAddress localAddress) { final ChannelFuture regFuture = this.initAndRegister(); } initAndR
+	</div>
+</article><article class="list__item post">
+	
+	<header class="list__header">
+		<h2 class="list__title post__title">
+			<a href="/post/reactor/" rel="bookmark">
+			Reactor响应式编程
+			</a>
+		</h2>
+		
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+		Reactive Programming 响应式编程 为什么要响应式编程 传统的编程模式应对如今高并发，高响应的需求有很多限制。现在的web应用，越来越需要更高的并发，更快的响应。 每
+	</div>
+</article><article class="list__item post">
+	
+	<header class="list__header">
+		<h2 class="list__title post__title">
+			<a href="/post/spring/" rel="bookmark">
+			Spring问题整理
+			</a>
+		</h2>
+		
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+		1 2 3 4 5 6 7 8 9 10 11 @Override @Nullable public Object invoke(MethodInvocation mi) throws Throwable { if (!(mi instanceof ProxyMethodInvocation)) { throw new IllegalStateException(&#34;MethodInvocation is not a Spring ProxyMethodInvocation: &#34; + mi); } ProxyMethodInvocation pmi = (ProxyMethodInvocation) mi; ProceedingJoinPoint pjp = lazyGetProceedingJoinPoint(pmi); JoinPointMatch jpm = getJoinPointMatch(pmi); return invokeAdviceMethod(pjp, jpm, null, null); } 当在Sping中配置的Bea
+	</div>
+</article><article class="list__item post">
+	
+	<header class="list__header">
+		<h2 class="list__title post__title">
+			<a href="/post/%E5%B8%B8%E8%A7%81%E9%A2%98%E7%9B%AE/" rel="bookmark">
+			八股文
+			</a>
+		</h2>
+		
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+		Redis redis有哪些数据结构，你用过哪些，做过什么事情 String 最简单的数据结构，用于存放字符串，实际上在redis中存放的是字符数组，类似java中
+	</div>
+</article><article class="list__item post">
+	
+	<header class="list__header">
+		<h2 class="list__title post__title">
+			<a href="/post/%E5%B9%B3%E6%97%B6%E7%96%91%E9%97%AE/" rel="bookmark">
+			平时疑问
+			</a>
+		</h2>
+		
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+		平时疑问 浏览器输入一个地址，整个流程 如果线上流量暴增，全都打到一个 upstream 上了，怎么排查 如何在 nginx 的 access log 中查出请求前 10 的 ip 台阶问题，假如对于上台阶，
+	</div>
+</article>
+</main>
+
+<div class="pagination">
+	<a class="pagination__item pagination__item--prev btn" href="/post/page/6/">«</a>
+	<span class="pagination__item pagination__item--current">7/9</span>
+	<a class="pagination__item pagination__item--next btn" href="/post/page/8/">»</a>
+</div>
+
+			</div>
+			
+
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2023 Luluhome - a blog for sh , &#39;lulu&#39; is my cat.
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+</body>
+</html>
