@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>数据结构 on Mainroad</title>
+    <link>https://sunhao1256.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</link>
+    <description>Recent content in 数据结构 on Mainroad</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 13 Oct 2022 22:30:06 +0800</lastBuildDate><atom:link href="https://sunhao1256.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>SkipList</title>
+      <link>https://sunhao1256.github.io/post/skiplist/</link>
+      <pubDate>Thu, 13 Oct 2022 22:30:06 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/skiplist/</guid>
+      <description>摘自：https://mp.weixin.qq.com/s?__biz=MzkxNDEyOTI0OQ==&amp;amp;mid=2247484459&amp;amp;idx=1&amp;amp;sn=b4e7db9fdf256dfb312a2a90fcde79b3&amp;amp;source=41#wechat_redirect
+ 概述 跳表是一个随机化的数据结构，实质就是一种可以进行二分查找的有序链表。
+跳表在原有的有序链表上面增加了多级索引，通过索引来实现快速查找。
+跳表不仅能提高搜索性能，同时也可以提高插入和删除操作的性能
+提问   有序数组可以进行二分查找吗？
+可以
+  为什么有序链表 不可以进行二分查找
+ The difference between sorted arrays and sorted linked lists is that we can search an element in O(logN) time in sorted arrays but we cannot do so in sorted linked lists because we need to traverse the next pointers to arrive at the search node.
+ 有序数组我们可以使用二分查找，将查询的时间复杂度控制在O(logN)，但是链表无法二分查找，因为我们我无法直接获取目标元素，必须得遍历下一个指针。
+  有序链表 考虑一个有序链表，我们要查找3、7、17这几个元素，我们只能从头开始遍历链表，直到查找到元素为止。
+上述这个链表是有序的，但是不能使用二分查找，是不是很捉急？（P.S.数组可以实现二分查找）
+那么，有没有什么方法可以实现有序链表的二分查找呢？</description>
+    </item>
+    
+    <item>
+      <title>数据结构</title>
+      <link>https://sunhao1256.github.io/post/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</link>
+      <pubDate>Tue, 11 Jan 2022 14:43:18 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</guid>
+      <description>堆 堆是一种非线性结构，可以把堆看作一个数组，也可以被看作一个完全二叉树，通俗来讲堆其实就是利用完全二叉树的结构来维护的一维数组但堆并不一定是完全二叉树
+按照堆的特点可以把堆分为大顶堆和小顶堆 大顶堆：每个结点的值都大于或等于其左右孩子结点的值 小顶堆：每个结点的值都小于或等于其左右孩子结点的值
+使用堆的原因？ 如果仅仅是需要得到一个有序的序列，使用排序就可以很快完成，并不需要去组织一个新的数据结构。但是如果我们的需求是对于一个随时会有更新的序列，我要随时知道这个序列的最小值或最大值是什么。显然如果是线性结构，每次插入之后，假设原数组是有序的，那使用二分把它放在正确的位置也未尝不可，但是插入的时候从数组中留出空位就需要O(n)的时间复杂度，删除的时候亦然。
+时间复杂度 插入和删除的时间复杂度是O(logn)
+环形队列(数组) 普通队列 普通队列，数组实现时，出队后，原来的空间就浪费了。
+环形队列 环形队列，数组实现时，下标用模取运算，例如最大空间为5，模取后只会有0，1，2，3，4下标，组成了循环。
+ front 变量的含义做一个调整： front 就指向队列的第一个元素, 也就是说 arr[front] 就是队列的第一个元素 front 的初始值 = 0 rear 变量的含义做一个调整：rear 指向队列的最后一个元素的后一个位置. 因为希望空出一个空间做为约定. rear 的初始值 = 0 当队列满时，条件是 (rear + 1) % maxSize == front 【满】 对队列为空的条件， rear == front 空 当我们这样分析， 队列中有效的数据的个数 (rear + maxSize - front) % maxSize // rear = 1 front = 0  时间轮 使用场景，处理大批量的定时任务
+利用环形队列，队列的每个空间里存放的是任务的集合。
+例如以60秒为一个轮，70秒后执行一个任务。只需要一个timer按秒去旋转时间轮，70%60=10，到达第10个槽的时候，执行内部的所有任务即可。
+为了解决10秒和70秒落在同一个槽上，可以在任务身上加一个属性，圈数，例如10秒的任务圈数是0，70秒的任务是1，只有达到槽位置，并且圈数为0的任务才会被执行。</description>
+    </item>
+    
+  </channel>
+</rss>

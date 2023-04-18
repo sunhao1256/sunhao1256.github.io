@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Data structure on Mainroad</title>
+    <link>https://sunhao1256.github.io/tags/data-structure/</link>
+    <description>Recent content in Data structure on Mainroad</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 20 Oct 2022 08:55:22 +0800</lastBuildDate><atom:link href="https://sunhao1256.github.io/tags/data-structure/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Dictionary Tree</title>
+      <link>https://sunhao1256.github.io/post/dictionary-tree/</link>
+      <pubDate>Thu, 20 Oct 2022 08:55:22 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/dictionary-tree/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Types of Binary Tree</title>
+      <link>https://sunhao1256.github.io/post/types-of-binary-tree/</link>
+      <pubDate>Wed, 19 Oct 2022 15:31:44 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/types-of-binary-tree/</guid>
+      <description>translated from https://www.geeksforgeeks.org/binary-tree-set-3-types-of-binary-tree/?ref=gcse
+ The following are common types of Binary Trees.
+ 以下是常见的二叉树类型
+ Full Binary Tree A Binary Tree is a full binary tree if every node has 0 or 2 children. The following are the examples of a full binary tree. We can also say a full binary tree is a binary tree in which all nodes except leaf nodes have two children.
+ 如果一棵树上所有节点都有0或者2个孩子节点，则称为满二叉树，下面是一个满二叉树的事例，我们也可以看到一棵满二叉树实际上是一个除了叶子节点其他节点都有2个孩子的二叉树
+ A full Binary tree is a special type of binary tree in which every parent node/internal node has either two or no children.</description>
+    </item>
+    
+    <item>
+      <title>Binary Search Trees and Skip Lists</title>
+      <link>https://sunhao1256.github.io/post/bst_skip_alogithm/</link>
+      <pubDate>Sun, 16 Oct 2022 16:33:56 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/bst_skip_alogithm/</guid>
+      <description>linked from https://tildesites.bowdoin.edu/~ltoma/teaching/cs231/fall10/Lectures/9-bstAndSkip/bstree.pdf
+    #the-canvas { border: 1px solid black; direction: ltr; width: 100%; height: auto; display: none; } #paginator { display: none; text-align: center; margin-bottom: 10px; } #loadingWrapper { display: none; justify-content: center; align-items: center; width: 100%; height: 350px; } #loading { display: inline-block; width: 50px; height: 50px; border: 3px solid #d2d0d0;; border-radius: 50%; border-top-color: #383838; animation: spin 1s ease-in-out infinite; -webkit-animation: spin 1s ease-in-out infinite; } @keyframes spin { to { -webkit-transform: rotate(360deg); } } @-webkit-keyframes spin { to { -webkit-transform: rotate(360deg); } }  Previous Next &amp;nbsp; &amp;nbsp; Page:  /       window.</description>
+    </item>
+    
+    <item>
+      <title>Binary Search</title>
+      <link>https://sunhao1256.github.io/post/binary_search/</link>
+      <pubDate>Sun, 16 Oct 2022 14:54:06 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/binary_search/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

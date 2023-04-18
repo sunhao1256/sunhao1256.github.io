@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>k8s on Mainroad</title>
+    <link>https://sunhao1256.github.io/tags/k8s/</link>
+    <description>Recent content in k8s on Mainroad</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 02 Jul 2022 20:01:43 +0800</lastBuildDate><atom:link href="https://sunhao1256.github.io/tags/k8s/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>K8s安装</title>
+      <link>https://sunhao1256.github.io/post/k8s%E5%AE%89%E8%A3%85/</link>
+      <pubDate>Sat, 02 Jul 2022 20:01:43 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/k8s%E5%AE%89%E8%A3%85/</guid>
+      <description>文章摘自https://k8s.easydoc.net/docs/dRiQjyTY/28366845/6GiNOzyZ/nd7yOvdY
+ 💽安装 Kubernetes 集群 安装方式介绍  minikube 只是一个 K8S 集群模拟器，只有一个节点的集群，只为测试用，master 和 worker 都在一起 直接用云平台 Kubernetes 可视化搭建，只需简单几步就可以创建好一个集群。 优点：安装简单，生态齐全，负载均衡器、存储等都给你配套好，简单操作就搞定 裸机安装（Bare Metal） 至少需要两台机器（主节点、工作节点个一台），需要自己安装 Kubernetes 组件，配置会稍微麻烦点。 可以到各云厂商按时租用服务器，费用低，用完就销毁。 缺点：配置麻烦，缺少生态支持，例如负载均衡器、云存储。   本文档课件需配套 视频 一起学习
+ minikube 安装非常简单，支持各种平台，安装方法
+ 需要提前安装好 Docker
+ # 启动集群 minikube start # 查看节点。kubectl 是一个用来跟 K8S 集群进行交互的命令行工具 kubectl get node # 停止集群 minikube stop # 清空集群 minikube delete --all # 安装集群可视化 Web UI 控制台 minikube dashboard 云平台搭建  腾讯云 TKE（控制台搜索容器） 登录阿里云控制台 - 产品搜索 Kubernetes  裸机搭建（Bare Metal） 主节点需要组件  docker（也可以是其他容器运行时） kubectl 集群命令行交互工具 kubeadm 集群初始化工具  工作节点需要组件 文档  docker（也可以是其他容器运行时） kubelet 管理 Pod 和容器，确保他们健康稳定运行。 kube-proxy 网络代理，负责网络相关的工作  开始安装  你也可以试下 这个项目，用脚本快速搭建 K8S 裸机集群 当然，为了更好的理解，你应该先手动搭建一次</description>
+    </item>
+    
+  </channel>
+</rss>

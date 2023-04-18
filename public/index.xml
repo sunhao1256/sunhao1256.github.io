@@ -1,0 +1,577 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Mainroad</title>
+    <link>https://sunhao1256.github.io/</link>
+    <description>Recent content on Mainroad</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 22 Dec 2022 10:13:16 +0800</lastBuildDate><atom:link href="https://sunhao1256.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>About</title>
+      <link>https://sunhao1256.github.io/about/</link>
+      <pubDate>Fri, 30 Sep 2022 11:17:39 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/about/</guid>
+      <description>Javaer
+Loser</description>
+    </item>
+    
+    <item>
+      <title>Lulu Oa</title>
+      <link>https://sunhao1256.github.io/posts/lulu-oa/</link>
+      <pubDate>Thu, 22 Dec 2022 10:13:16 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/posts/lulu-oa/</guid>
+      <description> bpmn user system   </description>
+    </item>
+    
+    <item>
+      <title>OaRoadmap</title>
+      <link>https://sunhao1256.github.io/post/oa-roadmap/</link>
+      <pubDate>Tue, 22 Nov 2022 09:16:30 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/oa-roadmap/</guid>
+      <description> vue3 (done) scss vuetify3 oa front oa server gradle (done) kubernetes  </description>
+    </item>
+    
+    <item>
+      <title>Kubernetes Nice Article</title>
+      <link>https://sunhao1256.github.io/post/kubernetes-nice-article/</link>
+      <pubDate>Wed, 02 Nov 2022 15:17:34 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/kubernetes-nice-article/</guid>
+      <description>Working with Kubernetes API
+k8s-client-go
+sample-controller
+helm-gudie
+Kubernetes Informer 源码解析
+[kubeDB][https://kubedb.com/docs/v2022.10.18/guides/mysql/quickstart/]</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes Operator</title>
+      <link>https://sunhao1256.github.io/post/kubernetes-operator/</link>
+      <pubDate>Wed, 02 Nov 2022 11:25:27 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/kubernetes-operator/</guid>
+      <description>Operator Operator is equivalent for Custom Resource definations (crds) with Custom Resource Controller (crc)
+Custom Resources  A resource is an endpoint in the Kubernetes API that stores a collection of API objects of a certain kind; for example, the built-in pods resource contains a collection of Pod objects.
+A custom resource is an extension of the Kubernetes API that is not necessarily available in a default Kubernetes installation. It represents a customization of a particular Kubernetes installation.</description>
+    </item>
+    
+    <item>
+      <title>Synchronous Queue</title>
+      <link>https://sunhao1256.github.io/post/synchronous-queue/</link>
+      <pubDate>Fri, 21 Oct 2022 16:33:35 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/synchronous-queue/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Linked Block Queue</title>
+      <link>https://sunhao1256.github.io/post/linked-block-queue/</link>
+      <pubDate>Fri, 21 Oct 2022 15:31:00 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/linked-block-queue/</guid>
+      <description>linked from https://www.cnblogs.com/tong-yuan/p/LinkedBlockingQueue.html
+ 属性 // 容量 private final int capacity; // 元素数量 private final AtomicInteger count = new AtomicInteger(); // 链表头 transient Node&amp;lt;E&amp;gt; head; // 链表尾 private transient Node&amp;lt;E&amp;gt; last; // take锁 private final ReentrantLock takeLock = new ReentrantLock(); // notEmpty条件 // 当队列无元素时，take锁会阻塞在notEmpty条件上，等待其它线程唤醒 private final Condition notEmpty = takeLock.newCondition(); // 放锁 private final ReentrantLock putLock = new ReentrantLock(); // notFull条件 // 当队列满了时，put锁会会阻塞在notFull上，等待其它线程唤醒 private final Condition notFull = putLock.newCondition(); （1）capacity，有容量，可以理解为LinkedBlockingQueue是有界队列</description>
+    </item>
+    
+    <item>
+      <title>Array Block Queue</title>
+      <link>https://sunhao1256.github.io/post/array-block-queue/</link>
+      <pubDate>Fri, 21 Oct 2022 14:54:44 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/array-block-queue/</guid>
+      <description>简介 ArrayBlockingQueue是java并发包下一个以数组实现的阻塞队列，它是线程安全的，至于是否需要扩容，请看下面的分析。
+队列 队列，是一种线性表，它的特点是先进先出，又叫FIFO，就像我们平常排队一样，先到先得，即先进入队列的人先出队。
+属性 // 使用数组存储元素 final Object[] items; // 取元素的指针 int takeIndex; // 放元素的指针 int putIndex; // 元素数量 int count; // 保证并发访问的锁 final ReentrantLock lock; // 非空条件 private final Condition notEmpty; // 非满条件 private final Condition notFull; 通过属性我们可以得出以下几个重要信息：
+（1）利用数组存储元素；
+（2）通过放指针和取指针来标记下一次操作的位置；
+（3）利用重入锁来保证并发安全；
+构造方法 public ArrayBlockingQueue(int capacity) { this(capacity, false); } public ArrayBlockingQueue(int capacity, boolean fair) { if (capacity &amp;lt;= 0) throw new IllegalArgumentException(); // 初始化数组  this.items = new Object[capacity]; // 创建重入锁及两个条件  lock = new ReentrantLock(fair); notEmpty = lock.</description>
+    </item>
+    
+    <item>
+      <title>Java How to Write File</title>
+      <link>https://sunhao1256.github.io/post/java-how-to-write-file/</link>
+      <pubDate>Thu, 20 Oct 2022 11:13:56 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/java-how-to-write-file/</guid>
+      <description>if you need to read huge file one line by one line , how will you to achieve the program ?
+Read all bytes to memory
+package io_stream; import org.apache.tomcat.util.http.fileupload.IOUtils; import java.io.*; public class BufferStreamTest { public static void main(String[] args) throws IOException { // try copy large file in 30MB memory  InputStream inputStream = new FileInputStream(&amp;#34;/Users/zero/Downloads/googlechrome.dmg&amp;#34;); long start = System.currentTimeMillis(); // will fill heap memory  OutputStream output = new ByteArrayOutputStream(); inputStream.</description>
+    </item>
+    
+    <item>
+      <title>Dictionary Tree</title>
+      <link>https://sunhao1256.github.io/post/dictionary-tree/</link>
+      <pubDate>Thu, 20 Oct 2022 08:55:22 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/dictionary-tree/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Types of Binary Tree</title>
+      <link>https://sunhao1256.github.io/post/types-of-binary-tree/</link>
+      <pubDate>Wed, 19 Oct 2022 15:31:44 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/types-of-binary-tree/</guid>
+      <description>translated from https://www.geeksforgeeks.org/binary-tree-set-3-types-of-binary-tree/?ref=gcse
+ The following are common types of Binary Trees.
+ 以下是常见的二叉树类型
+ Full Binary Tree A Binary Tree is a full binary tree if every node has 0 or 2 children. The following are the examples of a full binary tree. We can also say a full binary tree is a binary tree in which all nodes except leaf nodes have two children.
+ 如果一棵树上所有节点都有0或者2个孩子节点，则称为满二叉树，下面是一个满二叉树的事例，我们也可以看到一棵满二叉树实际上是一个除了叶子节点其他节点都有2个孩子的二叉树
+ A full Binary tree is a special type of binary tree in which every parent node/internal node has either two or no children.</description>
+    </item>
+    
+    <item>
+      <title>Priority Queue</title>
+      <link>https://sunhao1256.github.io/post/priority-queue/</link>
+      <pubDate>Wed, 19 Oct 2022 15:14:41 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/priority-queue/</guid>
+      <description>属性 // 默认容量 private static final int DEFAULT_INITIAL_CAPACITY = 11; // 存储元素的地方 transient Object[] queue; // non-private to simplify nested class access // 元素个数 private int size = 0; // 比较器 private final Comparator&amp;lt;? super E&amp;gt; comparator; // 修改次数 transient int modCount = 0; // non-private to simplify nested class access  （1）默认容量是11；
+（2）queue，元素存储在数组中，这跟我们之前说的堆一般使用数组来存储是一致的；
+（3）comparator，比较器，在优先级队列中，也有两种方式比较元素，一种是元素的自然顺序，一种是通过比较器来比较；
+（4）modCount，修改次数，有这个属性表示PriorityQueue也是fast-fail的；
+入队 public boolean add(E e) { return offer(e); } public boolean offer(E e) { // 不支持null元素  if (e == null) throw new NullPointerException(); modCount++; // 取size  int i = size; // 元素个数达到最大容量了，扩容  if (i &amp;gt;= queue.</description>
+    </item>
+    
+    <item>
+      <title>Mysql Findinset Multiplevalues</title>
+      <link>https://sunhao1256.github.io/post/mysql-findinset-multiplevalues/</link>
+      <pubDate>Wed, 19 Oct 2022 10:54:13 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/mysql-findinset-multiplevalues/</guid>
+      <description>/* Something likes find_in_set(&amp;#39;a,b,c&amp;#39;, &amp;#39;a,b,c,d&amp;#39;) We can use OR: find_in_set(&amp;#39;a&amp;#39;, &amp;#39;a,b,c,d&amp;#39;) OR find_in_set(&amp;#39;b&amp;#39;, &amp;#39;a,b,c,d&amp;#39;) OR find_in_set(&amp;#39;b&amp;#39;, &amp;#39;a,b,c,d&amp;#39;) */ WHERE CONCAT(&amp;#34;,&amp;#34;, `setcolumn`, &amp;#34;,&amp;#34;) REGEXP &amp;#34;,(val1|val2|val3),&amp;#34; </description>
+    </item>
+    
+    <item>
+      <title>ConcurrentSkipListSet</title>
+      <link>https://sunhao1256.github.io/post/concurrentskiplistset/</link>
+      <pubDate>Tue, 18 Oct 2022 22:25:30 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/concurrentskiplistset/</guid>
+      <description>源码 // 实现了NavigableSet接口，并没有所谓的ConcurrentNavigableSet接口 public class ConcurrentSkipListSet&amp;lt;E&amp;gt; extends AbstractSet&amp;lt;E&amp;gt; implements NavigableSet&amp;lt;E&amp;gt;, Cloneable, java.io.Serializable { private static final long serialVersionUID = -2479143111061671589L; // 存储使用的map  private final ConcurrentNavigableMap&amp;lt;E,Object&amp;gt; m; // 初始化  public ConcurrentSkipListSet() { m = new ConcurrentSkipListMap&amp;lt;E,Object&amp;gt;(); } // 传入比较器  public ConcurrentSkipListSet(Comparator&amp;lt;? super E&amp;gt; comparator) { m = new ConcurrentSkipListMap&amp;lt;E,Object&amp;gt;(comparator); } // 使用ConcurrentSkipListMap初始化map  // 并将集合c中所有元素放入到map中  public ConcurrentSkipListSet(Collection&amp;lt;? extends E&amp;gt; c) { m = new ConcurrentSkipListMap&amp;lt;E,Object&amp;gt;(); addAll(c); } // 使用ConcurrentSkipListMap初始化map  // 并将有序Set中所有元素放入到map中  public ConcurrentSkipListSet(SortedSet&amp;lt;E&amp;gt; s) { m = new ConcurrentSkipListMap&amp;lt;E,Object&amp;gt;(s.</description>
+    </item>
+    
+    <item>
+      <title>LinkedHashSet</title>
+      <link>https://sunhao1256.github.io/post/linkedhashset/</link>
+      <pubDate>Tue, 18 Oct 2022 22:04:11 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/linkedhashset/</guid>
+      <description>package java.util; // LinkedHashSet继承自HashSet public class LinkedHashSet&amp;lt;E&amp;gt; extends HashSet&amp;lt;E&amp;gt; implements Set&amp;lt;E&amp;gt;, Cloneable, java.io.Serializable { private static final long serialVersionUID = -2851667679971038690L; // 传入容量和装载因子  public LinkedHashSet(int initialCapacity, float loadFactor) { super(initialCapacity, loadFactor, true); } // 只传入容量, 装载因子默认为0.75  public LinkedHashSet(int initialCapacity) { super(initialCapacity, .75f, true); } // 使用默认容量16, 默认装载因子0.75  public LinkedHashSet() { super(16, .75f, true); } // 将集合c中的所有元素添加到LinkedHashSet中  // 好奇怪, 这里计算容量的方式又变了  // HashSet中使用的是Math.max((int) (c.size()/.75f) + 1, 16)  // 这一点有点不得其解, 是作者偷懒？  public LinkedHashSet(Collection&amp;lt;?</description>
+    </item>
+    
+    <item>
+      <title>ConcurrentSkipListMap</title>
+      <link>https://sunhao1256.github.io/post/concurrentskiplistmap/</link>
+      <pubDate>Mon, 17 Oct 2022 16:22:46 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/concurrentskiplistmap/</guid>
+      <description>Linked from https://www.cnblogs.com/tong-yuan/p/ConcurrentSkipListMap.html
+ 内部类 // 数据节点，典型的单链表结构 static final class Node&amp;lt;K,V&amp;gt; { final K key; // 注意：这里value的类型是Object，而不是V  // 在删除元素的时候value会指向当前元素本身  volatile Object value; volatile Node&amp;lt;K,V&amp;gt; next; Node(K key, Object value, Node&amp;lt;K,V&amp;gt; next) { this.key = key; this.value = value; this.next = next; } Node(Node&amp;lt;K,V&amp;gt; next) { this.key = null; this.value = this; // 当前元素本身(marker)  this.next = next; } } // 索引节点，存储着对应的node值，及向下和向右的索引指针 static class Index&amp;lt;K,V&amp;gt; { final Node&amp;lt;K,V&amp;gt; node; final Index&amp;lt;K,V&amp;gt; down; volatile Index&amp;lt;K,V&amp;gt; right; Index(Node&amp;lt;K,V&amp;gt; node, Index&amp;lt;K,V&amp;gt; down, Index&amp;lt;K,V&amp;gt; right) { this.</description>
+    </item>
+    
+    <item>
+      <title>Essential Linux Command</title>
+      <link>https://sunhao1256.github.io/post/essentiallinuxcommand/</link>
+      <pubDate>Mon, 17 Oct 2022 15:32:10 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/essentiallinuxcommand/</guid>
+      <description>awk docker images|grep gateway| awk &amp;#39;$2 ~ /^v/ &amp;amp;&amp;amp; substr($2,2)&amp;gt;535 {print($3)}&amp;#39; |sort -r  started with &amp;lsquo;v&amp;rsquo; version number greater than 535 print imageId  </description>
+    </item>
+    
+    <item>
+      <title>Binary Search Trees and Skip Lists</title>
+      <link>https://sunhao1256.github.io/post/bst_skip_alogithm/</link>
+      <pubDate>Sun, 16 Oct 2022 16:33:56 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/bst_skip_alogithm/</guid>
+      <description>linked from https://tildesites.bowdoin.edu/~ltoma/teaching/cs231/fall10/Lectures/9-bstAndSkip/bstree.pdf
+    #the-canvas { border: 1px solid black; direction: ltr; width: 100%; height: auto; display: none; } #paginator { display: none; text-align: center; margin-bottom: 10px; } #loadingWrapper { display: none; justify-content: center; align-items: center; width: 100%; height: 350px; } #loading { display: inline-block; width: 50px; height: 50px; border: 3px solid #d2d0d0;; border-radius: 50%; border-top-color: #383838; animation: spin 1s ease-in-out infinite; -webkit-animation: spin 1s ease-in-out infinite; } @keyframes spin { to { -webkit-transform: rotate(360deg); } } @-webkit-keyframes spin { to { -webkit-transform: rotate(360deg); } }  Previous Next &amp;nbsp; &amp;nbsp; Page:  /       window.</description>
+    </item>
+    
+    <item>
+      <title>Binary Search</title>
+      <link>https://sunhao1256.github.io/post/binary_search/</link>
+      <pubDate>Sun, 16 Oct 2022 14:54:06 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/binary_search/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>SkipList</title>
+      <link>https://sunhao1256.github.io/post/skiplist/</link>
+      <pubDate>Thu, 13 Oct 2022 22:30:06 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/skiplist/</guid>
+      <description>摘自：https://mp.weixin.qq.com/s?__biz=MzkxNDEyOTI0OQ==&amp;amp;mid=2247484459&amp;amp;idx=1&amp;amp;sn=b4e7db9fdf256dfb312a2a90fcde79b3&amp;amp;source=41#wechat_redirect
+ 概述 跳表是一个随机化的数据结构，实质就是一种可以进行二分查找的有序链表。
+跳表在原有的有序链表上面增加了多级索引，通过索引来实现快速查找。
+跳表不仅能提高搜索性能，同时也可以提高插入和删除操作的性能
+提问   有序数组可以进行二分查找吗？
+可以
+  为什么有序链表 不可以进行二分查找
+ The difference between sorted arrays and sorted linked lists is that we can search an element in O(logN) time in sorted arrays but we cannot do so in sorted linked lists because we need to traverse the next pointers to arrive at the search node.
+ 有序数组我们可以使用二分查找，将查询的时间复杂度控制在O(logN)，但是链表无法二分查找，因为我们我无法直接获取目标元素，必须得遍历下一个指针。
+  有序链表 考虑一个有序链表，我们要查找3、7、17这几个元素，我们只能从头开始遍历链表，直到查找到元素为止。
+上述这个链表是有序的，但是不能使用二分查找，是不是很捉急？（P.S.数组可以实现二分查找）
+那么，有没有什么方法可以实现有序链表的二分查找呢？</description>
+    </item>
+    
+    <item>
+      <title>Idea Keyboard Shortcuts</title>
+      <link>https://sunhao1256.github.io/post/idea-keyboard-shortcuts/</link>
+      <pubDate>Thu, 13 Oct 2022 09:48:19 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/idea-keyboard-shortcuts/</guid>
+      <description>  resize
+  open new file on right split
+shift+enter
+  back to edit main menu
+esc
+  </description>
+    </item>
+    
+    <item>
+      <title>Regular_expression</title>
+      <link>https://sunhao1256.github.io/post/regular_expression/</link>
+      <pubDate>Sat, 08 Oct 2022 17:46:07 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/regular_expression/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>MyWordNote</title>
+      <link>https://sunhao1256.github.io/post/mywordnote/</link>
+      <pubDate>Tue, 20 Sep 2022 13:56:19 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/mywordnote/</guid>
+      <description>When i meet some word that I can&amp;rsquo;t known its meaning , i will record it here .
+Just for my convenience to remember how to spell
+   convenient
+方便 adj
+  convenience
+方便 c
+  layman
+外行人 c
+  term
+期限，条约，条款，描述，术语，专业名词
+in xxxx terms，对xxx来说。eg：in Layman‘s terms，从外行人眼里看
+  capacity
+容量，能力
+  assume /əˈsuːm/
+假设，假冒，承担，呈现，控制的
+  boundary
+边界
+  europe
+欧洲</description>
+    </item>
+    
+    <item>
+      <title>VIM Keyboard Shortcuts</title>
+      <link>https://sunhao1256.github.io/post/vim_keyboard_shortcuts/</link>
+      <pubDate>Wed, 07 Sep 2022 13:14:35 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/vim_keyboard_shortcuts/</guid>
+      <description>VIM Keyboard Shortcuts    Cursor movement      h move left   j move down   k move up   l move right   w jump by start of words (punctuation considered words)   W jump by words (spaces separate words)   e jump to end of words (punctuation considered words)   E jump to end of words (no punctuation)   b jump backward by words (punctuation considered words)   B jump backward by words (no punctuation)   0 (zero) start of line   ^ first non-blank character of line   $ end of line   G Go To command (prefix with number   Note: Prefix a cursor movement command with a number to repeat it.</description>
+    </item>
+    
+    <item>
+      <title>Nginx转发规则</title>
+      <link>https://sunhao1256.github.io/post/nginx/</link>
+      <pubDate>Thu, 28 Jul 2022 10:14:49 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/nginx/</guid>
+      <description>Location | Syntax: | **location** [ = | ~ | ~* | ^~ ] *uri* { ... } **location** @*name* { ... } | | :&amp;mdash;&amp;mdash;- | &amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash; | | Default: | — | | Context: | server, location |
+Sets configuration depending on a request URI.
+The matching is performed against a normalized URI, after decoding the text encoded in the “%XX” form, resolving references to relative path components “.</description>
+    </item>
+    
+    <item>
+      <title>Wireshark</title>
+      <link>https://sunhao1256.github.io/post/wireshark/</link>
+      <pubDate>Tue, 12 Jul 2022 10:41:41 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/wireshark/</guid>
+      <description>WireShark 三次握手四次挥手 TCP 首部包含以下内容，请留意其中的控制位，在三次握手和四次挥手过程中会频繁出现：
+ 端口号 (Source Port and Destination Port)：每个 TCP 报文段都包含源端和目的端的端口号，用于寻找发送端和接收端应用进程。这两个值加上 IP 首部中的源端 IP 地址和目的端 IP 地址就可以确定一个唯一的 TCP 连接。 序号 (Sequence Number)：这个字段的主要作用是用于将失序的数据重新排列。TCP 会隐式地对字节流中的每个字节进行编号，而 TCP 报文段的序号被设置为其数据部分的第一个字节的编号。序号是 32 bit 的无符号数，取值范围是0到 232 - 1。 确认序号 (Acknowledgment Number)：接收方在接受到数据后，会回复确认报文，其中包含确认序号，作用就是告诉发送方自己接收到了哪些数据，下一次数据从哪里开始发，因此，确认序号应当是上次已成功收到数据字节序号加 1。只有 ACK 标志为 1 时确认序号字段才有效。 首部长度 (Header Length)：首部中的选项部分的长度是可变的，因此首部的长度也是可变的，所以需要这个字段来明确表示首部的长度，这个字段占 4 bit，4 位的二进制数最大可以表示 15，而首部长度是以 4 个字节为一个单位的，因此首部最大长度是 15 * 4 = 60 字节。 保留字段 (Reserved)：占 6 位，未来可能有具体用途，目前默认值为0. 控制位 (Control Bits)：在三次握手和四次挥手中会经常看到 SYN、ACK 和 FIN 的身影，一共有 6 个标志位，它们表示的意义如下：  URG (Urgent Bit)：值为 1 时，紧急指针生效 ACK (Acknowledgment Bit)：值为 1 时，确认序号生效 PSH (Push Bit)：接收方应尽快将这个报文段交给应用层 RST (Reset Bit)：发送端遇到问题，想要重建连接 SYN (Synchronize Bit)：同步序号，用于发起一个连接 FIN (Finish Bit)：发送端要求关闭连接   窗口大小 (Window)： TCP的流量控制由连接的每一端通过声明的窗口大小来提供。窗口大小为字节数，起始于确认序号字段指明的值，这个值是接收端正期望接收的字节。窗口大小是一个 16 bit 字段，单位是字节， 因而窗口大小最大为 65535 字节。 检验和 (Checksum)：功能类似于数字签名，用于验证数据完整性，也就是确保数据未被修改。检验和覆盖了整个 TCP 报文段，包括 TCP 首部和 TCP 数据，发送端根据特定算法对整个报文段计算出一个检验和，接收端会进行计算并验证。 紧急指针 (Urgent Pointer)：当 URG 控制位值为 1 时，此字段生效，紧急指针是一个正的偏移量，和序号字段中的值相加表示紧急数据最后一个字节的序号。 TCP 的紧急方式是发送端向另一端发送紧急数据的一种方式。 选项 (Options)：这一部分是可选字段，也就是非必须字段，最常见的可选字段是“最长报文大小 (MSS，Maximum Segment Size)”。 有效数据部分 (Data)：这部分也不是必须的，比如在建立和关闭 TCP 连接的阶段，双方交换的报文段就只包含 TCP 首部。  </description>
+    </item>
+    
+    <item>
+      <title>时间轮</title>
+      <link>https://sunhao1256.github.io/post/%E6%97%B6%E9%97%B4%E8%BD%AE/</link>
+      <pubDate>Sun, 10 Jul 2022 15:52:45 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/%E6%97%B6%E9%97%B4%E8%BD%AE/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>K8s安装</title>
+      <link>https://sunhao1256.github.io/post/k8s%E5%AE%89%E8%A3%85/</link>
+      <pubDate>Sat, 02 Jul 2022 20:01:43 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/k8s%E5%AE%89%E8%A3%85/</guid>
+      <description>文章摘自https://k8s.easydoc.net/docs/dRiQjyTY/28366845/6GiNOzyZ/nd7yOvdY
+ 💽安装 Kubernetes 集群 安装方式介绍  minikube 只是一个 K8S 集群模拟器，只有一个节点的集群，只为测试用，master 和 worker 都在一起 直接用云平台 Kubernetes 可视化搭建，只需简单几步就可以创建好一个集群。 优点：安装简单，生态齐全，负载均衡器、存储等都给你配套好，简单操作就搞定 裸机安装（Bare Metal） 至少需要两台机器（主节点、工作节点个一台），需要自己安装 Kubernetes 组件，配置会稍微麻烦点。 可以到各云厂商按时租用服务器，费用低，用完就销毁。 缺点：配置麻烦，缺少生态支持，例如负载均衡器、云存储。   本文档课件需配套 视频 一起学习
+ minikube 安装非常简单，支持各种平台，安装方法
+ 需要提前安装好 Docker
+ # 启动集群 minikube start # 查看节点。kubectl 是一个用来跟 K8S 集群进行交互的命令行工具 kubectl get node # 停止集群 minikube stop # 清空集群 minikube delete --all # 安装集群可视化 Web UI 控制台 minikube dashboard 云平台搭建  腾讯云 TKE（控制台搜索容器） 登录阿里云控制台 - 产品搜索 Kubernetes  裸机搭建（Bare Metal） 主节点需要组件  docker（也可以是其他容器运行时） kubectl 集群命令行交互工具 kubeadm 集群初始化工具  工作节点需要组件 文档  docker（也可以是其他容器运行时） kubelet 管理 Pod 和容器，确保他们健康稳定运行。 kube-proxy 网络代理，负责网络相关的工作  开始安装  你也可以试下 这个项目，用脚本快速搭建 K8S 裸机集群 当然，为了更好的理解，你应该先手动搭建一次</description>
+    </item>
+    
+    <item>
+      <title>all in one配置</title>
+      <link>https://sunhao1256.github.io/post/all-in-one/</link>
+      <pubDate>Mon, 20 Jun 2022 16:57:01 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/all-in-one/</guid>
+      <description>需求  虚拟机 我和对象都是程序员，学新技术的时候得有环境 同时两台 win 用于娱乐 目标是 2 台 win 达到 2k 下中配吃鸡流畅，独立键鼠显示器 带 nas 最好 对我用处不是很大，有的话更好，当网盘用用。  配置如下 实现细节  看 B 站司波图的教程 显示器得带音响，因为在家玩，不喜欢带耳机，音质听个响 开机麻烦，因为要先开 unraid ，然后再开 vm ，有的时候只是想开个 centos vm ，进行开发。懒得去房间开主机，买了个小米蓝牙开关，配合主板的 ac recovery 可以实现远程开机。(好像可以用代码实现，一直没整出来) usb 设备，就 unraid 带的 hot usb 插件就可以 直通硬盘，开发环境 centos 的无所谓，丢了就算，我放在了 nas 的 2t 机械盘里。但是我的 win ，有的时候还要拿来工作，包括游戏，丢了要下老半天。所以我原本笔记本上有一块 500g 的固态，又买了一块三星 980 pro 。用于 win 的硬盘，使用的是 pcie 直通。和物理机一样，都在硬盘里。虚拟机删了，东西也都在硬盘。性能达到满 显卡直通，打游戏肯定要显卡直通的，我买的两个同价位同性能的 n 卡和 a 卡，都能直通，除了 a 卡在 LOL 环境下会被检测是虚拟机环境，需要改一个配置。两个发挥的性能没什么区别，都达到了物理机的 90%性能，主要是因为 CPU 的导致没跑满性能 主板和机箱有坑！因为 b660m 是 matx 的，虽然可以插 2 个显卡，但是你如果配置的是 matx 的机箱，第二张显卡就卡在了电源那里，所以机箱一定要是 atx 的。不然装不下，害我白花了 170 快，闲鱼 89 挂着呢。当然可以买 atx 主板，贵啊！ CPU 直通， 打游戏的时候，核心要分离开的。一碗粉的钱总会有点影响，12600k 是 16 线程，所以我给 2 个 win 各用了 8 线程，CPU 得买带核显的，因为 unraid 自己要占一个输出，万一 web 挂了，还有地方可以查。 电源，不用想你都一碗粉的钱了，电源功率整大点别崩了，我的 750w ，用起来还行。建议上 1000w unraid 系统，我只是主要是想用虚拟机功能，nas 不是主要目的，所以就买了 basic 版本，b 站也有半价折扣教程。不用 pve ，当然是因为我代码看不懂，unraid 可视化做的太好了。不用开心版，是因为我要做主力机器的，未来也有可能在 nas 上做一些事情，支持下正版（第一次买正版系统） 不知道为什么，我 bios 里已经调整为首选视频输出是板载显卡了，但是当我的 hdmi 插在独立显卡的时候，unraid 启动的时候还是会占用独立显卡，导致显卡直通的时候会提示 busy 。所以我花了几块钱买了个 hdmi 欺骗器，一直插在核显上。 微星的主板需要关闭 fast boot ，微星自己有一个叫 msi fast boot ，两个都关了，否则 unraid 重启会黑屏  效果  nas 2t 双开 win 虚拟机，2k 100 渲染 中配吃鸡，70fps ，LOL 团战 150fps ，走路 200+ 远程开机，配合 unraid web 远程开虚拟机，进行开发  总结 最近看了 B 站司波图的两男一机。突然想用一碗粉的钱吃两碗粉。基于上面的需求，就动手做了。主板应该选带 wifi 的，不用一直拖网线，有点失误。都是 618 京东买的，后面价格降价了，可恶的狗东。但是有大部分 30 天保价，后面又少了几百块。配置图是没保价之前的价格。总体还算满意。达到了一开始的需求，家里整个公网 ip 啥的，也能在公司就能用家里的虚拟机了。因为自己换了 M1 pro ，pd 虚拟机总觉得用的不舒服。还不能装 centos7 。也满足了自己第一次装机，省钱的话，就是省了一份 cpu ，主板，电源，机箱。2000+。装机大佬们可以多多评价。总觉得硬件买贵了，又不敢去咸鱼～～🙄</description>
+    </item>
+    
+    <item>
+      <title>mac使用</title>
+      <link>https://sunhao1256.github.io/post/mac%E4%BD%BF%E7%94%A8/</link>
+      <pubDate>Mon, 20 Jun 2022 16:57:01 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/mac%E4%BD%BF%E7%94%A8/</guid>
+      <description>快捷键   Finder绝对路径跳转
+command+shift+G
+  Finder绝对路径复制
+command+option+C
+  表情
+control+cmmand+space
+  录屏
+Shift-Command-5
+  截图
+command shift 4局部，3全屏
+  只显示桌面
+command f3
+  finder
+option+command+空格
+  space+command
+打开聚焦搜索，按住command再点击结果，是进入文件夹
+  from current terminal open finder
+tap open   环境变量 加载顺序
+/etc/profile /etc/paths ~/.zprofile ~/.zshrc /etc/profile和/etc/paths是系统级别的，系统启动就会加载，zprofile是用户级别的 ~/.zshrc没有上述规则，它是zsh shell打开的时候载入的。
+# System-wide .profile for sh(1) if [ -x /usr/libexec/path_helper ]; then eval `/usr/libexec/path_helper -s` fi if [ &amp;#34;${BASH-no}&amp;#34; !</description>
+    </item>
+    
+    <item>
+      <title>Git命令</title>
+      <link>https://sunhao1256.github.io/post/git-command/</link>
+      <pubDate>Mon, 21 Feb 2022 16:57:01 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/git-command/</guid>
+      <description>Git常用命令 git init # 初始化本地git仓库（创建新仓库） git config --global user.name &amp;quot;xxx&amp;quot; # 配置用户名 git config --global user.email &amp;quot;xxx@xxx.com&amp;quot; # 配置邮件 git config --global color.ui true # git status等命令自动着色 git config --global color.status auto git config --global color.diff auto git config --global color.branch auto git config --global color.interactive auto git config --global --unset http.proxy # remove proxy configuration on git git clone git+ssh://git@192.168.53.168/VT.git # clone远程仓库 git status # 查看当前版本状态（是否修改） git add xyz # 添加xyz文件至index git add .</description>
+    </item>
+    
+    <item>
+      <title>Go包管理</title>
+      <link>https://sunhao1256.github.io/post/go/</link>
+      <pubDate>Tue, 11 Jan 2022 14:43:18 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/go/</guid>
+      <description>Go 包管理 go mod init:初始化modules go mod download:下载modules到本地cache go mod edit:编辑go.mod文件，选项有-json、-require和-exclude，可以使用帮助go help mod edit go mod graph:以文本模式打印模块需求图 go mod tidy:检查，删除错误或者不使用的modules，下载没download的package go mod vendor:生成vendor目录 go mod verify:验证依赖是否正确 go mod why：查找依赖 ​ go test 执行一下，自动导包 ​ go list -m 主模块的打印路径 go list -m -f={{.Dir}} print主模块的根目录 go list -m all 查看当前的依赖和版本信息 </description>
+    </item>
+    
+    <item>
+      <title>Netty</title>
+      <link>https://sunhao1256.github.io/post/netty/</link>
+      <pubDate>Tue, 11 Jan 2022 14:43:18 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/netty/</guid>
+      <description>netty是在什么地方创建SeverChannel的 在BootStrap调用bind方法时创建
+private ChannelFuture doBind(final SocketAddress localAddress) { final ChannelFuture regFuture = this.initAndRegister(); } initAndRegister方法
+final ChannelFuture initAndRegister() { Channel channel = null; try { channel = this.channelFactory.newChannel(); channelFactory是在bootstrap配置class时实例化的
+在AbstractBootstrap中
+public B channel(Class&amp;lt;? extends C&amp;gt; channelClass) { return this.channelFactory((io.netty.channel.ChannelFactory)(new ReflectiveChannelFactory((Class)ObjectUtil.checkNotNull(channelClass, &amp;#34;channelClass&amp;#34;)))); } 因此是直接通过反射，创建了NioServerSocketChannel.class
+public class NioServerSocketChannel extends AbstractNioMessageChannel implements ServerSocketChannel { private static final ChannelMetadata METADATA = new ChannelMetadata(false, 16); private static final SelectorProvider DEFAULT_SELECTOR_PROVIDER = SelectorProvider.provider(); private static final InternalLogger logger = InternalLoggerFactory.</description>
+    </item>
+    
+    <item>
+      <title>Reactor响应式编程</title>
+      <link>https://sunhao1256.github.io/post/reactor/</link>
+      <pubDate>Tue, 11 Jan 2022 14:43:18 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/reactor/</guid>
+      <description>Reactive Programming 响应式编程 为什么要响应式编程 传统的编程模式应对如今高并发，高响应的需求有很多限制。现在的web应用，越来越需要更高的并发，更快的响应。
+每个请求都需要一个线程 传统的web请求，每个请求都是使用单个线程贯穿整个流程。如果我们用Spring的生态，对于的就是SpringMvc框架。基于servlet容器，例如tomcat。而tomcat内部会维护一个线程池去，每当请求来的时候，便会从池中分配一个thread来处理请求。这意味着，这个web程序的并发能力只能达到线程池的大小。当然为了提高并发能力，可以增加线程池的大小。但是在Java中一个线程的开销是昂贵的，通常是1MB的内存消耗。更大的线程池大小，则意味着更大的内存。
+阻塞IO操作 IO操作，如果不做任何处理，势必会阻塞，例如查询数据库、RPC调用其他服务等。一旦发起了一个IO请求，持续等待，直到IO结束，这就是最基础的阻塞IO
+响应时间 在实际的场景中，一次请求中可能有不止一个服务调用链。例如A服务除了要调用B、C服务，还需要操作一次数据库。如果什么都不做的话，意味着这次请求花费的时间是下面花费时间之和
+ B服务的响应时间（网络延迟+B服务的处理时间） C服务的响应时间（网络延迟+C服务的处理时间） 数据的处理时间（网络延迟+处理时间）  如果没有业务逻辑上的顺序，如果我们在代码中并发操作的话，那么消耗的时间肯定有所减少。虽然Java提供很多方便的异步回调方法，例如CompletableFutures，但是这极大的增加了代码的复杂性。没人愿意每次都这么复杂，并且并不是每个人都会想到用异步的。
+压倒客户端 微服务中可能会出现这样的场景，A服务需要调用B一些信息，例如查一个月的订单，但是这个数据非常庞大，对于A服务来说，一次性无法处理，甚至可能出现OOM导致服务A直接挂了。
+小结 总结上面的一些问题能发现响应式编程能带来的好处：
+ 不使用一个线程处理一个请求的模式，可以使用需要更少的线程处理更多的请求 防止线程在进行IO操作的时候被阻塞 能有简洁的并发操作API 提供背压机制，backpress，防止客户端直接被压垮  什么是响应式编程  “In plain terms reactive programming is about non-blocking applications that are asynchronous and event-driven and require a small number of threads to scale. A key aspect of that definition is the concept of backpressure which is a mechanism to ensure producers don’t overwhelm consumers.</description>
+    </item>
+    
+    <item>
+      <title>Spring问题整理</title>
+      <link>https://sunhao1256.github.io/post/spring/</link>
+      <pubDate>Tue, 11 Jan 2022 14:43:18 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/spring/</guid>
+      <description>@Override @Nullable public Object invoke(MethodInvocation mi) throws Throwable { if (!(mi instanceof ProxyMethodInvocation)) { throw new IllegalStateException(&amp;#34;MethodInvocation is not a Spring ProxyMethodInvocation: &amp;#34; + mi); } ProxyMethodInvocation pmi = (ProxyMethodInvocation) mi; ProceedingJoinPoint pjp = lazyGetProceedingJoinPoint(pmi); JoinPointMatch jpm = getJoinPointMatch(pmi); return invokeAdviceMethod(pjp, jpm, null, null); } 当在Sping中配置的Bean存在相互依赖，Spring是怎么处理的 针对原型Bean直接抛出异常，不支持。
+单例Bean，Spring使用3个Map做缓存，来处理。
+分别是：一级缓存Spring最终保存的单例对象Map，二级缓存建造Spring单例对象的匿名工厂对象返回的就是三级缓存需要的，三级缓存是允许提前被依赖的单例对象。
+阐述一个Bean获取的流程  尝试获取单例Bean 检查一级缓存是否有，没有的话，检查当前获取的Bean是否正在创建，如果正在创建即出现了Bean互相依赖情况，检查三级缓存是否已经有提前可被依赖的对象，如果没有的话，检查二级缓存是否有其工厂，有的话，使用工厂，实例化这个Bean，放入三级缓存里。供其他Bean依赖使用 没获取到，可能是原型Bean，也可能是单例Bean没有实例化 检查如果是原型Bean，而且正在创建中，即出现了原型Bean被依赖的情况，直接抛出异常 准备BeanDefinition，如果档期工厂没有相应的BD，而且父工厂又存在BD，使用父工厂的getBean方法去获取Bean 标记Bean创建过了 从当前工厂读取BD,并且转为RootBeanDefinition，获取期间，还要检查父工厂是否也有该Bean的BD，有的话，以父工厂得BD为基础，子工厂得BD覆盖掉其属性 检查BD是不是抽象的，无法实例化的类，抛出异常 检查BD中得DependsOn属性，针对所有Depend，循环实例化，如果检查到有Depend得Bean又依赖于当前目标Bean，抛出异常，互相提前依赖了。并且建立相关关系，所以DependOn意义是，依赖于一个完全实例化完成后的Bean 如果是单例的话，开始创建单例Bean，创建匿名工厂对象 标记单例Bean正在被创建 使用工厂对象去调用getObject方法 实际上执行了createBean方法 根据之前的RootBD，解析出需要实例化的Class对象 检查MethodOverrides目标方法是否存在Class对象中 在实例化对象之前，给InstantiationAwareBeanPostProcessor机会去改变实例，调用其postProcessBeforeInstantiation，AOP就是在这里实现的，此外，如果返回了，还会调用BPP的postProcessAfterInitialization，但不会调用postProcessBeforeInitialization了 如果没有被InstantiationAwareBeanPostProcessor改变了的话，开始进入真正的实例化方法 实例化一个BeanWrapperImpl去封装实例 解析Class对象，确定Class对象有Public修饰符 如果有FactoryMethod的话，直接调用FactoryMethod返回实例，封装在BeanWrapperImpl，这里面也会初始化initBeanWrapper，将属性编辑器注入到BeanWrapperImpl身上，用于后续的属性注入 开始解析构造函数或者是FactoryMethod，如果解析过了，直接去实例化 否则进入构造函数解析 解析之前，看BPP有没有提供了构造函数，即SmartInstantiationAwareBeanPostProcessor的determineCandidateConstructors方法执行，如果返回了构造函数，就用BPP的了。 没有的话，进入默认的解析，依赖先看缓存里有没有解析过的参数，因为构造方法注入的话，很消耗性能，没有缓存的话，先看用户获取bean时有没有传入args，即构造函数的参数。没有的话，而且只有一个候选的构造函数，就直接用使用无参的了，没有的话，先去解析参数，construct-arg，既可以时Index，也可以是name。根据用户传入的arg长度，去解析。 最后解析完成后，使用实例化策略去实例化即可，这里也可使用cglib去处理，然后封装在BeanWrapperImpl中 至此，BeanWapper里已经包含了我们的目标对象的实例了 然后创建二级缓存，将上一步BeanWapper里的实例，作为二级缓存返回的对象，加载缓存里 至此，二级缓存的工厂加入 了。当在一开始获bean，一级获取不到，获取二级有工厂的时候，就会把BeanWapper的实例暴露出去，供后续使用 然后开始初始化实例 将上面暴露出来的示例进行属性注入 给InstantiationAwareBeanPostProcessor的postProcessAfterInstantiation在属性注入之前最后一次机会，去改变Bean，并且阻止Bean的属性注入 判断属性注入的是byName还是byType，针对所有的非简单的属性，还有排除所有的ignoredDependencyInterfaces中的接口。进行getBean操作，保存到PropertyValues中 使用InstantiationAwareBeanPostProcessor的postProcessProperties，可以进行修改属性。继续使用postProcessPropertyValues，继续可以更该属性 得到所有属性后，应用属性到Bean实例身上，在应用属性的时候，会找到前工厂里的所有的TypeConverter去将属性变为需要的属性，如果变不成会报错 至此，属性赋值完毕 复制完毕后，开始初始化Bean，先激活所有的aware方法， 调用BPP的postProcessBeforeInitialization初始化之前方法，记住，这里的初始化，是Bean已经实例化之后的事情了，是执行其他事情的初始化 执行afterPropertiesSet方法，在执行init-methods方法 调用BPP的postProcessAfterInitialization初始化以后方法 至此返回暴露的bean，即getBean结束 最后处理销毁的方法，即出发destory-method的方法  Spring是如何处理掉循环依赖的  针对非单例Bean出现循环依赖直接抛出异常 单例Bean Spring存在3个缓存Map  Spring完全生成好的BeanMap，key是Bean的name，Value是实例对象 Spring生成Bean的工厂Map，key是Bean的name，value是实现了ObjectFactory接口的实例对象 Spring尚未初始化，即赋予属性或者其他初始化动作的Bean实例Map，key是Bean的name，value是工厂map的工厂的返回值，即ObjectFactory的getObject方法结果   假设存在对象A依赖于对象B，对象Bean依赖于对象A  Spring根据A的name，首先取BeanMap里找是否有A的实例，没有的话，检查A是否正在创建，如果正在创建，则说明出现了循环依赖。（需要获取A，发现A又在创建，表名有其他bean需要A），尝试从可提前依赖的BeanMap获取EarlyBeanReference，如果没有，则尝试从工厂Map里找A对应的工厂对象，如果有工厂对象，则调用工厂对象进行返回，并且将工厂返回的Bean实例作为EarlyBeanReference，放入未完全实例化结束BeanMap里，删除工厂Map对应的value。此时工厂Map为空。 此时，A没有正在创建，继续 标记A正在创建，根绝BeanDefinition生成Bean实例对象，（此时对象实例已经生成完毕，但是还没有初始化），并且把A的创建工厂，放入工厂Map，而这个创建工厂getObject返回值就是刚才生成的实例对象，并且给SmartInstantiationAwareBeanPostProcessor接口机会取改变这个EarlyBeanReference对象。 得到实例化后的A对象，开始注入A的属性，发现A的属性b，需要B对象。 B对象开始获取（此时，A还没有结束，即一级缓存中没有A，二级缓存中有A的工厂Map） B的获取如上述一致， 直至B实例化结束，开始注入B的属性，发现B的属性a，需要A对象 又到了A对象开始获取 此时，进入第一个流程，发现一级缓存里没有A，而A又正在创建中，出现循环依赖，去二级缓存里找A的工厂Map，调用工厂Map方法去，得到了EarlyBeanReference，放入三级缓存里，返回回去 即此时，B注入属性成功，并且返回了一个EarlyBeanReference，即当前正在创建的A对象实例。 B注入成功属性后，B实例化完全结束，结束后，清除B的二三级缓存，加入一级缓存并返回 此时回到了A的注入B属性逻辑中，A得到了B实例。而这个实例里的A属性对象，和当前获取A的对象是一个 A继续完成初始化动作，最后A实例化完全结束，清楚A的二三级缓存，加入一级缓存并返回   只有2个缓存行吗？为什么一定要3个  BeanMap无用质疑是需要的 如果只有工厂Map而没有，可提前依赖的BeanMap的话，那么在一开始从缓存中获取Bean，一级缓存无法获取到，直接就有工厂Bean，一旦有工厂就调用工厂返回的值，这样是不行的，因为在工厂调用Bean的时候，有很多动作就会进行重复，比如工厂获取的时候，可以给SmartInstantiationAwareBeanPostProcessor机会去更改EarlyBeanReference对象，重复执行了。第二，与工厂模式的思想违背，工厂只需要制造一次，而不是每次都制造。 如果只有可提前依赖的BeanMap，而没有工厂Map。实际上是可以的，只不过没有工厂的话，会将大部分工作都抛给创建Bean的流程里，例如SmartInstantiationAwareBeanPostProcessor等工厂应该负责的工作    ApplicationContext的Refresh方法  Enviroment，环境参数，根据不同的环境，实现Environment不同的子类，例如Web环境会实现，StandardServletEnvironment，默认是实现StandardEnvironment，包含很多环境变量，系统变量，java环境变量，Servlet环境变量 创建beanFactory作为成员变量，ApplicationContext自身也实现了BeanFactory接口，只不过具体实现的方法是成员变量的beanFactory的方法、 填充工厂  增加SPEL表达式解析器 属性编辑器注入 增加一个ApplicationContextAwareProcessor的BPP，在Bean实例化之后，激活实现了aware接口的方法的一个BPP 配置忽略某些类型的属性自动注入，增加某些类型自动注入   postProcessBeanFactory：留给子类去实现 记录启动路径 激活BeanFactoryPostProcessor，invokeBeanFactoryPostProcessors 注册BeanPostProcessor 初始化国际化文件 初始化initApplicationEventMulticaster，事件传送器，用于发送事件 注册事件监听器 设置ConversionService 锁定所有BeanDefinitions，防止改变 实例化剩下所有的no-lazy实例 调用所有实现LifeCycle接口的bean 发送ContextRefreshedEvent事件  BeanFactoryPostProcessor和BeanPostProcessor区别   BeanFactoryPostProcessor是可以修改Bean的元数据，是控制BeanFactory的，而BeanPostProcessor是Bean实例的处理器，可以修改Bean的实例</description>
+    </item>
+    
+    <item>
+      <title>八股文</title>
+      <link>https://sunhao1256.github.io/post/%E5%B8%B8%E8%A7%81%E9%A2%98%E7%9B%AE/</link>
+      <pubDate>Tue, 11 Jan 2022 14:43:18 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/%E5%B8%B8%E8%A7%81%E9%A2%98%E7%9B%AE/</guid>
+      <description>Redis redis有哪些数据结构，你用过哪些，做过什么事情   String
+最简单的数据结构，用于存放字符串，实际上在redis中存放的是字符数组，类似java中的arrayList，**Redis 为了对内存做极致的优化，不同长度的字符串使用不同的结构体来表示。**Redis 规定了字符串的长度不得超过 512 MB
+  List
+底层用的双向列表，类似java中的LinkedList，因为是链表所有，插入删除都是O(1)，查询是O(n)
+常见的命令
+  lpush从头添加元素，rpush从尾添加
+  lpop拿出头部的元素，rpop从尾部拿元素
+索引，lpush+lpop即可实现栈，rpush+lpop可以实现队列
+    Hash
+对应着java中的hashMap
+  Set
+Redis 的集合相当于 Java 语言中的 HashSet，它内部的键值对是无序、唯一的。它的内部实现相当于一个特殊的字典，字典中所有的 value 都是一个值 NULL。
+  Zset
+它类似于 Java 中 SortedSet 和 HashMap 的结合体，一方面它是一个 set，保证了内部 value 的唯一性，另一方面它可以为每个 value 赋予一个 score 值，用来代表排序的权重。
+使用场景：
+ 排行榜，key是用户id，value是访问次数。 限流，key是用户id+接口id，value是时间戳，每次进方法之前，拿当前时间戳-interval，删除小于now-interval的元素，算出加入当前这次请求set中的个数是否大于max，大于则限流。    BloomFilter
+使用高效的数据结构解决是否存在的问题，可以解决穿透的问题
+  HyperLogLog
+可以用于基数的统计，例如UV统计
+  redis如何做到限流的 限流的几个方式</description>
+    </item>
+    
+    <item>
+      <title>平时疑问</title>
+      <link>https://sunhao1256.github.io/post/%E5%B9%B3%E6%97%B6%E7%96%91%E9%97%AE/</link>
+      <pubDate>Tue, 11 Jan 2022 14:43:18 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/%E5%B9%B3%E6%97%B6%E7%96%91%E9%97%AE/</guid>
+      <description>平时疑问   浏览器输入一个地址，整个流程
+  如果线上流量暴增，全都打到一个 upstream 上了，怎么排查
+  如何在 nginx 的 access log 中查出请求前 10 的 ip
+  台阶问题，假如对于上台阶，可以一次上一阶，也可以一次上两阶，写一个方法，实现输入台阶数，输出可以有多少种上法。
+  广度优先和深度优先
+  spring reactive，响应式聊下，什么时候适合用？背压是什么东西，backpress
+  压缩算法，怎么就“压缩”了？如何减少体积的？
+  实时一致性，最终一致性是什么？什么场景下用那种，如何实现的？
+  实时一致性:
+微服务中，场景用户使用积分兑换优惠券，积分service先扣除积分，优惠券service再进行发券动作，如果网络问题，积分扣成功了，但是优惠券发失败了。用户会投诉，必须要证优惠券和积分要在同一个分布式事务中.
+解决方案：市面上的分布式事务，阿里的seata
+  最终一致性:
+微服务中，用户选择商品下单，商品service进行库存扣件，订单service生成订单，交易service生成交易订单。如果网络原因导致，交易service生成交易订单失败了。并没有影响，只需要通过措施重新弥补交易service去生成交易订单即可。
+解决方法：mq，通过mq的重试机制以及持久化等特性，每一个微服务与下游微服务进行交互动作都是通过mq的消息。保证消息能够被消费，长时间未消费可以告警。
+    消息堆积如何处理？以及产生的危害。
+  怎么保证接口幂等
+  如何评判一个服务的好坏？你是如何进行压测的？查看了哪些指标
+  对象存储，文件存储，块存储。区别
+  服务器卡了，字都快打不动了，咋回事，怎么排查
+  用过mysql行锁吗
+用过，在一些比较简单的微服务场景，或者无法使用其他中间件的前提下。如果需要部署多节点的话，最方便的分布式锁就是mysql，因为我们的db库基本都是单节点的mysql或者mariadb。使用起来其实很简单，就是一个update语句，更新version字段。也就是所谓的乐观锁。开启一个事务，先select锁，然后尝试更新锁，在没完成业务的之前是不提交锁的，所以，其他线程会在获取锁的时候就停下来。因为update，delete，insert默认都是带for update，即行锁的。当然select不会阻塞，除非主动的设置for update。这样就是最基础的一个分布式锁了。切记锁字段必须要有索引，否则锁整个表。就G了
+  netty玩过吗，玩过哪些东西，能干啥</description>
+    </item>
+    
+    <item>
+      <title>数据结构</title>
+      <link>https://sunhao1256.github.io/post/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</link>
+      <pubDate>Tue, 11 Jan 2022 14:43:18 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</guid>
+      <description>堆 堆是一种非线性结构，可以把堆看作一个数组，也可以被看作一个完全二叉树，通俗来讲堆其实就是利用完全二叉树的结构来维护的一维数组但堆并不一定是完全二叉树
+按照堆的特点可以把堆分为大顶堆和小顶堆 大顶堆：每个结点的值都大于或等于其左右孩子结点的值 小顶堆：每个结点的值都小于或等于其左右孩子结点的值
+使用堆的原因？ 如果仅仅是需要得到一个有序的序列，使用排序就可以很快完成，并不需要去组织一个新的数据结构。但是如果我们的需求是对于一个随时会有更新的序列，我要随时知道这个序列的最小值或最大值是什么。显然如果是线性结构，每次插入之后，假设原数组是有序的，那使用二分把它放在正确的位置也未尝不可，但是插入的时候从数组中留出空位就需要O(n)的时间复杂度，删除的时候亦然。
+时间复杂度 插入和删除的时间复杂度是O(logn)
+环形队列(数组) 普通队列 普通队列，数组实现时，出队后，原来的空间就浪费了。
+环形队列 环形队列，数组实现时，下标用模取运算，例如最大空间为5，模取后只会有0，1，2，3，4下标，组成了循环。
+ front 变量的含义做一个调整： front 就指向队列的第一个元素, 也就是说 arr[front] 就是队列的第一个元素 front 的初始值 = 0 rear 变量的含义做一个调整：rear 指向队列的最后一个元素的后一个位置. 因为希望空出一个空间做为约定. rear 的初始值 = 0 当队列满时，条件是 (rear + 1) % maxSize == front 【满】 对队列为空的条件， rear == front 空 当我们这样分析， 队列中有效的数据的个数 (rear + maxSize - front) % maxSize // rear = 1 front = 0  时间轮 使用场景，处理大批量的定时任务
+利用环形队列，队列的每个空间里存放的是任务的集合。
+例如以60秒为一个轮，70秒后执行一个任务。只需要一个timer按秒去旋转时间轮，70%60=10，到达第10个槽的时候，执行内部的所有任务即可。
+为了解决10秒和70秒落在同一个槽上，可以在任务身上加一个属性，圈数，例如10秒的任务圈数是0，70秒的任务是1，只有达到槽位置，并且圈数为0的任务才会被执行。</description>
+    </item>
+    
+    <item>
+      <title>CopyonArraySet</title>
+      <link>https://sunhao1256.github.io/post/copyonarrayset/</link>
+      <pubDate>Mon, 18 Oct 2021 22:16:25 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/copyonarrayset/</guid>
+      <description>源码 public class CopyOnWriteArraySet&amp;lt;E&amp;gt; extends AbstractSet&amp;lt;E&amp;gt; implements java.io.Serializable { private static final long serialVersionUID = 5457747651344034263L; // 内部使用CopyOnWriteArrayList存储元素  private final CopyOnWriteArrayList&amp;lt;E&amp;gt; al; // 构造方法  public CopyOnWriteArraySet() { al = new CopyOnWriteArrayList&amp;lt;E&amp;gt;(); } // 将集合c中的元素初始化到CopyOnWriteArraySet中  public CopyOnWriteArraySet(Collection&amp;lt;? extends E&amp;gt; c) { if (c.getClass() == CopyOnWriteArraySet.class) { // 如果c是CopyOnWriteArraySet类型，说明没有重复元素，  // 直接调用CopyOnWriteArrayList的构造方法初始化  @SuppressWarnings(&amp;#34;unchecked&amp;#34;) CopyOnWriteArraySet&amp;lt;E&amp;gt; cc = (CopyOnWriteArraySet&amp;lt;E&amp;gt;)c; al = new CopyOnWriteArrayList&amp;lt;E&amp;gt;(cc.al); } else { // 如果c不是CopyOnWriteArraySet类型，说明有重复元素  // 调用CopyOnWriteArrayList的addAllAbsent()方法初始化  // 它会把重复元素排除掉  al = new CopyOnWriteArrayList&amp;lt;E&amp;gt;(); al.</description>
+    </item>
+    
+    <item>
+      <title>Hashset</title>
+      <link>https://sunhao1256.github.io/post/hashset/</link>
+      <pubDate>Mon, 18 Oct 2021 21:42:09 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/hashset/</guid>
+      <description>属性 // 内部使用HashMap  private transient HashMap&amp;lt;E,Object&amp;gt; map; // 虚拟对象，用来作为value放到map中  private static final Object PRESENT = new Object(); 构造方法 public HashSet() { map = new HashMap&amp;lt;&amp;gt;(); } public HashSet(Collection&amp;lt;? extends E&amp;gt; c) { map = new HashMap&amp;lt;&amp;gt;(Math.max((int) (c.size()/.75f) + 1, 16)); addAll(c); } public HashSet(int initialCapacity, float loadFactor) { map = new HashMap&amp;lt;&amp;gt;(initialCapacity, loadFactor); } public HashSet(int initialCapacity) { map = new HashMap&amp;lt;&amp;gt;(initialCapacity); } // 非public，主要是给LinkedHashSet使用的 HashSet(int initialCapacity, float loadFactor, boolean dummy) { map = new LinkedHashMap&amp;lt;&amp;gt;(initialCapacity, loadFactor); } - public :表明该成员变量或者方法是对所有类或者对象都是可见的,所有类或者对象都可以直接访问 - private:表明该成员变量或者方法是私有的,只有当前类对其具有访问权限,除此之外其他类或者对象都没有访问权限.</description>
+    </item>
+    
+    <item>
+      <title>ConcurrentHashMap</title>
+      <link>https://sunhao1256.github.io/post/concurrenthashmap/</link>
+      <pubDate>Tue, 12 Oct 2021 21:55:51 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/concurrenthashmap/</guid>
+      <description>摘自：https://www.cnblogs.com/tong-yuan/p/ConcurrentHashMap-resize.html
+ 简介 ConcurrentHashMap是HashMap的线程安全版本，内部也是使用（数组 + 链表 + 红黑树）的结构来存储元素。
+相比于同样线程安全的HashTable来说，效率等各方面都有极大地提高。
+构造函数 public ConcurrentHashMap() { } public ConcurrentHashMap(int initialCapacity) { if (initialCapacity &amp;lt; 0) throw new IllegalArgumentException(); int cap = ((initialCapacity &amp;gt;= (MAXIMUM_CAPACITY &amp;gt;&amp;gt;&amp;gt; 1)) ? MAXIMUM_CAPACITY : tableSizeFor(initialCapacity + (initialCapacity &amp;gt;&amp;gt;&amp;gt; 1) + 1)); this.sizeCtl = cap; } public ConcurrentHashMap(Map&amp;lt;? extends K, ? extends V&amp;gt; m) { this.sizeCtl = DEFAULT_CAPACITY; putAll(m); } public ConcurrentHashMap(int initialCapacity, float loadFactor) { this(initialCapacity, loadFactor, 1); } public ConcurrentHashMap(int initialCapacity, float loadFactor, int concurrencyLevel) { if (!</description>
+    </item>
+    
+    <item>
+      <title>JavaCollections</title>
+      <link>https://sunhao1256.github.io/post/javacollections/</link>
+      <pubDate>Sun, 26 Sep 2021 21:50:07 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/javacollections/</guid>
+      <description>ArrayList  ArrayList实现了List，RandomAccess，Cloneable，java.io.Serializable接口 ArrayList实现了List，实现了基础的新增，删除，遍历等操作 ArrayList实现了RandomAccess，实现了随机读写的能力 ArrayList实现了Cloneable，可以被克隆 ArrayList实现了Serializable，可以被序列化  属性解析 //默认容量 private static final int DEFAULT_CAPACITY = 10; //默认的空数组对象，当传入的容量是0的时候使用。 private static final Object[] EMPTY_ELEMENTDATA = {}; /** * 空数组，传传入容量时使用，添加第一个元素的时候会重新初始为默认容量大小 */ private static final Object[] DEFAULTCAPACITY_EMPTY_ELEMENTDATA = {}; /** * 存储元素的数组 */ transient Object[] elementData; // non-private to simplify nested class access  /** * 集合中元素的个数 */ private int size;  DEFAULT_CAPACITY：10默认容量。 EMPTY_ELEMENTDATA：当容量是0的时候，则会将目前的存对象的数组直接指向这个对象。 DEFAULTCAPACITY_EMPTY_ELEMENTDATA：为了和EMPT_ELEMENTDATA区分，EMPT_ELEMENTDATA只是单纯表示当前的List是空的，而DEFAULTCAPACITY_EMPTY_ELEMENTDATA是在调用构造函数new ArrayList()时没有传容量的话，让当前的elementData指向它，等新增第一个元素的时候，才会初始化成DEFAULT_CAPACITY大小的数组。相当于是，没有传容量，但标记他并不是一个简单的空数组，而是一个没有使用的List elementData：真正存放数据的地方，使用transient是为了不序列化这个属性。 size：ArrayList的长度，而没有使用elementData的长度  新增方法,添加到尾部 public boolean add(E e) { // 检查是否需要扩容  ensureCapacityInternal(size + 1); // 把元素插入到最后一位  elementData[size++] = e; return true; } private void ensureCapacityInternal(int minCapacity) { ensureExplicitCapacity(calculateCapacity(elementData, minCapacity)); } private static int calculateCapacity(Object[] elementData, int minCapacity) { // 如果是空数组DEFAULTCAPACITY_EMPTY_ELEMENTDATA，就初始化为默认大小10  if (elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA) { return Math.</description>
+    </item>
+    
+    <item>
+      <title>linux</title>
+      <link>https://sunhao1256.github.io/post/linux/</link>
+      <pubDate>Fri, 31 Jan 2020 20:50:54 +0000</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/linux/</guid>
+      <description>终端 [root@LocalHost 桌面]# l
+ root表示当前登录用户名 locahost表示当前登录的主机名 桌面 表示当前的工作目录 # 身份标识符 #表示为超级管理员 $表示为普通用户  目录结构  Bin：全称Binary，存放的都是一些二进制文件 Dev：主要存放一些外接设备，例如U盘等，在其中的设备是不能直接使用的，需要挂载（类似windows下的分盘） Etc：主要存放一些配置文件 Home：表示除了root用户以外的其他的家目录，类似windows下的user用户目录 Proc：该目录存放运行的进程文件 Root：该目录是root用户的家目录 SBin：该目录也是存放二进制文件，但是必须得有super权限的用户才能执行 Usr：用户的应用程序和文件都放在这个目录下类似于windows下的program files目录 Mnt：让用户临时挂在别的文件系统 Opt：一般存放安装软件包 Usr/local：存放安装软件后存在的软件目录 Var：存放不断变化的文件，例如日志文件  VI和VIM编辑器 所有的Linux系统都会内建VI文本编辑器，VIM具有程序编辑的能力，可以看成是VI的增强版
+VI和VIM的3种常见模式   正常模式
+在正常是模式下，可以使用快捷键来处理内容
+  插入/编辑模式
+在此模式下，可以输入内容，按i，I，o，O，a，A，r，R等任何一个字母就可以进入编辑模式，一般用i
+  命令行模式
+可以使用指令完成，读取，存盘，替换，离开，显示行号等动作
+  注释 单行注释：#
+多行注释：:&amp;laquo;!内容!
+快捷键的使用   行首0，行尾$
+  拷贝当前行：yy，拷贝当前向下n行：nyy，例如：5yy
+  粘贴：p
+  删除当前行：dd，删除当前行下n行：ndd，例如：5dd
+  查找：命令行模式下 / 关键字，例如：/hello，下一个n
+  设置文件行号：命令行模式下 ：set nu，关闭行号：set nonu</description>
+    </item>
+    
+    <item>
+      <title>Search</title>
+      <link>https://sunhao1256.github.io/search/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sunhao1256.github.io/search/</guid>
+      <description>search</description>
+    </item>
+    
+  </channel>
+</rss>
