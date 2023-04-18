@@ -6,7 +6,23 @@
     <description>Recent content in Posts on Lulu</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 22 Nov 2022 09:16:30 +0800</lastBuildDate><atom:link href="https://sunhao1256.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 16 Mar 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://sunhao1256.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>K8s Client Informer mechanism</title>
+      <link>https://sunhao1256.github.io/post/k8s-client-informer%E6%9C%BA%E5%88%B6/</link>
+      <pubDate>Thu, 16 Mar 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/k8s-client-informer%E6%9C%BA%E5%88%B6/</guid>
+      <description>K8s Client Informer机制 背景 在开发云原生数据库时，底层采用开源的kubedb作为技术实现方案，查看了kubedb的源码，发现其最核心的机制是k8s Controller机制。可见使用controller机制是将传统技术变为云原生技术的关键。
+控制器 (Controller)  首先，Kubernetes 通过控制器 (controller) 来维护集群的状态。比如 ReplicaSetController 负责维护 ReplicaSet 对应的 Pod 数量，无论是 Pod 崩溃，被删除，还是 ReplicaSet 的 Replicas 配置发生变更，ReplicaSetController 都会采取必要的操作以维持各个 ReplicaSet 的 Selector 对应的 Pod 数量与 Replicas 一致。
+除了 ReplicaSetController 外，Kubernetes 还提供了很多内置的控制器，包括 EndpointController, NamespaceController, ServiceAccountController 等等。
+ 控制器的工作原理：Kubernetes API  Kubernetes 控制面 (control plane) 的核心是 API 服务器 (API server)。除了CRUD的接口，API server还提供了watch接口，方便用户实时获取集群状态。有了这个接口，控制器才得以无延迟（准确地说是低延迟）地对状态变更作出响应。这里指的 &amp;ldquo;状态变更&amp;rdquo;，就是我们常说的事件 (event)。
+ watch接口演示 watch是基于客户的角度进行响应，所以可以看到tmp下的config在没watch之前就存在一个kube-root-ca.crt，一旦watch后kube-root-ca.crt对于client来说是added的，所以会触发新增事件。
+如果我想要只监听未来发生的事件，watch提供了resourceVersion参数，我们可以先进行一次get，得到当前的configMapList的resourceVersion，再调用接口，实例如下：
+控制器的实现：Informer  有了接口，我们就足以对集群状态进行观察和控制，但是，控制回路是一个无限循环的过程，每一次向服务器发送的请求，和每一个与服务器保持的连接都会给客户端和服务器端造成额外的资源开销，必须引入缓存机制，减少不必要的资源开销。Informer 就是 Kubernetes 开发者们设计的一套缓存机制。
+Kubernetes Informer 相关的代码包含在 kubernetes/client-go 仓库中，主要的包有 cache, informers 和 dynamic，其中 informers 和 dynamic 包主要实现 Informer 的使用，Informer 本身逻辑主要聚合在 cache 包中</description>
+    </item>
+    
     <item>
       <title>OaRoadmap</title>
       <link>https://sunhao1256.github.io/post/oa-roadmap/</link>

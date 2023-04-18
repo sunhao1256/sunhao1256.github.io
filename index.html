@@ -60,6 +60,13 @@
 				
 			</a>
 		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/k8s-client-informer%E6%9C%BA%E5%88%B6/">
+				
+				<span class="menu__text">K8s Client Informer mechanism</span>
+				
+			</a>
+		</li>
 	</ul>
 </nav>
 
@@ -70,6 +77,35 @@
 			
 <main class="main list" role="main">
 	<article class="list__item post">
+	
+	<header class="list__header">
+		<h2 class="list__title post__title">
+			<a href="/post/k8s-client-informer%E6%9C%BA%E5%88%B6/" rel="bookmark">
+			K8s Client Informer mechanism
+			</a>
+		</h2>
+		<div class="list__meta meta"><div class="meta__item-author meta__item">
+	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 12 16"><path d="M6 1c2.2 0 3.5 2 3.5 4.5C9.5 7 8.9 8.2 8 9c2.9.8 4 2.5 4 5v1H0v-1c0-2.5 1.1-4.2 4-5-.9-.8-1.5-2-1.5-3.5C2.5 3 3.8 1 6 1z"/></svg><span class="meta__text">Frank Silva</span>
+</div>
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg><time class="meta__text" datetime="2023-03-16T00:00:00Z">2023-03-16</time></div><div class="meta__item-categories meta__item"><svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg><span class="meta__text"><a class="meta__link" href="/categories/cloud-native/" rel="category">Cloud Native</a>
+	</span>
+</div></div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+		K8s Client Informer机制 背景 在开发云原生数据库时，底层采用开源的kubedb作为技术实现方案，查看了kubedb的源码，发现其最核心的机制是k8s Controller机制。可见使用controller机制是将传统技术变为云原生技术的关键。
+控制器 (Controller)  首先，Kubernetes 通过控制器 (controller) 来维护集群的状态。比如 ReplicaSetController 负责维护 ReplicaSet 对应的 Pod 数量，无论是 Pod 崩溃，被删除，还是 ReplicaSet 的 Replicas 配置发生变更，ReplicaSetController 都会采取必要的操作以维持各个 ReplicaSet 的 Selector 对应的 Pod 数量与 Replicas 一致。
+除了 ReplicaSetController 外，Kubernetes 还提供了很多内置的控制器，包括 EndpointController, NamespaceController, ServiceAccountController 等等。
+ 控制器的工作原理：Kubernetes API  Kubernetes 控制面 (control plane) 的核心是 API 服务器 (API server)。除了CRUD的接口，API server还提供了watch接口，方便用户实时获取集群状态。有了这个接口，控制器才得以无延迟（准确地说是低延迟）地对状态变更作出响应。这里指的 &ldquo;状态变更&rdquo;，就是我们常说的事件 (event)。
+ watch接口演示 watch是基于客户的角度进行响应，所以可以看到tmp下的config在没watch之前就存在一个kube-root-ca.crt，一旦watch后kube-root-ca.crt对于client来说是added的，所以会触发新增事件。
+如果我想要只监听未来发生的事件，watch提供了resourceVersion参数，我们可以先进行一次get，得到当前的configMapList的resourceVersion，再调用接口，实例如下：
+控制器的实现：Informer  有了接口，我们就足以对集群状态进行观察和控制，但是，控制回路是一个无限循环的过程，每一次向服务器发送的请求，和每一个与服务器保持的连接都会给客户端和服务器端造成额外的资源开销，必须引入缓存机制，减少不必要的资源开销。Informer 就是 Kubernetes 开发者们设计的一套缓存机制。
+Kubernetes Informer 相关的代码包含在 kubernetes/client-go 仓库中，主要的包有 cache, informers 和 dynamic，其中 informers 和 dynamic 包主要实现 Informer 的使用，Informer 本身逻辑主要聚合在 cache 包中
+	</div>
+	<div class="list__footer clearfix">
+		<a class="list__footer-readmore btn" href="/post/k8s-client-informer%E6%9C%BA%E5%88%B6/">Read more…</a>
+	</div>
+</article><article class="list__item post">
 	
 	<header class="list__header">
 		<h2 class="list__title post__title">
@@ -258,30 +294,6 @@ package io_stream; import org.apache.tomcat.util.http.fileupload.IOUtils; import
 	<div class="list__footer clearfix">
 		<a class="list__footer-readmore btn" href="/post/types-of-binary-tree/">Read more…</a>
 	</div>
-</article><article class="list__item post">
-	
-	<header class="list__header">
-		<h2 class="list__title post__title">
-			<a href="/post/priority-queue/" rel="bookmark">
-			Priority Queue
-			</a>
-		</h2>
-		<div class="list__meta meta"><div class="meta__item-author meta__item">
-	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 12 16"><path d="M6 1c2.2 0 3.5 2 3.5 4.5C9.5 7 8.9 8.2 8 9c2.9.8 4 2.5 4 5v1H0v-1c0-2.5 1.1-4.2 4-5-.9-.8-1.5-2-1.5-3.5C2.5 3 3.8 1 6 1z"/></svg><span class="meta__text">Frank Silva</span>
-</div>
-<div class="meta__item-datetime meta__item">
-	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg><time class="meta__text" datetime="2022-10-19T15:14:41&#43;08:00">2022-10-19</time></div></div>
-	</header>
-	<div class="content list__excerpt post__content clearfix">
-		属性 // 默认容量 private static final int DEFAULT_INITIAL_CAPACITY = 11; // 存储元素的地方 transient Object[] queue; // non-private to simplify nested class access // 元素个数 private int size = 0; // 比较器 private final Comparator&lt;? super E&gt; comparator; // 修改次数 transient int modCount = 0; // non-private to simplify nested class access  （1）默认容量是11；
-（2）queue，元素存储在数组中，这跟我们之前说的堆一般使用数组来存储是一致的；
-（3）comparator，比较器，在优先级队列中，也有两种方式比较元素，一种是元素的自然顺序，一种是通过比较器来比较；
-（4）modCount，修改次数，有这个属性表示PriorityQueue也是fast-fail的；
-入队 public boolean add(E e) { return offer(e); } public boolean offer(E e) { // 不支持null元素  if (e == null) throw new NullPointerException(); modCount++; // 取size  int i = size; // 元素个数达到最大容量了，扩容  if (i &gt;= queue.
-	</div>
-	<div class="list__footer clearfix">
-		<a class="list__footer-readmore btn" href="/post/priority-queue/">Read more…</a>
-	</div>
 </article>
 </main>
 
@@ -304,11 +316,20 @@ package io_stream; import org.apache.tomcat.util.http.fileupload.IOUtils; import
 	<h4 class="widget__title">Recent Posts</h4>
 	<div class="widget__content">
 		<ul class="widget__list">
+			<li class="widget__item"><a class="widget__link" href="/post/k8s-client-informer%E6%9C%BA%E5%88%B6/">K8s Client Informer mechanism</a></li>
 			<li class="widget__item"><a class="widget__link" href="/post/oa-roadmap/">OaRoadmap</a></li>
 			<li class="widget__item"><a class="widget__link" href="/post/kubernetes-nice-article/">Kubernetes Nice Article</a></li>
 			<li class="widget__item"><a class="widget__link" href="/post/kubernetes-operator/">Kubernetes Operator</a></li>
 			<li class="widget__item"><a class="widget__link" href="/post/synchronous-queue/">Synchronous Queue</a></li>
-			<li class="widget__item"><a class="widget__link" href="/post/linked-block-queue/">Linked Block Queue</a></li>
+		</ul>
+	</div>
+</div>
+<div class="widget-categories widget">
+	<h4 class="widget__title">Categories</h4>
+	<div class="widget__content">
+		<ul class="widget__list">
+			<li class="widget__item">
+				<a class="widget__link" href="/categories/cloud-native/">Cloud Native</a></li>
 		</ul>
 	</div>
 </div>
@@ -323,6 +344,7 @@ package io_stream; import org.apache.tomcat.util.http.fileupload.IOUtils; import
 		<a class="widget-taglist__link widget__link btn" href="/tags/java%E5%9F%BA%E7%A1%80/" title="java基础">java基础</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/k8s/" title="k8s">k8s</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/kubernetes/" title="kubernetes">kubernetes</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/kunbernetes/" title="kunbernetes">kunbernetes</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/linux/" title="Linux">Linux</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/mac/" title="mac">mac</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/mysql/" title="mysql">mysql</a>

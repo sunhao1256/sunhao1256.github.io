@@ -59,6 +59,13 @@
 				
 			</a>
 		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/k8s-client-informer%E6%9C%BA%E5%88%B6/">
+				
+				<span class="menu__text">K8s Client Informer mechanism</span>
+				
+			</a>
+		</li>
 	</ul>
 </nav>
 
@@ -71,6 +78,30 @@
 	<header class="main__header">
 		<h1 class="main__title">Posts</h1>
 	</header><article class="list__item post">
+	
+	<header class="list__header">
+		<h2 class="list__title post__title">
+			<a href="/post/priority-queue/" rel="bookmark">
+			Priority Queue
+			</a>
+		</h2>
+		<div class="list__meta meta"><div class="meta__item-author meta__item">
+	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 12 16"><path d="M6 1c2.2 0 3.5 2 3.5 4.5C9.5 7 8.9 8.2 8 9c2.9.8 4 2.5 4 5v1H0v-1c0-2.5 1.1-4.2 4-5-.9-.8-1.5-2-1.5-3.5C2.5 3 3.8 1 6 1z"/></svg><span class="meta__text">Frank Silva</span>
+</div>
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg><time class="meta__text" datetime="2022-10-19T15:14:41&#43;08:00">2022-10-19</time></div></div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+		属性 // 默认容量 private static final int DEFAULT_INITIAL_CAPACITY = 11; // 存储元素的地方 transient Object[] queue; // non-private to simplify nested class access // 元素个数 private int size = 0; // 比较器 private final Comparator&lt;? super E&gt; comparator; // 修改次数 transient int modCount = 0; // non-private to simplify nested class access  （1）默认容量是11；
+（2）queue，元素存储在数组中，这跟我们之前说的堆一般使用数组来存储是一致的；
+（3）comparator，比较器，在优先级队列中，也有两种方式比较元素，一种是元素的自然顺序，一种是通过比较器来比较；
+（4）modCount，修改次数，有这个属性表示PriorityQueue也是fast-fail的；
+入队 public boolean add(E e) { return offer(e); } public boolean offer(E e) { // 不支持null元素  if (e == null) throw new NullPointerException(); modCount++; // 取size  int i = size; // 元素个数达到最大容量了，扩容  if (i &gt;= queue.
+	</div>
+	<div class="list__footer clearfix">
+		<a class="list__footer-readmore btn" href="/post/priority-queue/">Read more…</a>
+	</div>
+</article><article class="list__item post">
 	
 	<header class="list__header">
 		<h2 class="list__title post__title">
@@ -256,23 +287,6 @@ shift+enter
 esc
   
 	</div>
-</article><article class="list__item post">
-	
-	<header class="list__header">
-		<h2 class="list__title post__title">
-			<a href="/post/regular_expression/" rel="bookmark">
-			Regular_expression
-			</a>
-		</h2>
-		<div class="list__meta meta"><div class="meta__item-author meta__item">
-	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 12 16"><path d="M6 1c2.2 0 3.5 2 3.5 4.5C9.5 7 8.9 8.2 8 9c2.9.8 4 2.5 4 5v1H0v-1c0-2.5 1.1-4.2 4-5-.9-.8-1.5-2-1.5-3.5C2.5 3 3.8 1 6 1z"/></svg><span class="meta__text">Frank Silva</span>
-</div>
-<div class="meta__item-datetime meta__item">
-	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg><time class="meta__text" datetime="2022-10-08T17:46:07&#43;08:00">2022-10-08</time></div></div>
-	</header>
-	<div class="content list__excerpt post__content clearfix">
-		
-	</div>
 </article>
 </main>
 
@@ -297,11 +311,20 @@ esc
 	<h4 class="widget__title">Recent Posts</h4>
 	<div class="widget__content">
 		<ul class="widget__list">
+			<li class="widget__item"><a class="widget__link" href="/post/k8s-client-informer%E6%9C%BA%E5%88%B6/">K8s Client Informer mechanism</a></li>
 			<li class="widget__item"><a class="widget__link" href="/post/oa-roadmap/">OaRoadmap</a></li>
 			<li class="widget__item"><a class="widget__link" href="/post/kubernetes-nice-article/">Kubernetes Nice Article</a></li>
 			<li class="widget__item"><a class="widget__link" href="/post/kubernetes-operator/">Kubernetes Operator</a></li>
 			<li class="widget__item"><a class="widget__link" href="/post/synchronous-queue/">Synchronous Queue</a></li>
-			<li class="widget__item"><a class="widget__link" href="/post/linked-block-queue/">Linked Block Queue</a></li>
+		</ul>
+	</div>
+</div>
+<div class="widget-categories widget">
+	<h4 class="widget__title">Categories</h4>
+	<div class="widget__content">
+		<ul class="widget__list">
+			<li class="widget__item">
+				<a class="widget__link" href="/categories/cloud-native/">Cloud Native</a></li>
 		</ul>
 	</div>
 </div>
@@ -316,6 +339,7 @@ esc
 		<a class="widget-taglist__link widget__link btn" href="/tags/java%E5%9F%BA%E7%A1%80/" title="java基础">java基础</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/k8s/" title="k8s">k8s</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/kubernetes/" title="kubernetes">kubernetes</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/kunbernetes/" title="kunbernetes">kunbernetes</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/linux/" title="Linux">Linux</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/mac/" title="mac">mac</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/mysql/" title="mysql">mysql</a>
