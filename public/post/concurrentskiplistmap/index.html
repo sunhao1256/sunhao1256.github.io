@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>ConcurrentSkipListMap - Mainroad</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+		<meta property="og:title" content="ConcurrentSkipListMap" />
+<meta property="og:description" content="Linked from https://www.cnblogs.com/tong-yuan/p/ConcurrentSkipListMap.html
+ 内部类 // 数据节点，典型的单链表结构 static final class Node&lt;K,V&gt; { final K key; // 注意：这里value的类型是Object，而不是V  // 在删除元素的时候value会指向当前元素本身  volatile Object value; volatile Node&lt;K,V&gt; next; Node(K key, Object value, Node&lt;K,V&gt; next) { this.key = key; this.value = value; this.next = next; } Node(Node&lt;K,V&gt; next) { this.key = null; this.value = this; // 当前元素本身(marker)  this.next = next; } } // 索引节点，存储着对应的node值，及向下和向右的索引指针 static class Index&lt;K,V&gt; { final Node&lt;K,V&gt; node; final Index&lt;K,V&gt; down; volatile Index&lt;K,V&gt; right; Index(Node&lt;K,V&gt; node, Index&lt;K,V&gt; down, Index&lt;K,V&gt; right) { this." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sunhao1256.github.io/post/concurrentskiplistmap/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-10-17T16:22:46+08:00" />
+<meta property="article:modified_time" content="2022-10-17T16:22:46+08:00" />
+
+
+		<meta itemprop="name" content="ConcurrentSkipListMap">
+<meta itemprop="description" content="Linked from https://www.cnblogs.com/tong-yuan/p/ConcurrentSkipListMap.html
+ 内部类 // 数据节点，典型的单链表结构 static final class Node&lt;K,V&gt; { final K key; // 注意：这里value的类型是Object，而不是V  // 在删除元素的时候value会指向当前元素本身  volatile Object value; volatile Node&lt;K,V&gt; next; Node(K key, Object value, Node&lt;K,V&gt; next) { this.key = key; this.value = value; this.next = next; } Node(Node&lt;K,V&gt; next) { this.key = null; this.value = this; // 当前元素本身(marker)  this.next = next; } } // 索引节点，存储着对应的node值，及向下和向右的索引指针 static class Index&lt;K,V&gt; { final Node&lt;K,V&gt; node; final Index&lt;K,V&gt; down; volatile Index&lt;K,V&gt; right; Index(Node&lt;K,V&gt; node, Index&lt;K,V&gt; down, Index&lt;K,V&gt; right) { this."><meta itemprop="datePublished" content="2022-10-17T16:22:46+08:00" />
+<meta itemprop="dateModified" content="2022-10-17T16:22:46+08:00" />
+<meta itemprop="wordCount" content="1902">
+<meta itemprop="keywords" content="java基础," />
+		<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="ConcurrentSkipListMap"/>
+<meta name="twitter:description" content="Linked from https://www.cnblogs.com/tong-yuan/p/ConcurrentSkipListMap.html
+ 内部类 // 数据节点，典型的单链表结构 static final class Node&lt;K,V&gt; { final K key; // 注意：这里value的类型是Object，而不是V  // 在删除元素的时候value会指向当前元素本身  volatile Object value; volatile Node&lt;K,V&gt; next; Node(K key, Object value, Node&lt;K,V&gt; next) { this.key = key; this.value = value; this.next = next; } Node(Node&lt;K,V&gt; next) { this.key = null; this.value = this; // 当前元素本身(marker)  this.next = next; } } // 索引节点，存储着对应的node值，及向下和向右的索引指针 static class Index&lt;K,V&gt; { final Node&lt;K,V&gt; node; final Index&lt;K,V&gt; down; volatile Index&lt;K,V&gt; right; Index(Node&lt;K,V&gt; node, Index&lt;K,V&gt; down, Index&lt;K,V&gt; right) { this."/>
+
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container header__container">
+		
+	<div class="logo logo--mixed">
+		<a class="logo__link" href="/" title="Mainroad" rel="home">
+			<div class="logo__item logo__imagebox">
+					<img class="logo__img" src="/img/placeholder.png">
+				</div><div class="logo__item logo__text">
+					<div class="logo__title">Mainroad</div>
+					<div class="logo__tagline">Just another site</div>
+				</div>
+		</a>
+	</div>
+		
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+	<ul class="menu__list">
+		<li class="menu__item">
+			<a class="menu__link" href="/about/">
+				
+				<span class="menu__text">About</span>
+				
+			</a>
+		</li>
+	</ul>
+</nav>
+
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">ConcurrentSkipListMap</h1>
+			<div class="post__meta meta"><div class="meta__item-author meta__item">
+	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 12 16"><path d="M6 1c2.2 0 3.5 2 3.5 4.5C9.5 7 8.9 8.2 8 9c2.9.8 4 2.5 4 5v1H0v-1c0-2.5 1.1-4.2 4-5-.9-.8-1.5-2-1.5-3.5C2.5 3 3.8 1 6 1z"/></svg><span class="meta__text">Frank Silva</span>
+</div>
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg><time class="meta__text" datetime="2022-10-17T16:22:46&#43;08:00">2022-10-17</time></div></div>
+		</header>
+		
+<div class="post__toc toc">
+	<div class="toc__title">Page content</div>
+	<div class="toc__menu">
+		<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#添加元素举例">添加元素举例</a></li>
+      </ul>
+    </li>
+  </ul>
+
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#删除元素举例">删除元素举例</a></li>
+        <li><a href="#查找元素">查找元素</a></li>
+        <li><a href="#查找元素举例">查找元素举例</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+	</div>
+</div><div class="content post__content clearfix">
+			<blockquote>
+<p>Linked from <a href="https://www.cnblogs.com/tong-yuan/p/ConcurrentSkipListMap.html">https://www.cnblogs.com/tong-yuan/p/ConcurrentSkipListMap.html</a></p>
+</blockquote>
+<h1 id="内部类">内部类</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// 数据节点，典型的单链表结构
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Node</span><span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">final</span> K key<span style="color:#f92672">;</span>
+    <span style="color:#75715e">// 注意：这里value的类型是Object，而不是V
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 在删除元素的时候value会指向当前元素本身
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">volatile</span> Object value<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">volatile</span> Node<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> next<span style="color:#f92672">;</span>
+    
+    Node<span style="color:#f92672">(</span>K key<span style="color:#f92672">,</span> Object value<span style="color:#f92672">,</span> Node<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> next<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">key</span> <span style="color:#f92672">=</span> key<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">value</span> <span style="color:#f92672">=</span> value<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">next</span> <span style="color:#f92672">=</span> next<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+    
+    Node<span style="color:#f92672">(</span>Node<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> next<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">key</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">value</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">;</span> <span style="color:#75715e">// 当前元素本身(marker)
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">next</span> <span style="color:#f92672">=</span> next<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+
+<span style="color:#75715e">// 索引节点，存储着对应的node值，及向下和向右的索引指针
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Index</span><span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">final</span> Node<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> node<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">final</span> Index<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> down<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">volatile</span> Index<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> right<span style="color:#f92672">;</span>
+    
+    Index<span style="color:#f92672">(</span>Node<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> node<span style="color:#f92672">,</span> Index<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> down<span style="color:#f92672">,</span> Index<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> right<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">node</span> <span style="color:#f92672">=</span> node<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">down</span> <span style="color:#f92672">=</span> down<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">right</span> <span style="color:#f92672">=</span> right<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+
+<span style="color:#75715e">// 头索引节点，继承自Index，并扩展一个level字段，用于记录索引的层级
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HeadIndex</span><span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">extends</span> Index<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> level<span style="color:#f92672">;</span>
+    
+    HeadIndex<span style="color:#f92672">(</span>Node<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> node<span style="color:#f92672">,</span> Index<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> down<span style="color:#f92672">,</span> Index<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> right<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> level<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">super</span><span style="color:#f92672">(</span>node<span style="color:#f92672">,</span> down<span style="color:#f92672">,</span> right<span style="color:#f92672">);</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">level</span> <span style="color:#f92672">=</span> level<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>（1）Node，数据节点，存储数据的节点，典型的单链表结构；</p>
+<p>（2）Index，索引节点，存储着对应的node值，及向下和向右的索引指针；</p>
+<p>（3）HeadIndex，头索引节点，继承自Index，并扩展一个level字段，用于记录索引的层级；</p>
+<h1 id="构造方法">构造方法</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
+<span style="color:#66d9ef">public</span> <span style="color:#a6e22e">ConcurrentSkipListMap</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">comparator</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+    initialize<span style="color:#f92672">();</span>
+<span style="color:#f92672">}</span>
+
+<span style="color:#66d9ef">public</span> <span style="color:#a6e22e">ConcurrentSkipListMap</span><span style="color:#f92672">(</span>Comparator<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">super</span> K<span style="color:#f92672">&gt;</span> comparator<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">comparator</span> <span style="color:#f92672">=</span> comparator<span style="color:#f92672">;</span>
+    initialize<span style="color:#f92672">();</span>
+<span style="color:#f92672">}</span>
+
+<span style="color:#66d9ef">public</span> <span style="color:#a6e22e">ConcurrentSkipListMap</span><span style="color:#f92672">(</span>Map<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">extends</span> K<span style="color:#f92672">,</span> <span style="color:#f92672">?</span> <span style="color:#66d9ef">extends</span> V<span style="color:#f92672">&gt;</span> m<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">comparator</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+    initialize<span style="color:#f92672">();</span>
+    putAll<span style="color:#f92672">(</span>m<span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+
+<span style="color:#66d9ef">public</span> <span style="color:#a6e22e">ConcurrentSkipListMap</span><span style="color:#f92672">(</span>SortedMap<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span> <span style="color:#f92672">?</span> <span style="color:#66d9ef">extends</span> V<span style="color:#f92672">&gt;</span> m<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">comparator</span> <span style="color:#f92672">=</span> m<span style="color:#f92672">.</span><span style="color:#a6e22e">comparator</span><span style="color:#f92672">();</span>
+    initialize<span style="color:#f92672">();</span>
+    buildFromSorted<span style="color:#f92672">(</span>m<span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+
+
+<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> Object BASE_HEADER <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Object<span style="color:#f92672">();</span>
+
+<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">initialize</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    keySet <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+    entrySet <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+    values <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+    descendingMap <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+    <span style="color:#75715e">// Node(K key, Object value, Node&lt;K,V&gt; next)
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// HeadIndex(Node&lt;K,V&gt; node, Index&lt;K,V&gt; down, Index&lt;K,V&gt; right, int level)
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 构建头节点
+</span><span style="color:#75715e"></span>    head <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HeadIndex<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;(</span><span style="color:#66d9ef">new</span> Node<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;(</span><span style="color:#66d9ef">null</span><span style="color:#f92672">,</span> BASE_HEADER<span style="color:#f92672">,</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">),</span>
+                              <span style="color:#66d9ef">null</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">,</span> 1<span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+
+</code></pre></div><h1 id="添加方法">添加方法</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> V <span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>K key<span style="color:#f92672">,</span> V value<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">// 不能存储value为null的元素
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 因为value为null标记该元素被删除（后面会看到）
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>value <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span>
+        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> NullPointerException<span style="color:#f92672">();</span>
+
+    <span style="color:#75715e">// 调用doPut()方法添加元素
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> doPut<span style="color:#f92672">(</span>key<span style="color:#f92672">,</span> value<span style="color:#f92672">,</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+
+<span style="color:#66d9ef">public</span> V <span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>K key<span style="color:#f92672">,</span> V value<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">// 不能存储value为null的元素
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 因为value为null标记该元素被删除（后面会看到）
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>value <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span>
+        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> NullPointerException<span style="color:#f92672">();</span>
+
+    <span style="color:#75715e">// 调用doPut()方法添加元素
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> doPut<span style="color:#f92672">(</span>key<span style="color:#f92672">,</span> value<span style="color:#f92672">,</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+
+
+<span style="color:#66d9ef">private</span> Node<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">findPredecessor</span><span style="color:#f92672">(</span>Object key<span style="color:#f92672">,</span> Comparator<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">super</span> K<span style="color:#f92672">&gt;</span> cmp<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>key <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span>
+            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> NullPointerException<span style="color:#f92672">();</span> <span style="color:#75715e">// don&#39;t postpone errors
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(;;)</span> <span style="color:#f92672">{</span>
+          <span style="color:#75715e">//从第一个索引节点开始查找
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>Index<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> q <span style="color:#f92672">=</span> head<span style="color:#f92672">,</span> r <span style="color:#f92672">=</span> q<span style="color:#f92672">.</span><span style="color:#a6e22e">right</span><span style="color:#f92672">,</span> d<span style="color:#f92672">;;)</span> <span style="color:#f92672">{</span>
+              <span style="color:#75715e">//如果有右索引节点
+</span><span style="color:#75715e"></span>                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>r <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                    Node<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> n <span style="color:#f92672">=</span> r<span style="color:#f92672">.</span><span style="color:#a6e22e">node</span><span style="color:#f92672">;</span>
+                    K k <span style="color:#f92672">=</span> n<span style="color:#f92672">.</span><span style="color:#a6e22e">key</span><span style="color:#f92672">;</span>
+                    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>n<span style="color:#f92672">.</span><span style="color:#a6e22e">value</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                      <span style="color:#75715e">//检查是否值为空，如果是空节点，则CAS尝试断开，相当于找到空节点了
+</span><span style="color:#75715e"></span>                        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>q<span style="color:#f92672">.</span><span style="color:#a6e22e">unlink</span><span style="color:#f92672">(</span>r<span style="color:#f92672">))</span>
+                            <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>           <span style="color:#75715e">// restart
+</span><span style="color:#75715e"></span>                      <span style="color:#75715e">// 重新读新的右节点，测试可能会被其他线程改过，继续内部循环，相当于在右移
+</span><span style="color:#75715e"></span>                      r <span style="color:#f92672">=</span> q<span style="color:#f92672">.</span><span style="color:#a6e22e">right</span><span style="color:#f92672">;</span>         <span style="color:#75715e">// reread r
+</span><span style="color:#75715e"></span>                        <span style="color:#66d9ef">continue</span><span style="color:#f92672">;</span>
+                    <span style="color:#f92672">}</span>
+                    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>cpr<span style="color:#f92672">(</span>cmp<span style="color:#f92672">,</span> key<span style="color:#f92672">,</span> k<span style="color:#f92672">)</span> <span style="color:#f92672">&gt;</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span> <span style="color:#75715e">//当前的节点的key比目标节点要大，继续右移
+</span><span style="color:#75715e"></span>                        q <span style="color:#f92672">=</span> r<span style="color:#f92672">;</span>
+                        r <span style="color:#f92672">=</span> r<span style="color:#f92672">.</span><span style="color:#a6e22e">right</span><span style="color:#f92672">;</span>
+                        <span style="color:#66d9ef">continue</span><span style="color:#f92672">;</span>
+                    <span style="color:#f92672">}</span>
+                <span style="color:#f92672">}</span>
+              <span style="color:#75715e">//没有右节点了
+</span><span style="color:#75715e"></span>              <span style="color:#75715e">//向下找
+</span><span style="color:#75715e"></span>              <span style="color:#75715e">//如果下节点是null，这个索引节点的数据节点就是我们要的
+</span><span style="color:#75715e"></span>                <span style="color:#66d9ef">if</span> <span style="color:#f92672">((</span>d <span style="color:#f92672">=</span> q<span style="color:#f92672">.</span><span style="color:#a6e22e">down</span><span style="color:#f92672">)</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span>
+                    <span style="color:#66d9ef">return</span> q<span style="color:#f92672">.</span><span style="color:#a6e22e">node</span><span style="color:#f92672">;</span>
+              <span style="color:#75715e">//下移，然后右移
+</span><span style="color:#75715e"></span>                q <span style="color:#f92672">=</span> d<span style="color:#f92672">;</span>
+                r <span style="color:#f92672">=</span> d<span style="color:#f92672">.</span><span style="color:#a6e22e">right</span><span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+
+
+<span style="color:#66d9ef">private</span> V <span style="color:#a6e22e">doPut</span><span style="color:#f92672">(</span>K key<span style="color:#f92672">,</span> V value<span style="color:#f92672">,</span> <span style="color:#66d9ef">boolean</span> onlyIfAbsent<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">// 添加元素后存储在z中
+</span><span style="color:#75715e"></span>    Node<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> z<span style="color:#f92672">;</span>             <span style="color:#75715e">// added node
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// key也不能为null
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>key <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span>
+        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> NullPointerException<span style="color:#f92672">();</span>
+    Comparator<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">super</span> K<span style="color:#f92672">&gt;</span> cmp <span style="color:#f92672">=</span> comparator<span style="color:#f92672">;</span>
+
+    <span style="color:#75715e">// Part I：找到目标节点的位置并插入
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 这里的目标节点是数据节点，也就是最底层的那条链
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 自旋
+</span><span style="color:#75715e"></span>    outer<span style="color:#f92672">:</span> <span style="color:#66d9ef">for</span> <span style="color:#f92672">(;;)</span> <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// 寻找目标节点之前最近的一个索引对应的数据节点，存储在b中，b=before
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// 并把b的下一个数据节点存储在n中，n=next
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// 为了便于描述，我这里把b叫做当前节点，n叫做下一个节点
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>Node<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> b <span style="color:#f92672">=</span> findPredecessor<span style="color:#f92672">(</span>key<span style="color:#f92672">,</span> cmp<span style="color:#f92672">),</span> n <span style="color:#f92672">=</span> b<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">;;)</span> <span style="color:#f92672">{</span>
+            <span style="color:#75715e">// 如果下一个节点不为空
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// 就拿其key与目标节点的key比较，找到目标节点应该插入的位置
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>n <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                <span style="color:#75715e">// v=value，存储节点value值
+</span><span style="color:#75715e"></span>                <span style="color:#75715e">// c=compare，存储两个节点比较的大小
+</span><span style="color:#75715e"></span>                Object v<span style="color:#f92672">;</span> <span style="color:#66d9ef">int</span> c<span style="color:#f92672">;</span>
+                <span style="color:#75715e">// n的下一个数据节点，也就是b的下一个节点的下一个节点（孙子节点）
+</span><span style="color:#75715e"></span>                Node<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> f <span style="color:#f92672">=</span> n<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">;</span>
+                <span style="color:#75715e">// 如果n不为b的下一个节点
+</span><span style="color:#75715e"></span>                <span style="color:#75715e">// 说明有其它线程修改了数据，则跳出内层循环
+</span><span style="color:#75715e"></span>                <span style="color:#75715e">// 也就是回到了外层循环自旋的位置，从头来过
+</span><span style="color:#75715e"></span>                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>n <span style="color:#f92672">!=</span> b<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">)</span>               <span style="color:#75715e">// inconsistent read
+</span><span style="color:#75715e"></span>                    <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
+                <span style="color:#75715e">// 如果n的value值为空，说明该节点已删除，协助删除节点
+</span><span style="color:#75715e"></span>                <span style="color:#66d9ef">if</span> <span style="color:#f92672">((</span>v <span style="color:#f92672">=</span> n<span style="color:#f92672">.</span><span style="color:#a6e22e">value</span><span style="color:#f92672">)</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>   <span style="color:#75715e">// n is deleted
+</span><span style="color:#75715e"></span>                    <span style="color:#75715e">// todo 这里为啥会协助删除？后面讲
+</span><span style="color:#75715e"></span>                    n<span style="color:#f92672">.</span><span style="color:#a6e22e">helpDelete</span><span style="color:#f92672">(</span>b<span style="color:#f92672">,</span> f<span style="color:#f92672">);</span>
+                    <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
+                <span style="color:#f92672">}</span>
+                <span style="color:#75715e">// 如果b的值为空或者v等于n，说明b已被删除
+</span><span style="color:#75715e"></span>                <span style="color:#75715e">// 这时候n就是marker节点，那b就是被删除的那个
+</span><span style="color:#75715e"></span>                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>b<span style="color:#f92672">.</span><span style="color:#a6e22e">value</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">||</span> v <span style="color:#f92672">==</span> n<span style="color:#f92672">)</span> <span style="color:#75715e">// b is deleted
+</span><span style="color:#75715e"></span>                    <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
+                <span style="color:#75715e">// 如果目标key与下一个节点的key大
+</span><span style="color:#75715e"></span>                <span style="color:#75715e">// 说明目标元素所在的位置还在下一个节点的后面
+</span><span style="color:#75715e"></span>                <span style="color:#66d9ef">if</span> <span style="color:#f92672">((</span>c <span style="color:#f92672">=</span> cpr<span style="color:#f92672">(</span>cmp<span style="color:#f92672">,</span> key<span style="color:#f92672">,</span> n<span style="color:#f92672">.</span><span style="color:#a6e22e">key</span><span style="color:#f92672">))</span> <span style="color:#f92672">&gt;</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                    <span style="color:#75715e">// 就把当前节点往后移一位
+</span><span style="color:#75715e"></span>                    <span style="color:#75715e">// 同样的下一个节点也往后移一位
+</span><span style="color:#75715e"></span>                    <span style="color:#75715e">// 再重新检查新n是否为空，它与目标key的关系
+</span><span style="color:#75715e"></span>                    b <span style="color:#f92672">=</span> n<span style="color:#f92672">;</span>
+                    n <span style="color:#f92672">=</span> f<span style="color:#f92672">;</span>
+                    <span style="color:#66d9ef">continue</span><span style="color:#f92672">;</span>
+                <span style="color:#f92672">}</span>
+                <span style="color:#75715e">// 如果比较时发现下一个节点的key与目标key相同
+</span><span style="color:#75715e"></span>                <span style="color:#75715e">// 说明链表中本身就存在目标节点
+</span><span style="color:#75715e"></span>                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>c <span style="color:#f92672">==</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                    <span style="color:#75715e">// 则用新值替换旧值，并返回旧值（onlyIfAbsent=false）
+</span><span style="color:#75715e"></span>                    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>onlyIfAbsent <span style="color:#f92672">||</span> n<span style="color:#f92672">.</span><span style="color:#a6e22e">casValue</span><span style="color:#f92672">(</span>v<span style="color:#f92672">,</span> value<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+                        <span style="color:#a6e22e">@SuppressWarnings</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;unchecked&#34;</span><span style="color:#f92672">)</span> V vv <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>V<span style="color:#f92672">)</span>v<span style="color:#f92672">;</span>
+                        <span style="color:#66d9ef">return</span> vv<span style="color:#f92672">;</span>
+                    <span style="color:#f92672">}</span>
+                    <span style="color:#75715e">// 如果替换旧值时失败，说明其它线程先一步修改了值，从头来过
+</span><span style="color:#75715e"></span>                    <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span> <span style="color:#75715e">// restart if lost race to replace value
+</span><span style="color:#75715e"></span>                <span style="color:#f92672">}</span>
+                <span style="color:#75715e">// 如果c&lt;0，就往下走，也就是找到了目标节点的位置
+</span><span style="color:#75715e"></span>                <span style="color:#75715e">// else c &lt; 0; fall through
+</span><span style="color:#75715e"></span>            <span style="color:#f92672">}</span>
+
+            <span style="color:#75715e">// 有两种情况会到这里
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// 一是到链表尾部了，也就是n为null了
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// 二是找到了目标节点的位置，也就是上面的c&lt;0
+</span><span style="color:#75715e"></span>
+            <span style="color:#75715e">// 新建目标节点，并赋值给z
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// 这里把n作为新节点的next
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// 如果到链表尾部了，n为null，这毫无疑问
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// 如果c&lt;0，则n的key比目标key大，相妆于在b和n之间插入目标节点z
+</span><span style="color:#75715e"></span>            z <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Node<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;(</span>key<span style="color:#f92672">,</span> value<span style="color:#f92672">,</span> n<span style="color:#f92672">);</span>
+            <span style="color:#75715e">// 原子更新b的下一个节点为目标节点z
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>b<span style="color:#f92672">.</span><span style="color:#a6e22e">casNext</span><span style="color:#f92672">(</span>n<span style="color:#f92672">,</span> z<span style="color:#f92672">))</span>
+                <span style="color:#75715e">// 如果更新失败，说明其它线程先一步修改了值，从头来过
+</span><span style="color:#75715e"></span>                <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>         <span style="color:#75715e">// restart if lost race to append to b
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// 如果更新成功，跳出自旋状态
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">break</span> outer<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#75715e">// 经过Part I，目标节点已经插入到有序链表中了
+</span><span style="color:#75715e"></span>
+    <span style="color:#75715e">// Part II：随机决定是否需要建立索引及其层次，如果需要则建立自上而下的索引
+</span><span style="color:#75715e"></span>
+    <span style="color:#75715e">// 取个随机数
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">int</span> rnd <span style="color:#f92672">=</span> ThreadLocalRandom<span style="color:#f92672">.</span><span style="color:#a6e22e">nextSecondarySeed</span><span style="color:#f92672">();</span>
+    <span style="color:#75715e">// 0x80000001展开为二进制为10000000000000000000000000000001
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 只有两头是1
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 这里(rnd &amp; 0x80000001) == 0
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 相当于排除了负数（负数最高位是1），排除了奇数（奇数最低位是1）
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 只有最高位最低位都不为1的数跟0x80000001做&amp;操作才会为0
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 也就是正偶数
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">((</span>rnd <span style="color:#f92672">&amp;</span> 0x80000001<span style="color:#f92672">)</span> <span style="color:#f92672">==</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span> <span style="color:#75715e">// test highest and lowest bits
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// 默认level为1，也就是只要到这里了就会至少建立一层索引
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">int</span> level <span style="color:#f92672">=</span> 1<span style="color:#f92672">,</span> max<span style="color:#f92672">;</span>
+        <span style="color:#75715e">// 随机数从最低位的第二位开始，有几个连续的1则level就加几
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// 因为最低位肯定是0，正偶数嘛
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// 比如，1100110，level就加2
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">while</span> <span style="color:#f92672">(((</span>rnd <span style="color:#f92672">&gt;&gt;&gt;=</span> 1<span style="color:#f92672">)</span> <span style="color:#f92672">&amp;</span> 1<span style="color:#f92672">)</span> <span style="color:#f92672">!=</span> 0<span style="color:#f92672">)</span>
+            <span style="color:#f92672">++</span>level<span style="color:#f92672">;</span>
+
+        <span style="color:#75715e">// 用于记录目标节点建立的最高的那层索引节点
+</span><span style="color:#75715e"></span>        Index<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> idx <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+        <span style="color:#75715e">// 取头索引节点（这是最高层的头索引节点）
+</span><span style="color:#75715e"></span>        HeadIndex<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> h <span style="color:#f92672">=</span> head<span style="color:#f92672">;</span>
+        <span style="color:#75715e">// 如果生成的层数小于等于当前最高层的层级
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// 也就是跳表的高度不会超过现有高度
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>level <span style="color:#f92672">&lt;=</span> <span style="color:#f92672">(</span>max <span style="color:#f92672">=</span> h<span style="color:#f92672">.</span><span style="color:#a6e22e">level</span><span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+            <span style="color:#75715e">// 从第一层开始建立一条竖直的索引链表
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// 这条链表使用down指针连接起来
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// 每个索引节点里面都存储着目标节点这个数据节点
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// 最后idx存储的是这条索引链表的最高层节点
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 1<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;=</span> level<span style="color:#f92672">;</span> <span style="color:#f92672">++</span>i<span style="color:#f92672">)</span>
+                idx <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Index<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;(</span>z<span style="color:#f92672">,</span> idx<span style="color:#f92672">,</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span> <span style="color:#75715e">// try to grow by one level
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// 如果新的层数超过了现有跳表的高度
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// 则最多只增加一层
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// 比如现在只有一层索引，那下一次最多增加到两层索引，增加多了也没有意义
+</span><span style="color:#75715e"></span>            level <span style="color:#f92672">=</span> max <span style="color:#f92672">+</span> 1<span style="color:#f92672">;</span> <span style="color:#75715e">// hold in array and later pick the one to use
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// idxs用于存储目标节点建立的竖起索引的所有索引节点
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// 其实这里直接使用idx这个最高节点也是可以完成的
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// 只是用一个数组存储所有节点要方便一些
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// 注意，这里数组0号位是没有使用的
+</span><span style="color:#75715e"></span>            <span style="color:#a6e22e">@SuppressWarnings</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;unchecked&#34;</span><span style="color:#f92672">)</span>Index<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;[]</span> idxs <span style="color:#f92672">=</span>
+                    <span style="color:#f92672">(</span>Index<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;[])</span><span style="color:#66d9ef">new</span> Index<span style="color:#f92672">&lt;?,?&gt;[</span>level<span style="color:#f92672">+</span>1<span style="color:#f92672">];</span>
+            <span style="color:#75715e">// 从第一层开始建立一条竖的索引链表（跟上面一样，只是这里顺便把索引节点放到数组里面了）
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 1<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;=</span> level<span style="color:#f92672">;</span> <span style="color:#f92672">++</span>i<span style="color:#f92672">)</span>
+                idxs<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> idx <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Index<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;(</span>z<span style="color:#f92672">,</span> idx<span style="color:#f92672">,</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">);</span>
+
+            <span style="color:#75715e">// 自旋
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">for</span> <span style="color:#f92672">(;;)</span> <span style="color:#f92672">{</span>
+                <span style="color:#75715e">// 旧的最高层头索引节点
+</span><span style="color:#75715e"></span>                h <span style="color:#f92672">=</span> head<span style="color:#f92672">;</span>
+                <span style="color:#75715e">// 旧的最高层级
+</span><span style="color:#75715e"></span>                <span style="color:#66d9ef">int</span> oldLevel <span style="color:#f92672">=</span> h<span style="color:#f92672">.</span><span style="color:#a6e22e">level</span><span style="color:#f92672">;</span>
+                <span style="color:#75715e">// 再次检查，如果旧的最高层级已经不比新层级矮了
+</span><span style="color:#75715e"></span>                <span style="color:#75715e">// 说明有其它线程先一步修改了值，从头来过
+</span><span style="color:#75715e"></span>                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>level <span style="color:#f92672">&lt;=</span> oldLevel<span style="color:#f92672">)</span> <span style="color:#75715e">// lost race to add level
+</span><span style="color:#75715e"></span>                    <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
+                <span style="color:#75715e">// 新的最高层头索引节点
+</span><span style="color:#75715e"></span>                HeadIndex<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> newh <span style="color:#f92672">=</span> h<span style="color:#f92672">;</span>
+                <span style="color:#75715e">// 头节点指向的数据节点
+</span><span style="color:#75715e"></span>                Node<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> oldbase <span style="color:#f92672">=</span> h<span style="color:#f92672">.</span><span style="color:#a6e22e">node</span><span style="color:#f92672">;</span>
+                <span style="color:#75715e">// 超出的部分建立新的头索引节点
+</span><span style="color:#75715e"></span>                <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> oldLevel<span style="color:#f92672">+</span>1<span style="color:#f92672">;</span> j <span style="color:#f92672">&lt;=</span> level<span style="color:#f92672">;</span> <span style="color:#f92672">++</span>j<span style="color:#f92672">)</span>
+                    newh <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HeadIndex<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;(</span>oldbase<span style="color:#f92672">,</span> newh<span style="color:#f92672">,</span> idxs<span style="color:#f92672">[</span>j<span style="color:#f92672">],</span> j<span style="color:#f92672">);</span>
+                <span style="color:#75715e">// 原子更新头索引节点
+</span><span style="color:#75715e"></span>                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>casHead<span style="color:#f92672">(</span>h<span style="color:#f92672">,</span> newh<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+                    <span style="color:#75715e">// h指向新的最高层头索引节点
+</span><span style="color:#75715e"></span>                    h <span style="color:#f92672">=</span> newh<span style="color:#f92672">;</span>
+                    <span style="color:#75715e">// 把level赋值为旧的最高层级的
+</span><span style="color:#75715e"></span>                    <span style="color:#75715e">// idx指向的不是最高的索引节点了
+</span><span style="color:#75715e"></span>                    <span style="color:#75715e">// 而是与旧最高层平齐的索引节点
+</span><span style="color:#75715e"></span>                    idx <span style="color:#f92672">=</span> idxs<span style="color:#f92672">[</span>level <span style="color:#f92672">=</span> oldLevel<span style="color:#f92672">];</span>
+                    <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
+                <span style="color:#f92672">}</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>
+
+        <span style="color:#75715e">// 经过上面的步骤，有两种情况
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// 一是没有超出高度，新建一条目标节点的索引节点链
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// 二是超出了高度，新建一条目标节点的索引节点链，同时最高层头索引节点同样往上长
+</span><span style="color:#75715e"></span>
+        <span style="color:#75715e">// Part III：将新建的索引节点（包含头索引节点）与其它索引节点通过右指针连接在一起
+</span><span style="color:#75715e"></span>
+        <span style="color:#75715e">// 这时level是等于旧的最高层级的，自旋
+</span><span style="color:#75715e"></span>        splice<span style="color:#f92672">:</span> <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> insertionLevel <span style="color:#f92672">=</span> level<span style="color:#f92672">;;)</span> <span style="color:#f92672">{</span>
+            <span style="color:#75715e">// h为最高头索引节点
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> h<span style="color:#f92672">.</span><span style="color:#a6e22e">level</span><span style="color:#f92672">;</span>
+
+            <span style="color:#75715e">// 从头索引节点开始遍历
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// 为了方便，这里叫q为当前节点，r为右节点，d为下节点，t为目标节点相应层级的索引
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>Index<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> q <span style="color:#f92672">=</span> h<span style="color:#f92672">,</span> r <span style="color:#f92672">=</span> q<span style="color:#f92672">.</span><span style="color:#a6e22e">right</span><span style="color:#f92672">,</span> t <span style="color:#f92672">=</span> idx<span style="color:#f92672">;;)</span> <span style="color:#f92672">{</span>
+                <span style="color:#75715e">// 如果遍历到了最右边，或者最下边，
+</span><span style="color:#75715e"></span>                <span style="color:#75715e">// 也就是遍历到头了，则退出外层循环
+</span><span style="color:#75715e"></span>                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>q <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">||</span> t <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span>
+                    <span style="color:#66d9ef">break</span> splice<span style="color:#f92672">;</span>
+                <span style="color:#75715e">// 如果右节点不为空
+</span><span style="color:#75715e"></span>                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>r <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                    <span style="color:#75715e">// n是右节点的数据节点，为了方便，这里直接叫右节点的值
+</span><span style="color:#75715e"></span>                    Node<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> n <span style="color:#f92672">=</span> r<span style="color:#f92672">.</span><span style="color:#a6e22e">node</span><span style="color:#f92672">;</span>
+                    <span style="color:#75715e">// 比较目标key与右节点的值
+</span><span style="color:#75715e"></span>                    <span style="color:#66d9ef">int</span> c <span style="color:#f92672">=</span> cpr<span style="color:#f92672">(</span>cmp<span style="color:#f92672">,</span> key<span style="color:#f92672">,</span> n<span style="color:#f92672">.</span><span style="color:#a6e22e">key</span><span style="color:#f92672">);</span>
+                    <span style="color:#75715e">// 如果右节点的值为空了，则表示此节点已删除
+</span><span style="color:#75715e"></span>                    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>n<span style="color:#f92672">.</span><span style="color:#a6e22e">value</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                        <span style="color:#75715e">// 则把右节点删除
+</span><span style="color:#75715e"></span>                        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>q<span style="color:#f92672">.</span><span style="color:#a6e22e">unlink</span><span style="color:#f92672">(</span>r<span style="color:#f92672">))</span>
+                            <span style="color:#75715e">// 如果删除失败，说明有其它线程先一步修改了，从头来过
+</span><span style="color:#75715e"></span>                            <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
+                        <span style="color:#75715e">// 删除成功后重新取右节点
+</span><span style="color:#75715e"></span>                        r <span style="color:#f92672">=</span> q<span style="color:#f92672">.</span><span style="color:#a6e22e">right</span><span style="color:#f92672">;</span>
+                        <span style="color:#66d9ef">continue</span><span style="color:#f92672">;</span>
+                    <span style="color:#f92672">}</span>
+                    <span style="color:#75715e">// 如果比较c&gt;0，表示目标节点还要往右
+</span><span style="color:#75715e"></span>                    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>c <span style="color:#f92672">&gt;</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                        <span style="color:#75715e">// 则把当前节点和右节点分别右移
+</span><span style="color:#75715e"></span>                        q <span style="color:#f92672">=</span> r<span style="color:#f92672">;</span>
+                        r <span style="color:#f92672">=</span> r<span style="color:#f92672">.</span><span style="color:#a6e22e">right</span><span style="color:#f92672">;</span>
+                        <span style="color:#66d9ef">continue</span><span style="color:#f92672">;</span>
+                    <span style="color:#f92672">}</span>
+                <span style="color:#f92672">}</span>
+
+                <span style="color:#75715e">// 到这里说明已经到当前层级的最右边了
+</span><span style="color:#75715e"></span>                <span style="color:#75715e">// 这里实际是会先走第二个if
+</span><span style="color:#75715e"></span>
+                <span style="color:#75715e">// 第一个if
+</span><span style="color:#75715e"></span>                <span style="color:#75715e">// j与insertionLevel相等了
+</span><span style="color:#75715e"></span>                <span style="color:#75715e">// 实际是先走的第二个if，j自减后应该与insertionLevel相等
+</span><span style="color:#75715e"></span>                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>j <span style="color:#f92672">==</span> insertionLevel<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                    <span style="color:#75715e">// 这里是真正连右指针的地方
+</span><span style="color:#75715e"></span>                    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>q<span style="color:#f92672">.</span><span style="color:#a6e22e">link</span><span style="color:#f92672">(</span>r<span style="color:#f92672">,</span> t<span style="color:#f92672">))</span>
+                        <span style="color:#75715e">// 连接失败，从头来过
+</span><span style="color:#75715e"></span>                        <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span> <span style="color:#75715e">// restart
+</span><span style="color:#75715e"></span>                    <span style="color:#75715e">// t节点的值为空，可能是其它线程删除了这个元素
+</span><span style="color:#75715e"></span>                    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>t<span style="color:#f92672">.</span><span style="color:#a6e22e">node</span><span style="color:#f92672">.</span><span style="color:#a6e22e">value</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                        <span style="color:#75715e">// 这里会去协助删除元素
+</span><span style="color:#75715e"></span>                        findNode<span style="color:#f92672">(</span>key<span style="color:#f92672">);</span>
+                        <span style="color:#66d9ef">break</span> splice<span style="color:#f92672">;</span>
+                    <span style="color:#f92672">}</span>
+                    <span style="color:#75715e">// 当前层级右指针连接完毕，向下移一层继续连接
+</span><span style="color:#75715e"></span>                    <span style="color:#75715e">// 如果移到了最下面一层，则说明都连接完成了，退出外层循环
+</span><span style="color:#75715e"></span>                    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(--</span>insertionLevel <span style="color:#f92672">==</span> 0<span style="color:#f92672">)</span>
+                        <span style="color:#66d9ef">break</span> splice<span style="color:#f92672">;</span>
+                <span style="color:#f92672">}</span>
+
+                <span style="color:#75715e">// 第二个if
+</span><span style="color:#75715e"></span>                <span style="color:#75715e">// j先自减1，再与两个level比较
+</span><span style="color:#75715e"></span>                <span style="color:#75715e">// j、insertionLevel和t(idx)三者是对应的，都是还未把右指针连好的那个层级
+</span><span style="color:#75715e"></span>                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(--</span>j <span style="color:#f92672">&gt;=</span> insertionLevel <span style="color:#f92672">&amp;&amp;</span> j <span style="color:#f92672">&lt;</span> level<span style="color:#f92672">)</span>
+                    <span style="color:#75715e">// t往下移
+</span><span style="color:#75715e"></span>                    t <span style="color:#f92672">=</span> t<span style="color:#f92672">.</span><span style="color:#a6e22e">down</span><span style="color:#f92672">;</span>
+
+                <span style="color:#75715e">// 当前层级到最右边了
+</span><span style="color:#75715e"></span>                <span style="color:#75715e">// 那只能往下一层级去走了
+</span><span style="color:#75715e"></span>                <span style="color:#75715e">// 当前节点下移
+</span><span style="color:#75715e"></span>                <span style="color:#75715e">// 再取相应的右节点
+</span><span style="color:#75715e"></span>                q <span style="color:#f92672">=</span> q<span style="color:#f92672">.</span><span style="color:#a6e22e">down</span><span style="color:#f92672">;</span>
+                r <span style="color:#f92672">=</span> q<span style="color:#f92672">.</span><span style="color:#a6e22e">right</span><span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+
+<span style="color:#75715e">// 寻找目标节点之前最近的一个索引对应的数据节点
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">private</span> Node<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">findPredecessor</span><span style="color:#f92672">(</span>Object key<span style="color:#f92672">,</span> Comparator<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">super</span> K<span style="color:#f92672">&gt;</span> cmp<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">// key不能为空
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>key <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span>
+        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> NullPointerException<span style="color:#f92672">();</span> <span style="color:#75715e">// don&#39;t postpone errors
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 自旋
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">for</span> <span style="color:#f92672">(;;)</span> <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// 从最高层头索引节点开始查找，先向右，再向下
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// 直到找到目标位置之前的那个索引
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>Index<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> q <span style="color:#f92672">=</span> head<span style="color:#f92672">,</span> r <span style="color:#f92672">=</span> q<span style="color:#f92672">.</span><span style="color:#a6e22e">right</span><span style="color:#f92672">,</span> d<span style="color:#f92672">;;)</span> <span style="color:#f92672">{</span>
+            <span style="color:#75715e">// 如果右节点不为空
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>r <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                <span style="color:#75715e">// 右节点对应的数据节点，为了方便，我们叫右节点的值
+</span><span style="color:#75715e"></span>                Node<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> n <span style="color:#f92672">=</span> r<span style="color:#f92672">.</span><span style="color:#a6e22e">node</span><span style="color:#f92672">;</span>
+                K k <span style="color:#f92672">=</span> n<span style="color:#f92672">.</span><span style="color:#a6e22e">key</span><span style="color:#f92672">;</span>
+                <span style="color:#75715e">// 如果右节点的value为空
+</span><span style="color:#75715e"></span>                <span style="color:#75715e">// 说明其它线程把这个节点标记为删除了
+</span><span style="color:#75715e"></span>                <span style="color:#75715e">// 则协助删除
+</span><span style="color:#75715e"></span>                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>n<span style="color:#f92672">.</span><span style="color:#a6e22e">value</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>q<span style="color:#f92672">.</span><span style="color:#a6e22e">unlink</span><span style="color:#f92672">(</span>r<span style="color:#f92672">))</span>
+                        <span style="color:#75715e">// 如果删除失败
+</span><span style="color:#75715e"></span>                        <span style="color:#75715e">// 说明其它线程先删除了，从头来过
+</span><span style="color:#75715e"></span>                        <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>           <span style="color:#75715e">// restart
+</span><span style="color:#75715e"></span>                    <span style="color:#75715e">// 删除之后重新读取右节点
+</span><span style="color:#75715e"></span>                    r <span style="color:#f92672">=</span> q<span style="color:#f92672">.</span><span style="color:#a6e22e">right</span><span style="color:#f92672">;</span>         <span style="color:#75715e">// reread r
+</span><span style="color:#75715e"></span>                    <span style="color:#66d9ef">continue</span><span style="color:#f92672">;</span>
+                <span style="color:#f92672">}</span>
+                <span style="color:#75715e">// 如果目标key比右节点还大，继续向右寻找
+</span><span style="color:#75715e"></span>                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>cpr<span style="color:#f92672">(</span>cmp<span style="color:#f92672">,</span> key<span style="color:#f92672">,</span> k<span style="color:#f92672">)</span> <span style="color:#f92672">&gt;</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                    <span style="color:#75715e">// 往右移
+</span><span style="color:#75715e"></span>                    q <span style="color:#f92672">=</span> r<span style="color:#f92672">;</span>
+                    <span style="color:#75715e">// 重新取右节点
+</span><span style="color:#75715e"></span>                    r <span style="color:#f92672">=</span> r<span style="color:#f92672">.</span><span style="color:#a6e22e">right</span><span style="color:#f92672">;</span>
+                    <span style="color:#66d9ef">continue</span><span style="color:#f92672">;</span>
+                <span style="color:#f92672">}</span>
+                <span style="color:#75715e">// 如果c&lt;0，说明不能再往右了
+</span><span style="color:#75715e"></span>            <span style="color:#f92672">}</span>
+            <span style="color:#75715e">// 到这里说明当前层级已经到最右了
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// 两种情况：一是r==null，二是c&lt;0
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// 再从下一级开始找
+</span><span style="color:#75715e"></span>
+            <span style="color:#75715e">// 如果没有下一级了，就返回这个索引对应的数据节点
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">((</span>d <span style="color:#f92672">=</span> q<span style="color:#f92672">.</span><span style="color:#a6e22e">down</span><span style="color:#f92672">)</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span>
+                <span style="color:#66d9ef">return</span> q<span style="color:#f92672">.</span><span style="color:#a6e22e">node</span><span style="color:#f92672">;</span>
+
+            <span style="color:#75715e">// 往下移
+</span><span style="color:#75715e"></span>            q <span style="color:#f92672">=</span> d<span style="color:#f92672">;</span>
+            <span style="color:#75715e">// 重新取右节点
+</span><span style="color:#75715e"></span>            r <span style="color:#f92672">=</span> d<span style="color:#f92672">.</span><span style="color:#a6e22e">right</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+
+<span style="color:#75715e">// Node.class中的方法，协助删除元素
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">helpDelete</span><span style="color:#f92672">(</span>Node<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> b<span style="color:#f92672">,</span> Node<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> f<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">/*
+</span><span style="color:#75715e">     * Rechecking links and then doing only one of the
+</span><span style="color:#75715e">     * help-out stages per call tends to minimize CAS
+</span><span style="color:#75715e">     * interference among helping threads.
+</span><span style="color:#75715e">     */</span>
+    <span style="color:#75715e">// 这里的调用者this==n，三者关系是b-&gt;n-&gt;f
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>f <span style="color:#f92672">==</span> next <span style="color:#f92672">&amp;&amp;</span> <span style="color:#66d9ef">this</span> <span style="color:#f92672">==</span> b<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// 将n的值设置为null后，会先把n的下个节点设置为marker节点
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// 这个marker节点的值是它自己
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// 这里如果不是它自己说明marker失败了，重新marker
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>f <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">||</span> f<span style="color:#f92672">.</span><span style="color:#a6e22e">value</span> <span style="color:#f92672">!=</span> f<span style="color:#f92672">)</span> <span style="color:#75715e">// not already marked
+</span><span style="color:#75715e"></span>            casNext<span style="color:#f92672">(</span>f<span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Node<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;(</span>f<span style="color:#f92672">));</span>
+        <span style="color:#66d9ef">else</span>
+            <span style="color:#75715e">// marker过了，就把b的下个节点指向marker的下个节点
+</span><span style="color:#75715e"></span>            b<span style="color:#f92672">.</span><span style="color:#a6e22e">casNext</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">,</span> f<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+
+<span style="color:#75715e">// Index.class中的方法，删除succ节点
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">final</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">unlink</span><span style="color:#f92672">(</span>Index<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> succ<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">// 原子更新当前节点指向下一个节点的下一个节点
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 也就是删除下一个节点
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> node<span style="color:#f92672">.</span><span style="color:#a6e22e">value</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> casRight<span style="color:#f92672">(</span>succ<span style="color:#f92672">,</span> succ<span style="color:#f92672">.</span><span style="color:#a6e22e">right</span><span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+
+<span style="color:#75715e">// Index.class中的方法，在当前节点与succ之间插入newSucc节点
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">final</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">link</span><span style="color:#f92672">(</span>Index<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> succ<span style="color:#f92672">,</span> Index<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> newSucc<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">// 在当前节点与下一个节点中间插入一个节点
+</span><span style="color:#75715e"></span>    Node<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> n <span style="color:#f92672">=</span> node<span style="color:#f92672">;</span>
+    <span style="color:#75715e">// 新节点指向当前节点的下一个节点
+</span><span style="color:#75715e"></span>    newSucc<span style="color:#f92672">.</span><span style="color:#a6e22e">right</span> <span style="color:#f92672">=</span> succ<span style="color:#f92672">;</span>
+    <span style="color:#75715e">// 原子更新当前节点的下一个节点指向新节点
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> n<span style="color:#f92672">.</span><span style="color:#a6e22e">value</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> casRight<span style="color:#f92672">(</span>succ<span style="color:#f92672">,</span> newSucc<span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+
+</code></pre></div><p>我们这里把整个插入过程分成三个部分：</p>
+<p>Part I：找到目标节点的位置并插入</p>
+<p>（1）这里的目标节点是数据节点，也就是最底层的那条链；</p>
+<p>（2）寻找目标节点之前最近的一个索引对应的数据节点（数据节点都是在最底层的链表上）；</p>
+<p>（3）从这个数据节点开始往后遍历，直到找到目标节点应该插入的位置；</p>
+<p>（4）如果这个位置有元素，就更新其值（onlyIfAbsent=false）；</p>
+<p>（5）如果这个位置没有元素，就把目标节点插入；</p>
+<p>（6）至此，目标节点已经插入到最底层的数据节点链表中了；</p>
+<p>Part II：随机决定是否需要建立索引及其层次，如果需要则建立自上而下的索引</p>
+<p>（1）取个随机数rnd，计算(rnd &amp; 0x80000001)；</p>
+<p>（2）如果不等于0，结束插入过程，也就是不需要创建索引，返回；</p>
+<p>（3）如果等于0，才进入创建索引的过程（只要正偶数才会等于0）；</p>
+<p>（4）计算<code>while (((rnd &gt;&gt;&gt;= 1) &amp; 1) != 0)</code>，决定层级数，level从1开始；</p>
+<p>（5）如果算出来的层级不高于现有最高层级，则直接建立一条竖直的索引链表（只有down有值），并结束Part II；</p>
+<p>（6）如果算出来的层级高于现有最高层级，则新的层级只能比现有最高层级多1；</p>
+<p>（7）同样建立一条竖直的索引链表（只有down有值）；</p>
+<p>（8）将头索引也向上增加到相应的高度，结束Part II；</p>
+<p>（9）也就是说，如果层级不超过现有高度，只建立一条索引链，否则还要额外增加头索引链的高度（脑补一下，后面举例说明）；</p>
+<p>Part III：将新建的索引节点（包含头索引节点）与其它索引节点通过右指针连接在一起（补上right指针）</p>
+<p>（1）从最高层级的头索引节点开始，向右遍历，找到目标索引节点的位置；</p>
+<p>（2）如果当前层有目标索引，则把目标索引插入到这个位置，并把目标索引前一个索引向下移一个层级；</p>
+<p>（3）如果当前层没有目标索引，则把目标索引位置前一个索引向下移一个层级；</p>
+<p>（4）同样地，再向右遍历，寻找新的层级中目标索引的位置，回到第（2）步；</p>
+<p>（5）依次循环找到所有层级目标索引的位置并把它们插入到横向的索引链表中；</p>
+<p>总结起来，一共就是三大步：</p>
+<p>（1）插入目标节点到数据节点链表中；</p>
+<p>（2）建立竖直的down链表；</p>
+<p>（3）建立横向的right链表；</p>
+<h3 id="添加元素举例">添加元素举例</h3>
+<p>假设初始链表是这样：</p>
+<p><img src="https://pic-frank.oss-cn-beijing.aliyuncs.com/img/202210181026685.png" alt="image-20221018102624430"></p>
+<p>假如，我们现在要插入一个元素9。</p>
+<p>（1）寻找目标节点之前最近的一个索引对应的数据节点，在这里也就是找到了5这个数据节点；</p>
+<p>（2）从5开始向后遍历，找到目标节点的位置，也就是在8和12之间；</p>
+<p>（3）插入9这个元素，Part I 结束；</p>
+<!-- raw HTML omitted -->
+<p>然后，计算其索引层级，假如是3，也就是level=3。</p>
+<p>（1）建立竖直的down索引链表；</p>
+<p>（2）超过了现有高度2，还要再增加head索引链的高度；</p>
+<p>（3）至此，Part II 结束；</p>
+<!-- raw HTML omitted -->
+<p>最后，把right指针补齐。</p>
+<p>（1）从第3层的head往右找当前层级目标索引的位置；</p>
+<p>（2）找到就把目标索引和它前面索引的right指针连上，这里前一个正好是head；</p>
+<p>（3）然后前一个索引向下移，这里就是head下移；</p>
+<p>（4）再往右找目标索引的位置；</p>
+<p>（5）找到了就把right指针连上，这里前一个是3的索引；</p>
+<p>（6）然后3的索引下移；</p>
+<p>（7）再往右找目标索引的位置；</p>
+<p>（8）找到了就把right指针连上，这里前一个是5的索引；</p>
+<p>（9）然后5下移，到底了，Part III 结束，整个插入过程结束；</p>
+<p><img src="https://pic-frank.oss-cn-beijing.aliyuncs.com/img/202210181027926.png" alt="image-20221018102711889"></p>
+<h1 id="删除元素">删除元素</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> V <span style="color:#a6e22e">remove</span><span style="color:#f92672">(</span>Object key<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">return</span> doRemove<span style="color:#f92672">(</span>key<span style="color:#f92672">,</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+
+<span style="color:#66d9ef">final</span> V <span style="color:#a6e22e">doRemove</span><span style="color:#f92672">(</span>Object key<span style="color:#f92672">,</span> Object value<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">// key不为空
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>key <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span>
+        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> NullPointerException<span style="color:#f92672">();</span>
+    Comparator<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">super</span> K<span style="color:#f92672">&gt;</span> cmp <span style="color:#f92672">=</span> comparator<span style="color:#f92672">;</span>
+    <span style="color:#75715e">// 自旋
+</span><span style="color:#75715e"></span>    outer<span style="color:#f92672">:</span> <span style="color:#66d9ef">for</span> <span style="color:#f92672">(;;)</span> <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// 寻找目标节点之前的最近的索引节点对应的数据节点
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// 为了方便，这里叫b为当前节点，n为下一个节点，f为下下个节点
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>Node<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> b <span style="color:#f92672">=</span> findPredecessor<span style="color:#f92672">(</span>key<span style="color:#f92672">,</span> cmp<span style="color:#f92672">),</span> n <span style="color:#f92672">=</span> b<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">;;)</span> <span style="color:#f92672">{</span>
+            Object v<span style="color:#f92672">;</span> <span style="color:#66d9ef">int</span> c<span style="color:#f92672">;</span>
+            <span style="color:#75715e">// 整个链表都遍历完了也没找到目标节点，退出外层循环
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>n <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span>
+                <span style="color:#66d9ef">break</span> outer<span style="color:#f92672">;</span>
+            <span style="color:#75715e">// 下下个节点
+</span><span style="color:#75715e"></span>            Node<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> f <span style="color:#f92672">=</span> n<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">;</span>
+            <span style="color:#75715e">// 再次检查
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// 如果n不是b的下一个节点了
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// 说明有其它线程先一步修改了，从头来过
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>n <span style="color:#f92672">!=</span> b<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">)</span>                    <span style="color:#75715e">// inconsistent read
+</span><span style="color:#75715e"></span>                <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
+            <span style="color:#75715e">// 如果下个节点的值奕为null了
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// 说明有其它线程标记该元素为删除状态了
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">((</span>v <span style="color:#f92672">=</span> n<span style="color:#f92672">.</span><span style="color:#a6e22e">value</span><span style="color:#f92672">)</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>        <span style="color:#75715e">// n is deleted
+</span><span style="color:#75715e"></span>                <span style="color:#75715e">// 协助删除
+</span><span style="color:#75715e"></span>                n<span style="color:#f92672">.</span><span style="color:#a6e22e">helpDelete</span><span style="color:#f92672">(</span>b<span style="color:#f92672">,</span> f<span style="color:#f92672">);</span>
+                <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+            <span style="color:#75715e">// 如果b的值为空或者v等于n，说明b已被删除
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// 这时候n就是marker节点，那b就是被删除的那个
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>b<span style="color:#f92672">.</span><span style="color:#a6e22e">value</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">||</span> v <span style="color:#f92672">==</span> n<span style="color:#f92672">)</span>      <span style="color:#75715e">// b is deleted
+</span><span style="color:#75715e"></span>                <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
+            <span style="color:#75715e">// 如果c&lt;0，说明没找到元素，退出外层循环
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">((</span>c <span style="color:#f92672">=</span> cpr<span style="color:#f92672">(</span>cmp<span style="color:#f92672">,</span> key<span style="color:#f92672">,</span> n<span style="color:#f92672">.</span><span style="color:#a6e22e">key</span><span style="color:#f92672">))</span> <span style="color:#f92672">&lt;</span> 0<span style="color:#f92672">)</span>
+                <span style="color:#66d9ef">break</span> outer<span style="color:#f92672">;</span>
+            <span style="color:#75715e">// 如果c&gt;0，说明还没找到，继续向右找
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>c <span style="color:#f92672">&gt;</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                <span style="color:#75715e">// 当前节点往后移
+</span><span style="color:#75715e"></span>                b <span style="color:#f92672">=</span> n<span style="color:#f92672">;</span>
+                <span style="color:#75715e">// 下一个节点往后移
+</span><span style="color:#75715e"></span>                n <span style="color:#f92672">=</span> f<span style="color:#f92672">;</span>
+                <span style="color:#66d9ef">continue</span><span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+            <span style="color:#75715e">// c=0，说明n就是要找的元素
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// 如果value不为空且不等于找到元素的value，不需要删除，退出外层循环
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>value <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span>value<span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>v<span style="color:#f92672">))</span>
+                <span style="color:#66d9ef">break</span> outer<span style="color:#f92672">;</span>
+            <span style="color:#75715e">// 如果value为空，或者相等
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// 原子标记n的value值为空
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>n<span style="color:#f92672">.</span><span style="color:#a6e22e">casValue</span><span style="color:#f92672">(</span>v<span style="color:#f92672">,</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">))</span>
+                <span style="color:#75715e">// 如果删除失败，说明其它线程先一步修改了，从头来过
+</span><span style="color:#75715e"></span>                <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
+
+            <span style="color:#75715e">// P.S.到了这里n的值肯定是设置成null了
+</span><span style="color:#75715e"></span>
+            <span style="color:#75715e">// 关键！！！！
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// 让n的下一个节点指向一个market节点
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// 这个market节点的key为null，value为marker自己，next为n的下个节点f
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// 或者让b的下一个节点指向下下个节点
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// 注意：这里是或者||，因为两个CAS不能保证都成功，只能一个一个去尝试
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// 这里有两层意思：
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// 一是如果标记market成功，再尝试将b的下个节点指向下下个节点，如果第二步失败了，进入条件，如果成功了就不用进入条件了
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// 二是如果标记market失败了，直接进入条件
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>n<span style="color:#f92672">.</span><span style="color:#a6e22e">appendMarker</span><span style="color:#f92672">(</span>f<span style="color:#f92672">)</span> <span style="color:#f92672">||</span> <span style="color:#f92672">!</span>b<span style="color:#f92672">.</span><span style="color:#a6e22e">casNext</span><span style="color:#f92672">(</span>n<span style="color:#f92672">,</span> f<span style="color:#f92672">))</span>
+                <span style="color:#75715e">// 通过findNode()重试删除（里面有个helpDelete()方法）
+</span><span style="color:#75715e"></span>                findNode<span style="color:#f92672">(</span>key<span style="color:#f92672">);</span>                  <span style="color:#75715e">// retry via findNode
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+                <span style="color:#75715e">// 上面两步操作都成功了，才会进入这里，不太好理解，上面两个条件都有非&#34;!&#34;操作
+</span><span style="color:#75715e"></span>                <span style="color:#75715e">// 说明节点已经删除了，通过findPredecessor()方法删除索引节点
+</span><span style="color:#75715e"></span>                <span style="color:#75715e">// findPredecessor()里面有unlink()操作
+</span><span style="color:#75715e"></span>                findPredecessor<span style="color:#f92672">(</span>key<span style="color:#f92672">,</span> cmp<span style="color:#f92672">);</span>      <span style="color:#75715e">// clean index
+</span><span style="color:#75715e"></span>                <span style="color:#75715e">// 如果最高层头索引节点没有右节点，则跳表的高度降级
+</span><span style="color:#75715e"></span>                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>head<span style="color:#f92672">.</span><span style="color:#a6e22e">right</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span>
+                    tryReduceLevel<span style="color:#f92672">();</span>
+            <span style="color:#f92672">}</span>
+            <span style="color:#75715e">// 返回删除的元素值
+</span><span style="color:#75715e"></span>            <span style="color:#a6e22e">@SuppressWarnings</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;unchecked&#34;</span><span style="color:#f92672">)</span> V vv <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>V<span style="color:#f92672">)</span>v<span style="color:#f92672">;</span>
+            <span style="color:#66d9ef">return</span> vv<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>（1）寻找目标节点之前最近的一个索引对应的数据节点（数据节点都是在最底层的链表上）；</p>
+<p>（2）从这个数据节点开始往后遍历，直到找到目标节点的位置；</p>
+<p>（3）如果这个位置没有元素，直接返回null，表示没有要删除的元素；</p>
+<p>（4）如果这个位置有元素，先通过<code>n.casValue(v, null)</code>原子更新把其value设置为null；</p>
+<p>（5）通过<code>n.appendMarker(f)</code>在当前元素后面添加一个marker元素标记当前元素是要删除的元素；</p>
+<p>（6）通过<code>b.casNext(n, f)</code>尝试删除元素；</p>
+<p>（7）如果上面两步中的任意一步失败了都通过<code>findNode(key)</code>中的<code>n.helpDelete(b, f)</code>再去不断尝试删除；</p>
+<p>（8）如果上面两步都成功了，再通过<code>findPredecessor(key, cmp)</code>中的<code>q.unlink(r)</code>删除索引节点；</p>
+<p>（9）如果head的right指针指向了null，则跳表高度降级；</p>
+<h3 id="删除元素举例">删除元素举例</h3>
+<p>假如初始跳表如下图所示，我们要删除9这个元素。</p>
+<p><img src="https://pic-frank.oss-cn-beijing.aliyuncs.com/img/202210181039432.png" alt="image-20221018103905396"></p>
+<p>（1）找到9这个数据节点；</p>
+<p>（2）把9这个节点的value值设置为null；</p>
+<p>（3）在9后面添加一个marker节点，标记9已经删除了；</p>
+<p>（4）让8指向12；</p>
+<p>（5）把索引节点与它前一个索引的right断开联系；</p>
+<p>（6）跳表高度降级；</p>
+<!-- raw HTML omitted -->
+<p>至于，为什么要有（2）（3）（4）这么多步骤呢，因为多线程下如果直接让8指向12，可以其它线程先一步在9和12间插入了一个元素10呢，这时候就不对了。</p>
+<p>所以这里搞了三步来保证多线程下操作的正确性。</p>
+<p>如果第（2）步失败了，则直接重试；</p>
+<p>如果第（3）或（4）步失败了，因为第（2）步是成功的，则通过helpDelete()不断重试去删除；</p>
+<p>其实helpDelete()里面也是不断地重试（3）和（4）；</p>
+<p>只有这三步都正确完成了，才能说明这个元素彻底被删除了。</p>
+<p>这一块结合上面图中的红绿蓝色好好理解一下，一定要想在并发环境中会怎么样。</p>
+<h3 id="查找元素">查找元素</h3>
+<p>经过上面的插入和删除，查找元素就比较简单了，直接上代码：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> V <span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>Object key<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">return</span> doGet<span style="color:#f92672">(</span>key<span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+
+<span style="color:#66d9ef">private</span> V <span style="color:#a6e22e">doGet</span><span style="color:#f92672">(</span>Object key<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">// key不为空
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>key <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span>
+        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> NullPointerException<span style="color:#f92672">();</span>
+    Comparator<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">super</span> K<span style="color:#f92672">&gt;</span> cmp <span style="color:#f92672">=</span> comparator<span style="color:#f92672">;</span>
+    <span style="color:#75715e">// 自旋
+</span><span style="color:#75715e"></span>    outer<span style="color:#f92672">:</span> <span style="color:#66d9ef">for</span> <span style="color:#f92672">(;;)</span> <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// 寻找目标节点之前最近的索引对应的数据节点
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// 为了方便，这里叫b为当前节点，n为下个节点，f为下下个节点
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>Node<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> b <span style="color:#f92672">=</span> findPredecessor<span style="color:#f92672">(</span>key<span style="color:#f92672">,</span> cmp<span style="color:#f92672">),</span> n <span style="color:#f92672">=</span> b<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">;;)</span> <span style="color:#f92672">{</span>
+            Object v<span style="color:#f92672">;</span> <span style="color:#66d9ef">int</span> c<span style="color:#f92672">;</span>
+            <span style="color:#75715e">// 如果链表到头还没找到元素，则跳出外层循环
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>n <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span>
+                <span style="color:#66d9ef">break</span> outer<span style="color:#f92672">;</span>
+            <span style="color:#75715e">// 下下个节点
+</span><span style="color:#75715e"></span>            Node<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> f <span style="color:#f92672">=</span> n<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">;</span>
+            <span style="color:#75715e">// 如果不一致读，从头来过
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>n <span style="color:#f92672">!=</span> b<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">)</span>                <span style="color:#75715e">// inconsistent read
+</span><span style="color:#75715e"></span>                <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
+            <span style="color:#75715e">// 如果n的值为空，说明节点已被其它线程标记为删除
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">((</span>v <span style="color:#f92672">=</span> n<span style="color:#f92672">.</span><span style="color:#a6e22e">value</span><span style="color:#f92672">)</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>    <span style="color:#75715e">// n is deleted
+</span><span style="color:#75715e"></span>                <span style="color:#75715e">// 协助删除，再重试
+</span><span style="color:#75715e"></span>                n<span style="color:#f92672">.</span><span style="color:#a6e22e">helpDelete</span><span style="color:#f92672">(</span>b<span style="color:#f92672">,</span> f<span style="color:#f92672">);</span>
+                <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+            <span style="color:#75715e">// 如果b的值为空或者v等于n，说明b已被删除
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// 这时候n就是marker节点，那b就是被删除的那个
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>b<span style="color:#f92672">.</span><span style="color:#a6e22e">value</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">||</span> v <span style="color:#f92672">==</span> n<span style="color:#f92672">)</span>  <span style="color:#75715e">// b is deleted
+</span><span style="color:#75715e"></span>                <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
+            <span style="color:#75715e">// 如果c==0，说明找到了元素，就返回元素值
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">((</span>c <span style="color:#f92672">=</span> cpr<span style="color:#f92672">(</span>cmp<span style="color:#f92672">,</span> key<span style="color:#f92672">,</span> n<span style="color:#f92672">.</span><span style="color:#a6e22e">key</span><span style="color:#f92672">))</span> <span style="color:#f92672">==</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                <span style="color:#a6e22e">@SuppressWarnings</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;unchecked&#34;</span><span style="color:#f92672">)</span> V vv <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>V<span style="color:#f92672">)</span>v<span style="color:#f92672">;</span>
+                <span style="color:#66d9ef">return</span> vv<span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+            <span style="color:#75715e">// 如果c&lt;0，说明没找到元素
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>c <span style="color:#f92672">&lt;</span> 0<span style="color:#f92672">)</span>
+                <span style="color:#66d9ef">break</span> outer<span style="color:#f92672">;</span>
+            <span style="color:#75715e">// 如果c&gt;0，说明还没找到，继续寻找
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// 当前节点往后移
+</span><span style="color:#75715e"></span>            b <span style="color:#f92672">=</span> n<span style="color:#f92672">;</span>
+            <span style="color:#75715e">// 下一个节点往后移
+</span><span style="color:#75715e"></span>            n <span style="color:#f92672">=</span> f<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>（1）寻找目标节点之前最近的一个索引对应的数据节点（数据节点都是在最底层的链表上）；</p>
+<p>（2）从这个数据节点开始往后遍历，直到找到目标节点的位置；</p>
+<p>（3）如果这个位置没有元素，直接返回null，表示没有找到元素；</p>
+<p>（4）如果这个位置有元素，返回元素的value值；</p>
+<h3 id="查找元素举例">查找元素举例</h3>
+<p>假如有如下图所示这个跳表，我们要查找9这个元素，它走过的路径是怎样的呢？可能跟你相像的不一样。。</p>
+<p><img src="https://pic-frank.oss-cn-beijing.aliyuncs.com/img/202210181045136.png" alt="image-20221018104500092"></p>
+<p>（1）寻找目标节点之前最近的一个索引对应的数据节点，这里就是5；</p>
+<p>（2）从5开始往后遍历，经过8，到9；</p>
+<p>（3）找到了返回；</p>
+<p>整个路径如下图所示：</p>
+<p><img src="https://pic-frank.oss-cn-beijing.aliyuncs.com/img/202210181045702.png" alt="image-20221018104510663"></p>
+<h1 id="提问">提问</h1>
+<ul>
+<li>
+<p>ConcurrentSkipListMap里没有看到Synchronized或者ReentrantLock，如何保证线程安全的</p>
+<p>通过自旋+CAS操作。并且在查询的时候也会进行CAS操作是强一致性的。在删除的时候并非直接断开链表之间的联系，而是将目标删除的元素标记为已删除状态（<em><strong>通过设置元素的value为nul</strong></em>）。在标记目标元素的后面链一个marker节点，用于避免其他线程在链接到目标元素后面</p>
+</li>
+<li>
+<p>为什么value不能为null</p>
+<p>因为ConcurrentSkipListMap标记元素删除的时候，使用过将值设置为null来标记的</p>
+</li>
+<li>
+<p>为什么需要一个marker节点</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"> CAS n<span style="color:#960050;background-color:#1e0010">&#39;</span>s next pointer to point to a <span style="color:#66d9ef">new</span> marker node<span style="color:#f92672">.</span>
+<span style="color:#f92672">*</span>    From <span style="color:#66d9ef">this</span> point on<span style="color:#f92672">,</span> no other nodes can be appended to n<span style="color:#f92672">.</span>
+<span style="color:#f92672">*</span>    which avoids deletion errors in CAS<span style="color:#f92672">-</span>based linked lists<span style="color:#f92672">.</span>
+</code></pre></div><p>避免其他线程在进行删除的时候，又加节点到目标节点后面了。</p>
+</li>
+<li>
+<p>为什么key不能为null，因为key要实现compare，所以不能为空</p>
+</li>
+</ul>
+
+		</div>
+		<footer class="post__footer">
+			
+<div class="post__tags tags clearfix">
+	<svg class="tags__badge icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/java%E5%9F%BA%E7%A1%80/" rel="tag">java基础</a>
+		</li>
+	</ul>
+</div>
+		</footer>
+	</article>
+</main>
+
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="Frank Silva avatar" src="/img/avatar.png" class="avatar" height="90" width="90">
+	</figure>
+	<div class="authorbox__header">
+		<span class="authorbox__name">About Frank Silva</span>
+	</div>
+	<div class="authorbox__description">
+		Pursue Consummate Coding.
+	</div>
+</div>
+
+<nav class="pager flex">
+	<div class="pager__item pager__item--prev">
+		<a class="pager__link" href="/post/essentiallinuxcommand/" rel="prev">
+			<span class="pager__subtitle">«&thinsp;Previous</span>
+			<p class="pager__title">Essential Linux Command</p>
+		</a>
+	</div>
+	<div class="pager__item pager__item--next">
+		<a class="pager__link" href="/post/linkedhashset/" rel="next">
+			<span class="pager__subtitle">Next&thinsp;»</span>
+			<p class="pager__title">LinkedHashSet</p>
+		</a>
+	</div>
+</nav>
+
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2023 Frank Silva.
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+<script src="/js/custom.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+</body>
+</html>

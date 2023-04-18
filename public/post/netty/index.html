@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Netty - Mainroad</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+		<meta property="og:title" content="Netty" />
+<meta property="og:description" content="netty是在什么地方创建SeverChannel的 在BootStrap调用bind方法时创建
+private ChannelFuture doBind(final SocketAddress localAddress) { final ChannelFuture regFuture = this.initAndRegister(); } initAndRegister方法
+final ChannelFuture initAndRegister() { Channel channel = null; try { channel = this.channelFactory.newChannel(); channelFactory是在bootstrap配置class时实例化的
+在AbstractBootstrap中
+public B channel(Class&lt;? extends C&gt; channelClass) { return this.channelFactory((io.netty.channel.ChannelFactory)(new ReflectiveChannelFactory((Class)ObjectUtil.checkNotNull(channelClass, &#34;channelClass&#34;)))); } 因此是直接通过反射，创建了NioServerSocketChannel.class
+public class NioServerSocketChannel extends AbstractNioMessageChannel implements ServerSocketChannel { private static final ChannelMetadata METADATA = new ChannelMetadata(false, 16); private static final SelectorProvider DEFAULT_SELECTOR_PROVIDER = SelectorProvider.provider(); private static final InternalLogger logger = InternalLoggerFactory." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sunhao1256.github.io/post/netty/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-01-11T14:43:18+08:00" />
+<meta property="article:modified_time" content="2022-01-11T14:43:18+08:00" />
+
+
+		<meta itemprop="name" content="Netty">
+<meta itemprop="description" content="netty是在什么地方创建SeverChannel的 在BootStrap调用bind方法时创建
+private ChannelFuture doBind(final SocketAddress localAddress) { final ChannelFuture regFuture = this.initAndRegister(); } initAndRegister方法
+final ChannelFuture initAndRegister() { Channel channel = null; try { channel = this.channelFactory.newChannel(); channelFactory是在bootstrap配置class时实例化的
+在AbstractBootstrap中
+public B channel(Class&lt;? extends C&gt; channelClass) { return this.channelFactory((io.netty.channel.ChannelFactory)(new ReflectiveChannelFactory((Class)ObjectUtil.checkNotNull(channelClass, &#34;channelClass&#34;)))); } 因此是直接通过反射，创建了NioServerSocketChannel.class
+public class NioServerSocketChannel extends AbstractNioMessageChannel implements ServerSocketChannel { private static final ChannelMetadata METADATA = new ChannelMetadata(false, 16); private static final SelectorProvider DEFAULT_SELECTOR_PROVIDER = SelectorProvider.provider(); private static final InternalLogger logger = InternalLoggerFactory."><meta itemprop="datePublished" content="2022-01-11T14:43:18+08:00" />
+<meta itemprop="dateModified" content="2022-01-11T14:43:18+08:00" />
+<meta itemprop="wordCount" content="3065">
+<meta itemprop="keywords" content="Netty," />
+		<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Netty"/>
+<meta name="twitter:description" content="netty是在什么地方创建SeverChannel的 在BootStrap调用bind方法时创建
+private ChannelFuture doBind(final SocketAddress localAddress) { final ChannelFuture regFuture = this.initAndRegister(); } initAndRegister方法
+final ChannelFuture initAndRegister() { Channel channel = null; try { channel = this.channelFactory.newChannel(); channelFactory是在bootstrap配置class时实例化的
+在AbstractBootstrap中
+public B channel(Class&lt;? extends C&gt; channelClass) { return this.channelFactory((io.netty.channel.ChannelFactory)(new ReflectiveChannelFactory((Class)ObjectUtil.checkNotNull(channelClass, &#34;channelClass&#34;)))); } 因此是直接通过反射，创建了NioServerSocketChannel.class
+public class NioServerSocketChannel extends AbstractNioMessageChannel implements ServerSocketChannel { private static final ChannelMetadata METADATA = new ChannelMetadata(false, 16); private static final SelectorProvider DEFAULT_SELECTOR_PROVIDER = SelectorProvider.provider(); private static final InternalLogger logger = InternalLoggerFactory."/>
+
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container header__container">
+		
+	<div class="logo logo--mixed">
+		<a class="logo__link" href="/" title="Mainroad" rel="home">
+			<div class="logo__item logo__imagebox">
+					<img class="logo__img" src="/img/placeholder.png">
+				</div><div class="logo__item logo__text">
+					<div class="logo__title">Mainroad</div>
+					<div class="logo__tagline">Just another site</div>
+				</div>
+		</a>
+	</div>
+		
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+	<ul class="menu__list">
+		<li class="menu__item">
+			<a class="menu__link" href="/about/">
+				
+				<span class="menu__text">About</span>
+				
+			</a>
+		</li>
+	</ul>
+</nav>
+
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">Netty</h1>
+			<div class="post__meta meta"><div class="meta__item-author meta__item">
+	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 12 16"><path d="M6 1c2.2 0 3.5 2 3.5 4.5C9.5 7 8.9 8.2 8 9c2.9.8 4 2.5 4 5v1H0v-1c0-2.5 1.1-4.2 4-5-.9-.8-1.5-2-1.5-3.5C2.5 3 3.8 1 6 1z"/></svg><span class="meta__text">Frank Silva</span>
+</div>
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg><time class="meta__text" datetime="2022-01-11T14:43:18&#43;08:00">2022-01-11</time></div></div>
+		</header>
+		
+<div class="post__toc toc">
+	<div class="toc__title">Page content</div>
+	<div class="toc__menu">
+		<nav id="TableOfContents">
+  <ul>
+    <li><a href="#初始化">初始化</a></li>
+    <li><a href="#channelhandlercontext">ChannelHandlerContext</a></li>
+    <li><a href="#channelhandler的添加">ChannelHandler的添加</a></li>
+    <li><a href="#channelhandler删除">ChannelHandler删除</a></li>
+    <li><a href="#inboud事件">Inboud事件</a></li>
+    <li><a href="#outbound事件">outBound事件</a></li>
+    <li><a href="#ctxchannelwrite和ctxwrite的区别">ctx.channel().write()和ctx.write()的区别</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#unpooledbytebufallocator">UnpooledByteBufAllocator</a>
+      <ul>
+        <li><a href="#分配堆内内存">分配堆内内存</a></li>
+        <li><a href="#分配堆外内存">分配堆外内存</a></li>
+      </ul>
+    </li>
+    <li><a href="#pooledbytebufallocator">PooledByteBufAllocator</a>
+      <ul>
+        <li><a href="#分配堆内内存-1">分配堆内内存</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+	</div>
+</div><div class="content post__content clearfix">
+			<h1 id="netty是在什么地方创建severchannel的">netty是在什么地方创建SeverChannel的</h1>
+<p>在BootStrap调用bind方法时创建</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">private</span> ChannelFuture <span style="color:#a6e22e">doBind</span><span style="color:#f92672">(</span><span style="color:#66d9ef">final</span> SocketAddress localAddress<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">final</span> ChannelFuture regFuture <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">initAndRegister</span><span style="color:#f92672">();</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>initAndRegister方法</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">final</span> ChannelFuture <span style="color:#a6e22e">initAndRegister</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    Channel channel <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+
+    <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+        channel <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">channelFactory</span><span style="color:#f92672">.</span><span style="color:#a6e22e">newChannel</span><span style="color:#f92672">();</span>
+</code></pre></div><p>channelFactory是在bootstrap配置class时实例化的</p>
+<p>在AbstractBootstrap中</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> B <span style="color:#a6e22e">channel</span><span style="color:#f92672">(</span>Class<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">extends</span> C<span style="color:#f92672">&gt;</span> channelClass<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">channelFactory</span><span style="color:#f92672">((</span>io<span style="color:#f92672">.</span><span style="color:#a6e22e">netty</span><span style="color:#f92672">.</span><span style="color:#a6e22e">channel</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ChannelFactory</span><span style="color:#f92672">)(</span><span style="color:#66d9ef">new</span> ReflectiveChannelFactory<span style="color:#f92672">((</span>Class<span style="color:#f92672">)</span>ObjectUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">checkNotNull</span><span style="color:#f92672">(</span>channelClass<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;channelClass&#34;</span><span style="color:#f92672">))));</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>因此是直接通过反射，创建了NioServerSocketChannel.class</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">NioServerSocketChannel</span> <span style="color:#66d9ef">extends</span> AbstractNioMessageChannel <span style="color:#66d9ef">implements</span> ServerSocketChannel <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> ChannelMetadata METADATA <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ChannelMetadata<span style="color:#f92672">(</span><span style="color:#66d9ef">false</span><span style="color:#f92672">,</span> 16<span style="color:#f92672">);</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> SelectorProvider DEFAULT_SELECTOR_PROVIDER <span style="color:#f92672">=</span> SelectorProvider<span style="color:#f92672">.</span><span style="color:#a6e22e">provider</span><span style="color:#f92672">();</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> InternalLogger logger <span style="color:#f92672">=</span> InternalLoggerFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getInstance</span><span style="color:#f92672">(</span>NioServerSocketChannel<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> ServerSocketChannelConfig config<span style="color:#f92672">;</span>
+
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> java<span style="color:#f92672">.</span><span style="color:#a6e22e">nio</span><span style="color:#f92672">.</span><span style="color:#a6e22e">channels</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ServerSocketChannel</span> <span style="color:#a6e22e">newSocket</span><span style="color:#f92672">(</span>SelectorProvider provider<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+          <span style="color:#75715e">//实际上就是调用了java的方法
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">return</span> provider<span style="color:#f92672">.</span><span style="color:#a6e22e">openServerSocketChannel</span><span style="color:#f92672">();</span>
+        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>IOException var2<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> ChannelException<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Failed to open a server socket.&#34;</span><span style="color:#f92672">,</span> var2<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">NioServerSocketChannel</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">(</span>newSocket<span style="color:#f92672">(</span>DEFAULT_SELECTOR_PROVIDER<span style="color:#f92672">));</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">NioServerSocketChannel</span><span style="color:#f92672">(</span>SelectorProvider provider<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">(</span>newSocket<span style="color:#f92672">(</span>provider<span style="color:#f92672">));</span>
+    <span style="color:#f92672">}</span>
+  <span style="color:#75715e">//super方法中配置了阻塞
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">NioServerSocketChannel</span><span style="color:#f92672">(</span>java<span style="color:#f92672">.</span><span style="color:#a6e22e">nio</span><span style="color:#f92672">.</span><span style="color:#a6e22e">channels</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ServerSocketChannel</span> channel<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">super</span><span style="color:#f92672">((</span>Channel<span style="color:#f92672">)</span><span style="color:#66d9ef">null</span><span style="color:#f92672">,</span> channel<span style="color:#f92672">,</span> 16<span style="color:#f92672">);</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">config</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> NioServerSocketChannel<span style="color:#f92672">.</span><span style="color:#a6e22e">NioServerSocketChannelConfig</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">javaChannel</span><span style="color:#f92672">().</span><span style="color:#a6e22e">socket</span><span style="color:#f92672">());</span>
+    <span style="color:#f92672">}</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">protected</span> <span style="color:#a6e22e">AbstractNioChannel</span><span style="color:#f92672">(</span>Channel parent<span style="color:#f92672">,</span> SelectableChannel ch<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> readInterestOp<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">super</span><span style="color:#f92672">(</span>parent<span style="color:#f92672">);</span>
+    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ch</span> <span style="color:#f92672">=</span> ch<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">readInterestOp</span> <span style="color:#f92672">=</span> readInterestOp<span style="color:#f92672">;</span>
+
+    <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+      <span style="color:#75715e">//设置阻塞
+</span><span style="color:#75715e"></span>        ch<span style="color:#f92672">.</span><span style="color:#a6e22e">configureBlocking</span><span style="color:#f92672">(</span><span style="color:#66d9ef">false</span><span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>IOException var7<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+            ch<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
+        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>IOException var6<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            logger<span style="color:#f92672">.</span><span style="color:#a6e22e">warn</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Failed to close a partially initialized socket.&#34;</span><span style="color:#f92672">,</span> var6<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+
+        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> ChannelException<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Failed to enter non-blocking mode.&#34;</span><span style="color:#f92672">,</span> var7<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">protected</span> <span style="color:#a6e22e">AbstractChannel</span><span style="color:#f92672">(</span>Channel parent<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">parent</span> <span style="color:#f92672">=</span> parent<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">id</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">newId</span><span style="color:#f92672">();</span>
+    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">unsafe</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">newUnsafe</span><span style="color:#f92672">();</span>
+    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">pipeline</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">newChannelPipeline</span><span style="color:#f92672">();</span><span style="color:#75715e">//创建了管道
+</span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
+</code></pre></div><h1 id="serverbootstrapacceptor">ServerBootstrapAcceptor</h1>
+<p>服务端不管之前增加了多少handler，最后都会增加ServerBootstrapAcceptor</p>
+<p>在ServerBootstrap.class中</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">init</span><span style="color:#f92672">(</span>Channel channel<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    setChannelOptions<span style="color:#f92672">(</span>channel<span style="color:#f92672">,</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">newOptionsArray</span><span style="color:#f92672">(),</span> logger<span style="color:#f92672">);</span>
+    setAttributes<span style="color:#f92672">(</span>channel<span style="color:#f92672">,</span> <span style="color:#f92672">(</span>Entry<span style="color:#f92672">[])</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">attrs0</span><span style="color:#f92672">().</span><span style="color:#a6e22e">entrySet</span><span style="color:#f92672">().</span><span style="color:#a6e22e">toArray</span><span style="color:#f92672">(</span>EMPTY_ATTRIBUTE_ARRAY<span style="color:#f92672">));</span>
+    ChannelPipeline p <span style="color:#f92672">=</span> channel<span style="color:#f92672">.</span><span style="color:#a6e22e">pipeline</span><span style="color:#f92672">();</span>
+    <span style="color:#66d9ef">final</span> EventLoopGroup currentChildGroup <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">childGroup</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">final</span> ChannelHandler currentChildHandler <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">childHandler</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">final</span> Entry<span style="color:#f92672">[]</span> currentChildOptions<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">synchronized</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">childOptions</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        currentChildOptions <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>Entry<span style="color:#f92672">[])</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">childOptions</span><span style="color:#f92672">.</span><span style="color:#a6e22e">entrySet</span><span style="color:#f92672">().</span><span style="color:#a6e22e">toArray</span><span style="color:#f92672">(</span>EMPTY_OPTION_ARRAY<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">final</span> Entry<span style="color:#f92672">&lt;</span>AttributeKey<span style="color:#f92672">&lt;?&gt;,</span> Object<span style="color:#f92672">&gt;[]</span> currentChildAttrs <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>Entry<span style="color:#f92672">[])</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">childAttrs</span><span style="color:#f92672">.</span><span style="color:#a6e22e">entrySet</span><span style="color:#f92672">().</span><span style="color:#a6e22e">toArray</span><span style="color:#f92672">(</span>EMPTY_ATTRIBUTE_ARRAY<span style="color:#f92672">);</span>
+    p<span style="color:#f92672">.</span><span style="color:#a6e22e">addLast</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ChannelHandler<span style="color:#f92672">[]{</span><span style="color:#66d9ef">new</span> ChannelInitializer<span style="color:#f92672">&lt;</span>Channel<span style="color:#f92672">&gt;()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">initChannel</span><span style="color:#f92672">(</span><span style="color:#66d9ef">final</span> Channel ch<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">final</span> ChannelPipeline pipeline <span style="color:#f92672">=</span> ch<span style="color:#f92672">.</span><span style="color:#a6e22e">pipeline</span><span style="color:#f92672">();</span>
+            ChannelHandler handler <span style="color:#f92672">=</span> ServerBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">config</span><span style="color:#f92672">.</span><span style="color:#a6e22e">handler</span><span style="color:#f92672">();</span>
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>handler <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                pipeline<span style="color:#f92672">.</span><span style="color:#a6e22e">addLast</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ChannelHandler<span style="color:#f92672">[]{</span>handler<span style="color:#f92672">});</span>
+            <span style="color:#f92672">}</span>
+
+            ch<span style="color:#f92672">.</span><span style="color:#a6e22e">eventLoop</span><span style="color:#f92672">().</span><span style="color:#a6e22e">execute</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Runnable<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+                  <span style="color:#75715e">//在这里加入了默认的
+</span><span style="color:#75715e"></span>                  <span style="color:#75715e">//以后新的请求的都通过这个连接器处理，给新的连接分配一个nio线程
+</span><span style="color:#75715e"></span>                    pipeline<span style="color:#f92672">.</span><span style="color:#a6e22e">addLast</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ChannelHandler<span style="color:#f92672">[]{</span><span style="color:#66d9ef">new</span> ServerBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">ServerBootstrapAcceptor</span><span style="color:#f92672">(</span>ch<span style="color:#f92672">,</span> currentChildGroup<span style="color:#f92672">,</span> currentChildHandler<span style="color:#f92672">,</span> currentChildOptions<span style="color:#f92672">,</span> currentChildAttrs<span style="color:#f92672">)});</span>
+                <span style="color:#f92672">}</span>
+            <span style="color:#f92672">});</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}});</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>netty服务端启动的几个过程：创建channel（创建jdk底层channel）、init初始化（最主要是添加连接器serverBootstrapAcceptor）、register（把第一步jdk底层创建channel注册到selector上面，并且把这个NioServerSocketChannel作为attachment添加进去），doBind（绑定端口，实现监听accept事件）</p>
+<ul>
+<li>
+<p>1、服务端的socket在哪里初始化？</p>
+<p>在bind方法中，initAndRegister中，实例化SocketChannel，使用的是反射方式，传入的就是bootstrap配置的channel.class。底层还是jdk的ServerSocketChannel对应普通方式的</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">serverSocketChannel <span style="color:#f92672">=</span> ServerSocketChannel<span style="color:#f92672">.</span><span style="color:#a6e22e">open</span><span style="color:#f92672">();</span>
+<span style="color:#75715e">//设置为非阻塞模式
+</span><span style="color:#75715e"></span>serverSocketChannel<span style="color:#f92672">.</span><span style="color:#a6e22e">configureBlocking</span><span style="color:#f92672">(</span><span style="color:#66d9ef">false</span><span style="color:#f92672">);</span>
+</code></pre></div><p>register是把创建好的注册到selector上，但没有监听事件，对应的是</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">//监听客户端请求
+</span><span style="color:#75715e">//0表示只注册，不监听事件
+</span><span style="color:#75715e"></span>serverSocketChannel<span style="color:#f92672">.</span><span style="color:#a6e22e">register</span><span style="color:#f92672">(</span>selector<span style="color:#f92672">,</span> 0<span style="color:#f92672">);</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> java<span style="color:#f92672">.</span><span style="color:#a6e22e">nio</span><span style="color:#f92672">.</span><span style="color:#a6e22e">channels</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ServerSocketChannel</span> <span style="color:#a6e22e">newSocket</span><span style="color:#f92672">(</span>SelectorProvider provider<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">return</span> provider<span style="color:#f92672">.</span><span style="color:#a6e22e">openServerSocketChannel</span><span style="color:#f92672">();</span><span style="color:#75715e">//创建jdk的ServerSocketChannel
+</span><span style="color:#75715e"></span>        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>IOException var2<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> ChannelException<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Failed to open a server socket.&#34;</span><span style="color:#f92672">,</span> var2<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+</code></pre></div></li>
+<li>
+<p>2、在哪里进行accept连接？</p>
+<p>还是在bind方法中，doBind最终底层调用了jdk的端口绑定和监听accpet事件</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">NioServerSocketChannel</span><span style="color:#f92672">(</span>java<span style="color:#f92672">.</span><span style="color:#a6e22e">nio</span><span style="color:#f92672">.</span><span style="color:#a6e22e">channels</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ServerSocketChannel</span> channel<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">super</span><span style="color:#f92672">((</span>Channel<span style="color:#f92672">)</span><span style="color:#66d9ef">null</span><span style="color:#f92672">,</span> channel<span style="color:#f92672">,</span> 16<span style="color:#f92672">);</span><span style="color:#75715e">//16就是SelectionKey.OP_ACCEPT 1&lt;&lt;4
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">config</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> NioServerSocketChannel<span style="color:#f92672">.</span><span style="color:#a6e22e">NioServerSocketChannelConfig</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">javaChannel</span><span style="color:#f92672">().</span><span style="color:#a6e22e">socket</span><span style="color:#f92672">());</span>
+    <span style="color:#f92672">}</span>
+</code></pre></div><p>对应普通的就是</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">serverSocketChannel<span style="color:#f92672">.</span><span style="color:#a6e22e">socket</span><span style="color:#f92672">().</span><span style="color:#a6e22e">bind</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> InetSocketAddress<span style="color:#f92672">(</span>port<span style="color:#f92672">),</span>1024<span style="color:#f92672">);</span>
+<span style="color:#75715e">//监听客户端请求
+</span><span style="color:#75715e"></span>serverSocketChannel<span style="color:#f92672">.</span><span style="color:#a6e22e">register</span><span style="color:#f92672">(</span>selector<span style="color:#f92672">,</span> SelectionKey<span style="color:#f92672">.</span><span style="color:#a6e22e">OP_ACCEPT</span><span style="color:#f92672">);</span>
+</code></pre></div><p>bind最终是在NioServerSocketChannel执行的</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doBind</span><span style="color:#f92672">(</span>SocketAddress localAddress<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>PlatformDependent<span style="color:#f92672">.</span><span style="color:#a6e22e">javaVersion</span><span style="color:#f92672">()</span> <span style="color:#f92672">&gt;=</span> 7<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">javaChannel</span><span style="color:#f92672">().</span><span style="color:#a6e22e">bind</span><span style="color:#f92672">(</span>localAddress<span style="color:#f92672">,</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">config</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getBacklog</span><span style="color:#f92672">());</span>
+    <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">javaChannel</span><span style="color:#f92672">().</span><span style="color:#a6e22e">socket</span><span style="color:#f92672">().</span><span style="color:#a6e22e">bind</span><span style="color:#f92672">(</span>localAddress<span style="color:#f92672">,</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">config</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getBacklog</span><span style="color:#f92672">());</span>
+    <span style="color:#f92672">}</span>
+
+<span style="color:#f92672">}</span>
+</code></pre></div><p>accpet最终是在AbstractNioChannel的doBeginRead方法中，注册了构造方法传来的16，即accpet事件</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doBeginRead</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+    SelectionKey selectionKey <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">selectionKey</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>selectionKey<span style="color:#f92672">.</span><span style="color:#a6e22e">isValid</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">readPending</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">int</span> interestOps <span style="color:#f92672">=</span> selectionKey<span style="color:#f92672">.</span><span style="color:#a6e22e">interestOps</span><span style="color:#f92672">();</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">((</span>interestOps <span style="color:#f92672">&amp;</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">readInterestOp</span><span style="color:#f92672">)</span> <span style="color:#f92672">==</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            selectionKey<span style="color:#f92672">.</span><span style="color:#a6e22e">interestOps</span><span style="color:#f92672">(</span>interestOps <span style="color:#f92672">|</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">readInterestOp</span><span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div></li>
+</ul>
+<h1 id="nioeventloopgroupnioeventloop的关系">NioEventLoopGroup、NioEventLoop的关系</h1>
+<p>在NioEventLoopGroup实例化的时候，会做如下动作</p>
+<ul>
+<li>
+<p>创建线程创建(执行)器：new ThreadPerTaskExecutor()</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">protected</span> <span style="color:#a6e22e">MultithreadEventExecutorGroup</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> nThreads<span style="color:#f92672">,</span> Executor executor<span style="color:#f92672">,</span> EventExecutorChooserFactory chooserFactory<span style="color:#f92672">,</span> Object<span style="color:#f92672">...</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">terminatedChildren</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> AtomicInteger<span style="color:#f92672">();</span>
+    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">terminationFuture</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DefaultPromise<span style="color:#f92672">(</span>GlobalEventExecutor<span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">);</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>nThreads <span style="color:#f92672">&lt;=</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalArgumentException<span style="color:#f92672">(</span>String<span style="color:#f92672">.</span><span style="color:#a6e22e">format</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;nThreads: %d (expected: &gt; 0)&#34;</span><span style="color:#f92672">,</span> nThreads<span style="color:#f92672">));</span>
+    <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>executor <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+          <span style="color:#75715e">//创建线程执行器
+</span><span style="color:#75715e"></span>            executor <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ThreadPerTaskExecutor<span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">newDefaultThreadFactory</span><span style="color:#f92672">());</span>
+        <span style="color:#f92672">}</span>
+
+            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">children</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> EventExecutor<span style="color:#f92672">[</span>nThreads<span style="color:#f92672">];</span>
+
+            <span style="color:#66d9ef">int</span> j<span style="color:#f92672">;</span>
+            <span style="color:#66d9ef">for</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> nThreads<span style="color:#f92672">;</span> <span style="color:#f92672">++</span>i<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">boolean</span> success <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+                <span style="color:#66d9ef">boolean</span> var18 <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+
+                <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+                    var18 <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+                  <span style="color:#75715e">//填充child
+</span><span style="color:#75715e"></span>                    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">children</span><span style="color:#f92672">[</span>i<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">newChild</span><span style="color:#f92672">((</span>Executor<span style="color:#f92672">)</span>executor<span style="color:#f92672">,</span> args<span style="color:#f92672">);</span>
+                    success <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+                    var18 <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+                <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception var19<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+
+</code></pre></div></li>
+<li>
+<p>构造NioEventLoop：for{newChild()}</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    <span style="color:#66d9ef">protected</span> EventLoop <span style="color:#a6e22e">newChild</span><span style="color:#f92672">(</span>Executor executor<span style="color:#f92672">,</span> Object<span style="color:#f92672">...</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+      <span style="color:#75715e">//填充的就是nioEventLoop 
+</span><span style="color:#75715e"></span>      <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> NioEventLoop<span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">,</span> executor<span style="color:#f92672">,</span> <span style="color:#f92672">(</span>SelectorProvider<span style="color:#f92672">)</span>args<span style="color:#f92672">[</span>0<span style="color:#f92672">],</span> <span style="color:#f92672">((</span>SelectStrategyFactory<span style="color:#f92672">)</span>args<span style="color:#f92672">[</span>1<span style="color:#f92672">]).</span><span style="color:#a6e22e">newSelectStrategy</span><span style="color:#f92672">(),</span> <span style="color:#f92672">(</span>RejectedExecutionHandler<span style="color:#f92672">)</span>args<span style="color:#f92672">[</span>2<span style="color:#f92672">]);</span>
+    <span style="color:#f92672">}</span>
+</code></pre></div></li>
+<li>
+<p>创建线程选择器：chooserFactory.newChooser()</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">PowerOfTowEventExecutorChooser</span> <span style="color:#66d9ef">implements</span> EventExecutorChooser <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> AtomicInteger idx <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> AtomicInteger<span style="color:#f92672">();</span>
+        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> EventExecutor<span style="color:#f92672">[]</span> executors<span style="color:#f92672">;</span>
+
+        PowerOfTowEventExecutorChooser<span style="color:#f92672">(</span>EventExecutor<span style="color:#f92672">[]</span> executors<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">executors</span> <span style="color:#f92672">=</span> executors<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+
+        <span style="color:#a6e22e">@Override</span>
+        <span style="color:#66d9ef">public</span> EventExecutor <span style="color:#a6e22e">next</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">return</span> executors<span style="color:#f92672">[</span>idx<span style="color:#f92672">.</span><span style="color:#a6e22e">getAndIncrement</span><span style="color:#f92672">()</span> <span style="color:#f92672">&amp;</span> executors<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span> <span style="color:#f92672">-</span> 1<span style="color:#f92672">];</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">GenericEventExecutorChooser</span> <span style="color:#66d9ef">implements</span> EventExecutorChooser <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> AtomicInteger idx <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> AtomicInteger<span style="color:#f92672">();</span>
+        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> EventExecutor<span style="color:#f92672">[]</span> executors<span style="color:#f92672">;</span>
+
+        GenericEventExecutorChooser<span style="color:#f92672">(</span>EventExecutor<span style="color:#f92672">[]</span> executors<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">executors</span> <span style="color:#f92672">=</span> executors<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+
+        <span style="color:#a6e22e">@Override</span>
+        <span style="color:#66d9ef">public</span> EventExecutor <span style="color:#a6e22e">next</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">return</span> executors<span style="color:#f92672">[</span>Math<span style="color:#f92672">.</span><span style="color:#a6e22e">abs</span><span style="color:#f92672">(</span>idx<span style="color:#f92672">.</span><span style="color:#a6e22e">getAndIncrement</span><span style="color:#f92672">()</span> <span style="color:#f92672">%</span> executors<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">)];</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+</code></pre></div><p>模取运算除了%，还可以用&amp;（length-1）</p>
+</li>
+<li>
+<p>线程创建与运行的流程</p>
+<ul>
+<li>
+<p>NioEventLoopGroup顾名思义，就是NioEventLoopGroup的集合，内部维护了children数组，数组的内容就是NioEventLoop</p>
+</li>
+<li>
+<p>当调用Loop去execute的时候，实际上是调用线程执行器ThreadPerTaskExecutor去执行，内部DefaultThreadFactory就是创建了FastThreadLocalThread线程。</p>
+</li>
+<li>
+<p>Loop的execute方法，除了用DefaultThreadFactory创建并运行FastThreadLocalThread线程外，还会将任务放入Loop自身维护的一个无锁队列。并且运行自身的run方法</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doStartThread</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">assert</span> thread <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+    executor<span style="color:#f92672">.</span><span style="color:#a6e22e">execute</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Runnable<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#a6e22e">@Override</span>
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+            thread <span style="color:#f92672">=</span> Thread<span style="color:#f92672">.</span><span style="color:#a6e22e">currentThread</span><span style="color:#f92672">();</span>
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>interrupted<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                thread<span style="color:#f92672">.</span><span style="color:#a6e22e">interrupt</span><span style="color:#f92672">();</span>
+            <span style="color:#f92672">}</span>
+
+            <span style="color:#66d9ef">boolean</span> success <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+            updateLastExecutionTime<span style="color:#f92672">();</span>
+            <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+                SingleThreadEventExecutor<span style="color:#f92672">.</span><span style="color:#a6e22e">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">run</span><span style="color:#f92672">();</span><span style="color:#75715e">//调用run方法
+</span><span style="color:#75715e"></span>
+
+<span style="color:#75715e">// nioEventLoop的run方法,无线循环去消费队列
+</span><span style="color:#75715e"></span>             <span style="color:#66d9ef">for</span><span style="color:#f92672">(;;)</span>
+               <span style="color:#f92672">.....</span>
+               <span style="color:#f92672">....</span>
+               <span style="color:#f92672">....</span>
+              <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> ioRatio <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ioRatio</span><span style="color:#f92672">;</span>
+              <span style="color:#66d9ef">boolean</span> ranTasks<span style="color:#f92672">;</span>
+              <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>ioRatio <span style="color:#f92672">==</span> 100<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+                  <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>strategy <span style="color:#f92672">&gt;</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                    processSelectedKeys<span style="color:#f92672">();</span>
+                  <span style="color:#f92672">}</span>
+                <span style="color:#f92672">}</span> <span style="color:#66d9ef">finally</span> <span style="color:#f92672">{</span>
+                  <span style="color:#75715e">// Ensure we always run tasks.
+</span><span style="color:#75715e"></span>                  ranTasks <span style="color:#f92672">=</span> runAllTasks<span style="color:#f92672">();</span>
+                <span style="color:#f92672">}</span>
+              <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>strategy <span style="color:#f92672">&gt;</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">long</span> ioStartTime <span style="color:#f92672">=</span> System<span style="color:#f92672">.</span><span style="color:#a6e22e">nanoTime</span><span style="color:#f92672">();</span>
+                <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+                  processSelectedKeys<span style="color:#f92672">();</span>
+                <span style="color:#f92672">}</span> <span style="color:#66d9ef">finally</span> <span style="color:#f92672">{</span>
+                  <span style="color:#75715e">// Ensure we always run tasks.
+</span><span style="color:#75715e"></span>                  <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">long</span> ioTime <span style="color:#f92672">=</span> System<span style="color:#f92672">.</span><span style="color:#a6e22e">nanoTime</span><span style="color:#f92672">()</span> <span style="color:#f92672">-</span> ioStartTime<span style="color:#f92672">;</span>
+                  ranTasks <span style="color:#f92672">=</span> runAllTasks<span style="color:#f92672">(</span>ioTime <span style="color:#f92672">*</span> <span style="color:#f92672">(</span>100 <span style="color:#f92672">-</span> ioRatio<span style="color:#f92672">)</span> <span style="color:#f92672">/</span> ioRatio<span style="color:#f92672">);</span><span style="color:#75715e">//通过ioRatio控制消费任务的速度，这里就是不断的循环去消费
+</span><span style="color:#75715e"></span>                <span style="color:#f92672">}</span>
+              <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+                ranTasks <span style="color:#f92672">=</span> runAllTasks<span style="color:#f92672">(</span>0<span style="color:#f92672">);</span> <span style="color:#75715e">// This will run the minimum number of tasks
+</span><span style="color:#75715e"></span>              <span style="color:#f92672">}</span>
+</code></pre></div></li>
+</ul>
+</li>
+<li>
+<p>总结</p>
+<p>在创建NioEventLoopGroup后，内部会维护了一个children，children的内容就是nioEventLoop，并且创建loop的时候为每个loop创建了内部的无锁队列，默认长度是系统核心的2倍，然后调用group的register或者execute方法，都会执行next去取一个loop，next方法就是模取循环下一个线程。</p>
+<p>loop会执行execute方法，实现会将任务Runnable放入队列。然后第一次运行时调用了ThreadFactory去创建了新线程，这个新线程并不是直接就开始执行任务，而是无限循环消费loop内部维护的无锁队列。达到了，一个loop一个线程。</p>
+</li>
+</ul>
+<h1 id="nioeventloop启动">NioEventLoop启动</h1>
+<p>在绑定端口的时候做了启动线程的动作</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">channel<span style="color:#f92672">.</span><span style="color:#a6e22e">eventLoop</span><span style="color:#f92672">().</span><span style="color:#a6e22e">execute</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Runnable<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+            <span style="color:#a6e22e">@Override</span>
+            <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>regFuture<span style="color:#f92672">.</span><span style="color:#a6e22e">isSuccess</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+                    channel<span style="color:#f92672">.</span><span style="color:#a6e22e">bind</span><span style="color:#f92672">(</span>localAddress<span style="color:#f92672">,</span> promise<span style="color:#f92672">).</span><span style="color:#a6e22e">addListener</span><span style="color:#f92672">(</span>ChannelFutureListener<span style="color:#f92672">.</span><span style="color:#a6e22e">CLOSE_ON_FAILURE</span><span style="color:#f92672">);</span>
+                <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+                    promise<span style="color:#f92672">.</span><span style="color:#a6e22e">setFailure</span><span style="color:#f92672">(</span>regFuture<span style="color:#f92672">.</span><span style="color:#a6e22e">cause</span><span style="color:#f92672">());</span>
+                <span style="color:#f92672">}</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">});</span>
+</code></pre></div><p>这里的channel的eventLoop是通过register方法去绑定的，是在一开始Bootstrap的intAndRegister方法中执行</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
+    <span style="color:#66d9ef">final</span> ChannelFuture <span style="color:#a6e22e">initAndRegister</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        Channel channel <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+
+        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+            channel <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">channelFactory</span><span style="color:#f92672">.</span><span style="color:#a6e22e">newChannel</span><span style="color:#f92672">();</span>
+            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">init</span><span style="color:#f92672">(</span>channel<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Throwable var3<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>channel <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                channel<span style="color:#f92672">.</span><span style="color:#a6e22e">unsafe</span><span style="color:#f92672">().</span><span style="color:#a6e22e">closeForcibly</span><span style="color:#f92672">();</span>
+                <span style="color:#66d9ef">return</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> DefaultChannelPromise<span style="color:#f92672">(</span>channel<span style="color:#f92672">,</span> GlobalEventExecutor<span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">)).</span><span style="color:#a6e22e">setFailure</span><span style="color:#f92672">(</span>var3<span style="color:#f92672">);</span>
+            <span style="color:#f92672">}</span>
+
+            <span style="color:#66d9ef">return</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> DefaultChannelPromise<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> FailedChannel<span style="color:#f92672">(),</span> GlobalEventExecutor<span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">)).</span><span style="color:#a6e22e">setFailure</span><span style="color:#f92672">(</span>var3<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+
+      <span style="color:#75715e">//从group取一个loop绑定到channel上
+</span><span style="color:#75715e"></span>        ChannelFuture regFuture <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">config</span><span style="color:#f92672">().</span><span style="color:#a6e22e">group</span><span style="color:#f92672">().</span><span style="color:#a6e22e">register</span><span style="color:#f92672">(</span>channel<span style="color:#f92672">);</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>regFuture<span style="color:#f92672">.</span><span style="color:#a6e22e">cause</span><span style="color:#f92672">()</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>channel<span style="color:#f92672">.</span><span style="color:#a6e22e">isRegistered</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+                channel<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
+            <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+                channel<span style="color:#f92672">.</span><span style="color:#a6e22e">unsafe</span><span style="color:#f92672">().</span><span style="color:#a6e22e">closeForcibly</span><span style="color:#f92672">();</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>
+
+        <span style="color:#66d9ef">return</span> regFuture<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+</code></pre></div><h1 id="nioeventloop的run方法">NioEventLoop的run方法</h1>
+<ul>
+<li>
+<p>select()检查是否有io事件</p>
+<p>netty在这里检查是否需要select，需要的话，直接调用jdk的select方法，进行阻塞。</p>
+<p>jdk的select方法，在linux下，会发生没有事件，但是select方法被触发导致的空轮训bug</p>
+<p>netty的解决方式</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">long</span> time <span style="color:#f92672">=</span> System<span style="color:#f92672">.</span><span style="color:#a6e22e">nanoTime</span><span style="color:#f92672">();</span>
+<span style="color:#75715e">//检查当前时间-本应该阻塞的时间&gt;=阻塞之前的时间，即发生阻塞了。没有空轮训
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>time <span style="color:#f92672">-</span> TimeUnit<span style="color:#f92672">.</span><span style="color:#a6e22e">MILLISECONDS</span><span style="color:#f92672">.</span><span style="color:#a6e22e">toNanos</span><span style="color:#f92672">(</span>timeoutMillis<span style="color:#f92672">)</span> <span style="color:#f92672">&gt;=</span> currentTimeNanos<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    selectCnt <span style="color:#f92672">=</span> 1<span style="color:#f92672">;</span>
+  <span style="color:#75715e">//否则，空轮训超过默认的512次，重建selector
+</span><span style="color:#75715e"></span><span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>SELECTOR_AUTO_REBUILD_THRESHOLD <span style="color:#f92672">&gt;</span> 0 <span style="color:#f92672">&amp;&amp;</span> selectCnt <span style="color:#f92672">&gt;=</span> SELECTOR_AUTO_REBUILD_THRESHOLD<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    logger<span style="color:#f92672">.</span><span style="color:#a6e22e">warn</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Selector.select() returned prematurely {} times in a row; rebuilding Selector {}.&#34;</span><span style="color:#f92672">,</span> selectCnt<span style="color:#f92672">,</span> selector<span style="color:#f92672">);</span>
+    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">rebuildSelector</span><span style="color:#f92672">();</span>
+    selector <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">selector</span><span style="color:#f92672">;</span>
+    selector<span style="color:#f92672">.</span><span style="color:#a6e22e">selectNow</span><span style="color:#f92672">();</span>
+    selectCnt <span style="color:#f92672">=</span> 1<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><blockquote>
+<p>rebuildSelector()方法就是将原来selector上的所有keys，绑定到新的selector上</p>
+</blockquote>
+</li>
+<li>
+<p>processSelectedKeys()：处理io任务，即selectionKey中ready的事件，如accept、connect、read、write等</p>
+<p>底层取轮询io事件，都是通过NioUnsafe去处理的</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">processSelectedKey</span><span style="color:#f92672">(</span>SelectionKey k<span style="color:#f92672">,</span> AbstractNioChannel ch<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">final</span> AbstractNioChannel<span style="color:#f92672">.</span><span style="color:#a6e22e">NioUnsafe</span> unsafe <span style="color:#f92672">=</span> ch<span style="color:#f92672">.</span><span style="color:#a6e22e">unsafe</span><span style="color:#f92672">();</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>k<span style="color:#f92672">.</span><span style="color:#a6e22e">isValid</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">final</span> EventLoop eventLoop<span style="color:#f92672">;</span>
+            <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+                eventLoop <span style="color:#f92672">=</span> ch<span style="color:#f92672">.</span><span style="color:#a6e22e">eventLoop</span><span style="color:#f92672">();</span>
+            <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Throwable ignored<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                <span style="color:#75715e">// If the channel implementation throws an exception because there is no event loop, we ignore this
+</span><span style="color:#75715e"></span>                <span style="color:#75715e">// because we are only trying to determine if ch is registered to this event loop and thus has authority
+</span><span style="color:#75715e"></span>                <span style="color:#75715e">// to close ch.
+</span><span style="color:#75715e"></span>                <span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+            <span style="color:#75715e">// Only close ch if ch is still registered to this EventLoop. ch could have deregistered from the event loop
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// and thus the SelectionKey could be cancelled as part of the deregistration process, but the channel is
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// still healthy and should not be closed.
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// See https://github.com/netty/netty/issues/5125
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>eventLoop <span style="color:#f92672">==</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                <span style="color:#75715e">// close the channel if the key is not valid anymore
+</span><span style="color:#75715e"></span>                unsafe<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span>unsafe<span style="color:#f92672">.</span><span style="color:#a6e22e">voidPromise</span><span style="color:#f92672">());</span>
+            <span style="color:#f92672">}</span>
+            <span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+
+        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+          <span style="color:#75715e">//处理各种事件
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">int</span> readyOps <span style="color:#f92672">=</span> k<span style="color:#f92672">.</span><span style="color:#a6e22e">readyOps</span><span style="color:#f92672">();</span>
+            <span style="color:#75715e">// We first need to call finishConnect() before try to trigger a read(...) or write(...) as otherwise
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// the NIO JDK channel implementation may throw a NotYetConnectedException.
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">((</span>readyOps <span style="color:#f92672">&amp;</span> SelectionKey<span style="color:#f92672">.</span><span style="color:#a6e22e">OP_CONNECT</span><span style="color:#f92672">)</span> <span style="color:#f92672">!=</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                <span style="color:#75715e">// remove OP_CONNECT as otherwise Selector.select(..) will always return without blocking
+</span><span style="color:#75715e"></span>                <span style="color:#75715e">// See https://github.com/netty/netty/issues/924
+</span><span style="color:#75715e"></span>                <span style="color:#66d9ef">int</span> ops <span style="color:#f92672">=</span> k<span style="color:#f92672">.</span><span style="color:#a6e22e">interestOps</span><span style="color:#f92672">();</span>
+                ops <span style="color:#f92672">&amp;=</span> <span style="color:#f92672">~</span>SelectionKey<span style="color:#f92672">.</span><span style="color:#a6e22e">OP_CONNECT</span><span style="color:#f92672">;</span>
+                k<span style="color:#f92672">.</span><span style="color:#a6e22e">interestOps</span><span style="color:#f92672">(</span>ops<span style="color:#f92672">);</span>
+
+                unsafe<span style="color:#f92672">.</span><span style="color:#a6e22e">finishConnect</span><span style="color:#f92672">();</span>
+            <span style="color:#f92672">}</span>
+
+            <span style="color:#75715e">// Process OP_WRITE first as we may be able to write some queued buffers and so free memory.
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">((</span>readyOps <span style="color:#f92672">&amp;</span> SelectionKey<span style="color:#f92672">.</span><span style="color:#a6e22e">OP_WRITE</span><span style="color:#f92672">)</span> <span style="color:#f92672">!=</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                <span style="color:#75715e">// Call forceFlush which will also take care of clear the OP_WRITE once there is nothing left to write
+</span><span style="color:#75715e"></span>                ch<span style="color:#f92672">.</span><span style="color:#a6e22e">unsafe</span><span style="color:#f92672">().</span><span style="color:#a6e22e">forceFlush</span><span style="color:#f92672">();</span>
+            <span style="color:#f92672">}</span>
+
+            <span style="color:#75715e">// Also check for readOps of 0 to workaround possible JDK bug which may otherwise lead
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// to a spin loop
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">((</span>readyOps <span style="color:#f92672">&amp;</span> <span style="color:#f92672">(</span>SelectionKey<span style="color:#f92672">.</span><span style="color:#a6e22e">OP_READ</span> <span style="color:#f92672">|</span> SelectionKey<span style="color:#f92672">.</span><span style="color:#a6e22e">OP_ACCEPT</span><span style="color:#f92672">))</span> <span style="color:#f92672">!=</span> 0 <span style="color:#f92672">||</span> readyOps <span style="color:#f92672">==</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                unsafe<span style="color:#f92672">.</span><span style="color:#a6e22e">read</span><span style="color:#f92672">();</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>CancelledKeyException ignored<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            unsafe<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span>unsafe<span style="color:#f92672">.</span><span style="color:#a6e22e">voidPromise</span><span style="color:#f92672">());</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+</code></pre></div></li>
+<li>
+<p>runAllTasks()：处理异步任务队列里面的任务，也就是添加到taskQueue中的任务，如bind、channelActive等</p>
+<p>这里有个ioRatio，就是执行io任务和非io任务的时间比。用户可以自行设置。默认为50，可以看源码。如果是100的话，先执行完io任务，执行完之后才执行非io任务</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">                selectCnt<span style="color:#f92672">++;</span>
+                cancelledKeys <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
+                needsToSelectAgain <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+                <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> ioRatio <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ioRatio</span><span style="color:#f92672">;</span>
+                <span style="color:#66d9ef">boolean</span> ranTasks<span style="color:#f92672">;</span>
+                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>ioRatio <span style="color:#f92672">==</span> 100<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                    <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+                        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>strategy <span style="color:#f92672">&gt;</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                            processSelectedKeys<span style="color:#f92672">();</span>
+                        <span style="color:#f92672">}</span>
+                    <span style="color:#f92672">}</span> <span style="color:#66d9ef">finally</span> <span style="color:#f92672">{</span>
+                        <span style="color:#75715e">// Ensure we always run tasks.
+</span><span style="color:#75715e"></span>                        ranTasks <span style="color:#f92672">=</span> runAllTasks<span style="color:#f92672">();</span>
+                    <span style="color:#f92672">}</span>
+                <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>strategy <span style="color:#f92672">&gt;</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                    <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">long</span> ioStartTime <span style="color:#f92672">=</span> System<span style="color:#f92672">.</span><span style="color:#a6e22e">nanoTime</span><span style="color:#f92672">();</span>
+                    <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+                        processSelectedKeys<span style="color:#f92672">();</span>
+                    <span style="color:#f92672">}</span> <span style="color:#66d9ef">finally</span> <span style="color:#f92672">{</span>
+                        <span style="color:#75715e">// Ensure we always run tasks.
+</span><span style="color:#75715e"></span>                        <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">long</span> ioTime <span style="color:#f92672">=</span> System<span style="color:#f92672">.</span><span style="color:#a6e22e">nanoTime</span><span style="color:#f92672">()</span> <span style="color:#f92672">-</span> ioStartTime<span style="color:#f92672">;</span>
+                        ranTasks <span style="color:#f92672">=</span> runAllTasks<span style="color:#f92672">(</span>ioTime <span style="color:#f92672">*</span> <span style="color:#f92672">(</span>100 <span style="color:#f92672">-</span> ioRatio<span style="color:#f92672">)</span> <span style="color:#f92672">/</span> ioRatio<span style="color:#f92672">);</span>
+                    <span style="color:#f92672">}</span>
+                <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+                    ranTasks <span style="color:#f92672">=</span> runAllTasks<span style="color:#f92672">(</span>0<span style="color:#f92672">);</span> <span style="color:#75715e">// This will run the minimum number of tasks
+</span><span style="color:#75715e"></span>                <span style="color:#f92672">}</span>
+
+                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>ranTasks <span style="color:#f92672">||</span> strategy <span style="color:#f92672">&gt;</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>selectCnt <span style="color:#f92672">&gt;</span> MIN_PREMATURE_SELECTOR_RETURNS <span style="color:#f92672">&amp;&amp;</span> logger<span style="color:#f92672">.</span><span style="color:#a6e22e">isDebugEnabled</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+                        logger<span style="color:#f92672">.</span><span style="color:#a6e22e">debug</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Selector.select() returned prematurely {} times in a row for Selector {}.&#34;</span><span style="color:#f92672">,</span>
+                                selectCnt <span style="color:#f92672">-</span> 1<span style="color:#f92672">,</span> selector<span style="color:#f92672">);</span>
+                    <span style="color:#f92672">}</span>
+                    selectCnt <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
+                <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>unexpectedSelectorWakeup<span style="color:#f92672">(</span>selectCnt<span style="color:#f92672">))</span> <span style="color:#f92672">{</span> <span style="color:#75715e">// Unexpected wakeup (unusual case)
+</span><span style="color:#75715e"></span>                    selectCnt <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
+                <span style="color:#f92672">}</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">runAllTasks</span><span style="color:#f92672">(</span><span style="color:#66d9ef">long</span> timeoutNanos<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    fetchFromScheduledTaskQueue<span style="color:#f92672">();</span><span style="color:#75715e">//将定时任务队列里的到期任务放入队列中，如果队列满了，还放在定时任务队列里
+</span><span style="color:#75715e"></span>    Runnable task <span style="color:#f92672">=</span> pollTask<span style="color:#f92672">();</span><span style="color:#75715e">//取一个任务出来
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>task <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        afterRunningAllTasks<span style="color:#f92672">();</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">long</span> deadline <span style="color:#f92672">=</span> timeoutNanos <span style="color:#f92672">&gt;</span> 0 <span style="color:#f92672">?</span> ScheduledFutureTask<span style="color:#f92672">.</span><span style="color:#a6e22e">nanoTime</span><span style="color:#f92672">()</span> <span style="color:#f92672">+</span> timeoutNanos <span style="color:#f92672">:</span> 0<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">long</span> runTasks <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">long</span> lastExecutionTime<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">for</span> <span style="color:#f92672">(;;)</span> <span style="color:#f92672">{</span>
+        safeExecute<span style="color:#f92672">(</span>task<span style="color:#f92672">);</span>
+
+        runTasks <span style="color:#f92672">++;</span>
+
+        <span style="color:#75715e">// Check timeout every 64 tasks because nanoTime() is relatively expensive.
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// XXX: Hard-coded value - will make it configurable if it is really a problem.
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">((</span>runTasks <span style="color:#f92672">&amp;</span> 0x3F<span style="color:#f92672">)</span> <span style="color:#f92672">==</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            lastExecutionTime <span style="color:#f92672">=</span> ScheduledFutureTask<span style="color:#f92672">.</span><span style="color:#a6e22e">nanoTime</span><span style="color:#f92672">();</span>
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>lastExecutionTime <span style="color:#f92672">&gt;=</span> deadline<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>
+
+      <span style="color:#75715e">//不断处理任务
+</span><span style="color:#75715e"></span>        task <span style="color:#f92672">=</span> pollTask<span style="color:#f92672">();</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>task <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            lastExecutionTime <span style="color:#f92672">=</span> ScheduledFutureTask<span style="color:#f92672">.</span><span style="color:#a6e22e">nanoTime</span><span style="color:#f92672">();</span>
+            <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+
+    afterRunningAllTasks<span style="color:#f92672">();</span>
+    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">lastExecutionTime</span> <span style="color:#f92672">=</span> lastExecutionTime<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><blockquote>
+<p>定时任务的场景，例如心跳处理</p>
+</blockquote>
+</li>
+</ul>
+<h1 id="服务端创建客户端连接流程">服务端创建客户端连接流程</h1>
+<p>processSelectedKeys方法处理客户端连接，最后是落在底层的unsafe上。</p>
+<p>read方法最后会通知到管道上，通知所有的handler，</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">read</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">assert</span> eventLoop<span style="color:#f92672">().</span><span style="color:#a6e22e">inEventLoop</span><span style="color:#f92672">();</span>
+    <span style="color:#66d9ef">final</span> ChannelConfig config <span style="color:#f92672">=</span> config<span style="color:#f92672">();</span>
+    <span style="color:#66d9ef">final</span> ChannelPipeline pipeline <span style="color:#f92672">=</span> pipeline<span style="color:#f92672">();</span>
+    <span style="color:#66d9ef">final</span> RecvByteBufAllocator<span style="color:#f92672">.</span><span style="color:#a6e22e">Handle</span> allocHandle <span style="color:#f92672">=</span> unsafe<span style="color:#f92672">().</span><span style="color:#a6e22e">recvBufAllocHandle</span><span style="color:#f92672">();</span>
+    allocHandle<span style="color:#f92672">.</span><span style="color:#a6e22e">reset</span><span style="color:#f92672">(</span>config<span style="color:#f92672">);</span>
+
+    <span style="color:#66d9ef">boolean</span> closed <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+    Throwable exception <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">do</span> <span style="color:#f92672">{</span>
+              <span style="color:#75715e">//创建NioSocketChannel
+</span><span style="color:#75715e"></span>                <span style="color:#66d9ef">int</span> localRead <span style="color:#f92672">=</span> doReadMessages<span style="color:#f92672">(</span>readBuf<span style="color:#f92672">);</span>
+                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>localRead <span style="color:#f92672">==</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                    <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
+                <span style="color:#f92672">}</span>
+                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>localRead <span style="color:#f92672">&lt;</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                    closed <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+                    <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
+                <span style="color:#f92672">}</span>
+
+                allocHandle<span style="color:#f92672">.</span><span style="color:#a6e22e">incMessagesRead</span><span style="color:#f92672">(</span>localRead<span style="color:#f92672">);</span>
+            <span style="color:#f92672">}</span> <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>continueReading<span style="color:#f92672">(</span>allocHandle<span style="color:#f92672">));</span>
+        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Throwable t<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            exception <span style="color:#f92672">=</span> t<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+
+        <span style="color:#66d9ef">int</span> size <span style="color:#f92672">=</span> readBuf<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">();</span>
+        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> size<span style="color:#f92672">;</span> i <span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
+            readPending <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+          <span style="color:#75715e">//管道传入NioSocketChannel
+</span><span style="color:#75715e"></span>            pipeline<span style="color:#f92672">.</span><span style="color:#a6e22e">fireChannelRead</span><span style="color:#f92672">(</span>readBuf<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>i<span style="color:#f92672">));</span>
+        <span style="color:#f92672">}</span>
+</code></pre></div><p>而我们知道在一开始创建NioServerSocketChannel的时候，在init中最后加入了ServerBootstrapAcceptor。而ServerBootstrapAcceptor就是处理客户端连接的</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">        <span style="color:#a6e22e">@Override</span>
+        <span style="color:#a6e22e">@SuppressWarnings</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;unchecked&#34;</span><span style="color:#f92672">)</span>
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">channelRead</span><span style="color:#f92672">(</span>ChannelHandlerContext ctx<span style="color:#f92672">,</span> Object msg<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">final</span> Channel child <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>Channel<span style="color:#f92672">)</span> msg<span style="color:#f92672">;</span>
+
+          <span style="color:#75715e">//得到上面的NioSocketChannel
+</span><span style="color:#75715e"></span>          <span style="color:#75715e">//将一开始代码中的childHandler(new ChannelInitializer&lt;SocketChannel&gt;() {}传进来
+</span><span style="color:#75715e"></span>            child<span style="color:#f92672">.</span><span style="color:#a6e22e">pipeline</span><span style="color:#f92672">().</span><span style="color:#a6e22e">addLast</span><span style="color:#f92672">(</span>childHandler<span style="color:#f92672">);</span>
+          <span style="color:#75715e">//设置通道配置
+</span><span style="color:#75715e"></span>            setChannelOptions<span style="color:#f92672">(</span>child<span style="color:#f92672">,</span> childOptions<span style="color:#f92672">,</span> logger<span style="color:#f92672">);</span>
+          <span style="color:#75715e">//设置属性  
+</span><span style="color:#75715e"></span>          setAttributes<span style="color:#f92672">(</span>child<span style="color:#f92672">,</span> childAttrs<span style="color:#f92672">);</span>
+
+            <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+              <span style="color:#75715e">//worker线程组注册channel
+</span><span style="color:#75715e"></span>                childGroup<span style="color:#f92672">.</span><span style="color:#a6e22e">register</span><span style="color:#f92672">(</span>child<span style="color:#f92672">).</span><span style="color:#a6e22e">addListener</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ChannelFutureListener<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+                    <span style="color:#a6e22e">@Override</span>
+                    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">operationComplete</span><span style="color:#f92672">(</span>ChannelFuture future<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+                        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>future<span style="color:#f92672">.</span><span style="color:#a6e22e">isSuccess</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+                            forceClose<span style="color:#f92672">(</span>child<span style="color:#f92672">,</span> future<span style="color:#f92672">.</span><span style="color:#a6e22e">cause</span><span style="color:#f92672">());</span>
+                        <span style="color:#f92672">}</span>
+                    <span style="color:#f92672">}</span>
+                <span style="color:#f92672">});</span>
+            <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Throwable t<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                forceClose<span style="color:#f92672">(</span>child<span style="color:#f92672">,</span> t<span style="color:#f92672">);</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>		
+</code></pre></div><ul>
+<li>
+<p>小结</p>
+<p>Server在获取到读事件后，创建了客户端的SocketChannel，并且通过pipeline通知到服务端初始化时创建的ServerBootstrapAcceptor，<strong>通过ServerBootstrapAcceptor初始化childHandler</strong>，使用worker组进行注册SocketChannel，并且创建客户端Channel默认的监听事件时read，然后就和服务端一样，通过默认的HeadContext进行read方法，默认都是自动读的。然后就是通过group创建新线程去工作。循环调底层的jdk方法。再通过pipeline通知到各个handler</p>
+</li>
+</ul>
+<h1 id="pipeline">Pipeline</h1>
+<ul>
+<li>
+<p>netty是如何判断ChannelHandler类型的</p>
+<p>答：通过传入是inbound还是outbound</p>
+</li>
+<li>
+<p>对于ChannelHandler的添加应该遵循什么样的顺序</p>
+<p>答：inbound传播是从Head结点开始的，outbound传播是从Tail节点开始的，所以需要根据需要从这两个方面选择</p>
+</li>
+<li>
+<p>用户手动触发事件传播，不同的触发方式有什么样的区别？</p>
+<p>可以这里回答：ctx.channel().write()和ctx.write()的区别，ctx.channel().write()从tail节点开始传播（对于outBound事件），ctx.write()从当前节点开始传播。</p>
+</li>
+</ul>
+<h2 id="初始化">初始化</h2>
+<p>Pipeline是在channel创建的时候进行初始化的，并且维护了双向链表，默认的添加HeadContext和TailContext，节点是AbstractChannelHandlerContext</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    <span style="color:#66d9ef">protected</span> <span style="color:#a6e22e">AbstractChannel</span><span style="color:#f92672">(</span>Channel parent<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">parent</span> <span style="color:#f92672">=</span> parent<span style="color:#f92672">;</span>
+        id <span style="color:#f92672">=</span> newId<span style="color:#f92672">();</span>
+        unsafe <span style="color:#f92672">=</span> newUnsafe<span style="color:#f92672">();</span>
+        pipeline <span style="color:#f92672">=</span> newChannelPipeline<span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">protected</span> <span style="color:#a6e22e">DefaultChannelPipeline</span><span style="color:#f92672">(</span>Channel channel<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">channel</span> <span style="color:#f92672">=</span> ObjectUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">checkNotNull</span><span style="color:#f92672">(</span>channel<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;channel&#34;</span><span style="color:#f92672">);</span>
+        succeededFuture <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> SucceededChannelFuture<span style="color:#f92672">(</span>channel<span style="color:#f92672">,</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">);</span>
+        voidPromise <span style="color:#f92672">=</span>  <span style="color:#66d9ef">new</span> VoidChannelPromise<span style="color:#f92672">(</span>channel<span style="color:#f92672">,</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">);</span>
+
+        tail <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> TailContext<span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">);</span>
+        head <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HeadContext<span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">);</span>
+
+        head<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span> <span style="color:#f92672">=</span> tail<span style="color:#f92672">;</span>
+        tail<span style="color:#f92672">.</span><span style="color:#a6e22e">prev</span> <span style="color:#f92672">=</span> head<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+</code></pre></div><h2 id="channelhandlercontext">ChannelHandlerContext</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">ChannelHandlerContext</span> <span style="color:#66d9ef">extends</span> AttributeMap<span style="color:#f92672">,</span> ChannelInboundInvoker<span style="color:#f92672">,</span> ChannelOutboundInvoker <span style="color:#f92672">{</span>
+ 
+    <span style="color:#75715e">/**
+</span><span style="color:#75715e">     * Return the {@link Channel} which is bound to the {@link ChannelHandlerContext}.
+</span><span style="color:#75715e">     */</span>
+  <span style="color:#75715e">//所在的channel
+</span><span style="color:#75715e"></span>    Channel <span style="color:#a6e22e">channel</span><span style="color:#f92672">();</span>
+ 
+    <span style="color:#75715e">/**
+</span><span style="color:#75715e">     * Returns the {@link EventExecutor} which is used to execute an arbitrary task.
+</span><span style="color:#75715e">     */</span>
+  <span style="color:#75715e">//哪一个loop执行的
+</span><span style="color:#75715e"></span>    EventExecutor <span style="color:#a6e22e">executor</span><span style="color:#f92672">();</span>
+ 
+    <span style="color:#75715e">/**
+</span><span style="color:#75715e">     * The unique name of the {@link ChannelHandlerContext}.The name was used when then {@link ChannelHandler}
+</span><span style="color:#75715e">     * was added to the {@link ChannelPipeline}. This name can also be used to access the registered
+</span><span style="color:#75715e">     * {@link ChannelHandler} from the {@link ChannelPipeline}.
+</span><span style="color:#75715e">     */</span>
+    String <span style="color:#a6e22e">name</span><span style="color:#f92672">();</span>
+ 
+    <span style="color:#75715e">/**
+</span><span style="color:#75715e">     * The {@link ChannelHandler} that is bound this {@link ChannelHandlerContext}.
+</span><span style="color:#75715e">     */</span>
+  <span style="color:#75715e">//干活的业务handler
+</span><span style="color:#75715e"></span>    ChannelHandler <span style="color:#a6e22e">handler</span><span style="color:#f92672">();</span>
+ 
+    <span style="color:#75715e">/**
+</span><span style="color:#75715e">     * Return {@code true} if the {@link ChannelHandler} which belongs to this context was removed
+</span><span style="color:#75715e">     * from the {@link ChannelPipeline}. Note that this method is only meant to be called from with in the
+</span><span style="color:#75715e">     * {@link EventLoop}.
+</span><span style="color:#75715e">     */</span>
+    <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isRemoved</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">...</span>
+    <span style="color:#75715e">/**
+</span><span style="color:#75715e">     * Return the assigned {@link ByteBufAllocator} which will be used to allocate {@link ByteBuf}s.
+</span><span style="color:#75715e">     */</span>
+    <span style="color:#75715e">// 内存分配器
+</span><span style="color:#75715e"></span>    ByteBufAllocator <span style="color:#a6e22e">alloc</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">...</span>
+<span style="color:#f92672">}</span>
+
+</code></pre></div><h2 id="channelhandler的添加">ChannelHandler的添加</h2>
+<p>DefaultChannelPipeline的addLast方法</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Override</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> ChannelPipeline <span style="color:#a6e22e">addLast</span><span style="color:#f92672">(</span>EventExecutorGroup group<span style="color:#f92672">,</span> String name<span style="color:#f92672">,</span> ChannelHandler handler<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">final</span> AbstractChannelHandlerContext newCtx<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">synchronized</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+      <span style="color:#75715e">//检查handler是否重复，如果没@Shareable的话，不可以再添加了
+</span><span style="color:#75715e"></span>        checkMultiplicity<span style="color:#f92672">(</span>handler<span style="color:#f92672">);</span>
+
+      <span style="color:#75715e">//使用DefaultChannelHandlerContext，内部封装了具体的业务handler
+</span><span style="color:#75715e"></span>        newCtx <span style="color:#f92672">=</span> newContext<span style="color:#f92672">(</span>group<span style="color:#f92672">,</span> filterName<span style="color:#f92672">(</span>name<span style="color:#f92672">,</span> handler<span style="color:#f92672">),</span> handler<span style="color:#f92672">);</span>
+
+      <span style="color:#75715e">//连接到链表上去
+</span><span style="color:#75715e"></span>        addLast0<span style="color:#f92672">(</span>newCtx<span style="color:#f92672">);</span>
+
+        <span style="color:#75715e">// If the registered is false it means that the channel was not registered on an eventLoop yet.
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// In this case we add the context to the pipeline and add a task that will call
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// ChannelHandler.handlerAdded(...) once the channel is registered.
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>registered<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            newCtx<span style="color:#f92672">.</span><span style="color:#a6e22e">setAddPending</span><span style="color:#f92672">();</span>
+            callHandlerCallbackLater<span style="color:#f92672">(</span>newCtx<span style="color:#f92672">,</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">);</span>
+            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+
+        EventExecutor executor <span style="color:#f92672">=</span> newCtx<span style="color:#f92672">.</span><span style="color:#a6e22e">executor</span><span style="color:#f92672">();</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>executor<span style="color:#f92672">.</span><span style="color:#a6e22e">inEventLoop</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+            callHandlerAddedInEventLoop<span style="color:#f92672">(</span>newCtx<span style="color:#f92672">,</span> executor<span style="color:#f92672">);</span>
+            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+    callHandlerAdded0<span style="color:#f92672">(</span>newCtx<span style="color:#f92672">);</span>
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h2 id="channelhandler删除">ChannelHandler删除</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">private</span> AbstractChannelHandlerContext <span style="color:#a6e22e">getContextOrDie</span><span style="color:#f92672">(</span>ChannelHandler handler<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    AbstractChannelHandlerContext ctx <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>AbstractChannelHandlerContext<span style="color:#f92672">)</span> context<span style="color:#f92672">(</span>handler<span style="color:#f92672">);</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>ctx <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> NoSuchElementException<span style="color:#f92672">(</span>handler<span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">());</span>
+    <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> ctx<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+
+<span style="color:#75715e">//从头到尾找
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> ChannelHandlerContext <span style="color:#a6e22e">context</span><span style="color:#f92672">(</span>ChannelHandler handler<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>handler <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> NullPointerException<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;handler&#34;</span><span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+ 
+        AbstractChannelHandlerContext ctx <span style="color:#f92672">=</span> head<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(;;)</span> <span style="color:#f92672">{</span>
+ 
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>ctx <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+ 
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>ctx<span style="color:#f92672">.</span><span style="color:#a6e22e">handler</span><span style="color:#f92672">()</span> <span style="color:#f92672">==</span> handler<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">return</span> ctx<span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+ 
+            ctx <span style="color:#f92672">=</span> ctx<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+
+<span style="color:#75715e">//不删除head和tail
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">private</span> AbstractChannelHandlerContext <span style="color:#a6e22e">remove</span><span style="color:#f92672">(</span><span style="color:#66d9ef">final</span> AbstractChannelHandlerContext ctx<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">assert</span> ctx <span style="color:#f92672">!=</span> head <span style="color:#f92672">&amp;&amp;</span> ctx <span style="color:#f92672">!=</span> tail<span style="color:#f92672">;</span>
+ 
+        <span style="color:#66d9ef">synchronized</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            remove0<span style="color:#f92672">(</span>ctx<span style="color:#f92672">);</span>
+ 
+            <span style="color:#75715e">// If the registered is false it means that the channel was not registered on an eventloop yet.
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// In this case we remove the context from the pipeline and add a task that will call
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// ChannelHandler.handlerRemoved(...) once the channel is registered.
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>registered<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+           
+                callHandlerCallbackLater<span style="color:#f92672">(</span>ctx<span style="color:#f92672">,</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">);</span>
+                <span style="color:#66d9ef">return</span> ctx<span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+ 
+            EventExecutor executor <span style="color:#f92672">=</span> ctx<span style="color:#f92672">.</span><span style="color:#a6e22e">executor</span><span style="color:#f92672">();</span>
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>executor<span style="color:#f92672">.</span><span style="color:#a6e22e">inEventLoop</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+                executor<span style="color:#f92672">.</span><span style="color:#a6e22e">execute</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Runnable<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+                    <span style="color:#a6e22e">@Override</span>
+                    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+                        callHandlerRemoved0<span style="color:#f92672">(</span>ctx<span style="color:#f92672">);</span>
+                    <span style="color:#f92672">}</span>
+                <span style="color:#f92672">});</span>
+                <span style="color:#66d9ef">return</span> ctx<span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>
+        callHandlerRemoved0<span style="color:#f92672">(</span>ctx<span style="color:#f92672">);</span>
+        <span style="color:#66d9ef">return</span> ctx<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#75715e">//真正的删除
+</span><span style="color:#75715e"></span> <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">remove0</span><span style="color:#f92672">(</span>AbstractChannelHandlerContext ctx<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        AbstractChannelHandlerContext prev <span style="color:#f92672">=</span> ctx<span style="color:#f92672">.</span><span style="color:#a6e22e">prev</span><span style="color:#f92672">;</span>
+        AbstractChannelHandlerContext next <span style="color:#f92672">=</span> ctx<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">;</span>
+        prev<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span> <span style="color:#f92672">=</span> next<span style="color:#f92672">;</span>
+        next<span style="color:#f92672">.</span><span style="color:#a6e22e">prev</span> <span style="color:#f92672">=</span> prev<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+
+
+<span style="color:#75715e">//通知删除
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">callHandlerRemoved</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+            <span style="color:#75715e">// Only call handlerRemoved(...) if we called handlerAdded(...) before.
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>handlerState <span style="color:#f92672">==</span> ADD_COMPLETE<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                handler<span style="color:#f92672">().</span><span style="color:#a6e22e">handlerRemoved</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">);</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span> <span style="color:#66d9ef">finally</span> <span style="color:#f92672">{</span>
+            <span style="color:#75715e">// Mark the handler as removed in any case.
+</span><span style="color:#75715e"></span>          <span style="color:#75715e">//标记handler删除了  
+</span><span style="color:#75715e"></span>          setRemoved<span style="color:#f92672">();</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+
+
+
+</code></pre></div><h2 id="inboud事件">Inboud事件</h2>
+<p>根据上面的描述，最终loop会绑定到pipeline中，当processSelectedKeys触发后，最后会调用到pipeline的fireChannelRead方法，找到下一个inboundHandlerContext</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    <span style="color:#66d9ef">public</span> ChannelHandlerContext <span style="color:#a6e22e">fireChannelRead</span><span style="color:#f92672">(</span>Object msg<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        invokeChannelRead<span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">findContextInbound</span><span style="color:#f92672">(),</span> msg<span style="color:#f92672">);</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+
+<span style="color:#75715e">//找到下一个Inbound的handler
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">private</span> AbstractChannelHandlerContext <span style="color:#a6e22e">findContextInbound</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        AbstractChannelHandlerContext ctx <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">;</span>
+
+        <span style="color:#66d9ef">do</span> <span style="color:#f92672">{</span>
+            ctx <span style="color:#f92672">=</span> ctx<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span> <span style="color:#66d9ef">while</span><span style="color:#f92672">(!</span>ctx<span style="color:#f92672">.</span><span style="color:#a6e22e">inbound</span><span style="color:#f92672">);</span>
+
+        <span style="color:#66d9ef">return</span> ctx<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+<span style="color:#75715e">//创建handlerContext
+</span><span style="color:#75715e"></span>    DefaultChannelHandlerContext<span style="color:#f92672">(</span>DefaultChannelPipeline pipeline<span style="color:#f92672">,</span> EventExecutor executor<span style="color:#f92672">,</span> String name<span style="color:#f92672">,</span> ChannelHandler handler<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+      															<span style="color:#75715e">//判断是否是inbound 
+</span><span style="color:#75715e"></span>      <span style="color:#66d9ef">super</span><span style="color:#f92672">(</span>pipeline<span style="color:#f92672">,</span> executor<span style="color:#f92672">,</span> name<span style="color:#f92672">,</span> isInbound<span style="color:#f92672">(</span>handler<span style="color:#f92672">),</span> isOutbound<span style="color:#f92672">(</span>handler<span style="color:#f92672">));</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>handler <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> NullPointerException<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;handler&#34;</span><span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">handler</span> <span style="color:#f92672">=</span> handler<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isInbound</span><span style="color:#f92672">(</span>ChannelHandler handler<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> handler <span style="color:#66d9ef">instanceof</span> ChannelInboundHandler<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+<span style="color:#75715e">//出发handler的方法，直接到用户的业务代码了
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">invokeChannelRead</span><span style="color:#f92672">(</span>Object msg<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">invokeHandler</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+                <span style="color:#f92672">((</span>ChannelInboundHandler<span style="color:#f92672">)</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">handler</span><span style="color:#f92672">()).</span><span style="color:#a6e22e">channelRead</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">,</span> msg<span style="color:#f92672">);</span>
+            <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Throwable var3<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">notifyHandlerException</span><span style="color:#f92672">(</span>var3<span style="color:#f92672">);</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">fireChannelRead</span><span style="color:#f92672">(</span>msg<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+
+    <span style="color:#f92672">}</span>
+
+</code></pre></div><h2 id="outbound事件">outBound事件</h2>
+<p>包含bind、connect、disconnect方法、close、deregister、read、write、flush等方法，这些方法更多的是主动向用户发起的操作。</p>
+<p>（而inBound事件更多的是事件的触发，如register、readComplete、active，比较被动的）</p>
+<p><strong>outBound是从tail反过来在链表上传输的</strong></p>
+<h2 id="ctxchannelwrite和ctxwrite的区别">ctx.channel().write()和ctx.write()的区别</h2>
+<p>ctx.channel().write()从tail节点开始传播，ctx.write()从当前节点开始传播（不包括当前节点，因为它首先会找到当前节点的下一个节点在执行write操作）。</p>
+<h1 id="bytebuf">ByteBuf</h1>
+<ul>
+<li>
+<p>Pooled和Unpooled</p>
+<p>池化和不池化</p>
+</li>
+<li>
+<p>Unsafe和非Unsafe</p>
+<p><strong>unsafe通过操作底层unsafe的offset+index的方式去操作数据，非unsafe直接通过一个数组的下标（或者jdk底层的buffer）去操作数据</strong>。</p>
+</li>
+<li>
+<p>Heap和Direct</p>
+<p><strong>heap是依赖一个数组，direct是依赖jdk底层的ByteBuffer</strong>。</p>
+</li>
+</ul>
+<h1 id="bytebuffallocator">ByteBuffAllocator</h1>
+<h2 id="unpooledbytebufallocator">UnpooledByteBufAllocator</h2>
+<h3 id="分配堆内内存">分配堆内内存</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
+<span style="color:#75715e">//如果jdk环境支持unsafe，则用unsafe操作内存空间
+</span><span style="color:#75715e">//heap 内存空间，底层就是一个数组
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">protected</span> ByteBuf <span style="color:#a6e22e">newHeapBuffer</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> initialCapacity<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> maxCapacity<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">return</span> PlatformDependent<span style="color:#f92672">.</span><span style="color:#a6e22e">hasUnsafe</span><span style="color:#f92672">()</span> <span style="color:#f92672">?</span>
+            <span style="color:#66d9ef">new</span> InstrumentedUnpooledUnsafeHeapByteBuf<span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">,</span> initialCapacity<span style="color:#f92672">,</span> maxCapacity<span style="color:#f92672">)</span> <span style="color:#f92672">:</span>
+            <span style="color:#66d9ef">new</span> InstrumentedUnpooledHeapByteBuf<span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">,</span> initialCapacity<span style="color:#f92672">,</span> maxCapacity<span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">UnpooledHeapByteBuf</span><span style="color:#f92672">(</span>ByteBufAllocator alloc<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> initialCapacity<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> maxCapacity<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">super</span><span style="color:#f92672">(</span>maxCapacity<span style="color:#f92672">);</span>
+
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>initialCapacity <span style="color:#f92672">&gt;</span> maxCapacity<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalArgumentException<span style="color:#f92672">(</span>String<span style="color:#f92672">.</span><span style="color:#a6e22e">format</span><span style="color:#f92672">(</span>
+                    <span style="color:#e6db74">&#34;initialCapacity(%d) &gt; maxCapacity(%d)&#34;</span><span style="color:#f92672">,</span> initialCapacity<span style="color:#f92672">,</span> maxCapacity<span style="color:#f92672">));</span>
+        <span style="color:#f92672">}</span>
+
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">alloc</span> <span style="color:#f92672">=</span> checkNotNull<span style="color:#f92672">(</span>alloc<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;alloc&#34;</span><span style="color:#f92672">);</span>
+      <span style="color:#75715e">//声明数组
+</span><span style="color:#75715e"></span>        setArray<span style="color:#f92672">(</span>allocateArray<span style="color:#f92672">(</span>initialCapacity<span style="color:#f92672">));</span>
+        setIndex<span style="color:#f92672">(</span>0<span style="color:#f92672">,</span> 0<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+
+
+<span style="color:#75715e">//创建数组
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">byte</span><span style="color:#f92672">[]</span> <span style="color:#a6e22e">allocateArray</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> initialCapacity<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">byte</span><span style="color:#f92672">[</span>initialCapacity<span style="color:#f92672">];</span>
+    <span style="color:#f92672">}</span>
+
+</code></pre></div><h3 id="分配堆外内存">分配堆外内存</h3>
+<p>底层调用jdk的<strong>DirectBuffer</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Override</span>
+<span style="color:#66d9ef">protected</span> ByteBuf <span style="color:#a6e22e">newDirectBuffer</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> initialCapacity<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> maxCapacity<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">final</span> ByteBuf buf<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>PlatformDependent<span style="color:#f92672">.</span><span style="color:#a6e22e">hasUnsafe</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+        buf <span style="color:#f92672">=</span> noCleaner <span style="color:#f92672">?</span> <span style="color:#66d9ef">new</span> InstrumentedUnpooledUnsafeNoCleanerDirectByteBuf<span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">,</span> initialCapacity<span style="color:#f92672">,</span> maxCapacity<span style="color:#f92672">)</span> <span style="color:#f92672">:</span>
+                <span style="color:#66d9ef">new</span> InstrumentedUnpooledUnsafeDirectByteBuf<span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">,</span> initialCapacity<span style="color:#f92672">,</span> maxCapacity<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+        buf <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> InstrumentedUnpooledDirectByteBuf<span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">,</span> initialCapacity<span style="color:#f92672">,</span> maxCapacity<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">return</span> disableLeakDetector <span style="color:#f92672">?</span> buf <span style="color:#f92672">:</span> toLeakAwareBuffer<span style="color:#f92672">(</span>buf<span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">UnpooledDirectByteBuf</span><span style="color:#f92672">(</span>ByteBufAllocator alloc<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> initialCapacity<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> maxCapacity<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">super</span><span style="color:#f92672">(</span>maxCapacity<span style="color:#f92672">);</span>
+        ObjectUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">checkNotNull</span><span style="color:#f92672">(</span>alloc<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;alloc&#34;</span><span style="color:#f92672">);</span>
+        checkPositiveOrZero<span style="color:#f92672">(</span>initialCapacity<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;initialCapacity&#34;</span><span style="color:#f92672">);</span>
+        checkPositiveOrZero<span style="color:#f92672">(</span>maxCapacity<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;maxCapacity&#34;</span><span style="color:#f92672">);</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>initialCapacity <span style="color:#f92672">&gt;</span> maxCapacity<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalArgumentException<span style="color:#f92672">(</span>String<span style="color:#f92672">.</span><span style="color:#a6e22e">format</span><span style="color:#f92672">(</span>
+                    <span style="color:#e6db74">&#34;initialCapacity(%d) &gt; maxCapacity(%d)&#34;</span><span style="color:#f92672">,</span> initialCapacity<span style="color:#f92672">,</span> maxCapacity<span style="color:#f92672">));</span>
+        <span style="color:#f92672">}</span>
+
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">alloc</span> <span style="color:#f92672">=</span> alloc<span style="color:#f92672">;</span>
+        setByteBuffer<span style="color:#f92672">(</span>allocateDirect<span style="color:#f92672">(</span>initialCapacity<span style="color:#f92672">),</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">protected</span> ByteBuffer <span style="color:#a6e22e">allocateDirect</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> initialCapacity<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> ByteBuffer<span style="color:#f92672">.</span><span style="color:#a6e22e">allocateDirect</span><span style="color:#f92672">(</span>initialCapacity<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> ByteBuffer <span style="color:#a6e22e">allocateDirect</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> capacity<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> DirectByteBuffer<span style="color:#f92672">(</span>capacity<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setByteBuffer</span><span style="color:#f92672">(</span>ByteBuffer buffer<span style="color:#f92672">,</span> <span style="color:#66d9ef">boolean</span> tryFree<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>tryFree<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            ByteBuffer oldBuffer <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">buffer</span><span style="color:#f92672">;</span>
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>oldBuffer <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>doNotFree<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                    doNotFree <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+                <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+                    freeDirect<span style="color:#f92672">(</span>oldBuffer<span style="color:#f92672">);</span>
+                <span style="color:#f92672">}</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>
+
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">buffer</span> <span style="color:#f92672">=</span> buffer<span style="color:#f92672">;</span>
+        tmpNioBuf <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+        capacity <span style="color:#f92672">=</span> buffer<span style="color:#f92672">.</span><span style="color:#a6e22e">remaining</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setByteBuffer</span><span style="color:#f92672">(</span>ByteBuffer buffer<span style="color:#f92672">,</span> <span style="color:#66d9ef">boolean</span> tryFree<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">super</span><span style="color:#f92672">.</span><span style="color:#a6e22e">setByteBuffer</span><span style="color:#f92672">(</span>buffer<span style="color:#f92672">,</span> tryFree<span style="color:#f92672">);</span>
+      <span style="color:#75715e">//计算内存地址，使用Unsafe去操作
+</span><span style="color:#75715e"></span>        memoryAddress <span style="color:#f92672">=</span> PlatformDependent<span style="color:#f92672">.</span><span style="color:#a6e22e">directBufferAddress</span><span style="color:#f92672">(</span>buffer<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+
+		<span style="color:#75715e">//非 unsafe，直接调用jdk方法
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">byte</span> <span style="color:#a6e22e">_getByte</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> index<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> buffer<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>index<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+
+	<span style="color:#75715e">//获取内存地址，在用unsafe去调用
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">byte</span> <span style="color:#a6e22e">_getByte</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> index<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> UnsafeByteBufUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">getByte</span><span style="color:#f92672">(</span>addr<span style="color:#f92672">(</span>index<span style="color:#f92672">));</span>
+    <span style="color:#f92672">}</span>
+
+	<span style="color:#75715e">//计算地址
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">long</span> <span style="color:#a6e22e">addr</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> index<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> memoryAddress <span style="color:#f92672">+</span> index<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+
+</code></pre></div><h2 id="pooledbytebufallocator">PooledByteBufAllocator</h2>
+<h3 id="分配堆内内存-1">分配堆内内存</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Override</span>
+<span style="color:#66d9ef">protected</span> ByteBuf <span style="color:#a6e22e">newHeapBuffer</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> initialCapacity<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> maxCapacity<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    PoolThreadCache cache <span style="color:#f92672">=</span> threadCache<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">();</span><span style="color:#75715e">//取出当前线程的缓存，多线程情况下的处理
+</span><span style="color:#75715e"></span>    PoolArena<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">byte</span><span style="color:#f92672">[]&gt;</span> heapArena <span style="color:#f92672">=</span> cache<span style="color:#f92672">.</span><span style="color:#a6e22e">heapArena</span><span style="color:#f92672">;</span> <span style="color:#75715e">//取出当前缓存里的arena
+</span><span style="color:#75715e"></span>
+    <span style="color:#66d9ef">final</span> ByteBuf buf<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>heapArena <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        buf <span style="color:#f92672">=</span> heapArena<span style="color:#f92672">.</span><span style="color:#a6e22e">allocate</span><span style="color:#f92672">(</span>cache<span style="color:#f92672">,</span> initialCapacity<span style="color:#f92672">,</span> maxCapacity<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+        buf <span style="color:#f92672">=</span> PlatformDependent<span style="color:#f92672">.</span><span style="color:#a6e22e">hasUnsafe</span><span style="color:#f92672">()</span> <span style="color:#f92672">?</span>
+                <span style="color:#66d9ef">new</span> UnpooledUnsafeHeapByteBuf<span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">,</span> initialCapacity<span style="color:#f92672">,</span> maxCapacity<span style="color:#f92672">)</span> <span style="color:#f92672">:</span>
+                <span style="color:#66d9ef">new</span> UnpooledHeapByteBuf<span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">,</span> initialCapacity<span style="color:#f92672">,</span> maxCapacity<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">return</span> toLeakAwareBuffer<span style="color:#f92672">(</span>buf<span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+
+
+
+    <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">PoolThreadLocalCache</span> <span style="color:#66d9ef">extends</span> FastThreadLocal<span style="color:#f92672">&lt;</span>PoolThreadCache<span style="color:#f92672">&gt;</span> <span style="color:#f92672">{</span>
+ 
+        <span style="color:#a6e22e">@Override</span>
+        <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">synchronized</span> PoolThreadCache <span style="color:#a6e22e">initialValue</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">final</span> PoolArena<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">byte</span><span style="color:#f92672">[]&gt;</span> heapArena <span style="color:#f92672">=</span> leastUsedArena<span style="color:#f92672">(</span>heapArenas<span style="color:#f92672">);</span>
+            <span style="color:#66d9ef">final</span> PoolArena<span style="color:#f92672">&lt;</span>ByteBuffer<span style="color:#f92672">&gt;</span> directArena <span style="color:#f92672">=</span> leastUsedArena<span style="color:#f92672">(</span>directArenas<span style="color:#f92672">);</span>
+ 
+          <span style="color:#75715e">//FastThreadLocal就是ThreacLocal的快速版本，首次没有取到缓存的时候，会进行初始化动作
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> PoolThreadCache<span style="color:#f92672">(</span>
+                    heapArena<span style="color:#f92672">,</span> directArena<span style="color:#f92672">,</span> tinyCacheSize<span style="color:#f92672">,</span> smallCacheSize<span style="color:#f92672">,</span> normalCacheSize<span style="color:#f92672">,</span>
+                    DEFAULT_MAX_CACHED_BUFFER_CAPACITY<span style="color:#f92672">,</span> DEFAULT_CACHE_TRIM_INTERVAL<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+     <span style="color:#f92672">...</span>
+<span style="color:#f92672">}</span>
+
+
+</code></pre></div><h1 id="bytetomessagedecoder">ByteToMessageDecoder</h1>
+<p>抽象的字节解码器</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Override</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">channelRead</span><span style="color:#f92672">(</span>ChannelHandlerContext ctx<span style="color:#f92672">,</span> Object msg<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>msg <span style="color:#66d9ef">instanceof</span> ByteBuf<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        CodecOutputList out <span style="color:#f92672">=</span> CodecOutputList<span style="color:#f92672">.</span><span style="color:#a6e22e">newInstance</span><span style="color:#f92672">();</span>
+        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+            first <span style="color:#f92672">=</span> cumulation <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+          <span style="color:#75715e">//检查是否要扩容，默认netty实现是合并到一个ByteBuf上，需要内存复制，另一种是直接创建一个新的compositeByteBuf
+</span><span style="color:#75715e"></span>            cumulation <span style="color:#f92672">=</span> cumulator<span style="color:#f92672">.</span><span style="color:#a6e22e">cumulate</span><span style="color:#f92672">(</span>ctx<span style="color:#f92672">.</span><span style="color:#a6e22e">alloc</span><span style="color:#f92672">(),</span>
+                    first <span style="color:#f92672">?</span> Unpooled<span style="color:#f92672">.</span><span style="color:#a6e22e">EMPTY_BUFFER</span> <span style="color:#f92672">:</span> cumulation<span style="color:#f92672">,</span> <span style="color:#f92672">(</span>ByteBuf<span style="color:#f92672">)</span> msg<span style="color:#f92672">);</span>
+            callDecode<span style="color:#f92672">(</span>ctx<span style="color:#f92672">,</span> cumulation<span style="color:#f92672">,</span> out<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>DecoderException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">throw</span> e<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> DecoderException<span style="color:#f92672">(</span>e<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span> <span style="color:#66d9ef">finally</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>cumulation <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span>cumulation<span style="color:#f92672">.</span><span style="color:#a6e22e">isReadable</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+                    numReads <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
+                    cumulation<span style="color:#f92672">.</span><span style="color:#a6e22e">release</span><span style="color:#f92672">();</span>
+                    cumulation <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+                <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(++</span>numReads <span style="color:#f92672">&gt;=</span> discardAfterReads<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                    <span style="color:#75715e">// We did enough reads already try to discard some bytes so we not risk to see a OOME.
+</span><span style="color:#75715e"></span>                    <span style="color:#75715e">// See https://github.com/netty/netty/issues/4275
+</span><span style="color:#75715e"></span>                    numReads <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
+                    discardSomeReadBytes<span style="color:#f92672">();</span>
+                <span style="color:#f92672">}</span>
+
+                <span style="color:#66d9ef">int</span> size <span style="color:#f92672">=</span> out<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">();</span>
+                firedChannelRead <span style="color:#f92672">|=</span> out<span style="color:#f92672">.</span><span style="color:#a6e22e">insertSinceRecycled</span><span style="color:#f92672">();</span>
+                fireChannelRead<span style="color:#f92672">(</span>ctx<span style="color:#f92672">,</span> out<span style="color:#f92672">,</span> size<span style="color:#f92672">);</span>
+            <span style="color:#f92672">}</span> <span style="color:#66d9ef">finally</span> <span style="color:#f92672">{</span>
+                out<span style="color:#f92672">.</span><span style="color:#a6e22e">recycle</span><span style="color:#f92672">();</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+        ctx<span style="color:#f92672">.</span><span style="color:#a6e22e">fireChannelRead</span><span style="color:#f92672">(</span>msg<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+
+
+<span style="color:#75715e">//默认Cumulator实现，内存复制到一个ByteBuf上
+</span><span style="color:#75715e"></span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> Cumulator MERGE_CUMULATOR <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Cumulator<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#a6e22e">@Override</span>
+        <span style="color:#66d9ef">public</span> ByteBuf <span style="color:#a6e22e">cumulate</span><span style="color:#f92672">(</span>ByteBufAllocator alloc<span style="color:#f92672">,</span> ByteBuf cumulation<span style="color:#f92672">,</span> ByteBuf in<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>cumulation<span style="color:#f92672">.</span><span style="color:#a6e22e">isReadable</span><span style="color:#f92672">()</span> <span style="color:#f92672">&amp;&amp;</span> in<span style="color:#f92672">.</span><span style="color:#a6e22e">isContiguous</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+                <span style="color:#75715e">// If cumulation is empty and input buffer is contiguous, use it directly
+</span><span style="color:#75715e"></span>                cumulation<span style="color:#f92672">.</span><span style="color:#a6e22e">release</span><span style="color:#f92672">();</span>
+                <span style="color:#66d9ef">return</span> in<span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+            <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> required <span style="color:#f92672">=</span> in<span style="color:#f92672">.</span><span style="color:#a6e22e">readableBytes</span><span style="color:#f92672">();</span>
+                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>required <span style="color:#f92672">&gt;</span> cumulation<span style="color:#f92672">.</span><span style="color:#a6e22e">maxWritableBytes</span><span style="color:#f92672">()</span> <span style="color:#f92672">||</span>
+                        <span style="color:#f92672">(</span>required <span style="color:#f92672">&gt;</span> cumulation<span style="color:#f92672">.</span><span style="color:#a6e22e">maxFastWritableBytes</span><span style="color:#f92672">()</span> <span style="color:#f92672">&amp;&amp;</span> cumulation<span style="color:#f92672">.</span><span style="color:#a6e22e">refCnt</span><span style="color:#f92672">()</span> <span style="color:#f92672">&gt;</span> 1<span style="color:#f92672">)</span> <span style="color:#f92672">||</span>
+                        cumulation<span style="color:#f92672">.</span><span style="color:#a6e22e">isReadOnly</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+                    <span style="color:#75715e">// Expand cumulation (by replacing it) under the following conditions:
+</span><span style="color:#75715e"></span>                    <span style="color:#75715e">// - cumulation cannot be resized to accommodate the additional data
+</span><span style="color:#75715e"></span>                    <span style="color:#75715e">// - cumulation can be expanded with a reallocation operation to accommodate but the buffer is
+</span><span style="color:#75715e"></span>                    <span style="color:#75715e">//   assumed to be shared (e.g. refCnt() &gt; 1) and the reallocation may not be safe.
+</span><span style="color:#75715e"></span>                    <span style="color:#66d9ef">return</span> expandCumulation<span style="color:#f92672">(</span>alloc<span style="color:#f92672">,</span> cumulation<span style="color:#f92672">,</span> in<span style="color:#f92672">);</span>
+                <span style="color:#f92672">}</span>
+                cumulation<span style="color:#f92672">.</span><span style="color:#a6e22e">writeBytes</span><span style="color:#f92672">(</span>in<span style="color:#f92672">,</span> in<span style="color:#f92672">.</span><span style="color:#a6e22e">readerIndex</span><span style="color:#f92672">(),</span> required<span style="color:#f92672">);</span>
+                in<span style="color:#f92672">.</span><span style="color:#a6e22e">readerIndex</span><span style="color:#f92672">(</span>in<span style="color:#f92672">.</span><span style="color:#a6e22e">writerIndex</span><span style="color:#f92672">());</span>
+                <span style="color:#66d9ef">return</span> cumulation<span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span> <span style="color:#66d9ef">finally</span> <span style="color:#f92672">{</span>
+                <span style="color:#75715e">// We must release in in all cases as otherwise it may produce a leak if writeBytes(...) throw
+</span><span style="color:#75715e"></span>                <span style="color:#75715e">// for whatever release (for example because of OutOfMemoryError)
+</span><span style="color:#75715e"></span>                in<span style="color:#f92672">.</span><span style="color:#a6e22e">release</span><span style="color:#f92672">();</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">};</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">callDecode</span><span style="color:#f92672">(</span>ChannelHandlerContext ctx<span style="color:#f92672">,</span> ByteBuf in<span style="color:#f92672">,</span> List<span style="color:#f92672">&lt;</span>Object<span style="color:#f92672">&gt;</span> out<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>in<span style="color:#f92672">.</span><span style="color:#a6e22e">isReadable</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> outSize <span style="color:#f92672">=</span> out<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">();</span>
+
+          <span style="color:#75715e">//解析到了数据
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>outSize <span style="color:#f92672">&gt;</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+              <span style="color:#75715e">//通知到下一个handler
+</span><span style="color:#75715e"></span>                fireChannelRead<span style="color:#f92672">(</span>ctx<span style="color:#f92672">,</span> out<span style="color:#f92672">,</span> outSize<span style="color:#f92672">);</span>
+                out<span style="color:#f92672">.</span><span style="color:#a6e22e">clear</span><span style="color:#f92672">();</span>
+
+                <span style="color:#75715e">// Check if this handler was removed before continuing with decoding.
+</span><span style="color:#75715e"></span>                <span style="color:#75715e">// If it was removed, it is not safe to continue to operate on the buffer.
+</span><span style="color:#75715e"></span>                <span style="color:#75715e">//
+</span><span style="color:#75715e"></span>                <span style="color:#75715e">// See:
+</span><span style="color:#75715e"></span>                <span style="color:#75715e">// - https://github.com/netty/netty/issues/4635
+</span><span style="color:#75715e"></span>                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>ctx<span style="color:#f92672">.</span><span style="color:#a6e22e">isRemoved</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+                    <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
+                <span style="color:#f92672">}</span>
+            <span style="color:#f92672">}</span>
+
+            <span style="color:#66d9ef">int</span> oldInputLength <span style="color:#f92672">=</span> in<span style="color:#f92672">.</span><span style="color:#a6e22e">readableBytes</span><span style="color:#f92672">();</span>
+          <span style="color:#75715e">//子类实现decode
+</span><span style="color:#75715e"></span>            decodeRemovalReentryProtection<span style="color:#f92672">(</span>ctx<span style="color:#f92672">,</span> in<span style="color:#f92672">,</span> out<span style="color:#f92672">);</span>
+
+            <span style="color:#75715e">// Check if this handler was removed before continuing the loop.
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// If it was removed, it is not safe to continue to operate on the buffer.
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">//
+</span><span style="color:#75715e"></span>            <span style="color:#75715e">// See https://github.com/netty/netty/issues/1664
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>ctx<span style="color:#f92672">.</span><span style="color:#a6e22e">isRemoved</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+
+          <span style="color:#75715e">//如果子类没有解析到对象
+</span><span style="color:#75715e"></span>          <span style="color:#75715e">//  1 数据不够解析道对象的
+</span><span style="color:#75715e"></span>          <span style="color:#75715e">//  2 
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>out<span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+              
+              <span style="color:#75715e">//数据不够解析的，跳出while，等下一次继续
+</span><span style="color:#75715e"></span>                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>oldInputLength <span style="color:#f92672">==</span> in<span style="color:#f92672">.</span><span style="color:#a6e22e">readableBytes</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+                    <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
+                <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+                  <span style="color:#75715e">// 解析出来的东西，不够合成一个对象的，继续解析
+</span><span style="color:#75715e"></span>                    <span style="color:#66d9ef">continue</span><span style="color:#f92672">;</span>
+                <span style="color:#f92672">}</span>
+            <span style="color:#f92672">}</span>
+
+          <span style="color:#75715e">// 解析出对象了，但是数据没有减少，有问题啊，明显对象你自己搞出来的，不是从数据里拿的，你有问题
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>oldInputLength <span style="color:#f92672">==</span> in<span style="color:#f92672">.</span><span style="color:#a6e22e">readableBytes</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> DecoderException<span style="color:#f92672">(</span>
+                        StringUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">simpleClassName</span><span style="color:#f92672">(</span>getClass<span style="color:#f92672">())</span> <span style="color:#f92672">+</span>
+                                <span style="color:#e6db74">&#34;.decode() did not read anything but decoded a message.&#34;</span><span style="color:#f92672">);</span>
+            <span style="color:#f92672">}</span>
+				
+          <span style="color:#75715e">// 如果只要解析一个，直接跳出
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>isSingleDecode<span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>DecoderException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">throw</span> e<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception cause<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> DecoderException<span style="color:#f92672">(</span>cause<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div>
+		</div>
+		<footer class="post__footer">
+			
+<div class="post__tags tags clearfix">
+	<svg class="tags__badge icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/netty/" rel="tag">Netty</a>
+		</li>
+	</ul>
+</div>
+		</footer>
+	</article>
+</main>
+
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="Frank Silva avatar" src="/img/avatar.png" class="avatar" height="90" width="90">
+	</figure>
+	<div class="authorbox__header">
+		<span class="authorbox__name">About Frank Silva</span>
+	</div>
+	<div class="authorbox__description">
+		Pursue Consummate Coding.
+	</div>
+</div>
+
+<nav class="pager flex">
+	<div class="pager__item pager__item--prev">
+		<a class="pager__link" href="/post/reactor/" rel="prev">
+			<span class="pager__subtitle">«&thinsp;Previous</span>
+			<p class="pager__title">Reactor响应式编程</p>
+		</a>
+	</div>
+	<div class="pager__item pager__item--next">
+		<a class="pager__link" href="/post/go/" rel="next">
+			<span class="pager__subtitle">Next&thinsp;»</span>
+			<p class="pager__title">Go包管理</p>
+		</a>
+	</div>
+</nav>
+
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2023 Frank Silva.
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+<script src="/js/custom.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+</body>
+</html>

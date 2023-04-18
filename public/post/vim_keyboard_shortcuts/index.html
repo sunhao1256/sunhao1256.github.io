@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>VIM Keyboard Shortcuts - Mainroad</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+		<meta property="og:title" content="VIM Keyboard Shortcuts" />
+<meta property="og:description" content="VIM Keyboard Shortcuts    Cursor movement      h move left   j move down   k move up   l move right   w jump by start of words (punctuation considered words)   W jump by words (spaces separate words)   e jump to end of words (punctuation considered words)   E jump to end of words (no punctuation)   b jump backward by words (punctuation considered words)   B jump backward by words (no punctuation)   0 (zero) start of line   ^ first non-blank character of line   $ end of line   G Go To command (prefix with number   Note: Prefix a cursor movement command with a number to repeat it." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sunhao1256.github.io/post/vim_keyboard_shortcuts/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-09-07T13:14:35+08:00" />
+<meta property="article:modified_time" content="2022-09-07T13:14:35+08:00" />
+
+
+		<meta itemprop="name" content="VIM Keyboard Shortcuts">
+<meta itemprop="description" content="VIM Keyboard Shortcuts    Cursor movement      h move left   j move down   k move up   l move right   w jump by start of words (punctuation considered words)   W jump by words (spaces separate words)   e jump to end of words (punctuation considered words)   E jump to end of words (no punctuation)   b jump backward by words (punctuation considered words)   B jump backward by words (no punctuation)   0 (zero) start of line   ^ first non-blank character of line   $ end of line   G Go To command (prefix with number   Note: Prefix a cursor movement command with a number to repeat it."><meta itemprop="datePublished" content="2022-09-07T13:14:35+08:00" />
+<meta itemprop="dateModified" content="2022-09-07T13:14:35+08:00" />
+<meta itemprop="wordCount" content="1103">
+<meta itemprop="keywords" content="Linux," />
+		<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="VIM Keyboard Shortcuts"/>
+<meta name="twitter:description" content="VIM Keyboard Shortcuts    Cursor movement      h move left   j move down   k move up   l move right   w jump by start of words (punctuation considered words)   W jump by words (spaces separate words)   e jump to end of words (punctuation considered words)   E jump to end of words (no punctuation)   b jump backward by words (punctuation considered words)   B jump backward by words (no punctuation)   0 (zero) start of line   ^ first non-blank character of line   $ end of line   G Go To command (prefix with number   Note: Prefix a cursor movement command with a number to repeat it."/>
+
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container header__container">
+		
+	<div class="logo logo--mixed">
+		<a class="logo__link" href="/" title="Mainroad" rel="home">
+			<div class="logo__item logo__imagebox">
+					<img class="logo__img" src="/img/placeholder.png">
+				</div><div class="logo__item logo__text">
+					<div class="logo__title">Mainroad</div>
+					<div class="logo__tagline">Just another site</div>
+				</div>
+		</a>
+	</div>
+		
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+	<ul class="menu__list">
+		<li class="menu__item">
+			<a class="menu__link" href="/about/">
+				
+				<span class="menu__text">About</span>
+				
+			</a>
+		</li>
+	</ul>
+</nav>
+
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">VIM Keyboard Shortcuts</h1>
+			<div class="post__meta meta"><div class="meta__item-author meta__item">
+	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 12 16"><path d="M6 1c2.2 0 3.5 2 3.5 4.5C9.5 7 8.9 8.2 8 9c2.9.8 4 2.5 4 5v1H0v-1c0-2.5 1.1-4.2 4-5-.9-.8-1.5-2-1.5-3.5C2.5 3 3.8 1 6 1z"/></svg><span class="meta__text">Frank Silva</span>
+</div>
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg><time class="meta__text" datetime="2022-09-07T13:14:35&#43;08:00">2022-09-07</time></div></div>
+		</header>
+		
+<div class="post__toc toc">
+	<div class="toc__title">Page content</div>
+	<div class="toc__menu">
+		<nav id="TableOfContents">
+  <ul>
+    <li><a href="#visual-mode">visual mode</a></li>
+    <li><a href="#srolling-around">Srolling around</a></li>
+    <li><a href="#scrolling-releative-to-cursor">Scrolling releative to cursor</a></li>
+    <li><a href="#find-char-in-line">Find char in line</a></li>
+  </ul>
+</nav>
+	</div>
+</div><div class="content post__content clearfix">
+			<h1 id="vim-keyboard-shortcuts">VIM Keyboard Shortcuts</h1>
+<table>
+<thead>
+<tr>
+<th><strong>Cursor movement</strong></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>h</td>
+<td>move left</td>
+</tr>
+<tr>
+<td>j</td>
+<td>move down</td>
+</tr>
+<tr>
+<td>k</td>
+<td>move up</td>
+</tr>
+<tr>
+<td>l</td>
+<td>move right</td>
+</tr>
+<tr>
+<td>w</td>
+<td>jump by start of words (punctuation considered words)</td>
+</tr>
+<tr>
+<td>W</td>
+<td>jump by words (spaces separate words)</td>
+</tr>
+<tr>
+<td>e</td>
+<td>jump to end of words (punctuation considered words)</td>
+</tr>
+<tr>
+<td>E</td>
+<td>jump to end of words (no punctuation)</td>
+</tr>
+<tr>
+<td>b</td>
+<td>jump backward by words (punctuation considered words)</td>
+</tr>
+<tr>
+<td>B</td>
+<td>jump backward by words (no punctuation)</td>
+</tr>
+<tr>
+<td>0</td>
+<td>(zero) start of line</td>
+</tr>
+<tr>
+<td>^</td>
+<td>first non-blank character of line</td>
+</tr>
+<tr>
+<td>$</td>
+<td>end of line</td>
+</tr>
+<tr>
+<td>G</td>
+<td>Go To command (prefix with number</td>
+</tr>
+<tr>
+<td>Note:</td>
+<td>Prefix a cursor movement command with a number to repeat it. For example, 4j moves down 4 lines.</td>
+</tr>
+<tr>
+<td>Insert Mode</td>
+<td>Inserting/Appending text</td>
+</tr>
+<tr>
+<td>i</td>
+<td>start insert mode at cursor</td>
+</tr>
+<tr>
+<td>I</td>
+<td>insert at the beginning of the line</td>
+</tr>
+<tr>
+<td>a</td>
+<td>append after the cursor</td>
+</tr>
+<tr>
+<td>A</td>
+<td>append at the end of the line</td>
+</tr>
+<tr>
+<td>o</td>
+<td>open (append) blank line below current line (no need to press return)</td>
+</tr>
+<tr>
+<td>O</td>
+<td>open blank line above current line</td>
+</tr>
+<tr>
+<td>ea</td>
+<td>append at end of word</td>
+</tr>
+<tr>
+<td>Esc</td>
+<td>exit insert mode</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Editing</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>r</td>
+<td>replace a single character (does not use insert mode)</td>
+</tr>
+<tr>
+<td>J</td>
+<td>join line below to the current one</td>
+</tr>
+<tr>
+<td>cc</td>
+<td>change (replace) an entire line</td>
+</tr>
+<tr>
+<td>cw</td>
+<td>change (replace) to the end of word</td>
+</tr>
+<tr>
+<td>c$</td>
+<td>change (replace) to the end of line</td>
+</tr>
+<tr>
+<td>s</td>
+<td>delete character at cursor and subsitute text</td>
+</tr>
+<tr>
+<td>S</td>
+<td>delete line at cursor and substitute text (same as cc)</td>
+</tr>
+<tr>
+<td>xp</td>
+<td>transpose two letters (delete and paste, technically)</td>
+</tr>
+<tr>
+<td>u</td>
+<td>undo</td>
+</tr>
+<tr>
+<td>.</td>
+<td>repeat last command</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Marking text (visual mode)</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>v</td>
+<td>start visual mode, mark lines, then do command (such as y-yank)</td>
+</tr>
+<tr>
+<td>V</td>
+<td>start Linewise visual mode</td>
+</tr>
+<tr>
+<td>o</td>
+<td>move to other end of marked area</td>
+</tr>
+<tr>
+<td>Ctrl+v</td>
+<td>start visual block mode</td>
+</tr>
+<tr>
+<td>O</td>
+<td>move to Other corner of block</td>
+</tr>
+<tr>
+<td>aw</td>
+<td>mark a word</td>
+</tr>
+<tr>
+<td>ab</td>
+<td>a () block (with braces)</td>
+</tr>
+<tr>
+<td>aB</td>
+<td>a {} block (with brackets)</td>
+</tr>
+<tr>
+<td>ib</td>
+<td>inner () block</td>
+</tr>
+<tr>
+<td>iB</td>
+<td>inner {} block</td>
+</tr>
+<tr>
+<td>Esc</td>
+<td>exit visual mode</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Visual commands</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>&gt;</td>
+<td>shift right</td>
+</tr>
+<tr>
+<td>&lt;</td>
+<td>shift left</td>
+</tr>
+<tr>
+<td>y</td>
+<td>yank (copy) marked text</td>
+</tr>
+<tr>
+<td>d</td>
+<td>delete marked text</td>
+</tr>
+<tr>
+<td>~</td>
+<td>switch case</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Cut and Paste</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>yy</td>
+<td>yank (copy) a line</td>
+</tr>
+<tr>
+<td>2yy</td>
+<td>yank 2 lines</td>
+</tr>
+<tr>
+<td>yw</td>
+<td>yank word</td>
+</tr>
+<tr>
+<td>y$</td>
+<td>yank to end of line</td>
+</tr>
+<tr>
+<td>p</td>
+<td>put (paste) the clipboard after cursor</td>
+</tr>
+<tr>
+<td>P</td>
+<td>put (paste) before cursor</td>
+</tr>
+<tr>
+<td>dd</td>
+<td>delete (cut) a line</td>
+</tr>
+<tr>
+<td>dw</td>
+<td>delete (cut) the current word</td>
+</tr>
+<tr>
+<td>x</td>
+<td>delete (cut) current character</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Exiting</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>:w</td>
+<td>write (save) the file, but don&rsquo;t exit</td>
+</tr>
+<tr>
+<td>:wq</td>
+<td>write (save) and quit</td>
+</tr>
+<tr>
+<td>:q</td>
+<td>quit (fails if anything has changed)</td>
+</tr>
+<tr>
+<td>:q!</td>
+<td>quit and throw away changes</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Search/Replace</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>/pattern</td>
+<td>search for pattern</td>
+</tr>
+<tr>
+<td>?pattern</td>
+<td>search backward for pattern</td>
+</tr>
+<tr>
+<td>n</td>
+<td>repeat search in same direction</td>
+</tr>
+<tr>
+<td>N</td>
+<td>repeat search in opposite direction</td>
+</tr>
+<tr>
+<td>:%s/old/new/g</td>
+<td>replace all old with new throughout file</td>
+</tr>
+<tr>
+<td>:%s/old/new/gc</td>
+<td>replace all old with new throughout file with confirmations</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Working with multiple files</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>:e filename</td>
+<td>Edit a file in a new buffer</td>
+</tr>
+<tr>
+<td>:bnext (or :bn)</td>
+<td>go to next buffer</td>
+</tr>
+<tr>
+<td>:bprev (of :bp)</td>
+<td>go to previous buffer</td>
+</tr>
+<tr>
+<td>:bd</td>
+<td>delete a buffer (close a file)</td>
+</tr>
+<tr>
+<td>:sp filename</td>
+<td>Open a file in a new buffer and split window</td>
+</tr>
+<tr>
+<td>ctrl+ws</td>
+<td>Split windows</td>
+</tr>
+<tr>
+<td>ctrl+ww</td>
+<td>switch between windows</td>
+</tr>
+<tr>
+<td>ctrl+wq</td>
+<td>Quit a window</td>
+</tr>
+<tr>
+<td>ctrl+wv</td>
+<td>Split windows vertically</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Options</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>:set all!</td>
+<td></td>
+</tr>
+<tr>
+<td>:set</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Resize</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>Ctrl+W +/-</td>
+<td>increase/decrease height (ex. <code>20&lt;C-w&gt;+</code>)</td>
+</tr>
+<tr>
+<td>Ctrl+W &gt;/&lt;</td>
+<td>increase/decrease width (ex. <code>30&lt;C-w&gt;&lt;</code>)</td>
+</tr>
+<tr>
+<td>Ctrl+W _</td>
+<td>set height (ex. <code>50&lt;C-w&gt;_</code>)</td>
+</tr>
+<tr>
+<td>Ctrl+W</td>
+<td>set width (ex. `50<!-- raw HTML omitted --></td>
+</tr>
+<tr>
+<td>Ctrl+W =</td>
+<td>equalize width and height of all windows</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="visual-mode">visual mode</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">The operators that can be used are:
+        ~       switch <span style="color:#66d9ef">case</span>                                     v_~
+        d       delete                                          v_d
+        c       change <span style="color:#f92672">(</span>4<span style="color:#f92672">)</span>                                      v_c
+        y       yank                                            v_y
+        &gt;       shift right <span style="color:#f92672">(</span>4<span style="color:#f92672">)</span>                                 v_&gt;
+        &lt;       shift left <span style="color:#f92672">(</span>4<span style="color:#f92672">)</span>                                  v_&lt;
+        !       filter through external command <span style="color:#f92672">(</span>1<span style="color:#f92672">)</span>             v_!
+        <span style="color:#f92672">=</span>       filter through <span style="color:#e6db74">&#39;equalprg&#39;</span> option command <span style="color:#f92672">(</span>1<span style="color:#f92672">)</span>    v_<span style="color:#f92672">=</span>
+        gq      format lines to <span style="color:#e6db74">&#39;textwidth&#39;</span> length <span style="color:#f92672">(</span>1<span style="color:#f92672">)</span>          v_gq
+
+The objects that can be used are:
+        aw      a word <span style="color:#f92672">(</span>with white space<span style="color:#f92672">)</span>                       v_aw
+        iw      inner word                                      v_iw
+        aW      a WORD <span style="color:#f92672">(</span>with white space<span style="color:#f92672">)</span>                       v_aW
+        iW      inner WORD                                      v_iW
+        as      a sentence <span style="color:#f92672">(</span>with white space<span style="color:#f92672">)</span>                   v_as
+        is      inner sentence                                  v_is
+        ap      a paragraph <span style="color:#f92672">(</span>with white space<span style="color:#f92672">)</span>                  v_ap
+        ip      inner paragraph                                 v_ip
+        ab      a <span style="color:#f92672">()</span> block <span style="color:#f92672">(</span>with parentheses<span style="color:#f92672">)</span>                   v_ab
+        ib      inner <span style="color:#f92672">()</span> block                                  v_ib
+        aB      a <span style="color:#f92672">{}</span> block <span style="color:#f92672">(</span>with braces<span style="color:#f92672">)</span>                        v_aB
+        iB      inner <span style="color:#f92672">{}</span> block                                  v_iB
+        at      a &lt;tag&gt; &lt;/tag&gt; block <span style="color:#f92672">(</span>withjj tags<span style="color:#f92672">)</span>                v_at
+        it      inner &lt;tag&gt; &lt;/tag&gt; block                        v_it
+        a&lt;      a &lt;&gt; block <span style="color:#f92672">(</span>with &lt;&gt;<span style="color:#f92672">)</span>                            v_a&lt;
+        i&lt;      inner &lt;&gt; block                                  v_i&lt;
+        a<span style="color:#f92672">[</span>      a <span style="color:#f92672">[]</span> block <span style="color:#f92672">(</span>with <span style="color:#f92672">[])</span>                            v_a<span style="color:#f92672">[</span>
+        i<span style="color:#f92672">[</span>      inner <span style="color:#f92672">[]</span> block                                  v_i<span style="color:#f92672">[</span>
+        a<span style="color:#e6db74">&#34;      a double quoted string (with quotes)            v_aquote
+</span><span style="color:#e6db74">        i&#34;</span>      inner double quoted string                      v_iquote
+        a<span style="color:#e6db74">&#39;      a single quoted string (with quotes)            v_a&#39;</span>
+        i<span style="color:#e6db74">&#39;      inner simple quoted string                      v_i&#39;</span>
+        a<span style="color:#e6db74">`</span>      a string in backticks <span style="color:#f92672">(</span>with backticks<span style="color:#f92672">)</span>          v_a<span style="color:#e6db74">`</span>
+        i<span style="color:#e6db74">`</span>      inner string in backticks                       v_i<span style="color:#e6db74">`</span>
+</code></pre></div><h2 id="srolling-around">Srolling around</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">ctrl+d u <span style="color:#75715e"># one line</span>
+ctrl+e y <span style="color:#75715e"># half of screen of text</span>
+ctrl+f b <span style="color:#75715e"># whole screen</span>
+</code></pre></div><h2 id="scrolling-releative-to-cursor">Scrolling releative to cursor</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">                                                        z&lt;CR&gt;
+z&lt;CR&gt;                   Redraw, line <span style="color:#f92672">[</span>count<span style="color:#f92672">]</span> at top of window <span style="color:#f92672">(</span>default
+                        cursor line<span style="color:#f92672">)</span>.  Put cursor at first non-blank in the
+                        line.
+
+                                                        zt
+zt                      Like <span style="color:#e6db74">&#34;z&lt;CR&gt;&#34;</span>, but leave the cursor in the same
+                        column.
+
+                                                        zN&lt;CR&gt;
+z<span style="color:#f92672">{</span>height<span style="color:#f92672">}</span>&lt;CR&gt;           Redraw, make window <span style="color:#f92672">{</span>height<span style="color:#f92672">}</span> lines tall.  This is
+                        useful to make the number of lines small when screen
+                        updating is very slow.  Cannot make the height more
+                        than the physical screen height.
+
+                                                        z.
+z.                      Redraw, line <span style="color:#f92672">[</span>count<span style="color:#f92672">]</span> at center of window <span style="color:#f92672">(</span>default
+                        cursor line<span style="color:#f92672">)</span>.  Put cursor at first non-blank in the
+                        line.
+
+                                                        zz
+zz                      Like <span style="color:#e6db74">&#34;z.&#34;</span>, but leavke the cursor in the same column.
+                        Careful: If caps-lock is on, this command becomes
+                        <span style="color:#e6db74">&#34;ZZ&#34;</span>: write buffer and exit!
+
+                                                        z-
+z-                      Redraw, line <span style="color:#f92672">[</span>count<span style="color:#f92672">]</span> at bottom of window <span style="color:#f92672">(</span>default
+                        cursor line<span style="color:#f92672">)</span>.  Put cursor at first non-blank in the
+                        line.
+
+                                                        zb
+zb                      Like <span style="color:#e6db74">&#34;z-&#34;</span>, but leave the cursor in the same column.
+</code></pre></div><h2 id="find-char-in-line">Find char in line</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">f<span style="color:#f92672">{</span>char<span style="color:#f92672">}</span>                 To <span style="color:#f92672">[</span>count<span style="color:#f92672">]</span><span style="color:#e6db74">&#39;th occurrence of {char} to the right.  The
+</span><span style="color:#e6db74">                        cursor is placed on {char} inclusive.
+</span><span style="color:#e6db74">                        {char} can be entered as a digraph digraph-arg.
+</span><span style="color:#e6db74">                        When &#39;</span>encoding<span style="color:#e6db74">&#39; is set to Unicode, composing
+</span><span style="color:#e6db74">                        characters may be used, see utf-8-char-arg.
+</span><span style="color:#e6db74">                        :lmap mappings apply to {char}.  The CTRL-^ command
+</span><span style="color:#e6db74">                        in Insert mode can be used to switch this on/off
+</span><span style="color:#e6db74">                        i_CTRL-^.
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">                                                        F
+</span><span style="color:#e6db74">F{char}                 To the [count]&#39;</span>th occurrence of <span style="color:#f92672">{</span>char<span style="color:#f92672">}</span> to the left.
+                        The cursor is placed on <span style="color:#f92672">{</span>char<span style="color:#f92672">}</span> exclusive.
+                        <span style="color:#f92672">{</span>char<span style="color:#f92672">}</span> can be entered like with the f command.
+
+                                                        t
+t<span style="color:#f92672">{</span>char<span style="color:#f92672">}</span>                 Till before <span style="color:#f92672">[</span>count<span style="color:#f92672">]</span><span style="color:#e6db74">&#39;th occurrence of {char} to the
+</span><span style="color:#e6db74">                        right.  The cursor is placed on the character left of
+</span><span style="color:#e6db74">                        {char} inclusive.
+</span><span style="color:#e6db74">                        {char} can be entered like with the f command.
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">                                                        T
+</span><span style="color:#e6db74">T{char}                 Till after [count]&#39;</span>th occurrence of <span style="color:#f92672">{</span>char<span style="color:#f92672">}</span> to the
+                        left.  The cursor is placed on the character right of
+                        <span style="color:#f92672">{</span>char<span style="color:#f92672">}</span> exclusive.
+                        <span style="color:#f92672">{</span>char<span style="color:#f92672">}</span> can be entered like with the f command.
+
+                                                        ;
+;                       Repeat latest f, t, F or T <span style="color:#f92672">[</span>count<span style="color:#f92672">]</span> times. See cpo-;
+
+                                                        ,
+,                       Repeat latest f, t, F or T in opposite direction
+                        <span style="color:#f92672">[</span>count<span style="color:#f92672">]</span> times. See also cpo-;
+                        
+</code></pre></div><pre tabindex="0"><code>:set matchpairs+=&lt;:&gt;
+</code></pre>
+		</div>
+		<footer class="post__footer">
+			
+<div class="post__tags tags clearfix">
+	<svg class="tags__badge icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/linux/" rel="tag">Linux</a>
+		</li>
+	</ul>
+</div>
+		</footer>
+	</article>
+</main>
+
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="Frank Silva avatar" src="/img/avatar.png" class="avatar" height="90" width="90">
+	</figure>
+	<div class="authorbox__header">
+		<span class="authorbox__name">About Frank Silva</span>
+	</div>
+	<div class="authorbox__description">
+		Pursue Consummate Coding.
+	</div>
+</div>
+
+<nav class="pager flex">
+	<div class="pager__item pager__item--prev">
+		<a class="pager__link" href="/post/nginx/" rel="prev">
+			<span class="pager__subtitle">«&thinsp;Previous</span>
+			<p class="pager__title">Nginx转发规则</p>
+		</a>
+	</div>
+	<div class="pager__item pager__item--next">
+		<a class="pager__link" href="/post/mywordnote/" rel="next">
+			<span class="pager__subtitle">Next&thinsp;»</span>
+			<p class="pager__title">MyWordNote</p>
+		</a>
+	</div>
+</nav>
+
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2023 Frank Silva.
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+<script src="/js/custom.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+</body>
+</html>

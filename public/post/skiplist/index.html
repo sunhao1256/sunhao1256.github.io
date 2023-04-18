@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>SkipList - Mainroad</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+		<meta property="og:title" content="SkipList" />
+<meta property="og:description" content="摘自：https://mp.weixin.qq.com/s?__biz=MzkxNDEyOTI0OQ==&amp;mid=2247484459&amp;idx=1&amp;sn=b4e7db9fdf256dfb312a2a90fcde79b3&amp;source=41#wechat_redirect
+ 概述 跳表是一个随机化的数据结构，实质就是一种可以进行二分查找的有序链表。
+跳表在原有的有序链表上面增加了多级索引，通过索引来实现快速查找。
+跳表不仅能提高搜索性能，同时也可以提高插入和删除操作的性能
+提问   有序数组可以进行二分查找吗？
+可以
+  为什么有序链表 不可以进行二分查找
+ The difference between sorted arrays and sorted linked lists is that we can search an element in O(logN) time in sorted arrays but we cannot do so in sorted linked lists because we need to traverse the next pointers to arrive at the search node.
+ 有序数组我们可以使用二分查找，将查询的时间复杂度控制在O(logN)，但是链表无法二分查找，因为我们我无法直接获取目标元素，必须得遍历下一个指针。
+  有序链表 考虑一个有序链表，我们要查找3、7、17这几个元素，我们只能从头开始遍历链表，直到查找到元素为止。
+上述这个链表是有序的，但是不能使用二分查找，是不是很捉急？（P.S.数组可以实现二分查找）
+那么，有没有什么方法可以实现有序链表的二分查找呢？" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sunhao1256.github.io/post/skiplist/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-10-13T22:30:06+08:00" />
+<meta property="article:modified_time" content="2022-10-13T22:30:06+08:00" />
+
+
+		<meta itemprop="name" content="SkipList">
+<meta itemprop="description" content="摘自：https://mp.weixin.qq.com/s?__biz=MzkxNDEyOTI0OQ==&amp;mid=2247484459&amp;idx=1&amp;sn=b4e7db9fdf256dfb312a2a90fcde79b3&amp;source=41#wechat_redirect
+ 概述 跳表是一个随机化的数据结构，实质就是一种可以进行二分查找的有序链表。
+跳表在原有的有序链表上面增加了多级索引，通过索引来实现快速查找。
+跳表不仅能提高搜索性能，同时也可以提高插入和删除操作的性能
+提问   有序数组可以进行二分查找吗？
+可以
+  为什么有序链表 不可以进行二分查找
+ The difference between sorted arrays and sorted linked lists is that we can search an element in O(logN) time in sorted arrays but we cannot do so in sorted linked lists because we need to traverse the next pointers to arrive at the search node.
+ 有序数组我们可以使用二分查找，将查询的时间复杂度控制在O(logN)，但是链表无法二分查找，因为我们我无法直接获取目标元素，必须得遍历下一个指针。
+  有序链表 考虑一个有序链表，我们要查找3、7、17这几个元素，我们只能从头开始遍历链表，直到查找到元素为止。
+上述这个链表是有序的，但是不能使用二分查找，是不是很捉急？（P.S.数组可以实现二分查找）
+那么，有没有什么方法可以实现有序链表的二分查找呢？"><meta itemprop="datePublished" content="2022-10-13T22:30:06+08:00" />
+<meta itemprop="dateModified" content="2022-10-13T22:30:06+08:00" />
+<meta itemprop="wordCount" content="235">
+<meta itemprop="keywords" content="数据结构," />
+		<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="SkipList"/>
+<meta name="twitter:description" content="摘自：https://mp.weixin.qq.com/s?__biz=MzkxNDEyOTI0OQ==&amp;mid=2247484459&amp;idx=1&amp;sn=b4e7db9fdf256dfb312a2a90fcde79b3&amp;source=41#wechat_redirect
+ 概述 跳表是一个随机化的数据结构，实质就是一种可以进行二分查找的有序链表。
+跳表在原有的有序链表上面增加了多级索引，通过索引来实现快速查找。
+跳表不仅能提高搜索性能，同时也可以提高插入和删除操作的性能
+提问   有序数组可以进行二分查找吗？
+可以
+  为什么有序链表 不可以进行二分查找
+ The difference between sorted arrays and sorted linked lists is that we can search an element in O(logN) time in sorted arrays but we cannot do so in sorted linked lists because we need to traverse the next pointers to arrive at the search node.
+ 有序数组我们可以使用二分查找，将查询的时间复杂度控制在O(logN)，但是链表无法二分查找，因为我们我无法直接获取目标元素，必须得遍历下一个指针。
+  有序链表 考虑一个有序链表，我们要查找3、7、17这几个元素，我们只能从头开始遍历链表，直到查找到元素为止。
+上述这个链表是有序的，但是不能使用二分查找，是不是很捉急？（P.S.数组可以实现二分查找）
+那么，有没有什么方法可以实现有序链表的二分查找呢？"/>
+
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container header__container">
+		
+	<div class="logo logo--mixed">
+		<a class="logo__link" href="/" title="Mainroad" rel="home">
+			<div class="logo__item logo__imagebox">
+					<img class="logo__img" src="/img/placeholder.png">
+				</div><div class="logo__item logo__text">
+					<div class="logo__title">Mainroad</div>
+					<div class="logo__tagline">Just another site</div>
+				</div>
+		</a>
+	</div>
+		
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+	<ul class="menu__list">
+		<li class="menu__item">
+			<a class="menu__link" href="/about/">
+				
+				<span class="menu__text">About</span>
+				
+			</a>
+		</li>
+	</ul>
+</nav>
+
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">SkipList</h1>
+			<div class="post__meta meta"><div class="meta__item-author meta__item">
+	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 12 16"><path d="M6 1c2.2 0 3.5 2 3.5 4.5C9.5 7 8.9 8.2 8 9c2.9.8 4 2.5 4 5v1H0v-1c0-2.5 1.1-4.2 4-5-.9-.8-1.5-2-1.5-3.5C2.5 3 3.8 1 6 1z"/></svg><span class="meta__text">Frank Silva</span>
+</div>
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg><time class="meta__text" datetime="2022-10-13T22:30:06&#43;08:00">2022-10-13</time></div></div>
+		</header>
+		
+<div class="post__toc toc">
+	<div class="toc__title">Page content</div>
+	<div class="toc__menu">
+		<nav id="TableOfContents">
+  <ul>
+    <li><a href="#概述">概述</a></li>
+    <li><a href="#提问">提问</a></li>
+    <li><a href="#有序链表">有序链表</a></li>
+    <li><a href="#跳表的演进">跳表的演进</a></li>
+    <li><a href="#跳表的插入">跳表的插入</a></li>
+    <li><a href="#跳表的删除">跳表的删除</a></li>
+    <li><a href="#标准化的跳表">标准化的跳表</a></li>
+    <li><a href="#时间复杂度">时间复杂度</a></li>
+    <li><a href="#空间复杂度">空间复杂度</a></li>
+    <li><a href="#总结">总结</a></li>
+    <li><a href="#提问-1">提问</a></li>
+  </ul>
+</nav>
+	</div>
+</div><div class="content post__content clearfix">
+			<blockquote>
+<p>摘自：https://mp.weixin.qq.com/s?__biz=MzkxNDEyOTI0OQ==&amp;mid=2247484459&amp;idx=1&amp;sn=b4e7db9fdf256dfb312a2a90fcde79b3&amp;source=41#wechat_redirect</p>
+</blockquote>
+<h2 id="概述">概述</h2>
+<p>跳表是一个随机化的数据结构，实质就是一种可以进行<strong>二分</strong>查找的<strong>有序链表</strong>。</p>
+<p>跳表在原有的有序链表上面增加了多级索引，通过索引来实现快速查找。</p>
+<p>跳表不仅能提高搜索性能，同时也可以提高插入和删除操作的性能</p>
+<h2 id="提问">提问</h2>
+<ul>
+<li>
+<p>有序数组可以进行二分查找吗？</p>
+<p>可以</p>
+</li>
+<li>
+<p>为什么有序链表 不可以进行二分查找</p>
+<blockquote>
+<p>The difference between sorted arrays and sorted linked lists is that we can search an element in O(logN) time in sorted arrays but we cannot do so in sorted linked lists because we need to traverse the next pointers to arrive at the search node.</p>
+</blockquote>
+<p>有序数组我们可以使用二分查找，将查询的时间复杂度控制在O(logN)，但是链表无法二分查找，因为我们我无法直接获取目标元素，必须得遍历下一个指针。</p>
+</li>
+</ul>
+<h2 id="有序链表">有序链表</h2>
+<!-- raw HTML omitted -->
+<p>考虑一个有序链表，我们要查找3、7、17这几个元素，我们只能从头开始遍历链表，直到查找到元素为止。</p>
+<p>上述这个链表是有序的，但是不能使用二分查找，是不是很捉急？（P.S.数组可以实现二分查找）</p>
+<p>那么，有没有什么方法可以实现有序链表的二分查找呢？</p>
+<p>答案是肯定的，那就是我们将要介绍的这种数据结构——跳表。</p>
+<p>ps：链表的查询，插入删除时间复杂度都是O(n)，因为插入和删除需要找到元素。</p>
+<h2 id="跳表的演进">跳表的演进</h2>
+<p>我们把一些节点从有序表中提取出来，缓存一级索引，就组成了下面这样的结构：</p>
+<!-- raw HTML omitted -->
+<p>现在，我们要查找17这个元素是不是要快很多呢？</p>
+<p>我们只要从一级索引往后遍历即可，只需要经过1、6、15、17这几个元素就可以找到17了。</p>
+<p>那么，我们要查找11这个元素呢？</p>
+<p>我们从一级索引的1开始，向右到6，再向右发现是15，它比11大，此路不通，从6往下走，再从下面的6往右走，到7，再到11。</p>
+<p>同样地，一级索引也可以往上再提取一层，组成二级索引，如下：</p>
+<!-- raw HTML omitted -->
+<p>这时候我们再查找17这个元素呢？</p>
+<p>只需要经过6、15、17这几个元素就可以找到17了。</p>
+<p>这基本上就是跳表的核心思想了，其实这也是一个“空间换时间”的算法，通过向上提取索引增加了查找的效率。</p>
+<h2 id="跳表的插入">跳表的插入</h2>
+<blockquote>
+<p>The levels are assigned probabilistically. In a more common scenario a node of level ‘i’ is ‘promoted’ to a level ‘i+1’ with a probability of 50%. Or you can thinks in this way:</p>
+<p>Assumming that the number of levels ranges from 1 to 4, then if a node has 100% chance of being assigned level 1, it also has a 50% chance of assigning level 2, 25% chance of level 3 and 12.5 % chances of level 4. Thus 1/8 th of all nodes will be assigned level 4.</p>
+<p>插入的规则是概率的，每一层的下一层是上一层的50%，因此，假设一共4层，第一层100%插入，第二次就得有50%的概率，第三层就是25%，第4层就是12.5%</p>
+</blockquote>
+<p>上面讲的都是跳表的查询，那么，该如何向跳表中插入元素呢？</p>
+<p>比如，我们要向上面这个跳表添加一个元素8。</p>
+<p>首先，我们先根据投硬币的方式，决定8这个元素要占据的层数，没错就是扔硬币，是不是很好玩儿^^</p>
+<p>比如，层数level=2。</p>
+<p>然后，找到8这个元素在下面两层的前置节点。</p>
+<p>接着，就是链表的插入元素操作了，比较简单。</p>
+<p>最后，就像下面这样：</p>
+<p><img src="https://pic-frank.oss-cn-beijing.aliyuncs.com/img/202210171027674.png" alt="image-20221017102733654"></p>
+<h2 id="跳表的删除">跳表的删除</h2>
+<p>查询、插入元素都讲了，下面我们就来说说怎么删除元素。</p>
+<p>首先，找到各层中包含元素x的节点。</p>
+<p>然后，使用标准的链表删除元素的方法删除即可。</p>
+<p>比如，要删除17这个元素。</p>
+<p><img src="https://pic-frank.oss-cn-beijing.aliyuncs.com/img/202210171027121.png" alt="image-20221017102746093"></p>
+<h2 id="标准化的跳表">标准化的跳表</h2>
+<p>上面举的例子是完全随机的跳表，那么，如果我们每两个元素提取一个元素作为上一级的索引会怎么样呢？</p>
+<!-- raw HTML omitted -->
+<p>这是不是很像平衡二叉树，现在这颗树元素比较少，可能不太明显，我们来看个元素个数多的情况。</p>
+<!-- raw HTML omitted -->
+<p>可以看到，上一级元素的个数是下一级的一半，这样每次减少一半，就很接近平衡二叉树了。</p>
+<h2 id="时间复杂度">时间复杂度</h2>
+<p>我们知道单链表查询的时间复杂度为O(n)，而插入、删除操作需要先找到对应的位置，所以插入、删除的时间复杂度也是O(n)。</p>
+<p>那么，跳表的时间复杂度是多少呢？</p>
+<p>如果按照标准的跳表来看的话，每一级索引减少k/2个元素（k为其下面一级索引的个数），那么整个跳表的高度就是(log n)。</p>
+<p>学习过平衡二叉树的同学都知道，它的时间复杂度与树的高度成正比，即O(log n)。</p>
+<p>所以，这里跳表的时间复杂度也是O(log n)。（这里不一步步推倒了，只要记住，查询时每次减少一半的元素的时间复杂度都是O(log n)，比如二叉树的查找、二分法查找、归并排序、快速排序）</p>
+<h2 id="空间复杂度">空间复杂度</h2>
+<p>我们还是以标准的跳表来分析，每两个元素向上提取一个元素，那么，最后额外需要的空间就是：</p>
+<p>n/2 + n/(2^2) + n/(2^3) + &hellip; + 8 + 4 + 2 = n - 2</p>
+<p>所以，跳表的空间复杂度是O(n)。</p>
+<h2 id="总结">总结</h2>
+<p>（1）跳表是可以实现二分查找的有序链表；</p>
+<p>（2）每个元素插入时随机生成它的level；</p>
+<p>（3）最低层包含所有的元素；</p>
+<p>（4）如果一个元素出现在level(x)，那么它肯定出现在x以下的level中；</p>
+<p>（5）每个索引节点包含两个指针，一个向下，一个向右；</p>
+<p>（6）跳表查询、插入、删除的时间复杂度为O(log n)，与平衡二叉树接近；</p>
+<h2 id="提问-1">提问</h2>
+<ul>
+<li>
+<p>为什么Redis选择使用跳表而不是红黑树来实现有序集合？</p>
+<p>首先，我们来分析下Redis的有序集合支持的操作：</p>
+<p>1）插入元素</p>
+<p>2）删除元素</p>
+<p>3）查找元素</p>
+<p>4）有序输出所有元素</p>
+<p>5）查找区间内所有元素</p>
+<p>其中，前4项红黑树都可以完成，且时间复杂度与跳表一致。</p>
+<p>但是，最后一项，红黑树的效率就没有跳表高了。</p>
+<p>在跳表中，要查找区间的元素，我们只要定位到两个区间端点在最低层级的位置，然后按顺序遍历元素就可以了，非常高效。</p>
+<p>而红黑树只能定位到端点后，再从首位置开始每次都要查找后继节点，相对来说是比较耗时的。</p>
+<p>此外，跳表实现起来很容易且易读，红黑树实现起来相对困难，所以Redis选择使用跳表来实现有序集合。</p>
+</li>
+<li>
+<p>那么跳表有哪些缺点</p>
+<ul>
+<li>跳表每一层的索引需要额外的空间</li>
+<li>不能反向搜索</li>
+<li>因为索引的随机性，cache友好性不够好；比如某个索引路径是一个热点查询，redblack tree再该路径出现一个新节点，则大部分老节点仍然在该查询路径上；而skiplist则可能更换为新的查询路径。</li>
+</ul>
+</li>
+</ul>
+
+		</div>
+		<footer class="post__footer">
+			
+<div class="post__tags tags clearfix">
+	<svg class="tags__badge icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a>
+		</li>
+	</ul>
+</div>
+		</footer>
+	</article>
+</main>
+
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="Frank Silva avatar" src="/img/avatar.png" class="avatar" height="90" width="90">
+	</figure>
+	<div class="authorbox__header">
+		<span class="authorbox__name">About Frank Silva</span>
+	</div>
+	<div class="authorbox__description">
+		Pursue Consummate Coding.
+	</div>
+</div>
+
+<nav class="pager flex">
+	<div class="pager__item pager__item--prev">
+		<a class="pager__link" href="/post/idea-keyboard-shortcuts/" rel="prev">
+			<span class="pager__subtitle">«&thinsp;Previous</span>
+			<p class="pager__title">Idea Keyboard Shortcuts</p>
+		</a>
+	</div>
+	<div class="pager__item pager__item--next">
+		<a class="pager__link" href="/post/binary_search/" rel="next">
+			<span class="pager__subtitle">Next&thinsp;»</span>
+			<p class="pager__title">Binary Search</p>
+		</a>
+	</div>
+</nav>
+
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2023 Frank Silva.
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+<script src="/js/custom.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+</body>
+</html>

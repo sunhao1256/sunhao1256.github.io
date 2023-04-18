@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Go包管理 - Mainroad</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+		<meta property="og:title" content="Go包管理" />
+<meta property="og:description" content="Go 包管理 go mod init:初始化modules go mod download:下载modules到本地cache go mod edit:编辑go.mod文件，选项有-json、-require和-exclude，可以使用帮助go help mod edit go mod graph:以文本模式打印模块需求图 go mod tidy:检查，删除错误或者不使用的modules，下载没download的package go mod vendor:生成vendor目录 go mod verify:验证依赖是否正确 go mod why：查找依赖 ​ go test 执行一下，自动导包 ​ go list -m 主模块的打印路径 go list -m -f={{.Dir}} print主模块的根目录 go list -m all 查看当前的依赖和版本信息 " />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sunhao1256.github.io/post/go/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-01-11T14:43:18+08:00" />
+<meta property="article:modified_time" content="2022-01-11T14:43:18+08:00" />
+
+
+		<meta itemprop="name" content="Go包管理">
+<meta itemprop="description" content="Go 包管理 go mod init:初始化modules go mod download:下载modules到本地cache go mod edit:编辑go.mod文件，选项有-json、-require和-exclude，可以使用帮助go help mod edit go mod graph:以文本模式打印模块需求图 go mod tidy:检查，删除错误或者不使用的modules，下载没download的package go mod vendor:生成vendor目录 go mod verify:验证依赖是否正确 go mod why：查找依赖 ​ go test 执行一下，自动导包 ​ go list -m 主模块的打印路径 go list -m -f={{.Dir}} print主模块的根目录 go list -m all 查看当前的依赖和版本信息 "><meta itemprop="datePublished" content="2022-01-11T14:43:18+08:00" />
+<meta itemprop="dateModified" content="2022-01-11T14:43:18+08:00" />
+<meta itemprop="wordCount" content="48">
+<meta itemprop="keywords" content="学习," />
+		<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Go包管理"/>
+<meta name="twitter:description" content="Go 包管理 go mod init:初始化modules go mod download:下载modules到本地cache go mod edit:编辑go.mod文件，选项有-json、-require和-exclude，可以使用帮助go help mod edit go mod graph:以文本模式打印模块需求图 go mod tidy:检查，删除错误或者不使用的modules，下载没download的package go mod vendor:生成vendor目录 go mod verify:验证依赖是否正确 go mod why：查找依赖 ​ go test 执行一下，自动导包 ​ go list -m 主模块的打印路径 go list -m -f={{.Dir}} print主模块的根目录 go list -m all 查看当前的依赖和版本信息 "/>
+
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container header__container">
+		
+	<div class="logo logo--mixed">
+		<a class="logo__link" href="/" title="Mainroad" rel="home">
+			<div class="logo__item logo__imagebox">
+					<img class="logo__img" src="/img/placeholder.png">
+				</div><div class="logo__item logo__text">
+					<div class="logo__title">Mainroad</div>
+					<div class="logo__tagline">Just another site</div>
+				</div>
+		</a>
+	</div>
+		
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+	<ul class="menu__list">
+		<li class="menu__item">
+			<a class="menu__link" href="/about/">
+				
+				<span class="menu__text">About</span>
+				
+			</a>
+		</li>
+	</ul>
+</nav>
+
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">Go包管理</h1>
+			<div class="post__meta meta"><div class="meta__item-author meta__item">
+	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 12 16"><path d="M6 1c2.2 0 3.5 2 3.5 4.5C9.5 7 8.9 8.2 8 9c2.9.8 4 2.5 4 5v1H0v-1c0-2.5 1.1-4.2 4-5-.9-.8-1.5-2-1.5-3.5C2.5 3 3.8 1 6 1z"/></svg><span class="meta__text">Frank Silva</span>
+</div>
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg><time class="meta__text" datetime="2022-01-11T14:43:18&#43;08:00">2022-01-11</time></div></div>
+		</header>
+		<div class="content post__content clearfix">
+			<h1 id="go-包管理">Go 包管理</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">  <span style="color:#66d9ef">go</span> <span style="color:#a6e22e">mod</span> <span style="color:#a6e22e">init</span>:<span style="color:#a6e22e">初始化modules</span>
+  <span style="color:#66d9ef">go</span> <span style="color:#a6e22e">mod</span> <span style="color:#a6e22e">download</span>:<span style="color:#a6e22e">下载modules到本地cache</span>
+  <span style="color:#66d9ef">go</span> <span style="color:#a6e22e">mod</span> <span style="color:#a6e22e">edit</span>:<span style="color:#a6e22e">编辑go</span>.<span style="color:#a6e22e">mod文件</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">选项有</span><span style="color:#f92672">-</span><span style="color:#a6e22e">json</span><span style="color:#960050;background-color:#1e0010">、</span><span style="color:#f92672">-</span><span style="color:#a6e22e">require和</span><span style="color:#f92672">-</span><span style="color:#a6e22e">exclude</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">可以使用帮助go</span> <span style="color:#a6e22e">help</span> <span style="color:#a6e22e">mod</span> <span style="color:#a6e22e">edit</span>
+  <span style="color:#66d9ef">go</span> <span style="color:#a6e22e">mod</span> <span style="color:#a6e22e">graph</span>:<span style="color:#a6e22e">以文本模式打印模块需求图</span>
+  <span style="color:#66d9ef">go</span> <span style="color:#a6e22e">mod</span> <span style="color:#a6e22e">tidy</span>:<span style="color:#a6e22e">检查</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">删除错误或者不使用的modules</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">下载没download的package</span>
+  <span style="color:#66d9ef">go</span> <span style="color:#a6e22e">mod</span> <span style="color:#a6e22e">vendor</span>:<span style="color:#a6e22e">生成vendor目录</span>
+  <span style="color:#66d9ef">go</span> <span style="color:#a6e22e">mod</span> <span style="color:#a6e22e">verify</span>:<span style="color:#a6e22e">验证依赖是否正确</span>
+  <span style="color:#66d9ef">go</span> <span style="color:#a6e22e">mod</span> <span style="color:#a6e22e">why</span><span style="color:#960050;background-color:#1e0010">：</span><span style="color:#a6e22e">查找依赖</span>
+  <span style="color:#960050;background-color:#1e0010">​</span>
+  <span style="color:#66d9ef">go</span> <span style="color:#a6e22e">test</span>    <span style="color:#a6e22e">执行一下</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">自动导包</span>
+  <span style="color:#960050;background-color:#1e0010">​</span>
+  <span style="color:#66d9ef">go</span> <span style="color:#a6e22e">list</span> <span style="color:#f92672">-</span><span style="color:#a6e22e">m</span>  <span style="color:#a6e22e">主模块的打印路径</span>
+  <span style="color:#66d9ef">go</span> <span style="color:#a6e22e">list</span> <span style="color:#f92672">-</span><span style="color:#a6e22e">m</span> <span style="color:#f92672">-</span><span style="color:#a6e22e">f</span>={{.<span style="color:#a6e22e">Dir</span>}}  <span style="color:#a6e22e">print主模块的根目录</span>
+  <span style="color:#66d9ef">go</span> <span style="color:#a6e22e">list</span> <span style="color:#f92672">-</span><span style="color:#a6e22e">m</span> <span style="color:#a6e22e">all</span>  <span style="color:#a6e22e">查看当前的依赖和版本信息</span>
+</code></pre></div>
+		</div>
+		<footer class="post__footer">
+			
+<div class="post__tags tags clearfix">
+	<svg class="tags__badge icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a>
+		</li>
+	</ul>
+</div>
+		</footer>
+	</article>
+</main>
+
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="Frank Silva avatar" src="/img/avatar.png" class="avatar" height="90" width="90">
+	</figure>
+	<div class="authorbox__header">
+		<span class="authorbox__name">About Frank Silva</span>
+	</div>
+	<div class="authorbox__description">
+		Pursue Consummate Coding.
+	</div>
+</div>
+
+<nav class="pager flex">
+	<div class="pager__item pager__item--prev">
+		<a class="pager__link" href="/post/netty/" rel="prev">
+			<span class="pager__subtitle">«&thinsp;Previous</span>
+			<p class="pager__title">Netty</p>
+		</a>
+	</div>
+	<div class="pager__item pager__item--next">
+		<a class="pager__link" href="/post/git-command/" rel="next">
+			<span class="pager__subtitle">Next&thinsp;»</span>
+			<p class="pager__title">Git命令</p>
+		</a>
+	</div>
+</nav>
+
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2023 Frank Silva.
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+<script src="/js/custom.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+</body>
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Kubernetes Operator - Mainroad</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+		<meta property="og:title" content="Kubernetes Operator" />
+<meta property="og:description" content="Operator Operator is equivalent for Custom Resource definations (crds) with Custom Resource Controller (crc)
+Custom Resources  A resource is an endpoint in the Kubernetes API that stores a collection of API objects of a certain kind; for example, the built-in pods resource contains a collection of Pod objects.
+A custom resource is an extension of the Kubernetes API that is not necessarily available in a default Kubernetes installation. It represents a customization of a particular Kubernetes installation." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sunhao1256.github.io/post/kubernetes-operator/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-11-02T11:25:27+08:00" />
+<meta property="article:modified_time" content="2022-11-02T11:25:27+08:00" />
+
+
+		<meta itemprop="name" content="Kubernetes Operator">
+<meta itemprop="description" content="Operator Operator is equivalent for Custom Resource definations (crds) with Custom Resource Controller (crc)
+Custom Resources  A resource is an endpoint in the Kubernetes API that stores a collection of API objects of a certain kind; for example, the built-in pods resource contains a collection of Pod objects.
+A custom resource is an extension of the Kubernetes API that is not necessarily available in a default Kubernetes installation. It represents a customization of a particular Kubernetes installation."><meta itemprop="datePublished" content="2022-11-02T11:25:27+08:00" />
+<meta itemprop="dateModified" content="2022-11-02T11:25:27+08:00" />
+<meta itemprop="wordCount" content="359">
+<meta itemprop="keywords" content="kubernetes," />
+		<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Kubernetes Operator"/>
+<meta name="twitter:description" content="Operator Operator is equivalent for Custom Resource definations (crds) with Custom Resource Controller (crc)
+Custom Resources  A resource is an endpoint in the Kubernetes API that stores a collection of API objects of a certain kind; for example, the built-in pods resource contains a collection of Pod objects.
+A custom resource is an extension of the Kubernetes API that is not necessarily available in a default Kubernetes installation. It represents a customization of a particular Kubernetes installation."/>
+
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container header__container">
+		
+	<div class="logo logo--mixed">
+		<a class="logo__link" href="/" title="Mainroad" rel="home">
+			<div class="logo__item logo__imagebox">
+					<img class="logo__img" src="/img/placeholder.png">
+				</div><div class="logo__item logo__text">
+					<div class="logo__title">Mainroad</div>
+					<div class="logo__tagline">Just another site</div>
+				</div>
+		</a>
+	</div>
+		
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+	<ul class="menu__list">
+		<li class="menu__item">
+			<a class="menu__link" href="/about/">
+				
+				<span class="menu__text">About</span>
+				
+			</a>
+		</li>
+	</ul>
+</nav>
+
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">Kubernetes Operator</h1>
+			<div class="post__meta meta"><div class="meta__item-author meta__item">
+	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 12 16"><path d="M6 1c2.2 0 3.5 2 3.5 4.5C9.5 7 8.9 8.2 8 9c2.9.8 4 2.5 4 5v1H0v-1c0-2.5 1.1-4.2 4-5-.9-.8-1.5-2-1.5-3.5C2.5 3 3.8 1 6 1z"/></svg><span class="meta__text">Frank Silva</span>
+</div>
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg><time class="meta__text" datetime="2022-11-02T11:25:27&#43;08:00">2022-11-02</time></div></div>
+		</header>
+		<div class="content post__content clearfix">
+			<h1 id="operator">Operator</h1>
+<p>Operator is equivalent for  Custom Resource definations (crds) with  Custom Resource Controller (crc)</p>
+<h1 id="custom-resources">Custom Resources</h1>
+<blockquote>
+<p>A <em>resource</em> is an endpoint in the <a href="https://kubernetes.io/docs/concepts/overview/kubernetes-api/">Kubernetes API</a> that stores a collection of <a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/kubernetes-objects/">API objects</a> of a certain kind; for example, the built-in <em>pods</em> resource contains a collection of Pod objects.</p>
+<p>A <em>custom resource</em> is an extension of the Kubernetes API that is not necessarily available in a default Kubernetes installation. It represents a customization of a particular Kubernetes installation. However, many core Kubernetes functions are now built using custom resources, making Kubernetes more modular.</p>
+<p>Custom resources can appear and disappear in a running cluster through dynamic registration, and cluster admins can update custom resources independently of the cluster itself. Once a custom resource is installed, users can create and access its objects using <a href="https://kubernetes.io/docs/user-guide/kubectl-overview/">kubectl</a>, just as they do for built-in resources like <em>Pods</em>.</p>
+</blockquote>
+<h1 id="custom-controller">Custom Controller</h1>
+<blockquote>
+<p>on their own , custom resources let you store and retrieve structured data. When you combine a custom resource with a <em>custom controller</em>, custom resources provide a true <em>declarative API</em>.</p>
+<p>The Kubernetes <a href="https://kubernetes.io/docs/concepts/overview/kubernetes-api/">declarative API</a> enforces a separation of responsibilities. You declare the desired state of your resource. The Kubernetes controller keeps the current state of Kubernetes objects in sync with your declared desired state. This is in contrast to an imperative API, where you <em>instruct</em> a server what to do.</p>
+<p>You can deploy and update a custom controller on a running cluster, independently of the cluster&rsquo;s lifecycle. Custom controllers can work with any kind of resource, but they are especially effective when combined with custom resources. The <a href="https://kubernetes.io/docs/concepts/extend-kubernetes/operator/">Operator pattern</a> combines custom resources and custom controllers. You can use custom controllers to encode domain knowledge for specific applications into an extension of the Kubernetes API.</p>
+</blockquote>
+<h1 id="user-cases">User Cases</h1>
+<blockquote>
+<p>CustomResourceDefinitions can be used to implement custom resource types for your Kubernetes cluster. These act like most other Resources in Kubernetes, and may be <code>kubectl apply</code>&rsquo;d, etc.</p>
+<p>Some example use cases:</p>
+<ul>
+<li>Provisioning/Management of external datastores/databases (eg. CloudSQL/RDS instances)</li>
+<li>Higher level abstractions around Kubernetes primitives (eg. a single Resource to define an etcd cluster, backed by a Service and a ReplicationController)</li>
+</ul>
+</blockquote>
+<h1 id="kubedb">KubeDB</h1>
+<p>one of User Cases for Provisioning/Management of external datastores/databases</p>
+
+		</div>
+		<footer class="post__footer">
+			
+<div class="post__tags tags clearfix">
+	<svg class="tags__badge icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/kubernetes/" rel="tag">kubernetes</a>
+		</li>
+	</ul>
+</div>
+		</footer>
+	</article>
+</main>
+
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="Frank Silva avatar" src="/img/avatar.png" class="avatar" height="90" width="90">
+	</figure>
+	<div class="authorbox__header">
+		<span class="authorbox__name">About Frank Silva</span>
+	</div>
+	<div class="authorbox__description">
+		Pursue Consummate Coding.
+	</div>
+</div>
+
+<nav class="pager flex">
+	<div class="pager__item pager__item--prev">
+		<a class="pager__link" href="/post/synchronous-queue/" rel="prev">
+			<span class="pager__subtitle">«&thinsp;Previous</span>
+			<p class="pager__title">Synchronous Queue</p>
+		</a>
+	</div>
+	<div class="pager__item pager__item--next">
+		<a class="pager__link" href="/post/kubernetes-nice-article/" rel="next">
+			<span class="pager__subtitle">Next&thinsp;»</span>
+			<p class="pager__title">Kubernetes Nice Article</p>
+		</a>
+	</div>
+</nav>
+
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2023 Frank Silva.
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+<script src="/js/custom.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+</body>
+</html>
