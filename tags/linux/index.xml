@@ -18,6 +18,22 @@
     
     <item>
       <title>VIM Keyboard Shortcuts</title>
+      <link>https://sunhao1256.github.io/post/tmux-cheatsheet/</link>
+      <pubDate>Wed, 07 Sep 2022 13:14:35 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/tmux-cheatsheet/</guid>
+      <description>tmux shortcuts &amp;amp; cheatsheet start new:
+tmux  start new with session name:
+tmux new -s myname  attach:
+tmux a # (or at, or attach)  attach to named:
+tmux a -t myname  list sessions:
+tmux ls  kill session:
+tmux kill-session -t myname  Kill all the tmux sessions:
+tmux ls | grep : | cut -d. -f1 | awk &#39;{print substr($1, 0, length($1)-1)}&#39; | xargs kill  In tmux, hit the prefix ctrl+b (my modified prefix is ctrl+a) and then:</description>
+    </item>
+    
+    <item>
+      <title>VIM Keyboard Shortcuts</title>
       <link>https://sunhao1256.github.io/post/vim_keyboard_shortcuts/</link>
       <pubDate>Wed, 07 Sep 2022 13:14:35 +0800</pubDate>
       
