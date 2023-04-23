@@ -80,6 +80,33 @@
 	
 	<header class="list__header">
 		<h2 class="list__title post__title">
+			<a href="/post/tmux-cheatsheet/" rel="bookmark">
+			tmux shortcuts
+			</a>
+		</h2>
+		<div class="list__meta meta"><div class="meta__item-author meta__item">
+	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 12 16"><path d="M6 1c2.2 0 3.5 2 3.5 4.5C9.5 7 8.9 8.2 8 9c2.9.8 4 2.5 4 5v1H0v-1c0-2.5 1.1-4.2 4-5-.9-.8-1.5-2-1.5-3.5C2.5 3 3.8 1 6 1z"/></svg><span class="meta__text">Frank Silva</span>
+</div>
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg><time class="meta__text" datetime="2023-04-23T00:00:00Z">2023-04-23</time></div></div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+		tmux shortcuts &amp; cheatsheet start new:
+tmux  start new with session name:
+tmux new -s myname  attach:
+tmux a # (or at, or attach)  attach to named:
+tmux a -t myname  list sessions:
+tmux ls  kill session:
+tmux kill-session -t myname  Kill all the tmux sessions:
+tmux ls | grep : | cut -d. -f1 | awk '{print substr($1, 0, length($1)-1)}' | xargs kill  In tmux, hit the prefix ctrl+b (my modified prefix is ctrl+a) and then:
+	</div>
+	<div class="list__footer clearfix">
+		<a class="list__footer-readmore btn" href="/post/tmux-cheatsheet/">Read more…</a>
+	</div>
+</article><article class="list__item post">
+	
+	<header class="list__header">
+		<h2 class="list__title post__title">
 			<a href="/post/k8s-client-informer%E6%9C%BA%E5%88%B6/" rel="bookmark">
 			K8s Client Informer mechanism
 			</a>
@@ -269,31 +296,6 @@ package io_stream; import org.apache.tomcat.util.http.fileupload.IOUtils; import
 	<div class="content list__excerpt post__content clearfix">
 		
 	</div>
-</article><article class="list__item post">
-	
-	<header class="list__header">
-		<h2 class="list__title post__title">
-			<a href="/post/types-of-binary-tree/" rel="bookmark">
-			Types of Binary Tree
-			</a>
-		</h2>
-		<div class="list__meta meta"><div class="meta__item-author meta__item">
-	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 12 16"><path d="M6 1c2.2 0 3.5 2 3.5 4.5C9.5 7 8.9 8.2 8 9c2.9.8 4 2.5 4 5v1H0v-1c0-2.5 1.1-4.2 4-5-.9-.8-1.5-2-1.5-3.5C2.5 3 3.8 1 6 1z"/></svg><span class="meta__text">Frank Silva</span>
-</div>
-<div class="meta__item-datetime meta__item">
-	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg><time class="meta__text" datetime="2022-10-19T15:31:44&#43;08:00">2022-10-19</time></div></div>
-	</header>
-	<div class="content list__excerpt post__content clearfix">
-		translated from https://www.geeksforgeeks.org/binary-tree-set-3-types-of-binary-tree/?ref=gcse
- The following are common types of Binary Trees.
- 以下是常见的二叉树类型
- Full Binary Tree A Binary Tree is a full binary tree if every node has 0 or 2 children. The following are the examples of a full binary tree. We can also say a full binary tree is a binary tree in which all nodes except leaf nodes have two children.
- 如果一棵树上所有节点都有0或者2个孩子节点，则称为满二叉树，下面是一个满二叉树的事例，我们也可以看到一棵满二叉树实际上是一个除了叶子节点其他节点都有2个孩子的二叉树
- A full Binary tree is a special type of binary tree in which every parent node/internal node has either two or no children.
-	</div>
-	<div class="list__footer clearfix">
-		<a class="list__footer-readmore btn" href="/post/types-of-binary-tree/">Read more…</a>
-	</div>
 </article>
 </main>
 
@@ -316,11 +318,11 @@ package io_stream; import org.apache.tomcat.util.http.fileupload.IOUtils; import
 	<h4 class="widget__title">Recent Posts</h4>
 	<div class="widget__content">
 		<ul class="widget__list">
+			<li class="widget__item"><a class="widget__link" href="/post/tmux-cheatsheet/">tmux shortcuts</a></li>
 			<li class="widget__item"><a class="widget__link" href="/post/k8s-client-informer%E6%9C%BA%E5%88%B6/">K8s Client Informer mechanism</a></li>
 			<li class="widget__item"><a class="widget__link" href="/post/oa-roadmap/">OaRoadmap</a></li>
 			<li class="widget__item"><a class="widget__link" href="/post/kubernetes-nice-article/">Kubernetes Nice Article</a></li>
 			<li class="widget__item"><a class="widget__link" href="/post/kubernetes-operator/">Kubernetes Operator</a></li>
-			<li class="widget__item"><a class="widget__link" href="/post/synchronous-queue/">Synchronous Queue</a></li>
 		</ul>
 	</div>
 </div>

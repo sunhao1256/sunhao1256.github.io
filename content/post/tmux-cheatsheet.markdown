@@ -1,6 +1,6 @@
 ---
-title: "VIM Keyboard Shortcuts"
-date: 2022-09-07T13:14:35+08:00
+title: "tmux shortcuts"
+date: "2023-04-23"
 tags: ['Linux']
 ---
 
