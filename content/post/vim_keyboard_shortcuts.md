@@ -246,3 +246,12 @@ T{char}                 Till after [count]'th occurrence of {char} to the
 ```
 :set matchpairs+=<:>
 ```
+
+
+
+
+
+## VIm Tab Multiple Lines
+
+- Enter visual Model
+- Shift+dot  (ie, ".")
