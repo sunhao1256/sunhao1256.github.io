@@ -459,7 +459,7 @@ SpringBoot在SpringBoot的run方法里，完成了一些列工作。
 - @Transactional属性有
   - transactionManager指明事务管理器，在多数据源的时候，需要指明
   - propagation传播行为默认是Propagation.REQUIRED，即当前如果存在事务，则用同一个事务，否则开启一个新事务
-  - isolation隔离级别，默认是数据库的隔离级别，mysql默认时可重复度，幻读是通过MVCC和间隙锁解决的
+  - isolation隔离级别，默认是数据库的隔离级别，mysql默认时可重复读，幻读是通过MVCC和间隙锁解决的
   - timeout超时时间
   - readOnly是否只读
   - rollbackFor发生什么异常才会会滚，默认是RuntimeException
