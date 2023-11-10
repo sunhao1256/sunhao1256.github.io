@@ -80,6 +80,32 @@
 	
 	<header class="list__header">
 		<h2 class="list__title post__title">
+			<a href="/post/java-io/" rel="bookmark">
+			Java Io
+			</a>
+		</h2>
+		<div class="list__meta meta"><div class="meta__item-author meta__item">
+	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 12 16"><path d="M6 1c2.2 0 3.5 2 3.5 4.5C9.5 7 8.9 8.2 8 9c2.9.8 4 2.5 4 5v1H0v-1c0-2.5 1.1-4.2 4-5-.9-.8-1.5-2-1.5-3.5C2.5 3 3.8 1 6 1z"/></svg><span class="meta__text">Frank Silva</span>
+</div>
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg><time class="meta__text" datetime="2023-11-10T17:14:11&#43;08:00">2023-11-10</time></div></div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+		IO流 字节流 InputStream，OutStream 字节为单位
+字符流 Writer，Reader 字符为单位，java使用的是unicode编码，一个char字符是2个字节大小。
+为什么要字符流？因为中文或者其他语言在转换为byte字节的时候，可以能乱码等原因导致的。所以需要字符流，更方便操作字符即字符串，所以我们如果只需要输出文字的话，最好用字符流
+包装流，Buffered 包装流，其实类似代理，即例如BufferedInputStream会包装原始的InputStream，为其准备个缓存，当read的时候，会直接从系统内核，读取默认的8192的字节数组，将其填充满。
+为什么要Buffer，即为什么要这个样的一个数组？为了减少与系统的IO次数
+看下面这个例子，写一个20MB的文件
+public class OutputStreamDemo { public static void main(String[] args) { String filePath = &#34;/Users/zero/Downloads/OutputStream.txt&#34;; File file = new File(filePath); try { FileOutputStream outputStream = new FileOutputStream(file); long start = System.currentTimeMillis(); int total = 20 * 1000 * 1000; while (total &gt; 0) { total--; //一个一个的byte写  outputStream.write(1); } System.out.println(&#34;cost:&#34; + (System.currentTimeMillis() - start)); outputStream.close(); } catch (IOException e) { throw new RuntimeException(e); } } } Connected to the target VM, address: &#39;127.
+	</div>
+	<div class="list__footer clearfix">
+		<a class="list__footer-readmore btn" href="/post/java-io/">Read more…</a>
+	</div>
+</article><article class="list__item post">
+	
+	<header class="list__header">
+		<h2 class="list__title post__title">
 			<a href="/post/tmux-cheatsheet/" rel="bookmark">
 			tmux shortcuts
 			</a>
@@ -279,23 +305,6 @@ package io_stream; import org.apache.tomcat.util.http.fileupload.IOUtils; import
 	<div class="list__footer clearfix">
 		<a class="list__footer-readmore btn" href="/post/java-how-to-write-file/">Read more…</a>
 	</div>
-</article><article class="list__item post">
-	
-	<header class="list__header">
-		<h2 class="list__title post__title">
-			<a href="/post/dictionary-tree/" rel="bookmark">
-			Dictionary Tree
-			</a>
-		</h2>
-		<div class="list__meta meta"><div class="meta__item-author meta__item">
-	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 12 16"><path d="M6 1c2.2 0 3.5 2 3.5 4.5C9.5 7 8.9 8.2 8 9c2.9.8 4 2.5 4 5v1H0v-1c0-2.5 1.1-4.2 4-5-.9-.8-1.5-2-1.5-3.5C2.5 3 3.8 1 6 1z"/></svg><span class="meta__text">Frank Silva</span>
-</div>
-<div class="meta__item-datetime meta__item">
-	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg><time class="meta__text" datetime="2022-10-20T08:55:22&#43;08:00">2022-10-20</time></div></div>
-	</header>
-	<div class="content list__excerpt post__content clearfix">
-		
-	</div>
 </article>
 </main>
 
@@ -318,11 +327,11 @@ package io_stream; import org.apache.tomcat.util.http.fileupload.IOUtils; import
 	<h4 class="widget__title">Recent Posts</h4>
 	<div class="widget__content">
 		<ul class="widget__list">
+			<li class="widget__item"><a class="widget__link" href="/post/java-io/">Java Io</a></li>
 			<li class="widget__item"><a class="widget__link" href="/post/tmux-cheatsheet/">tmux shortcuts</a></li>
 			<li class="widget__item"><a class="widget__link" href="/post/k8s-client-informer%E6%9C%BA%E5%88%B6/">K8s Client Informer mechanism</a></li>
 			<li class="widget__item"><a class="widget__link" href="/post/oa-roadmap/">OaRoadmap</a></li>
 			<li class="widget__item"><a class="widget__link" href="/post/kubernetes-nice-article/">Kubernetes Nice Article</a></li>
-			<li class="widget__item"><a class="widget__link" href="/post/kubernetes-operator/">Kubernetes Operator</a></li>
 		</ul>
 	</div>
 </div>

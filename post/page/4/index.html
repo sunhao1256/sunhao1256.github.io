@@ -81,6 +81,45 @@
 	
 	<header class="list__header">
 		<h2 class="list__title post__title">
+			<a href="/post/mac%E4%BD%BF%E7%94%A8/" rel="bookmark">
+			mac使用
+			</a>
+		</h2>
+		<div class="list__meta meta"><div class="meta__item-author meta__item">
+	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 12 16"><path d="M6 1c2.2 0 3.5 2 3.5 4.5C9.5 7 8.9 8.2 8 9c2.9.8 4 2.5 4 5v1H0v-1c0-2.5 1.1-4.2 4-5-.9-.8-1.5-2-1.5-3.5C2.5 3 3.8 1 6 1z"/></svg><span class="meta__text">Frank Silva</span>
+</div>
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg><time class="meta__text" datetime="2022-06-20T16:57:01&#43;08:00">2022-06-20</time></div></div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+		快捷键   Finder绝对路径跳转
+command+shift+G
+  Finder绝对路径复制
+command+option+C
+  表情
+control+cmmand+space
+  录屏
+Shift-Command-5
+  截图
+command shift 4局部，3全屏
+  只显示桌面
+command f3
+  finder
+option+command+空格
+  space+command
+打开聚焦搜索，按住command再点击结果，是进入文件夹
+  from current terminal open finder
+tap open   环境变量 加载顺序
+/etc/profile /etc/paths ~/.zprofile ~/.zshrc /etc/profile和/etc/paths是系统级别的，系统启动就会加载，zprofile是用户级别的 ~/.zshrc没有上述规则，它是zsh shell打开的时候载入的。
+# System-wide .profile for sh(1) if [ -x /usr/libexec/path_helper ]; then eval `/usr/libexec/path_helper -s` fi if [ &#34;${BASH-no}&#34; !
+	</div>
+	<div class="list__footer clearfix">
+		<a class="list__footer-readmore btn" href="/post/mac%E4%BD%BF%E7%94%A8/">Read more…</a>
+	</div>
+</article><article class="list__item post">
+	
+	<header class="list__header">
+		<h2 class="list__title post__title">
 			<a href="/post/git-command/" rel="bookmark">
 			Git命令
 			</a>
@@ -302,41 +341,29 @@ Redis 的集合相当于 Java 语言中的 HashSet，它内部的键值对是无
 	
 	<header class="list__header">
 		<h2 class="list__title post__title">
-			<a href="/post/copyonarrayset/" rel="bookmark">
-			CopyonArraySet
+			<a href="/post/self-interview/" rel="bookmark">
+			自我面试
 			</a>
 		</h2>
 		<div class="list__meta meta"><div class="meta__item-author meta__item">
 	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 12 16"><path d="M6 1c2.2 0 3.5 2 3.5 4.5C9.5 7 8.9 8.2 8 9c2.9.8 4 2.5 4 5v1H0v-1c0-2.5 1.1-4.2 4-5-.9-.8-1.5-2-1.5-3.5C2.5 3 3.8 1 6 1z"/></svg><span class="meta__text">Frank Silva</span>
 </div>
 <div class="meta__item-datetime meta__item">
-	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg><time class="meta__text" datetime="2021-10-18T22:16:25&#43;08:00">2021-10-18</time></div></div>
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg><time class="meta__text" datetime="2022-01-11T14:43:18&#43;08:00">2022-01-11</time></div></div>
 	</header>
 	<div class="content list__excerpt post__content clearfix">
-		源码 public class CopyOnWriteArraySet&lt;E&gt; extends AbstractSet&lt;E&gt; implements java.io.Serializable { private static final long serialVersionUID = 5457747651344034263L; // 内部使用CopyOnWriteArrayList存储元素  private final CopyOnWriteArrayList&lt;E&gt; al; // 构造方法  public CopyOnWriteArraySet() { al = new CopyOnWriteArrayList&lt;E&gt;(); } // 将集合c中的元素初始化到CopyOnWriteArraySet中  public CopyOnWriteArraySet(Collection&lt;? extends E&gt; c) { if (c.getClass() == CopyOnWriteArraySet.class) { // 如果c是CopyOnWriteArraySet类型，说明没有重复元素，  // 直接调用CopyOnWriteArrayList的构造方法初始化  @SuppressWarnings(&#34;unchecked&#34;) CopyOnWriteArraySet&lt;E&gt; cc = (CopyOnWriteArraySet&lt;E&gt;)c; al = new CopyOnWriteArrayList&lt;E&gt;(cc.al); } else { // 如果c不是CopyOnWriteArraySet类型，说明有重复元素  // 调用CopyOnWriteArrayList的addAllAbsent()方法初始化  // 它会把重复元素排除掉  al = new CopyOnWriteArrayList&lt;E&gt;(); al.
+		golang 和 java区别    内存溢出和内存泄露区别
+ 怎么排查    用过什么消息队列？
+  说下消息队列存在的意义
+异步，削峰，解耦
+  如何解决消息按顺序消费
+首先，消息队列一大优势是异步，如果需要按顺序消费，则会变成同步，导致吞吐量下降，要确认是否一定需要顺序。
+  rabbitmq的几个概念
+Exchange： 消息交换机，它指定消息按什么规则，路由到哪个队列
+ Fanout、Direct和Topic Fanout Exchange 会忽略 RoutingKey 的设置，直接将 Message 广播到所有绑定的 Queue 中。 Direct Exchange 是 RabbitMQ 默认的 Exchange，完全根据 RoutingKey 来路由消息。设置 Exchange 和 Queue 的 Binding 时需指定 RoutingKey（一般为 Queue Name），发消息时也指定一样的 RoutingKey，消息就会被路由到对应的Queue。 Topic Exchange 和 Direct Exchange 类似，也需要通过 RoutingKey 来路由消息，区别在于Direct Exchange 对 RoutingKey 是精确匹配，而 Topic Exchange 支持模糊匹配。分别支持*和#通配符，*表示匹配一个单词，#则表示匹配没有或者多个单词。  Queue： 消息队列载体，每个消息都会被投入到一个或多个队列
 	</div>
 	<div class="list__footer clearfix">
-		<a class="list__footer-readmore btn" href="/post/copyonarrayset/">Read more…</a>
-	</div>
-</article><article class="list__item post">
-	
-	<header class="list__header">
-		<h2 class="list__title post__title">
-			<a href="/post/hashset/" rel="bookmark">
-			Hashset
-			</a>
-		</h2>
-		<div class="list__meta meta"><div class="meta__item-author meta__item">
-	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 12 16"><path d="M6 1c2.2 0 3.5 2 3.5 4.5C9.5 7 8.9 8.2 8 9c2.9.8 4 2.5 4 5v1H0v-1c0-2.5 1.1-4.2 4-5-.9-.8-1.5-2-1.5-3.5C2.5 3 3.8 1 6 1z"/></svg><span class="meta__text">Frank Silva</span>
-</div>
-<div class="meta__item-datetime meta__item">
-	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg><time class="meta__text" datetime="2021-10-18T21:42:09&#43;08:00">2021-10-18</time></div></div>
-	</header>
-	<div class="content list__excerpt post__content clearfix">
-		属性 // 内部使用HashMap  private transient HashMap&lt;E,Object&gt; map; // 虚拟对象，用来作为value放到map中  private static final Object PRESENT = new Object(); 构造方法 public HashSet() { map = new HashMap&lt;&gt;(); } public HashSet(Collection&lt;? extends E&gt; c) { map = new HashMap&lt;&gt;(Math.max((int) (c.size()/.75f) + 1, 16)); addAll(c); } public HashSet(int initialCapacity, float loadFactor) { map = new HashMap&lt;&gt;(initialCapacity, loadFactor); } public HashSet(int initialCapacity) { map = new HashMap&lt;&gt;(initialCapacity); } // 非public，主要是给LinkedHashSet使用的 HashSet(int initialCapacity, float loadFactor, boolean dummy) { map = new LinkedHashMap&lt;&gt;(initialCapacity, loadFactor); } - public :表明该成员变量或者方法是对所有类或者对象都是可见的,所有类或者对象都可以直接访问 - private:表明该成员变量或者方法是私有的,只有当前类对其具有访问权限,除此之外其他类或者对象都没有访问权限.
-	</div>
-	<div class="list__footer clearfix">
-		<a class="list__footer-readmore btn" href="/post/hashset/">Read more…</a>
+		<a class="list__footer-readmore btn" href="/post/self-interview/">Read more…</a>
 	</div>
 </article>
 </main>
@@ -362,11 +389,11 @@ Redis 的集合相当于 Java 语言中的 HashSet，它内部的键值对是无
 	<h4 class="widget__title">Recent Posts</h4>
 	<div class="widget__content">
 		<ul class="widget__list">
+			<li class="widget__item"><a class="widget__link" href="/post/java-io/">Java Io</a></li>
 			<li class="widget__item"><a class="widget__link" href="/post/tmux-cheatsheet/">tmux shortcuts</a></li>
 			<li class="widget__item"><a class="widget__link" href="/post/k8s-client-informer%E6%9C%BA%E5%88%B6/">K8s Client Informer mechanism</a></li>
 			<li class="widget__item"><a class="widget__link" href="/post/oa-roadmap/">OaRoadmap</a></li>
 			<li class="widget__item"><a class="widget__link" href="/post/kubernetes-nice-article/">Kubernetes Nice Article</a></li>
-			<li class="widget__item"><a class="widget__link" href="/post/kubernetes-operator/">Kubernetes Operator</a></li>
 		</ul>
 	</div>
 </div>

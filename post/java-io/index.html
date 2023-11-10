@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Java Io - Lulu</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+		<meta property="og:title" content="Java Io" />
+<meta property="og:description" content="IO流 字节流 InputStream，OutStream 字节为单位
+字符流 Writer，Reader 字符为单位，java使用的是unicode编码，一个char字符是2个字节大小。
+为什么要字符流？因为中文或者其他语言在转换为byte字节的时候，可以能乱码等原因导致的。所以需要字符流，更方便操作字符即字符串，所以我们如果只需要输出文字的话，最好用字符流
+包装流，Buffered 包装流，其实类似代理，即例如BufferedInputStream会包装原始的InputStream，为其准备个缓存，当read的时候，会直接从系统内核，读取默认的8192的字节数组，将其填充满。
+为什么要Buffer，即为什么要这个样的一个数组？为了减少与系统的IO次数
+看下面这个例子，写一个20MB的文件
+public class OutputStreamDemo { public static void main(String[] args) { String filePath = &#34;/Users/zero/Downloads/OutputStream.txt&#34;; File file = new File(filePath); try { FileOutputStream outputStream = new FileOutputStream(file); long start = System.currentTimeMillis(); int total = 20 * 1000 * 1000; while (total &gt; 0) { total--; //一个一个的byte写  outputStream.write(1); } System.out.println(&#34;cost:&#34; &#43; (System.currentTimeMillis() - start)); outputStream.close(); } catch (IOException e) { throw new RuntimeException(e); } } } Connected to the target VM, address: &#39;127." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sunhao1256.github.io/post/java-io/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2023-11-10T17:14:11+08:00" />
+<meta property="article:modified_time" content="2023-11-10T17:14:11+08:00" />
+
+
+		<meta itemprop="name" content="Java Io">
+<meta itemprop="description" content="IO流 字节流 InputStream，OutStream 字节为单位
+字符流 Writer，Reader 字符为单位，java使用的是unicode编码，一个char字符是2个字节大小。
+为什么要字符流？因为中文或者其他语言在转换为byte字节的时候，可以能乱码等原因导致的。所以需要字符流，更方便操作字符即字符串，所以我们如果只需要输出文字的话，最好用字符流
+包装流，Buffered 包装流，其实类似代理，即例如BufferedInputStream会包装原始的InputStream，为其准备个缓存，当read的时候，会直接从系统内核，读取默认的8192的字节数组，将其填充满。
+为什么要Buffer，即为什么要这个样的一个数组？为了减少与系统的IO次数
+看下面这个例子，写一个20MB的文件
+public class OutputStreamDemo { public static void main(String[] args) { String filePath = &#34;/Users/zero/Downloads/OutputStream.txt&#34;; File file = new File(filePath); try { FileOutputStream outputStream = new FileOutputStream(file); long start = System.currentTimeMillis(); int total = 20 * 1000 * 1000; while (total &gt; 0) { total--; //一个一个的byte写  outputStream.write(1); } System.out.println(&#34;cost:&#34; &#43; (System.currentTimeMillis() - start)); outputStream.close(); } catch (IOException e) { throw new RuntimeException(e); } } } Connected to the target VM, address: &#39;127."><meta itemprop="datePublished" content="2023-11-10T17:14:11+08:00" />
+<meta itemprop="dateModified" content="2023-11-10T17:14:11+08:00" />
+<meta itemprop="wordCount" content="168">
+<meta itemprop="keywords" content="java," />
+		<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Java Io"/>
+<meta name="twitter:description" content="IO流 字节流 InputStream，OutStream 字节为单位
+字符流 Writer，Reader 字符为单位，java使用的是unicode编码，一个char字符是2个字节大小。
+为什么要字符流？因为中文或者其他语言在转换为byte字节的时候，可以能乱码等原因导致的。所以需要字符流，更方便操作字符即字符串，所以我们如果只需要输出文字的话，最好用字符流
+包装流，Buffered 包装流，其实类似代理，即例如BufferedInputStream会包装原始的InputStream，为其准备个缓存，当read的时候，会直接从系统内核，读取默认的8192的字节数组，将其填充满。
+为什么要Buffer，即为什么要这个样的一个数组？为了减少与系统的IO次数
+看下面这个例子，写一个20MB的文件
+public class OutputStreamDemo { public static void main(String[] args) { String filePath = &#34;/Users/zero/Downloads/OutputStream.txt&#34;; File file = new File(filePath); try { FileOutputStream outputStream = new FileOutputStream(file); long start = System.currentTimeMillis(); int total = 20 * 1000 * 1000; while (total &gt; 0) { total--; //一个一个的byte写  outputStream.write(1); } System.out.println(&#34;cost:&#34; &#43; (System.currentTimeMillis() - start)); outputStream.close(); } catch (IOException e) { throw new RuntimeException(e); } } } Connected to the target VM, address: &#39;127."/>
+
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container header__container">
+		
+	<div class="logo logo--mixed">
+		<a class="logo__link" href="/" title="Lulu" rel="home">
+			<div class="logo__item logo__imagebox">
+					<img class="logo__img" src="/img/placeholder.png">
+				</div><div class="logo__item logo__text">
+					<div class="logo__title">Lulu</div>
+					<div class="logo__tagline">Lulu is arrongant cat</div>
+				</div>
+		</a>
+	</div>
+		
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+	<ul class="menu__list">
+		<li class="menu__item">
+			<a class="menu__link" href="/about/">
+				
+				<span class="menu__text">About</span>
+				
+			</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/k8s-client-informer%E6%9C%BA%E5%88%B6/">
+				
+				<span class="menu__text">K8s Client Informer mechanism</span>
+				
+			</a>
+		</li>
+	</ul>
+</nav>
+
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">Java Io</h1>
+			<div class="post__meta meta"><div class="meta__item-author meta__item">
+	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 12 16"><path d="M6 1c2.2 0 3.5 2 3.5 4.5C9.5 7 8.9 8.2 8 9c2.9.8 4 2.5 4 5v1H0v-1c0-2.5 1.1-4.2 4-5-.9-.8-1.5-2-1.5-3.5C2.5 3 3.8 1 6 1z"/></svg><span class="meta__text">Frank Silva</span>
+</div>
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg><time class="meta__text" datetime="2023-11-10T17:14:11&#43;08:00">2023-11-10</time></div></div>
+		</header>
+		
+<div class="post__toc toc">
+	<div class="toc__title">Page content</div>
+	<div class="toc__menu">
+		<nav id="TableOfContents">
+  <ul>
+    <li><a href="#字节流-inputstreamoutstream">字节流 InputStream，OutStream</a></li>
+    <li><a href="#字符流-writerreader">字符流 Writer，Reader</a></li>
+    <li><a href="#包装流buffered">包装流，Buffered</a></li>
+  </ul>
+</nav>
+	</div>
+</div><div class="content post__content clearfix">
+			<h1 id="io流">IO流</h1>
+<h2 id="字节流-inputstreamoutstream">字节流 InputStream，OutStream</h2>
+<p>字节为单位</p>
+<h2 id="字符流-writerreader">字符流 Writer，Reader</h2>
+<p>字符为单位，java使用的是unicode编码，一个char字符是2个字节大小。</p>
+<p>为什么要字符流？因为中文或者其他语言在转换为byte字节的时候，可以能乱码等原因导致的。所以需要字符流，更方便操作字符即字符串，所以我们如果只需要输出文字的话，最好用字符流</p>
+<h2 id="包装流buffered">包装流，Buffered</h2>
+<p>包装流，其实类似代理，即例如BufferedInputStream会包装原始的InputStream，为其准备个缓存，当read的时候，会直接从系统内核，读取默认的8192的字节数组，将其填充满。</p>
+<p>为什么要Buffer，即为什么要这个样的一个数组？<em><strong>为了减少与系统的IO次数</strong></em></p>
+<p>看下面这个例子，写一个20MB的文件</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">OutputStreamDemo</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        String filePath <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/Users/zero/Downloads/OutputStream.txt&#34;</span><span style="color:#f92672">;</span>
+        File file <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> File<span style="color:#f92672">(</span>filePath<span style="color:#f92672">);</span>
+
+        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+            FileOutputStream outputStream <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> FileOutputStream<span style="color:#f92672">(</span>file<span style="color:#f92672">);</span>
+            
+
+            <span style="color:#66d9ef">long</span> start <span style="color:#f92672">=</span> System<span style="color:#f92672">.</span><span style="color:#a6e22e">currentTimeMillis</span><span style="color:#f92672">();</span>
+            <span style="color:#66d9ef">int</span> total <span style="color:#f92672">=</span> 20 <span style="color:#f92672">*</span> 1000 <span style="color:#f92672">*</span> 1000<span style="color:#f92672">;</span>
+            <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>total <span style="color:#f92672">&gt;</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                total<span style="color:#f92672">--;</span>
+              <span style="color:#75715e">//一个一个的byte写
+</span><span style="color:#75715e"></span>                outputStream<span style="color:#f92672">.</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>1<span style="color:#f92672">);</span>
+            <span style="color:#f92672">}</span>
+
+            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;cost:&#34;</span> <span style="color:#f92672">+</span> <span style="color:#f92672">(</span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">currentTimeMillis</span><span style="color:#f92672">()</span> <span style="color:#f92672">-</span> start<span style="color:#f92672">));</span>
+            outputStream<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
+
+        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>IOException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> RuntimeException<span style="color:#f92672">(</span>e<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Connected to the target VM<span style="color:#f92672">,</span> address<span style="color:#f92672">:</span> <span style="color:#960050;background-color:#1e0010">&#39;</span>127<span style="color:#f92672">.</span><span style="color:#a6e22e">0</span><span style="color:#f92672">.</span><span style="color:#a6e22e">0</span><span style="color:#f92672">.</span><span style="color:#a6e22e">1</span><span style="color:#f92672">:</span>57150<span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#f92672">,</span> transport<span style="color:#f92672">:</span> <span style="color:#960050;background-color:#1e0010">&#39;</span>socket<span style="color:#960050;background-color:#1e0010">&#39;</span>
+cost:34082  <span style="color:#75715e">//写了34秒
+</span></code></pre></div><p>通过buffered包装类</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">OutputStreamDemo</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        String filePath <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/Users/zero/Downloads/OutputStream.txt&#34;</span><span style="color:#f92672">;</span>
+        File file <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> File<span style="color:#f92672">(</span>filePath<span style="color:#f92672">);</span>
+
+        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+            FileOutputStream outputStream <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> FileOutputStream<span style="color:#f92672">(</span>file<span style="color:#f92672">);</span>
+            BufferedOutputStream bufferedOutputStream <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> BufferedOutputStream<span style="color:#f92672">(</span>outputStream<span style="color:#f92672">);</span>
+
+            <span style="color:#66d9ef">long</span> start <span style="color:#f92672">=</span> System<span style="color:#f92672">.</span><span style="color:#a6e22e">currentTimeMillis</span><span style="color:#f92672">();</span>
+            <span style="color:#66d9ef">int</span> total <span style="color:#f92672">=</span> 20 <span style="color:#f92672">*</span> 1000 <span style="color:#f92672">*</span> 1000<span style="color:#f92672">;</span>
+            <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>total <span style="color:#f92672">&gt;</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                total<span style="color:#f92672">--;</span>
+                bufferedOutputStream<span style="color:#f92672">.</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>1<span style="color:#f92672">);</span>
+            <span style="color:#f92672">}</span>
+
+            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;cost:&#34;</span> <span style="color:#f92672">+</span> <span style="color:#f92672">(</span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">currentTimeMillis</span><span style="color:#f92672">()</span> <span style="color:#f92672">-</span> start<span style="color:#f92672">));</span>
+            bufferedOutputStream<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
+
+        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>IOException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> RuntimeException<span style="color:#f92672">(</span>e<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Connected to the target VM<span style="color:#f92672">,</span> address<span style="color:#f92672">:</span> <span style="color:#960050;background-color:#1e0010">&#39;</span>127<span style="color:#f92672">.</span><span style="color:#a6e22e">0</span><span style="color:#f92672">.</span><span style="color:#a6e22e">0</span><span style="color:#f92672">.</span><span style="color:#a6e22e">1</span><span style="color:#f92672">:</span>57293<span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#f92672">,</span> transport<span style="color:#f92672">:</span> <span style="color:#960050;background-color:#1e0010">&#39;</span>socket<span style="color:#960050;background-color:#1e0010">&#39;</span>
+cost:205 <span style="color:#75715e">//200毫秒
+</span></code></pre></div><p>因为，包装类的存在，意味着这20MB的数据会分很多次写入8192的大小的字节数组，而与每次数组满了，才会与系统交互，即IO操作。因此耗时这么大的原因就是因为IO操作的存在。当然我们平时写代码不会一个字节一个字节去写，也是定义了一个1024的byte数组，其实就是实现了这个Buffered的操作罢了。</p>
+
+		</div>
+		<footer class="post__footer">
+			
+<div class="post__tags tags clearfix">
+	<svg class="tags__badge icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/java/" rel="tag">java</a>
+		</li>
+	</ul>
+</div>
+		</footer>
+	</article>
+</main>
+
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="Frank Silva avatar" src="/img/avatar.png" class="avatar" height="90" width="90">
+	</figure>
+	<div class="authorbox__header">
+		<span class="authorbox__name">About Frank Silva</span>
+	</div>
+	<div class="authorbox__description">
+		Pursue Consummate Coding.
+	</div>
+</div>
+
+<nav class="pager flex">
+	<div class="pager__item pager__item--prev">
+		<a class="pager__link" href="/post/tmux-cheatsheet/" rel="prev">
+			<span class="pager__subtitle">«&thinsp;Previous</span>
+			<p class="pager__title">tmux shortcuts</p>
+		</a>
+	</div>
+</nav>
+
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2023 Frank Silva.
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+<script src="/js/custom.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+</body>
+</html>

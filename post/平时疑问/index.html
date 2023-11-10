@@ -60,7 +60,7 @@
 用过，在一些比较简单的微服务场景，或者无法使用其他中间件的前提下。如果需要部署多节点的话，最方便的分布式锁就是mysql，因为我们的db库基本都是单节点的mysql或者mariadb。使用起来其实很简单，就是一个update语句，更新version字段。也就是所谓的乐观锁。开启一个事务，先select锁，然后尝试更新锁，在没完成业务的之前是不提交锁的，所以，其他线程会在获取锁的时候就停下来。因为update，delete，insert默认都是带for update，即行锁的。当然select不会阻塞，除非主动的设置for update。这样就是最基础的一个分布式锁了。切记锁字段必须要有索引，否则锁整个表。就G了
   netty玩过吗，玩过哪些东西，能干啥"><meta itemprop="datePublished" content="2022-01-11T14:43:18+08:00" />
 <meta itemprop="dateModified" content="2022-01-11T14:43:18+08:00" />
-<meta itemprop="wordCount" content="457">
+<meta itemprop="wordCount" content="462">
 <meta itemprop="keywords" content="自问自答," />
 		<meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="平时疑问"/>
@@ -814,6 +814,17 @@
 <li>
 <p>对象的布局</p>
 <p>一个对象，分为3个部分，对象头（Header），实例数据（Instance Data）和对齐填充（Padding）。对象头，自身的数据，例如hashCode，GC年龄，锁的状态，偏向线程ID，线程持有的锁。另一部分信息是类型指针，即对象指向它元数据的指针，<strong>Java通过这个指针来确定这个对象是哪个类的实例</strong></p>
+</li>
+<li>
+<p>spring里的configurable注解用过吗？和configuration区别</p>
+<p>configurable注解是通过aspectJ，在编译的时候已经修改了字节码文件了</p>
+</li>
+<li>
+<p>内存泄露和内存溢出</p>
+<ul>
+<li>内存溢出是指程序正在使用的内存已经超过了限制的内存大小</li>
+<li>内存泄露是，分配了内存，但是一致无法回收</li>
+</ul>
 </li>
 </ul>
 

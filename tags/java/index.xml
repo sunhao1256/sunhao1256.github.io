@@ -6,7 +6,22 @@
     <description>Recent content in java on Lulu</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 20 Oct 2022 11:13:56 +0800</lastBuildDate><atom:link href="https://sunhao1256.github.io/tags/java/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 10 Nov 2023 17:14:11 +0800</lastBuildDate><atom:link href="https://sunhao1256.github.io/tags/java/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Java Io</title>
+      <link>https://sunhao1256.github.io/post/java-io/</link>
+      <pubDate>Fri, 10 Nov 2023 17:14:11 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/java-io/</guid>
+      <description>IO流 字节流 InputStream，OutStream 字节为单位
+字符流 Writer，Reader 字符为单位，java使用的是unicode编码，一个char字符是2个字节大小。
+为什么要字符流？因为中文或者其他语言在转换为byte字节的时候，可以能乱码等原因导致的。所以需要字符流，更方便操作字符即字符串，所以我们如果只需要输出文字的话，最好用字符流
+包装流，Buffered 包装流，其实类似代理，即例如BufferedInputStream会包装原始的InputStream，为其准备个缓存，当read的时候，会直接从系统内核，读取默认的8192的字节数组，将其填充满。
+为什么要Buffer，即为什么要这个样的一个数组？为了减少与系统的IO次数
+看下面这个例子，写一个20MB的文件
+public class OutputStreamDemo { public static void main(String[] args) { String filePath = &amp;#34;/Users/zero/Downloads/OutputStream.txt&amp;#34;; File file = new File(filePath); try { FileOutputStream outputStream = new FileOutputStream(file); long start = System.currentTimeMillis(); int total = 20 * 1000 * 1000; while (total &amp;gt; 0) { total--; //一个一个的byte写  outputStream.write(1); } System.out.println(&amp;#34;cost:&amp;#34; + (System.currentTimeMillis() - start)); outputStream.close(); } catch (IOException e) { throw new RuntimeException(e); } } } Connected to the target VM, address: &amp;#39;127.</description>
+    </item>
+    
     <item>
       <title>Java How to Write File</title>
       <link>https://sunhao1256.github.io/post/java-how-to-write-file/</link>

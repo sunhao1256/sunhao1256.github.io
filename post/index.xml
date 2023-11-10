@@ -6,7 +6,22 @@
     <description>Recent content in Posts on Lulu</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 23 Apr 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://sunhao1256.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 10 Nov 2023 17:14:11 +0800</lastBuildDate><atom:link href="https://sunhao1256.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Java Io</title>
+      <link>https://sunhao1256.github.io/post/java-io/</link>
+      <pubDate>Fri, 10 Nov 2023 17:14:11 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/java-io/</guid>
+      <description>IO流 字节流 InputStream，OutStream 字节为单位
+字符流 Writer，Reader 字符为单位，java使用的是unicode编码，一个char字符是2个字节大小。
+为什么要字符流？因为中文或者其他语言在转换为byte字节的时候，可以能乱码等原因导致的。所以需要字符流，更方便操作字符即字符串，所以我们如果只需要输出文字的话，最好用字符流
+包装流，Buffered 包装流，其实类似代理，即例如BufferedInputStream会包装原始的InputStream，为其准备个缓存，当read的时候，会直接从系统内核，读取默认的8192的字节数组，将其填充满。
+为什么要Buffer，即为什么要这个样的一个数组？为了减少与系统的IO次数
+看下面这个例子，写一个20MB的文件
+public class OutputStreamDemo { public static void main(String[] args) { String filePath = &amp;#34;/Users/zero/Downloads/OutputStream.txt&amp;#34;; File file = new File(filePath); try { FileOutputStream outputStream = new FileOutputStream(file); long start = System.currentTimeMillis(); int total = 20 * 1000 * 1000; while (total &amp;gt; 0) { total--; //一个一个的byte写  outputStream.write(1); } System.out.println(&amp;#34;cost:&amp;#34; + (System.currentTimeMillis() - start)); outputStream.close(); } catch (IOException e) { throw new RuntimeException(e); } } } Connected to the target VM, address: &amp;#39;127.</description>
+    </item>
+    
     <item>
       <title>tmux shortcuts</title>
       <link>https://sunhao1256.github.io/post/tmux-cheatsheet/</link>
@@ -515,6 +530,23 @@ Redis 的集合相当于 Java 语言中的 HashSet，它内部的键值对是无
     </item>
     
     <item>
+      <title>自我面试</title>
+      <link>https://sunhao1256.github.io/post/self-interview/</link>
+      <pubDate>Tue, 11 Jan 2022 14:43:18 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/self-interview/</guid>
+      <description>golang 和 java区别    内存溢出和内存泄露区别
+ 怎么排查    用过什么消息队列？
+  说下消息队列存在的意义
+异步，削峰，解耦
+  如何解决消息按顺序消费
+首先，消息队列一大优势是异步，如果需要按顺序消费，则会变成同步，导致吞吐量下降，要确认是否一定需要顺序。
+  rabbitmq的几个概念
+Exchange： 消息交换机，它指定消息按什么规则，路由到哪个队列
+ Fanout、Direct和Topic Fanout Exchange 会忽略 RoutingKey 的设置，直接将 Message 广播到所有绑定的 Queue 中。 Direct Exchange 是 RabbitMQ 默认的 Exchange，完全根据 RoutingKey 来路由消息。设置 Exchange 和 Queue 的 Binding 时需指定 RoutingKey（一般为 Queue Name），发消息时也指定一样的 RoutingKey，消息就会被路由到对应的Queue。 Topic Exchange 和 Direct Exchange 类似，也需要通过 RoutingKey 来路由消息，区别在于Direct Exchange 对 RoutingKey 是精确匹配，而 Topic Exchange 支持模糊匹配。分别支持*和#通配符，*表示匹配一个单词，#则表示匹配没有或者多个单词。  Queue： 消息队列载体，每个消息都会被投入到一个或多个队列</description>
+    </item>
+    
+    <item>
       <title>CopyonArraySet</title>
       <link>https://sunhao1256.github.io/post/copyonarrayset/</link>
       <pubDate>Mon, 18 Oct 2021 22:16:25 +0800</pubDate>
@@ -575,6 +607,25 @@ VI和VIM的3种常见模式   正常模式
   删除当前行：dd，删除当前行下n行：ndd，例如：5dd
   查找：命令行模式下 / 关键字，例如：/hello，下一个n
   设置文件行号：命令行模式下 ：set nu，关闭行号：set nonu</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://sunhao1256.github.io/post/golang/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/golang/</guid>
+      <description>Golang   defer的执行顺序，能改变返回值吗
+defer的执行顺序和栈类似，属于后进先出
+defer在return之后执行，但是在函数退出之前，defer可以修改返回值。通过有名返回变量
+func changeReturn() (i int) { i = 32 defer func() { fmt.Printf(&amp;#34;defer \n&amp;#34;) i++ }() return i }   go 的tag用处
+ json序列化 gorm的表名映射 binding，validate 等gin web 框架需要的绑定和校验功能    Golang的和java的区别？
+ golang是静态编译，编译完成后，即可在操作系统上运行。可以交叉编译打包不同os和arch的代码。java是动态编译，java中间存在一层jvm虚拟机， java不支持多继承，golang通过struct的成员变量实现多继承 golang的goroutine只有2kb左右，而java的thread对应着内核的一个线程会达到2mb左右，资源开销不是一个级别。    golang的反射说一下
+golang类似java的reflect提供了也提供了reflect的包，内部有相关的接口和方法使用。
+核心的两个type分别是 Type和Value
+golang提供了
+t := reflect.TypeOf(person) v := reflect.ValueOf(person) 通过反射获取field的相关信息以及tag等
+func testReflect(person Person) { t := reflect.TypeOf(person) v := reflect.ValueOf(person) for i := 0; i &amp;lt; t.</description>
     </item>
     
   </channel>

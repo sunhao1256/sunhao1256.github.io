@@ -56,7 +56,7 @@ Redis 的集合相当于 Java 语言中的 HashSet，它内部的键值对是无
 可以用于基数的统计，例如UV统计
   redis如何做到限流的 限流的几个方式"><meta itemprop="datePublished" content="2022-01-11T14:43:18+08:00" />
 <meta itemprop="dateModified" content="2022-01-11T14:43:18+08:00" />
-<meta itemprop="wordCount" content="6531">
+<meta itemprop="wordCount" content="6557">
 <meta itemprop="keywords" content="面试," />
 		<meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="八股文"/>
@@ -221,6 +221,7 @@ Redis 的集合相当于 Java 语言中的 HashSet，它内部的键值对是无
         <li><a href="#数据库建立索引常用的规则如下">数据库建立索引常用的规则如下：</a></li>
         <li><a href="#count1countcount列名">count(1)，count(*)，count(列名)</a></li>
         <li><a href="#mysql单表一千万数据怎么查最快">mysql单表一千万数据，怎么查最快</a></li>
+        <li><a href="#索引失效场景">索引失效场景</a></li>
       </ul>
     </li>
   </ul>
@@ -1527,6 +1528,19 @@ retry.backoff.ms参数表示消息生产超时失败后重试的间隔时间。
 <p>limit，offset</p>
 <p>在limit的偏移量越来越大的时候，数据则会越来越慢，花费的时间也会越来越长，使用子查询</p>
 </li>
+</ul>
+<h3 id="索引失效场景">索引失效场景</h3>
+<p><a href="https://juejin.cn/post/7083520386498822158">https://juejin.cn/post/7083520386498822158</a></p>
+<ul>
+<li><a href="https://juejin.cn/post/7083520386498822158#heading-1">1. 未遵循最左前缀匹配导致索引失效</a></li>
+<li><a href="https://juejin.cn/post/7083520386498822158#heading-2">2. 使用函数导致索引失效</a></li>
+<li><a href="https://juejin.cn/post/7083520386498822158#heading-3">3. 计算导致索引失效</a></li>
+<li><a href="https://juejin.cn/post/7083520386498822158#heading-5">4. 类型转换导致索引失效</a></li>
+<li><a href="https://juejin.cn/post/7083520386498822158#heading-6">5. 联合索引不完全使用及失效</a></li>
+<li><a href="https://juejin.cn/post/7083520386498822158#heading-7">6. 不等于(!= 或者&lt;&gt;)索引失效</a></li>
+<li><a href="https://juejin.cn/post/7083520386498822158#heading-8">7. like模糊匹配以通配符开头导致索引失效</a></li>
+<li><a href="https://juejin.cn/post/7083520386498822158#heading-9">8. 索引字段使用is not null导致失效</a></li>
+<li><a href="https://juejin.cn/post/7083520386498822158#heading-10">9. OR 前后存在非索引的列，索引失效</a></li>
 </ul>
 <h1 id="mybatis">Mybatis</h1>
 <h3 id="讲一讲mybatis-的工作原理">讲一讲mybatis 的工作原理</h3>
@@ -3703,7 +3717,7 @@ java<span style="color:#f92672">.</span><span style="color:#a6e22e">lang</span><
 </li>
 <li>
 <p>方法区：</p>
-<p>HotSpot虚拟机中，在JDK8中，已经用「元空间」来替代了「永久代」作为「方法区」的实现了。方法区主要是用来存放已被虚拟机加载的「类相关信息」：包括类信息、常量池。</p>
+<p>HotSpot虚拟机中，在JDK8中，已经用「元空间」来替代了「永久代」作为「方法区」的实 现了。方法区主要是用来存放已被虚拟机加载的「类相关信息」：包括类信息、常量池。</p>
 <ul>
 <li>
 <p>类信息又包括了类的版本、字段、方法、接口和父类等信息</p>
@@ -3851,6 +3865,7 @@ java<span style="color:#f92672">.</span><span style="color:#a6e22e">lang</span><
 <h3 id="java怎么写udp为什么要用udp">java怎么写UDP？为什么要用UDP</h3>
 <h3 id="异步请求知道吗有什么场景可以用到吗java怎么写">异步请求知道吗？有什么场景可以用到吗，java怎么写？</h3>
 <h3 id="讲一下tcpip它和http的关系">讲一下TCP/IP，它和HTTP的关系</h3>
+<p><a href="https://zhuanlan.zhihu.com/p/43789231">https://zhuanlan.zhihu.com/p/43789231</a></p>
 <h3 id="什么是websocketws是长链接吗wss又有什么区别">什么是WebSocket，WS是长链接吗，WSS又有什么区别？</h3>
 <h3 id="tcp长链接和http长链接有什么区别">TCP长链接和HTTP长链接有什么区别</h3>
 <h3 id="netty干什么的用过吗">Netty干什么的，用过吗</h3>

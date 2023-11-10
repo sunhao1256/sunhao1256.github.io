@@ -81,6 +81,46 @@
 	
 	<header class="list__header">
 		<h2 class="list__title post__title">
+			<a href="/post/copyonarrayset/" rel="bookmark">
+			CopyonArraySet
+			</a>
+		</h2>
+		<div class="list__meta meta"><div class="meta__item-author meta__item">
+	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 12 16"><path d="M6 1c2.2 0 3.5 2 3.5 4.5C9.5 7 8.9 8.2 8 9c2.9.8 4 2.5 4 5v1H0v-1c0-2.5 1.1-4.2 4-5-.9-.8-1.5-2-1.5-3.5C2.5 3 3.8 1 6 1z"/></svg><span class="meta__text">Frank Silva</span>
+</div>
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg><time class="meta__text" datetime="2021-10-18T22:16:25&#43;08:00">2021-10-18</time></div></div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+		源码 public class CopyOnWriteArraySet&lt;E&gt; extends AbstractSet&lt;E&gt; implements java.io.Serializable { private static final long serialVersionUID = 5457747651344034263L; // 内部使用CopyOnWriteArrayList存储元素  private final CopyOnWriteArrayList&lt;E&gt; al; // 构造方法  public CopyOnWriteArraySet() { al = new CopyOnWriteArrayList&lt;E&gt;(); } // 将集合c中的元素初始化到CopyOnWriteArraySet中  public CopyOnWriteArraySet(Collection&lt;? extends E&gt; c) { if (c.getClass() == CopyOnWriteArraySet.class) { // 如果c是CopyOnWriteArraySet类型，说明没有重复元素，  // 直接调用CopyOnWriteArrayList的构造方法初始化  @SuppressWarnings(&#34;unchecked&#34;) CopyOnWriteArraySet&lt;E&gt; cc = (CopyOnWriteArraySet&lt;E&gt;)c; al = new CopyOnWriteArrayList&lt;E&gt;(cc.al); } else { // 如果c不是CopyOnWriteArraySet类型，说明有重复元素  // 调用CopyOnWriteArrayList的addAllAbsent()方法初始化  // 它会把重复元素排除掉  al = new CopyOnWriteArrayList&lt;E&gt;(); al.
+	</div>
+	<div class="list__footer clearfix">
+		<a class="list__footer-readmore btn" href="/post/copyonarrayset/">Read more…</a>
+	</div>
+</article><article class="list__item post">
+	
+	<header class="list__header">
+		<h2 class="list__title post__title">
+			<a href="/post/hashset/" rel="bookmark">
+			Hashset
+			</a>
+		</h2>
+		<div class="list__meta meta"><div class="meta__item-author meta__item">
+	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 12 16"><path d="M6 1c2.2 0 3.5 2 3.5 4.5C9.5 7 8.9 8.2 8 9c2.9.8 4 2.5 4 5v1H0v-1c0-2.5 1.1-4.2 4-5-.9-.8-1.5-2-1.5-3.5C2.5 3 3.8 1 6 1z"/></svg><span class="meta__text">Frank Silva</span>
+</div>
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg><time class="meta__text" datetime="2021-10-18T21:42:09&#43;08:00">2021-10-18</time></div></div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+		属性 // 内部使用HashMap  private transient HashMap&lt;E,Object&gt; map; // 虚拟对象，用来作为value放到map中  private static final Object PRESENT = new Object(); 构造方法 public HashSet() { map = new HashMap&lt;&gt;(); } public HashSet(Collection&lt;? extends E&gt; c) { map = new HashMap&lt;&gt;(Math.max((int) (c.size()/.75f) + 1, 16)); addAll(c); } public HashSet(int initialCapacity, float loadFactor) { map = new HashMap&lt;&gt;(initialCapacity, loadFactor); } public HashSet(int initialCapacity) { map = new HashMap&lt;&gt;(initialCapacity); } // 非public，主要是给LinkedHashSet使用的 HashSet(int initialCapacity, float loadFactor, boolean dummy) { map = new LinkedHashMap&lt;&gt;(initialCapacity, loadFactor); } - public :表明该成员变量或者方法是对所有类或者对象都是可见的,所有类或者对象都可以直接访问 - private:表明该成员变量或者方法是私有的,只有当前类对其具有访问权限,除此之外其他类或者对象都没有访问权限.
+	</div>
+	<div class="list__footer clearfix">
+		<a class="list__footer-readmore btn" href="/post/hashset/">Read more…</a>
+	</div>
+</article><article class="list__item post">
+	
+	<header class="list__header">
+		<h2 class="list__title post__title">
 			<a href="/post/concurrenthashmap/" rel="bookmark">
 			ConcurrentHashMap
 			</a>
@@ -155,6 +195,34 @@ VI和VIM的3种常见模式   正常模式
 	<div class="list__footer clearfix">
 		<a class="list__footer-readmore btn" href="/post/linux/">Read more…</a>
 	</div>
+</article><article class="list__item post">
+	
+	<header class="list__header">
+		<h2 class="list__title post__title">
+			<a href="/post/golang/" rel="bookmark">
+			
+			</a>
+		</h2>
+		<div class="list__meta meta"><div class="meta__item-author meta__item">
+	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 12 16"><path d="M6 1c2.2 0 3.5 2 3.5 4.5C9.5 7 8.9 8.2 8 9c2.9.8 4 2.5 4 5v1H0v-1c0-2.5 1.1-4.2 4-5-.9-.8-1.5-2-1.5-3.5C2.5 3 3.8 1 6 1z"/></svg><span class="meta__text">Frank Silva</span>
+</div></div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+		Golang   defer的执行顺序，能改变返回值吗
+defer的执行顺序和栈类似，属于后进先出
+defer在return之后执行，但是在函数退出之前，defer可以修改返回值。通过有名返回变量
+func changeReturn() (i int) { i = 32 defer func() { fmt.Printf(&#34;defer \n&#34;) i++ }() return i }   go 的tag用处
+ json序列化 gorm的表名映射 binding，validate 等gin web 框架需要的绑定和校验功能    Golang的和java的区别？
+ golang是静态编译，编译完成后，即可在操作系统上运行。可以交叉编译打包不同os和arch的代码。java是动态编译，java中间存在一层jvm虚拟机， java不支持多继承，golang通过struct的成员变量实现多继承 golang的goroutine只有2kb左右，而java的thread对应着内核的一个线程会达到2mb左右，资源开销不是一个级别。    golang的反射说一下
+golang类似java的reflect提供了也提供了reflect的包，内部有相关的接口和方法使用。
+核心的两个type分别是 Type和Value
+golang提供了
+t := reflect.TypeOf(person) v := reflect.ValueOf(person) 通过反射获取field的相关信息以及tag等
+func testReflect(person Person) { t := reflect.TypeOf(person) v := reflect.ValueOf(person) for i := 0; i &lt; t.
+	</div>
+	<div class="list__footer clearfix">
+		<a class="list__footer-readmore btn" href="/post/golang/">Read more…</a>
+	</div>
 </article>
 </main>
 
@@ -178,11 +246,11 @@ VI和VIM的3种常见模式   正常模式
 	<h4 class="widget__title">Recent Posts</h4>
 	<div class="widget__content">
 		<ul class="widget__list">
+			<li class="widget__item"><a class="widget__link" href="/post/java-io/">Java Io</a></li>
 			<li class="widget__item"><a class="widget__link" href="/post/tmux-cheatsheet/">tmux shortcuts</a></li>
 			<li class="widget__item"><a class="widget__link" href="/post/k8s-client-informer%E6%9C%BA%E5%88%B6/">K8s Client Informer mechanism</a></li>
 			<li class="widget__item"><a class="widget__link" href="/post/oa-roadmap/">OaRoadmap</a></li>
 			<li class="widget__item"><a class="widget__link" href="/post/kubernetes-nice-article/">Kubernetes Nice Article</a></li>
-			<li class="widget__item"><a class="widget__link" href="/post/kubernetes-operator/">Kubernetes Operator</a></li>
 		</ul>
 	</div>
 </div>

@@ -35,5 +35,22 @@ Redis 的集合相当于 Java 语言中的 HashSet，它内部的键值对是无
   redis如何做到限流的 限流的几个方式</description>
     </item>
     
+    <item>
+      <title>自我面试</title>
+      <link>https://sunhao1256.github.io/post/self-interview/</link>
+      <pubDate>Tue, 11 Jan 2022 14:43:18 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/self-interview/</guid>
+      <description>golang 和 java区别    内存溢出和内存泄露区别
+ 怎么排查    用过什么消息队列？
+  说下消息队列存在的意义
+异步，削峰，解耦
+  如何解决消息按顺序消费
+首先，消息队列一大优势是异步，如果需要按顺序消费，则会变成同步，导致吞吐量下降，要确认是否一定需要顺序。
+  rabbitmq的几个概念
+Exchange： 消息交换机，它指定消息按什么规则，路由到哪个队列
+ Fanout、Direct和Topic Fanout Exchange 会忽略 RoutingKey 的设置，直接将 Message 广播到所有绑定的 Queue 中。 Direct Exchange 是 RabbitMQ 默认的 Exchange，完全根据 RoutingKey 来路由消息。设置 Exchange 和 Queue 的 Binding 时需指定 RoutingKey（一般为 Queue Name），发消息时也指定一样的 RoutingKey，消息就会被路由到对应的Queue。 Topic Exchange 和 Direct Exchange 类似，也需要通过 RoutingKey 来路由消息，区别在于Direct Exchange 对 RoutingKey 是精确匹配，而 Topic Exchange 支持模糊匹配。分别支持*和#通配符，*表示匹配一个单词，#则表示匹配没有或者多个单词。  Queue： 消息队列载体，每个消息都会被投入到一个或多个队列</description>
+    </item>
+    
   </channel>
 </rss>
