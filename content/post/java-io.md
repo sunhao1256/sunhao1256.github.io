@@ -191,3 +191,118 @@ Java的NIO，指的就是IO Multiplexing。不要搞错了。
 ## Java NIO tutorial
 
 https://developer.ibm.com/tutorials/j-nio/
+
+## Java NIO FileCopyDemo
+
+```java
+public class FileCopyDemo {
+
+    public static void main(String[] args) {
+        String sourcePath = "/Users/zero/Downloads/source.txt";
+        String targetPath = "/Users/zero/Downloads/target.txt";
+        Charset charset = Charset.forName("UTF-8");
+        try {
+            FileChannel channel = new FileInputStream(sourcePath).getChannel();
+            FileChannel out = new FileOutputStream(targetPath).getChannel();
+            ByteBuffer allocate = ByteBuffer.allocate(3);
+            CharsetDecoder charsetDecoder = charset.newDecoder();
+            CharsetEncoder charsetEncoder = charset.newEncoder();
+            channel.position(3);
+            while (channel.read(allocate) != -1) {
+                allocate.flip();
+                out.write(allocate);
+                allocate.clear();
+            }
+
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+## Java NIo EchoServer
+
+```java
+public class EchoServer {
+    public static void main(String[] args) {
+        try {
+            Selector selector = Selector.open();
+
+            ServerSocketChannel socketChannel = ServerSocketChannel.open();
+
+            socketChannel.bind(new InetSocketAddress("127.0.0.1", 9900));
+
+            socketChannel.configureBlocking(false);
+
+            socketChannel.register(selector, SelectionKey.OP_ACCEPT);
+
+            while (true) {
+                selector.select();
+                Set<SelectionKey> selectionKeys = selector.selectedKeys();
+                Iterator<SelectionKey> iterator = selectionKeys.iterator();
+                while (iterator.hasNext()) {
+                    SelectionKey next = iterator.next();
+                    if (next.isAcceptable()) {
+                        SelectableChannel channel = next.channel();
+                        ServerSocketChannel ssc = (ServerSocketChannel) channel;
+                        SocketChannel conn = ssc.accept();
+                        conn.configureBlocking(false);
+                        conn.register(selector, SelectionKey.OP_READ);
+                        System.out.println("someone established");
+
+                    } else if (next.isReadable()) {
+                        SocketChannel channel = (SocketChannel) next.channel();
+                        ByteBuffer buffer = ByteBuffer.allocate(1024);
+                        channel.read(buffer);
+                        buffer.flip();
+                        CharsetDecoder charsetDecoder = Charset.forName("UTF-8").newDecoder();
+                        CharBuffer decode = charsetDecoder.decode(buffer);
+                        String msg = decode.toString();
+                        System.out.println("receive msg" + msg);
+                        channel.register(selector, SelectionKey.OP_WRITE,msg);
+
+                    } else if (next.isWritable()) {
+                        SocketChannel channel = (SocketChannel) next.channel();
+                        String msg = (String) next.attachment();
+                        CharsetEncoder encoder = Charset.forName("UTF-8").newEncoder();
+                        channel.write(encoder.encode(CharBuffer.wrap(msg)));
+                        channel.register(selector, SelectionKey.OP_READ);
+
+                    }
+                    iterator.remove();
+                }
+            }
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+
+```
+
+## Reactor Design Pattern
+
+Reference https://gee.cs.oswego.edu/dl/cpjslides/nio.pdf
+
+- 经典基础模式，Reactor内部完成了请求的accept和worker应该完成的事情，acceptor只是封装了一个类而已。从accpet到worker的事情，都是同一个线程。
+
+  <img src="https://pic-frank.oss-cn-beijing.aliyuncs.com/img/202311141118705.png" alt="image-20231114111835736" style="zoom:50%;" />
+
+- worker线程池模式，在处理Worker的工作时，使用线程池完成。
+
+  <img src="https://pic-frank.oss-cn-beijing.aliyuncs.com/img/202311141120811.png" alt="image-20231114112003778" style="zoom:50%;" />
+
+- Reactor线程池模式，主从Reactor，所谓的主从实际上是，mainReactor只管accept的事情，而subReactor处理read，send的事件，并且对于worker也是依然使用线程池，极大的利用cpu的多核，这里的从和主都可以是多个。
+
+  <img src="https://pic-frank.oss-cn-beijing.aliyuncs.com/img/202311141121592.png" alt="image-20231114112108558" style="zoom:50%;" />
+
+具体实现参考https://github.com/chuondev/reactor
+
+#  Netty
+
+
+
