@@ -304,5 +304,610 @@ Reference https://gee.cs.oswego.edu/dl/cpjslides/nio.pdf
 
 #  Netty
 
+参考https://medium.com/geekculture/a-tour-of-netty-5020ecee5494
 
+<img src="https://pic-frank.oss-cn-beijing.aliyuncs.com/img/202311161634013.png" alt="image-20231116163412858" style="zoom:50%;" />
 
+## NioEventLoopGroup
+
+NioEventLoop的集合，内部维护了一个Children的数组，里面存放NioEventLoop。
+
+默认参数是当前机器核心的2倍线程，可以传参修改。每个Thread对应一个NioEventLoop
+
+## NioEventLoop
+
+- NioEventLoop在构造函数中会直接调用Java的Selector.open()
+- 一个NioEventLoop等于==1个Thread+1个Queue+1个Selector
+
+## ServerBootStrap
+
+启动整个服务
+
+### Bind方法
+
+- validate方法会检查childHandler是否为空，空则异常；检查childGroup是否为空，空则使用parentGroup代替
+
+- iniAndRegister方法会完成channel创建和初始化工作。
+
+  - channel创建，由channelFactory完成。默认情况下ChannelFactory使用的是**ReflectiveChannelFactory**，直接通过反射构建channel，参数就是channel的Class对象。因此对于服务端，我们要调用ServerBootstrap的channel方法，指定class是NioServerSocketChannel
+
+    ```java
+     .channel(NioServerSocketChannel.class)
+    ```
+
+    #### NioServerSocketChannel
+
+    ```java
+    public NioServerSocketChannel(ServerSocketChannel channel) {
+            super(null, channel, SelectionKey.OP_ACCEPT);
+            config = new NioServerSocketChannelConfig(this, javaChannel().socket());
+        }
+    ```
+
+    这里设置了监听事件OP_ACCEPT
+
+    因为inherit了AbstractChannel，因此在构造方法执行的时候，生成了id，unsafe类，以及pipeline
+
+    ```java
+        protected AbstractChannel(Channel parent) {
+            this.parent = parent;
+            id = newId();
+            unsafe = newUnsafe();
+            pipeline = newChannelPipeline();
+        }
+    ```
+
+    newUnsafe是进行真正的java nio层面的实现
+
+    NioServerSocketChannel对应的是**NioMessageUnsafe**
+
+    ```java
+        protected AbstractNioUnsafe newUnsafe() {
+            return new NioMessageUnsafe();
+        }
+    ```
+
+    pipeline是一个双向链表，并且这里把channel自身也穿进去了
+
+    ```java
+        protected DefaultChannelPipeline(Channel channel) {
+            this.channel = ObjectUtil.checkNotNull(channel, "channel");
+            succeededFuture = new SucceededChannelFuture(channel, null);
+            voidPromise =  new VoidChannelPromise(channel, true);
+    
+            tail = new TailContext(this);
+            head = new HeadContext(this);
+    
+            head.next = tail;
+            tail.prev = head;
+        }
+    ```
+
+    **注意这里的NioServerSocketChannel的interestOp是ON_ACCEPT**
+
+    
+
+  - channel的init
+
+    ```java
+        void init(Channel channel) {
+            setChannelOptions(channel, newOptionsArray(), logger);
+            setAttributes(channel, newAttributesArray());
+    
+            ChannelPipeline p = channel.pipeline();
+    
+            final EventLoopGroup currentChildGroup = childGroup;
+            final ChannelHandler currentChildHandler = childHandler;
+            final Entry<ChannelOption<?>, Object>[] currentChildOptions = newOptionsArray(childOptions);
+            final Entry<AttributeKey<?>, Object>[] currentChildAttrs = newAttributesArray(childAttrs);
+    
+            p.addLast(new ChannelInitializer<Channel>() {
+                @Override
+                public void initChannel(final Channel ch) {
+                    final ChannelPipeline pipeline = ch.pipeline();
+                    ChannelHandler handler = config.handler();
+                    if (handler != null) {
+                        pipeline.addLast(handler);
+                    }
+    
+                    ch.eventLoop().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            pipeline.addLast(new ServerBootstrapAcceptor(
+                                    ch, currentChildGroup, currentChildHandler, currentChildOptions, currentChildAttrs));
+                        }
+                    });
+                }
+            });
+        }
+    
+    ```
+
+    设置一些参数,核心是获取channel自己的pipeline，加一个特殊的channelHandler，即ChannelInitalizer
+
+    ```java
+    ChannelPipeline addLast(ChannelHandler... handlers);
+    ```
+
+    ```java
+        public final ChannelPipeline addLast(EventExecutorGroup group, String name, ChannelHandler handler) {
+            final AbstractChannelHandlerContext newCtx;
+            synchronized (this) {
+                checkMultiplicity(handler);
+    
+                newCtx = newContext(group, filterName(name, handler), handler);
+    
+                addLast0(newCtx);
+    
+                // If the registered is false it means that the channel was not registered on an eventLoop yet.
+                // In this case we add the context to the pipeline and add a task that will call
+                // ChannelHandler.handlerAdded(...) once the channel is registered.
+                if (!registered) {
+                    newCtx.setAddPending();
+                    callHandlerCallbackLater(newCtx, true);
+                    return this;
+                }
+    
+                EventExecutor executor = newCtx.executor();
+                if (!executor.inEventLoop()) {
+                    callHandlerAddedInEventLoop(newCtx, executor);
+                    return this;
+                }
+            }
+            callHandlerAdded0(newCtx);
+            return this;
+        }
+    
+        private AbstractChannelHandlerContext newContext(EventExecutorGroup group, String name, ChannelHandler handler) {
+            return new DefaultChannelHandlerContext(this, childExecutor(group), name, handler);
+        }
+        private void addLast0(AbstractChannelHandlerContext newCtx) {
+            AbstractChannelHandlerContext prev = tail.prev;
+            newCtx.prev = prev;
+            newCtx.next = tail;
+            prev.next = newCtx;
+            tail.prev = newCtx;
+        }
+    
+    
+    ```
+
+    增加到最后，这个增加实际上是增加AbstractHandlerContext，而且这里的addLast实际上是，增加到HEAD和TAIL中间，也就是HEAD和TAIL永远在第一和最后
+
+  - register方法
+
+    ```java
+            ChannelFuture regFuture = config().group().register(channel);
+    ```
+
+    让channel注册到group上，可以理解对应java nio上的，channel register到selector上，即NioServerSocketChannel注册到NioEventLoopGroup上。
+
+    NioServerSocketChannel inherited SingleThreadEventLoop，我们看下具体实现
+
+    ```java
+        @Override
+        public ChannelFuture register(final ChannelPromise promise) {
+            ObjectUtil.checkNotNull(promise, "promise");
+            promise.channel().unsafe().register(this, promise);
+            return promise;
+        }
+    
+    ```
+
+    可以看到是调用channel的Unsafe的register方法，并且将自己即NioServerSocketChannel传进去，并且传了一个ChannelFuture的Promise
+
+    之前提到过NioServerSocketChannel的Unsafe是**NioMessageUnsafe**,不过register被父类**AbstractUnsafe**实现
+
+    ```java
+            public final void register(EventLoop eventLoop, final ChannelPromise promise) {
+                ObjectUtil.checkNotNull(eventLoop, "eventLoop");
+                if (isRegistered()) {
+                    promise.setFailure(new IllegalStateException("registered to an event loop already"));
+                    return;
+                }
+                if (!isCompatible(eventLoop)) {
+                    promise.setFailure(
+                            new IllegalStateException("incompatible event loop type: " + eventLoop.getClass().getName()));
+                    return;
+                }
+    
+                AbstractChannel.this.eventLoop = eventLoop;
+    
+                if (eventLoop.inEventLoop()) {
+                    register0(promise);
+                } else {
+                    try {
+                        eventLoop.execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                register0(promise);
+                            }
+                        });
+                    } catch (Throwable t) {
+                        logger.warn(
+                                "Force-closing a channel whose registration task was not accepted by an event loop: {}",
+                                AbstractChannel.this, t);
+                        closeForcibly();
+                        closeFuture.setClosed();
+                        safeSetFailure(promise, t);
+                    }
+                }
+            }
+    ```
+
+    这里可以看到Unsafe也把eventLoop即NioEventLoopGroup放在自己身上了，并且让eventLoop执行了一个task。
+
+    这里的eventLoop执行一个task，实际上就是选一个NioEventLoop去执行的
+
+    ```java
+        private void execute(Runnable task, boolean immediate) {
+            boolean inEventLoop = inEventLoop();
+            addTask(task);
+            if (!inEventLoop) {
+                startThread();
+                if (isShutdown()) {
+                    boolean reject = false;
+                    try {
+                        if (removeTask(task)) {
+                            reject = true;
+                        }
+                    } catch (UnsupportedOperationException e) {
+                        // The task queue does not support removal so the best thing we can do is to just move on and
+                        // hope we will be able to pick-up the task before its completely terminated.
+                        // In worst case we will log on termination.
+                    }
+                    if (reject) {
+                        reject();
+                    }
+                }
+            }
+    
+            if (!addTaskWakesUp && immediate) {
+                wakeup(inEventLoop);
+            }
+        }
+        private void startThread() {
+            if (state == ST_NOT_STARTED) {
+                if (STATE_UPDATER.compareAndSet(this, ST_NOT_STARTED, ST_STARTED)) {
+                    boolean success = false;
+                    try {
+                        doStartThread();
+                        success = true;
+                    } finally {
+                        if (!success) {
+                            STATE_UPDATER.compareAndSet(this, ST_STARTED, ST_NOT_STARTED);
+                        }
+                    }
+                }
+            }
+        }
+        private void doStartThread() {
+            assert thread == null;
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    thread = Thread.currentThread();
+                    if (interrupted) {
+                        thread.interrupt();
+                    }
+    
+                    boolean success = false;
+                    updateLastExecutionTime();
+                    try {
+                        SingleThreadEventExecutor.this.run();
+                        success = true;
+                    } catch (Throwable t) {
+                        logger.warn("Unexpected exception from an event executor: ", t);
+                    } finally {
+                        for (;;) {
+                            int oldState = state;
+                            if (oldState >= ST_SHUTTING_DOWN || STATE_UPDATER.compareAndSet(
+                                    SingleThreadEventExecutor.this, oldState, ST_SHUTTING_DOWN)) {
+                                break;
+                            }
+                        }
+    
+                        // Check if confirmShutdown() was called at the end of the loop.
+                        if (success && gracefulShutdownStartTime == 0) {
+                            if (logger.isErrorEnabled()) {
+                                logger.error("Buggy " + EventExecutor.class.getSimpleName() + " implementation; " +
+                                        SingleThreadEventExecutor.class.getSimpleName() + ".confirmShutdown() must " +
+                                        "be called before run() implementation terminates.");
+                            }
+                        }
+    
+                        try {
+                            // Run all remaining tasks and shutdown hooks. At this point the event loop
+                            // is in ST_SHUTTING_DOWN state still accepting tasks which is needed for
+                            // graceful shutdown with quietPeriod.
+                            for (;;) {
+                                if (confirmShutdown()) {
+                                    break;
+                                }
+                            }
+    
+                            // Now we want to make sure no more tasks can be added from this point. This is
+                            // achieved by switching the state. Any new tasks beyond this point will be rejected.
+                            for (;;) {
+                                int oldState = state;
+                                if (oldState >= ST_SHUTDOWN || STATE_UPDATER.compareAndSet(
+                                        SingleThreadEventExecutor.this, oldState, ST_SHUTDOWN)) {
+                                    break;
+                                }
+                            }
+    
+                            // We have the final set of tasks in the queue now, no more can be added, run all remaining.
+                            // No need to loop here, this is the final pass.
+                            confirmShutdown();
+                        } finally {
+                            try {
+                                cleanup();
+                            } finally {
+                                // Lets remove all FastThreadLocals for the Thread as we are about to terminate and notify
+                                // the future. The user may block on the future and once it unblocks the JVM may terminate
+                                // and start unloading classes.
+                                // See https://github.com/netty/netty/issues/6596.
+                                FastThreadLocal.removeAll();
+    
+                                STATE_UPDATER.set(SingleThreadEventExecutor.this, ST_TERMINATED);
+                                threadLock.countDown();
+                                int numUserTasks = drainTasks();
+                                if (numUserTasks > 0 && logger.isWarnEnabled()) {
+                                    logger.warn("An event executor terminated with " +
+                                            "non-empty task queue (" + numUserTasks + ')');
+                                }
+                                terminationFuture.setSuccess(null);
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    
+    ```
+
+    execute这个方法，首先将这个task扔进了EventLoop自身维护的一个queue里。然后cas 更新loop的状态，开始这个线程。
+
+    这个线程就是咱们之前分析的，NioEventLoopGroup内部维护的NioEventLoop对应的唯一线程。
+
+    ```java
+    SingleThreadEventExecutor.this.run();	
+    
+        protected void run() {
+            int selectCnt = 0;
+            for (;;) {
+                try {
+                    int strategy;
+                    try {
+                        strategy = selectStrategy.calculateStrategy(selectNowSupplier, hasTasks());
+                        switch (strategy) {
+                        case SelectStrategy.CONTINUE:
+                            continue;
+    
+                        case SelectStrategy.BUSY_WAIT:
+                            // fall-through to SELECT since the busy-wait is not supported with NIO
+    
+                        case SelectStrategy.SELECT:
+                            long curDeadlineNanos = nextScheduledTaskDeadlineNanos();
+                            if (curDeadlineNanos == -1L) {
+                                curDeadlineNanos = NONE; // nothing on the calendar
+                            }
+                            nextWakeupNanos.set(curDeadlineNanos);
+                            try {
+                                if (!hasTasks()) {
+                                  
+                                  //开始调用java nio的select方法
+                                    strategy = select(curDeadlineNanos);
+                                }
+                            } finally {
+                                // This update is just to help block unnecessary selector wakeups
+                                // so use of lazySet is ok (no race condition)
+                                nextWakeupNanos.lazySet(AWAKE);
+                            }
+                            // fall through
+                        default:
+                        }
+                    } catch (IOException e) {
+                        // If we receive an IOException here its because the Selector is messed up. Let's rebuild
+                        // the selector and retry. https://github.com/netty/netty/issues/8566
+                        rebuildSelector0();
+                        selectCnt = 0;
+                        handleLoopException(e);
+                        continue;
+                    }
+    
+                    selectCnt++;
+                    cancelledKeys = 0;
+                    needsToSelectAgain = false;
+                    final int ioRatio = this.ioRatio;
+                    boolean ranTasks;
+                    if (ioRatio == 100) {
+                        try {
+                            if (strategy > 0) {
+                                processSelectedKeys();
+                            }
+                        } finally {
+                            // Ensure we always run tasks.
+                            ranTasks = runAllTasks();
+                        }
+                    } else if (strategy > 0) {
+                        final long ioStartTime = System.nanoTime();
+                        try {
+                            processSelectedKeys();
+                        } finally {
+                            // Ensure we always run tasks.
+                            final long ioTime = System.nanoTime() - ioStartTime;
+                            ranTasks = runAllTasks(ioTime * (100 - ioRatio) / ioRatio);
+                        }
+                    } else {
+                        ranTasks = runAllTasks(0); // This will run the minimum number of tasks
+                    }
+    
+                    if (ranTasks || strategy > 0) {
+                        if (selectCnt > MIN_PREMATURE_SELECTOR_RETURNS && logger.isDebugEnabled()) {
+                            logger.debug("Selector.select() returned prematurely {} times in a row for Selector {}.",
+                                    selectCnt - 1, selector);
+                        }
+                        selectCnt = 0;
+                    } else if (unexpectedSelectorWakeup(selectCnt)) { // Unexpected wakeup (unusual case)
+                        selectCnt = 0;
+                    }
+                } catch (CancelledKeyException e) {
+                    // Harmless exception - log anyway
+                    if (logger.isDebugEnabled()) {
+                        logger.debug(CancelledKeyException.class.getSimpleName() + " raised by a Selector {} - JDK bug?",
+                                selector, e);
+                    }
+                } catch (Error e) {
+                    throw e;
+                } catch (Throwable t) {
+                    handleLoopException(t);
+                } finally {
+                    // Always handle shutdown even if the loop processing threw an exception.
+                    try {
+                        if (isShuttingDown()) {
+                            closeAll();
+                            if (confirmShutdown()) {
+                                return;
+                            }
+                        }
+                    } catch (Error e) {
+                        throw e;
+                    } catch (Throwable t) {
+                        handleLoopException(t);
+                    }
+                }
+            }
+        }
+    
+    ```
+
+    上面的方法就调用了真正的select方法，但我们还没register呢，回到刚刚的execute的task。task就是去register的
+
+    ```java
+                        eventLoop.execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                register0(promise);
+                            }
+                        });
+    
+     private void register0(ChannelPromise promise) {
+                try {
+                    // check if the channel is still open as it could be closed in the mean time when the register
+                    // call was outside of the eventLoop
+                    if (!promise.setUncancellable() || !ensureOpen(promise)) {
+                        return;
+                    }
+                    boolean firstRegistration = neverRegistered;
+                    doRegister();
+                    neverRegistered = false;
+                    registered = true;
+    
+                    // Ensure we call handlerAdded(...) before we actually notify the promise. This is needed as the
+                    // user may already fire events through the pipeline in the ChannelFutureListener.
+                    pipeline.invokeHandlerAddedIfNeeded();
+    
+                    safeSetSuccess(promise); //设置promise是success的
+                    pipeline.fireChannelRegistered();
+                    // Only fire a channelActive if the channel has never been registered. This prevents firing
+                    // multiple channel actives if the channel is deregistered and re-registered.
+                    if (isActive()) {
+                        if (firstRegistration) {
+                            pipeline.fireChannelActive();
+                        } else if (config().isAutoRead()) {
+                            // This channel was registered before and autoRead() is set. This means we need to begin read
+                            // again so that we process inbound data.
+                            //
+                            // See https://github.com/netty/netty/issues/4805
+                            beginRead();
+                        }
+                    }
+                } catch (Throwable t) {
+                    // Close the channel directly to avoid FD leak.
+                    closeForcibly();
+                    closeFuture.setClosed();
+                    safeSetFailure(promise, t);
+                }
+            }
+    
+        @Override
+        protected void doRegister() throws Exception {
+            boolean selected = false;
+            for (;;) {
+                try {
+                    selectionKey = javaChannel().register(eventLoop().unwrappedSelector(), 0, this);
+                    return;
+                } catch (CancelledKeyException e) {
+                    if (!selected) {
+                        // Force the Selector to select now as the "canceled" SelectionKey may still be
+                        // cached and not removed because no Select.select(..) operation was called yet.
+                        eventLoop().selectNow();
+                        selected = true;
+                    } else {
+                        // We forced a select operation on the selector before but the SelectionKey is still cached
+                        // for whatever reason. JDK bug ?
+                        throw e;
+                    }
+                }
+            }
+        }
+    
+    ```
+
+    这里可以看到，调用了java的channel , register到selector上。register完成后，通知pipeline，触发相关方法invokeHandlerAddedIfNeeded，
+
+    **invokeHandlerAddedIfNeeded**最终会触发。Handler的，确切说是在register之前，执行一些initChannel方法，即ChannelInitializer的initChannel方法。
+
+    和咱们之前在init NioEventSocketChannel的时候，提到的，pipeline增加了一个匿名的ChannelInitializer。
+
+    ```java
+            p.addLast(new ChannelInitializer<Channel>() {
+                @Override
+                public void initChannel(final Channel ch) {
+                    final ChannelPipeline pipeline = ch.pipeline();
+                    ChannelHandler handler = config.handler();
+                    if (handler != null) {
+                        pipeline.addLast(handler);
+                    }
+    
+                    ch.eventLoop().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            pipeline.addLast(new ServerBootstrapAcceptor(
+                                    ch, currentChildGroup, currentChildHandler, currentChildOptions, currentChildAttrs));
+                        }
+                    });
+                }
+            });
+    ```
+
+    这里就会触发eventLoop执行一个任务，增加一个channelHandler即**ServerBootStrapAcceptor**，他实现了**channelRead**方法
+
+    ```java
+            @Override
+            @SuppressWarnings("unchecked")
+            public void channelRead(ChannelHandlerContext ctx, Object msg) {
+                final Channel child = (Channel) msg;
+    
+                child.pipeline().addLast(childHandler);
+    
+                setChannelOptions(child, childOptions, logger);
+                setAttributes(child, childAttrs);
+    
+                try {
+                    childGroup.register(child).addListener(new ChannelFutureListener() {
+                        @Override
+                        public void operationComplete(ChannelFuture future) throws Exception {
+                            if (!future.isSuccess()) {
+                                forceClose(child, future.cause());
+                            }
+                        }
+                    });
+                } catch (Throwable t) {
+                    forceClose(child, t);
+                }
+            }
+    ```
+
+很明显，在可以read的时候将Channel注册到子的NioSocketEventGroup上去。
