@@ -908,6 +908,247 @@ NioEventLoop的集合，内部维护了一个Children的数组，里面存放Nio
                     forceClose(child, t);
                 }
             }
+    
     ```
 
-很明显，在可以read的时候将Channel注册到子的NioSocketEventGroup上去。
+  - 很明显，在可以read的时候将Channel注册到子的NioSocketEventGroup上去。
+
+  - doBind()方法
+
+    ```java
+        private static void doBind0(
+                final ChannelFuture regFuture, final Channel channel,
+                final SocketAddress localAddress, final ChannelPromise promise) {
+    
+            // This method is invoked before channelRegistered() is triggered.  Give user handlers a chance to set up
+            // the pipeline in its channelRegistered() implementation.
+            channel.eventLoop().execute(new Runnable() {
+                @Override
+                public void run() {
+                    if (regFuture.isSuccess()) {
+                        channel.bind(localAddress, promise).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
+                    } else {
+                        promise.setFailure(regFuture.cause());
+                    }
+                }
+            });
+        }
+    ```
+
+    eventLoop继续执行一个task，即bind操作，最后会最后一个TailContext依次往前执行bind方法。最后会找到HeadContext，这就是为什么要从后往前，因为HeadContext的Bind方法，完成了真正的java层面的bind操作，是为了让Tail到Head中间的Handler有机会在bind的时候做一些事情，典型的责任链模式。例如LoggerHandler
+
+    ```java
+    //HeadContext 的bind方法
+    public void bind(
+                    ChannelHandlerContext ctx, SocketAddress localAddress, ChannelPromise promise) {
+                unsafe.bind(localAddress, promise);
+    }
+    ```
+
+    这里的Unsafe是Pipeline一起绑定的，NioServerSocketChannel的Unsafe，对应着NioMessageUnsafe
+
+    ```java
+            public final void bind(final SocketAddress localAddress, final ChannelPromise promise) {
+                assertEventLoop();
+    
+                if (!promise.setUncancellable() || !ensureOpen(promise)) {
+                    return;
+                }
+    
+                // See: https://github.com/netty/netty/issues/576
+                if (Boolean.TRUE.equals(config().getOption(ChannelOption.SO_BROADCAST)) &&
+                    localAddress instanceof InetSocketAddress &&
+                    !((InetSocketAddress) localAddress).getAddress().isAnyLocalAddress() &&
+                    !PlatformDependent.isWindows() && !PlatformDependent.maybeSuperUser()) {
+                    // Warn a user about the fact that a non-root user can't receive a
+                    // broadcast packet on *nix if the socket is bound on non-wildcard address.
+                    logger.warn(
+                            "A non-root user can't receive a broadcast packet if the socket " +
+                            "is not bound to a wildcard address; binding to a non-wildcard " +
+                            "address (" + localAddress + ") anyway as requested.");
+                }
+    
+                boolean wasActive = isActive();
+                try {
+                    doBind(localAddress);
+                } catch (Throwable t) {
+                    safeSetFailure(promise, t);
+                    closeIfClosed();
+                    return;
+                }
+    
+                if (!wasActive && isActive()) {
+                    invokeLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            pipeline.fireChannelActive();
+                        }
+                    });
+                }
+    
+                safeSetSuccess(promise);
+            }
+    
+    
+    //最后被NioServerSocketChannel自己实现了。
+    
+        @SuppressJava6Requirement(reason = "Usage guarded by java version check")
+        @Override
+        protected void doBind(SocketAddress localAddress) throws Exception {
+            if (PlatformDependent.javaVersion() >= 7) {
+                javaChannel().bind(localAddress, config.getBacklog());
+            } else {
+                javaChannel().socket().bind(localAddress, config.getBacklog());
+            }
+        }
+    ```
+
+## ServerBootstrapAcceptor
+
+在前面我们分析过，在channel register到loop上的时候，会触发channelInitializer的initChannel方法，内部在pipeline上增加了一个handler，即ServerBootstrapAcceptor。
+
+在执行完以上的工作之后，task任务会为空，所以会走到select()代码中，并阻塞，等待请求的到来。
+
+```java
+        @Override
+        @SuppressWarnings("unchecked")
+        public void channelRead(ChannelHandlerContext ctx, Object msg) {
+            final Channel child = (Channel) msg;
+
+            child.pipeline().addLast(childHandler);
+
+            setChannelOptions(child, childOptions, logger);
+            setAttributes(child, childAttrs);
+
+            try {
+                childGroup.register(child).addListener(new ChannelFutureListener() {
+                    @Override
+                    public void operationComplete(ChannelFuture future) throws Exception {
+                        if (!future.isSuccess()) {
+                            forceClose(child, future.cause());
+                        }
+                    }
+                });
+            } catch (Throwable t) {
+                forceClose(child, t);
+            }
+        }		
+```
+
+从这个ChannelRead的方法，即可看出他的意义就是，让有read的event时候，将得到的ChildChannel，即NioSocketChannel，注册到childGroup上。
+
+我们回到之前Select那边，最后会走到Unsafe的read方法，还是调用的java层面的read
+
+```java
+    private final class NioMessageUnsafe extends AbstractNioUnsafe {
+
+        private final List<Object> readBuf = new ArrayList<Object>();
+
+        @Override
+        public void read() {
+            assert eventLoop().inEventLoop();
+            final ChannelConfig config = config();
+            final ChannelPipeline pipeline = pipeline();
+            final RecvByteBufAllocator.Handle allocHandle = unsafe().recvBufAllocHandle();
+            allocHandle.reset(config);
+
+            boolean closed = false;
+            Throwable exception = null;
+            try {
+                try {
+                    do {
+                        int localRead = doReadMessages(readBuf);
+                        if (localRead == 0) {
+                            break;
+                        }
+                        if (localRead < 0) {
+                            closed = true;
+                            break;
+                        }
+
+                        allocHandle.incMessagesRead(localRead);
+                    } while (continueReading(allocHandle));
+                } catch (Throwable t) {
+                    exception = t;
+                }
+
+                int size = readBuf.size();
+                for (int i = 0; i < size; i ++) {
+                    readPending = false;
+                  //通知读取数据了
+                    pipeline.fireChannelRead(readBuf.get(i));
+                }
+                readBuf.clear();
+                allocHandle.readComplete();
+              //通知读取完毕
+                pipeline.fireChannelReadComplete();
+
+                if (exception != null) {
+                    closed = closeOnReadError(exception);
+
+                    pipeline.fireExceptionCaught(exception);
+                }
+
+                if (closed) {
+                    inputShutdown = true;
+                    if (isOpen()) {
+                        close(voidPromise());
+                    }
+                }
+            } finally {
+                // Check if there is a readPending which was not processed yet.
+                // This could be for two reasons:
+                // * The user called Channel.read() or ChannelHandlerContext.read() in channelRead(...) method
+                // * The user called Channel.read() or ChannelHandlerContext.read() in channelReadComplete(...) method
+                //
+                // See https://github.com/netty/netty/issues/2254
+                if (!readPending && !config.isAutoRead()) {
+                    removeReadOp();
+                }
+            }
+        }
+    }
+```
+
+在fireChannelRead的时候，会通知所有handler执行channelRead的方法。并生成NioSocketChannel，将SocketChannel封装在里面，传到handler那边。
+
+```java
+NioServerScoketChannel.java
+  
+@Override
+    protected int doReadMessages(List<Object> buf) throws Exception {
+        SocketChannel ch = SocketUtils.accept(javaChannel());
+
+        try {
+            if (ch != null) {
+                buf.add(new NioSocketChannel(this, ch));
+                return 1;
+            }
+        } catch (Throwable t) {
+            logger.warn("Failed to create a new channel from an accepted socket.", t);
+
+            try {
+                ch.close();
+            } catch (Throwable t2) {
+                logger.warn("Failed to close a socket.", t2);
+            }
+        }
+
+        return 0;
+    }
+
+```
+
+可以看到NioServerSocketChannel，传到handler那边的buf的list，里面放的就是NioSocketChannel，实现了所谓的NioSocketChannel注册到SubReactor。
+
+**一旦channel注册到了EventLoop上就会开启一个线程，进行select，是一个for(;;)循环**
+
+## Write
+
+只是将要写入socket的数据进行一个保存，真正执行写入是Flush
+
+## Flush
+
+真正调用Java SocketChannel进行write方法的地方。
+
+<img src="/Users/zero/Library/Application Support/typora-user-images/image-20231117182444690.png" alt="image-20231117182444690" style="zoom:50%;" />

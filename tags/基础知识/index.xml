@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>基础知识 on Lulu</title>
+    <link>https://sunhao1256.github.io/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</link>
+    <description>Recent content in 基础知识 on Lulu</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 14 Nov 2023 11:28:41 +0800</lastBuildDate><atom:link href="https://sunhao1256.github.io/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Maven</title>
+      <link>https://sunhao1256.github.io/post/maven/</link>
+      <pubDate>Tue, 14 Nov 2023 11:28:41 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/maven/</guid>
+      <description>Maven Java打包工具
+Setting文件 参考https://juejin.cn/post/7035620309915058207
+  LocalRepository
+本地仓库地址
+  servers
+&amp;lt;servers&amp;gt; &amp;lt;server&amp;gt; &amp;lt;!-- 服务的唯一定义符, 用来区分不同的代理元素 --&amp;gt; &amp;lt;id&amp;gt;deploymentRepo&amp;lt;/id&amp;gt; &amp;lt;!-- 鉴权用户名 --&amp;gt; &amp;lt;username&amp;gt;repouser&amp;lt;/username&amp;gt; &amp;lt;!-- 鉴权密码 --&amp;gt; &amp;lt;password&amp;gt;repopwd&amp;lt;/password&amp;gt; &amp;lt;/server&amp;gt; &amp;lt;server&amp;gt; &amp;lt;id&amp;gt;siteServer&amp;lt;/id&amp;gt; &amp;lt;!-- 鉴权时的私钥位置 --&amp;gt; &amp;lt;privateKey&amp;gt;/path/to/private/key&amp;lt;/privateKey&amp;gt; &amp;lt;!-- 鉴权时的私钥密码 --&amp;gt; &amp;lt;passphrase&amp;gt;optional; leave empty if not used.&amp;lt;/passphrase&amp;gt; &amp;lt;/server&amp;gt; &amp;lt;/servers&amp;gt;   </description>
+    </item>
+    
+  </channel>
+</rss>

@@ -80,6 +80,28 @@
 	
 	<header class="list__header">
 		<h2 class="list__title post__title">
+			<a href="/post/java-how-to-write-file/" rel="bookmark">
+			Java How to Write File
+			</a>
+		</h2>
+		<div class="list__meta meta"><div class="meta__item-author meta__item">
+	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 12 16"><path d="M6 1c2.2 0 3.5 2 3.5 4.5C9.5 7 8.9 8.2 8 9c2.9.8 4 2.5 4 5v1H0v-1c0-2.5 1.1-4.2 4-5-.9-.8-1.5-2-1.5-3.5C2.5 3 3.8 1 6 1z"/></svg><span class="meta__text">Frank Silva</span>
+</div>
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg><time class="meta__text" datetime="2022-10-20T11:13:56&#43;08:00">2022-10-20</time></div></div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+		if you need to read huge file one line by one line , how will you to achieve the program ?
+Read all bytes to memory
+package io_stream; import org.apache.tomcat.util.http.fileupload.IOUtils; import java.io.*; public class BufferStreamTest { public static void main(String[] args) throws IOException { // try copy large file in 30MB memory  InputStream inputStream = new FileInputStream(&#34;/Users/zero/Downloads/googlechrome.dmg&#34;); long start = System.currentTimeMillis(); // will fill heap memory  OutputStream output = new ByteArrayOutputStream(); inputStream.
+	</div>
+	<div class="list__footer clearfix">
+		<a class="list__footer-readmore btn" href="/post/java-how-to-write-file/">Read more…</a>
+	</div>
+</article><article class="list__item post">
+	
+	<header class="list__header">
+		<h2 class="list__title post__title">
 			<a href="/post/dictionary-tree/" rel="bookmark">
 			Dictionary Tree
 			</a>
@@ -258,23 +280,6 @@
 	<div class="list__footer clearfix">
 		<a class="list__footer-readmore btn" href="/post/bst_skip_alogithm/">Read more…</a>
 	</div>
-</article><article class="list__item post">
-	
-	<header class="list__header">
-		<h2 class="list__title post__title">
-			<a href="/post/binary_search/" rel="bookmark">
-			Binary Search
-			</a>
-		</h2>
-		<div class="list__meta meta"><div class="meta__item-author meta__item">
-	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 12 16"><path d="M6 1c2.2 0 3.5 2 3.5 4.5C9.5 7 8.9 8.2 8 9c2.9.8 4 2.5 4 5v1H0v-1c0-2.5 1.1-4.2 4-5-.9-.8-1.5-2-1.5-3.5C2.5 3 3.8 1 6 1z"/></svg><span class="meta__text">Frank Silva</span>
-</div>
-<div class="meta__item-datetime meta__item">
-	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg><time class="meta__text" datetime="2022-10-16T14:54:06&#43;08:00">2022-10-16</time></div></div>
-	</header>
-	<div class="content list__excerpt post__content clearfix">
-		
-	</div>
 </article>
 </main>
 
@@ -298,11 +303,11 @@
 	<h4 class="widget__title">Recent Posts</h4>
 	<div class="widget__content">
 		<ul class="widget__list">
+			<li class="widget__item"><a class="widget__link" href="/post/maven/">Maven</a></li>
 			<li class="widget__item"><a class="widget__link" href="/post/java-io/">Java Io</a></li>
 			<li class="widget__item"><a class="widget__link" href="/post/tmux-cheatsheet/">tmux shortcuts</a></li>
 			<li class="widget__item"><a class="widget__link" href="/post/k8s-client-informer%E6%9C%BA%E5%88%B6/">K8s Client Informer mechanism</a></li>
 			<li class="widget__item"><a class="widget__link" href="/post/oa-roadmap/">OaRoadmap</a></li>
-			<li class="widget__item"><a class="widget__link" href="/post/kubernetes-nice-article/">Kubernetes Nice Article</a></li>
 		</ul>
 	</div>
 </div>
@@ -336,6 +341,7 @@
 		<a class="widget-taglist__link widget__link btn" href="/tags/roadmap/" title="roadmap">roadmap</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/spring/" title="Spring">Spring</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/%E4%B9%B1%E4%B8%83%E5%85%AB%E7%B3%9F/" title="乱七八糟">乱七八糟</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" title="基础知识">基础知识</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/%E5%AD%A6%E4%B9%A0/" title="学习">学习</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/%E5%AD%A6%E5%A4%96%E8%AF%AD/" title="学外语">学外语</a>
 		<a class="widget-taglist__link widget__link btn" href="/tags/%E6%8A%93%E5%8C%85/" title="抓包">抓包</a>
