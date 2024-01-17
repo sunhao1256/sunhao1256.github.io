@@ -91,5 +91,77 @@ mpush-api/src/main/java/com/mpush/api/service
   
   ```
 
+- FutureListener
+
+  主要是利用他isDone的能力，并且提供了一个monitor，去异步检查是否已经start
+
+  利用join来控制是否同步启动service
+
+  ```java
+  public class FutureListener extends CompletableFuture<Boolean> implements Listener {
+      private final Listener listener;
+      private final AtomicBoolean started;
   
+      public FutureListener(AtomicBoolean started) {
+          this.started = started;
+          this.listener = null;
+      }
+  
+      public FutureListener(Listener listener, AtomicBoolean started) {
+          this.listener = listener;
+          this.started = started;
+      }
+  
+      @Override
+      public void onSuccess(Object... args) {
+          if (isDone()) return;// 防止Listener被重复执行
+          complete(started.get());
+          if (listener != null) listener.onSuccess(args);
+      }
+  
+      @Override
+      public void onFailure(Throwable cause) {
+          if (isDone()) return;// 防止Listener被重复执行
+          completeExceptionally(cause);
+          if (listener != null) listener.onFailure(cause);
+          throw cause instanceof ServiceException
+                  ? (ServiceException) cause
+                  : new ServiceException(cause);
+      }
+  
+      /**
+       * 防止服务长时间卡在某个地方，增加超时监控
+       *
+       * @param service 服务
+       */
+      public void monitor(BaseService service) {
+          if (isDone()) return;// 防止Listener被重复执行
+          runAsync(() -> {
+              try {
+                  this.get(service.timeoutMillis(), TimeUnit.MILLISECONDS);
+              } catch (Exception e) {
+                  this.onFailure(new ServiceException(String.format("service %s monitor timeout", service.getClass().getSimpleName())));
+              }
+          });
+      }
+  
+      @Override
+      public boolean cancel(boolean mayInterruptIfRunning) {
+          throw new UnsupportedOperationException();
+      }
+  
+  }
+  ```
+
+- Server
+
+  service的一种具像，用于区分Server和Service
+
+  ```java
+  public interface Server extends Service {
+  
+  }
+  ```
+
+## mpush-netty
 

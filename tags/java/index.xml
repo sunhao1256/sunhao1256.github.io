@@ -6,7 +6,17 @@
     <description>Recent content in java on Lulu</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 10 Nov 2023 17:14:11 +0800</lastBuildDate><atom:link href="https://sunhao1256.github.io/tags/java/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 16 Jan 2024 09:55:37 +0800</lastBuildDate><atom:link href="https://sunhao1256.github.io/tags/java/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CompletableFuture</title>
+      <link>https://sunhao1256.github.io/post/completablefuture/</link>
+      <pubDate>Tue, 16 Jan 2024 09:55:37 +0800</pubDate>
+      
+      <guid>https://sunhao1256.github.io/post/completablefuture/</guid>
+      <description>CompletableFuture 提供了快速实现异步任务的能力，带async即内部方法是异步调用的，使用的Executor默认是ForkJoin的
+Static Methods    Modifier and Type Method and Description     static CompletableFuture&amp;lt;Void&amp;gt; allOf(CompletableFuture&amp;lt;?&amp;gt;... cfs)Returns a new CompletableFuture that is completed when all of the given CompletableFutures complete.   static CompletableFuture&amp;lt;Object&amp;gt; anyOf(CompletableFuture&amp;lt;?&amp;gt;... cfs)Returns a new CompletableFuture that is completed when any of the given CompletableFutures complete, with the same result.   static &amp;lt;U&amp;gt; CompletableFuture&amp;lt;U&amp;gt; completedFuture(U value)Returns a new CompletableFuture that is already completed with the given value.</description>
+    </item>
+    
     <item>
       <title>Java Io</title>
       <link>https://sunhao1256.github.io/post/java-io/</link>

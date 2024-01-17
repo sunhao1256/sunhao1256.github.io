@@ -18,7 +18,7 @@
 		<meta itemprop="name" content="Git命令">
 <meta itemprop="description" content="Git常用命令 git init # 初始化本地git仓库（创建新仓库） git config --global user.name &quot;xxx&quot; # 配置用户名 git config --global user.email &quot;xxx@xxx.com&quot; # 配置邮件 git config --global color.ui true # git status等命令自动着色 git config --global color.status auto git config --global color.diff auto git config --global color.branch auto git config --global color.interactive auto git config --global --unset http.proxy # remove proxy configuration on git git clone git&#43;ssh://git@192.168.53.168/VT.git # clone远程仓库 git status # 查看当前版本状态（是否修改） git add xyz # 添加xyz文件至index git add ."><meta itemprop="datePublished" content="2022-02-21T16:57:01+08:00" />
 <meta itemprop="dateModified" content="2022-02-21T16:57:01+08:00" />
-<meta itemprop="wordCount" content="536">
+<meta itemprop="wordCount" content="669">
 <meta itemprop="keywords" content="Git," />
 		<meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Git命令"/>
@@ -226,7 +226,20 @@ git@sunhao1256:sunhao1256/test-git-pr.git
 </code></pre></div><p>如果不进行更换，默认使用当前缓存中的账号，默认第一个</p>
 </li>
 </ul>
+<pre tabindex="0"><code>The commit type can include the following:
 
+feat – a new feature is introduced with the changes
+fix – a bug fix has occurred
+chore – changes that do not relate to a fix or feature and don't modify src or test files (for example updating dependencies)
+refactor – refactored code that neither fixes a bug nor adds a feature
+docs – updates to documentation such as a the README or other markdown files
+style – changes that do not affect the meaning of the code, likely related to code formatting such as white-space, missing semi-colons, and so on.
+test – including new or correcting previous tests
+perf – performance improvements
+ci – continuous integration related
+build – changes that affect the build system or external dependencies
+revert – reverts a previous commit
+</code></pre>
 		</div>
 		<footer class="post__footer">
 			
@@ -277,7 +290,7 @@ git@sunhao1256:sunhao1256/test-git-pr.git
 	<div class="container footer__container flex">
 		
 		<div class="footer__copyright">
-			&copy; 2023 Frank Silva.
+			&copy; 2024 Frank Silva.
 			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
 		</div>
 	</div>

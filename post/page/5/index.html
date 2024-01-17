@@ -81,6 +81,76 @@
 	
 	<header class="list__header">
 		<h2 class="list__title post__title">
+			<a href="/post/%E5%B9%B3%E6%97%B6%E7%96%91%E9%97%AE/" rel="bookmark">
+			平时疑问
+			</a>
+		</h2>
+		<div class="list__meta meta"><div class="meta__item-author meta__item">
+	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 12 16"><path d="M6 1c2.2 0 3.5 2 3.5 4.5C9.5 7 8.9 8.2 8 9c2.9.8 4 2.5 4 5v1H0v-1c0-2.5 1.1-4.2 4-5-.9-.8-1.5-2-1.5-3.5C2.5 3 3.8 1 6 1z"/></svg><span class="meta__text">Frank Silva</span>
+</div>
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg><time class="meta__text" datetime="2022-01-11T14:43:18&#43;08:00">2022-01-11</time></div></div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+		平时疑问   浏览器输入一个地址，整个流程
+  如果线上流量暴增，全都打到一个 upstream 上了，怎么排查
+  如何在 nginx 的 access log 中查出请求前 10 的 ip
+  台阶问题，假如对于上台阶，可以一次上一阶，也可以一次上两阶，写一个方法，实现输入台阶数，输出可以有多少种上法。
+  广度优先和深度优先
+  spring reactive，响应式聊下，什么时候适合用？背压是什么东西，backpress
+  压缩算法，怎么就“压缩”了？如何减少体积的？
+  实时一致性，最终一致性是什么？什么场景下用那种，如何实现的？
+  实时一致性:
+微服务中，场景用户使用积分兑换优惠券，积分service先扣除积分，优惠券service再进行发券动作，如果网络问题，积分扣成功了，但是优惠券发失败了。用户会投诉，必须要证优惠券和积分要在同一个分布式事务中.
+解决方案：市面上的分布式事务，阿里的seata
+  最终一致性:
+微服务中，用户选择商品下单，商品service进行库存扣件，订单service生成订单，交易service生成交易订单。如果网络原因导致，交易service生成交易订单失败了。并没有影响，只需要通过措施重新弥补交易service去生成交易订单即可。
+解决方法：mq，通过mq的重试机制以及持久化等特性，每一个微服务与下游微服务进行交互动作都是通过mq的消息。保证消息能够被消费，长时间未消费可以告警。
+    消息堆积如何处理？以及产生的危害。
+  怎么保证接口幂等
+  如何评判一个服务的好坏？你是如何进行压测的？查看了哪些指标
+  对象存储，文件存储，块存储。区别
+  服务器卡了，字都快打不动了，咋回事，怎么排查
+  用过mysql行锁吗
+用过，在一些比较简单的微服务场景，或者无法使用其他中间件的前提下。如果需要部署多节点的话，最方便的分布式锁就是mysql，因为我们的db库基本都是单节点的mysql或者mariadb。使用起来其实很简单，就是一个update语句，更新version字段。也就是所谓的乐观锁。开启一个事务，先select锁，然后尝试更新锁，在没完成业务的之前是不提交锁的，所以，其他线程会在获取锁的时候就停下来。因为update，delete，insert默认都是带for update，即行锁的。当然select不会阻塞，除非主动的设置for update。这样就是最基础的一个分布式锁了。切记锁字段必须要有索引，否则锁整个表。就G了
+  netty玩过吗，玩过哪些东西，能干啥
+	</div>
+	<div class="list__footer clearfix">
+		<a class="list__footer-readmore btn" href="/post/%E5%B9%B3%E6%97%B6%E7%96%91%E9%97%AE/">Read more…</a>
+	</div>
+</article><article class="list__item post">
+	
+	<header class="list__header">
+		<h2 class="list__title post__title">
+			<a href="/post/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="bookmark">
+			数据结构
+			</a>
+		</h2>
+		<div class="list__meta meta"><div class="meta__item-author meta__item">
+	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 12 16"><path d="M6 1c2.2 0 3.5 2 3.5 4.5C9.5 7 8.9 8.2 8 9c2.9.8 4 2.5 4 5v1H0v-1c0-2.5 1.1-4.2 4-5-.9-.8-1.5-2-1.5-3.5C2.5 3 3.8 1 6 1z"/></svg><span class="meta__text">Frank Silva</span>
+</div>
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg><time class="meta__text" datetime="2022-01-11T14:43:18&#43;08:00">2022-01-11</time></div></div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+		堆 堆是一种非线性结构，可以把堆看作一个数组，也可以被看作一个完全二叉树，通俗来讲堆其实就是利用完全二叉树的结构来维护的一维数组但堆并不一定是完全二叉树
+按照堆的特点可以把堆分为大顶堆和小顶堆 大顶堆：每个结点的值都大于或等于其左右孩子结点的值 小顶堆：每个结点的值都小于或等于其左右孩子结点的值
+使用堆的原因？ 如果仅仅是需要得到一个有序的序列，使用排序就可以很快完成，并不需要去组织一个新的数据结构。但是如果我们的需求是对于一个随时会有更新的序列，我要随时知道这个序列的最小值或最大值是什么。显然如果是线性结构，每次插入之后，假设原数组是有序的，那使用二分把它放在正确的位置也未尝不可，但是插入的时候从数组中留出空位就需要O(n)的时间复杂度，删除的时候亦然。
+时间复杂度 插入和删除的时间复杂度是O(logn)
+环形队列(数组) 普通队列 普通队列，数组实现时，出队后，原来的空间就浪费了。
+环形队列 环形队列，数组实现时，下标用模取运算，例如最大空间为5，模取后只会有0，1，2，3，4下标，组成了循环。
+ front 变量的含义做一个调整： front 就指向队列的第一个元素, 也就是说 arr[front] 就是队列的第一个元素 front 的初始值 = 0 rear 变量的含义做一个调整：rear 指向队列的最后一个元素的后一个位置. 因为希望空出一个空间做为约定. rear 的初始值 = 0 当队列满时，条件是 (rear + 1) % maxSize == front 【满】 对队列为空的条件， rear == front 空 当我们这样分析， 队列中有效的数据的个数 (rear + maxSize - front) % maxSize // rear = 1 front = 0  时间轮 使用场景，处理大批量的定时任务
+利用环形队列，队列的每个空间里存放的是任务的集合。
+例如以60秒为一个轮，70秒后执行一个任务。只需要一个timer按秒去旋转时间轮，70%60=10，到达第10个槽的时候，执行内部的所有任务即可。
+为了解决10秒和70秒落在同一个槽上，可以在任务身上加一个属性，圈数，例如10秒的任务圈数是0，70秒的任务是1，只有达到槽位置，并且圈数为0的任务才会被执行。
+	</div>
+	<div class="list__footer clearfix">
+		<a class="list__footer-readmore btn" href="/post/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">Read more…</a>
+	</div>
+</article><article class="list__item post">
+	
+	<header class="list__header">
+		<h2 class="list__title post__title">
 			<a href="/post/self-interview/" rel="bookmark">
 			自我面试
 			</a>
@@ -274,11 +344,11 @@ func testReflect(person Person) { t := reflect.TypeOf(person) v := reflect.Value
 	<h4 class="widget__title">Recent Posts</h4>
 	<div class="widget__content">
 		<ul class="widget__list">
+			<li class="widget__item"><a class="widget__link" href="/post/completablefuture/">CompletableFuture</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/mpush/">Mpush</a></li>
 			<li class="widget__item"><a class="widget__link" href="/post/maven/">Maven</a></li>
 			<li class="widget__item"><a class="widget__link" href="/post/java-io/">Java Io</a></li>
 			<li class="widget__item"><a class="widget__link" href="/post/tmux-cheatsheet/">tmux shortcuts</a></li>
-			<li class="widget__item"><a class="widget__link" href="/post/k8s-client-informer%E6%9C%BA%E5%88%B6/">K8s Client Informer mechanism</a></li>
-			<li class="widget__item"><a class="widget__link" href="/post/oa-roadmap/">OaRoadmap</a></li>
 		</ul>
 	</div>
 </div>
@@ -359,7 +429,7 @@ func testReflect(person Person) { t := reflect.TypeOf(person) v := reflect.Value
 	<div class="container footer__container flex">
 		
 		<div class="footer__copyright">
-			&copy; 2023 Frank Silva.
+			&copy; 2024 Frank Silva.
 			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
 		</div>
 	</div>

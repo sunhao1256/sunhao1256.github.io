@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Mpush - Lulu</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+		<meta property="og:title" content="Mpush" />
+<meta property="og:description" content="Mpush . ├── bin ├── conf ├── logs ├── mpush-api ├── mpush-boot ├── mpush-cache ├── mpush-client ├── mpush-common ├── mpush-core ├── mpush-monitor ├── mpush-netty ├── mpush-test ├── mpush-tools ├── mpush-zk └── target mpush-api mpush-api/src/main/java/com/mpush/api/ ├── common ├── connection ├── event ├── message ├── protocol ├── push ├── router ├── service ├── spi │ ├── client │ ├── common │ ├── core │ ├── handler │ ├── net │ ├── push │ └── router └── srd service mpush-api/src/main/java/com/mpush/api/service ├── BaseService." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sunhao1256.github.io/post/mpush/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2024-01-16T09:24:18+08:00" />
+<meta property="article:modified_time" content="2024-01-16T09:24:18+08:00" />
+
+
+		<meta itemprop="name" content="Mpush">
+<meta itemprop="description" content="Mpush . ├── bin ├── conf ├── logs ├── mpush-api ├── mpush-boot ├── mpush-cache ├── mpush-client ├── mpush-common ├── mpush-core ├── mpush-monitor ├── mpush-netty ├── mpush-test ├── mpush-tools ├── mpush-zk └── target mpush-api mpush-api/src/main/java/com/mpush/api/ ├── common ├── connection ├── event ├── message ├── protocol ├── push ├── router ├── service ├── spi │ ├── client │ ├── common │ ├── core │ ├── handler │ ├── net │ ├── push │ └── router └── srd service mpush-api/src/main/java/com/mpush/api/service ├── BaseService."><meta itemprop="datePublished" content="2024-01-16T09:24:18+08:00" />
+<meta itemprop="dateModified" content="2024-01-16T09:24:18+08:00" />
+<meta itemprop="wordCount" content="273">
+<meta itemprop="keywords" content="Netty," />
+		<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Mpush"/>
+<meta name="twitter:description" content="Mpush . ├── bin ├── conf ├── logs ├── mpush-api ├── mpush-boot ├── mpush-cache ├── mpush-client ├── mpush-common ├── mpush-core ├── mpush-monitor ├── mpush-netty ├── mpush-test ├── mpush-tools ├── mpush-zk └── target mpush-api mpush-api/src/main/java/com/mpush/api/ ├── common ├── connection ├── event ├── message ├── protocol ├── push ├── router ├── service ├── spi │ ├── client │ ├── common │ ├── core │ ├── handler │ ├── net │ ├── push │ └── router └── srd service mpush-api/src/main/java/com/mpush/api/service ├── BaseService."/>
+
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container header__container">
+		
+	<div class="logo logo--mixed">
+		<a class="logo__link" href="/" title="Lulu" rel="home">
+			<div class="logo__item logo__imagebox">
+					<img class="logo__img" src="/img/placeholder.png">
+				</div><div class="logo__item logo__text">
+					<div class="logo__title">Lulu</div>
+					<div class="logo__tagline">Lulu is arrongant cat</div>
+				</div>
+		</a>
+	</div>
+		
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+	<ul class="menu__list">
+		<li class="menu__item">
+			<a class="menu__link" href="/about/">
+				
+				<span class="menu__text">About</span>
+				
+			</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/k8s-client-informer%E6%9C%BA%E5%88%B6/">
+				
+				<span class="menu__text">K8s Client Informer mechanism</span>
+				
+			</a>
+		</li>
+	</ul>
+</nav>
+
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">Mpush</h1>
+			<div class="post__meta meta"><div class="meta__item-author meta__item">
+	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 12 16"><path d="M6 1c2.2 0 3.5 2 3.5 4.5C9.5 7 8.9 8.2 8 9c2.9.8 4 2.5 4 5v1H0v-1c0-2.5 1.1-4.2 4-5-.9-.8-1.5-2-1.5-3.5C2.5 3 3.8 1 6 1z"/></svg><span class="meta__text">Frank Silva</span>
+</div>
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg><time class="meta__text" datetime="2024-01-16T09:24:18&#43;08:00">2024-01-16</time></div></div>
+		</header>
+		
+<div class="post__toc toc">
+	<div class="toc__title">Page content</div>
+	<div class="toc__menu">
+		<nav id="TableOfContents">
+  <ul>
+    <li><a href="#mpush-api">mpush-api</a>
+      <ul>
+        <li><a href="#service">service</a></li>
+      </ul>
+    </li>
+    <li><a href="#mpush-netty">mpush-netty</a></li>
+  </ul>
+</nav>
+	</div>
+</div><div class="content post__content clearfix">
+			<h1 id="mpush">Mpush</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">.
+├── bin
+├── conf
+├── logs
+├── mpush-api
+├── mpush-boot
+├── mpush-cache
+├── mpush-client
+├── mpush-common
+├── mpush-core
+├── mpush-monitor
+├── mpush-netty
+├── mpush-test
+├── mpush-tools
+├── mpush-zk
+└── target
+</code></pre></div><h2 id="mpush-api">mpush-api</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mpush-api/src/main/java/com/mpush/api/
+├── common
+├── connection
+├── event
+├── message
+├── protocol
+├── push
+├── router
+├── service
+├── spi
+│   ├── client
+│   ├── common
+│   ├── core
+│   ├── handler
+│   ├── net
+│   ├── push
+│   └── router
+└── srd
+</code></pre></div><h3 id="service">service</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mpush-api/src/main/java/com/mpush/api/service
+├── BaseService.java
+├── Client.java
+├── FutureListener.java
+├── Listener.java
+├── Server.java
+├── Service.java
+└── ServiceException.java
+</code></pre></div><ul>
+<li>
+<p>Service.java</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Listener</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onSuccess</span><span style="color:#f92672">(</span>Object<span style="color:#f92672">...</span> args<span style="color:#f92672">);</span>
+
+    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onFailure</span><span style="color:#f92672">(</span>Throwable cause<span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Service</span> <span style="color:#f92672">{</span>
+
+    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">start</span><span style="color:#f92672">(</span>Listener listener<span style="color:#f92672">);</span>
+
+    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">stop</span><span style="color:#f92672">(</span>Listener listener<span style="color:#f92672">);</span>
+
+    CompletableFuture<span style="color:#f92672">&lt;</span>Boolean<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
+
+    CompletableFuture<span style="color:#f92672">&lt;</span>Boolean<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">stop</span><span style="color:#f92672">();</span>
+
+    <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">syncStart</span><span style="color:#f92672">();</span>
+
+    <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">syncStop</span><span style="color:#f92672">();</span>
+
+    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">init</span><span style="color:#f92672">();</span>
+
+    <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isRunning</span><span style="color:#f92672">();</span>
+
+<span style="color:#f92672">}</span>
+
+</code></pre></div></li>
+<li>
+<p>FutureListener</p>
+<p>主要是利用他isDone的能力，并且提供了一个monitor，去异步检查是否已经start</p>
+<p>利用join来控制是否同步启动service</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">FutureListener</span> <span style="color:#66d9ef">extends</span> CompletableFuture<span style="color:#f92672">&lt;</span>Boolean<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">implements</span> Listener <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> Listener listener<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> AtomicBoolean started<span style="color:#f92672">;</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">FutureListener</span><span style="color:#f92672">(</span>AtomicBoolean started<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">started</span> <span style="color:#f92672">=</span> started<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">listener</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">FutureListener</span><span style="color:#f92672">(</span>Listener listener<span style="color:#f92672">,</span> AtomicBoolean started<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">listener</span> <span style="color:#f92672">=</span> listener<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">started</span> <span style="color:#f92672">=</span> started<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onSuccess</span><span style="color:#f92672">(</span>Object<span style="color:#f92672">...</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>isDone<span style="color:#f92672">())</span> <span style="color:#66d9ef">return</span><span style="color:#f92672">;</span><span style="color:#75715e">// 防止Listener被重复执行
+</span><span style="color:#75715e"></span>        complete<span style="color:#f92672">(</span>started<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">());</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>listener <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> listener<span style="color:#f92672">.</span><span style="color:#a6e22e">onSuccess</span><span style="color:#f92672">(</span>args<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onFailure</span><span style="color:#f92672">(</span>Throwable cause<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>isDone<span style="color:#f92672">())</span> <span style="color:#66d9ef">return</span><span style="color:#f92672">;</span><span style="color:#75715e">// 防止Listener被重复执行
+</span><span style="color:#75715e"></span>        completeExceptionally<span style="color:#f92672">(</span>cause<span style="color:#f92672">);</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>listener <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> listener<span style="color:#f92672">.</span><span style="color:#a6e22e">onFailure</span><span style="color:#f92672">(</span>cause<span style="color:#f92672">);</span>
+        <span style="color:#66d9ef">throw</span> cause <span style="color:#66d9ef">instanceof</span> ServiceException
+                <span style="color:#f92672">?</span> <span style="color:#f92672">(</span>ServiceException<span style="color:#f92672">)</span> cause
+                <span style="color:#f92672">:</span> <span style="color:#66d9ef">new</span> ServiceException<span style="color:#f92672">(</span>cause<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#75715e">/**
+</span><span style="color:#75715e">     * 防止服务长时间卡在某个地方，增加超时监控
+</span><span style="color:#75715e">     *
+</span><span style="color:#75715e">     * @param service 服务
+</span><span style="color:#75715e">     */</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">monitor</span><span style="color:#f92672">(</span>BaseService service<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>isDone<span style="color:#f92672">())</span> <span style="color:#66d9ef">return</span><span style="color:#f92672">;</span><span style="color:#75715e">// 防止Listener被重复执行
+</span><span style="color:#75715e"></span>        runAsync<span style="color:#f92672">(()</span> <span style="color:#f92672">-&gt;</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>service<span style="color:#f92672">.</span><span style="color:#a6e22e">timeoutMillis</span><span style="color:#f92672">(),</span> TimeUnit<span style="color:#f92672">.</span><span style="color:#a6e22e">MILLISECONDS</span><span style="color:#f92672">);</span>
+            <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">onFailure</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ServiceException<span style="color:#f92672">(</span>String<span style="color:#f92672">.</span><span style="color:#a6e22e">format</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;service %s monitor timeout&#34;</span><span style="color:#f92672">,</span> service<span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getSimpleName</span><span style="color:#f92672">())));</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">});</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">cancel</span><span style="color:#f92672">(</span><span style="color:#66d9ef">boolean</span> mayInterruptIfRunning<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> UnsupportedOperationException<span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+
+<span style="color:#f92672">}</span>
+</code></pre></div></li>
+<li>
+<p>Server</p>
+<p>service的一种具像，用于区分Server和Service</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Server</span> <span style="color:#66d9ef">extends</span> Service <span style="color:#f92672">{</span>
+
+<span style="color:#f92672">}</span>
+</code></pre></div></li>
+</ul>
+<h2 id="mpush-netty">mpush-netty</h2>
+
+		</div>
+		<footer class="post__footer">
+			
+<div class="post__tags tags clearfix">
+	<svg class="tags__badge icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/netty/" rel="tag">Netty</a>
+		</li>
+	</ul>
+</div>
+		</footer>
+	</article>
+</main>
+
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="Frank Silva avatar" src="/img/avatar.png" class="avatar" height="90" width="90">
+	</figure>
+	<div class="authorbox__header">
+		<span class="authorbox__name">About Frank Silva</span>
+	</div>
+	<div class="authorbox__description">
+		Pursue Consummate Coding.
+	</div>
+</div>
+
+<nav class="pager flex">
+	<div class="pager__item pager__item--prev">
+		<a class="pager__link" href="/post/maven/" rel="prev">
+			<span class="pager__subtitle">«&thinsp;Previous</span>
+			<p class="pager__title">Maven</p>
+		</a>
+	</div>
+	<div class="pager__item pager__item--next">
+		<a class="pager__link" href="/post/completablefuture/" rel="next">
+			<span class="pager__subtitle">Next&thinsp;»</span>
+			<p class="pager__title">CompletableFuture</p>
+		</a>
+	</div>
+</nav>
+
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2024 Frank Silva.
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+<script src="/js/custom.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+</body>
+</html>
