@@ -178,3 +178,8 @@ build – changes that affect the build system or external dependencies
 revert – reverts a previous commit
 ```
 
+# 只更新分支信息
+
+```
+git remote update origin --prune
+```
