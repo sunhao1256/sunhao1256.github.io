@@ -1524,3 +1524,12 @@ https://www.geek-share.com/detail/2728370984.html
 ————————————————
 版权声明：本文为CSDN博主「Jack's 技术博客」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
 原文链接：https://blog.csdn.net/samallhorse/article/details/105542670
+
+# ssh
+
+```
+Unable to negotiate with x.x.x.x port 2222: no matching host key type found. Their offer: ssh-rsa
+ssh -o HostKeyAlgorithms=+ssh-rsa -o PubkeyAcceptedKeyTypes=+ssh-rsa  user@host -p 2222
+ssh -o HostKeyAlgorithms=+ssh-rsa -o PubkeyAcceptedKeyTypes=+ssh-rsa  root@192.168.31.1
+```
+
