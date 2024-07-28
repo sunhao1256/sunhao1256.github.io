@@ -48,7 +48,7 @@ VI和VIM的3种常见模式   正常模式
   查找：命令行模式下 / 关键字，例如：/hello，下一个n
   设置文件行号：命令行模式下 ：set nu，关闭行号：set nonu"><meta itemprop="datePublished" content="2020-01-31T20:50:54+00:00" />
 <meta itemprop="dateModified" content="2020-01-31T20:50:54+00:00" />
-<meta itemprop="wordCount" content="2073">
+<meta itemprop="wordCount" content="2104">
 <meta itemprop="keywords" content="linux," />
 		<meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="linux"/>
@@ -1746,7 +1746,11 @@ loglevel=&lt;level&gt;
 <p>————————————————
 版权声明：本文为CSDN博主「Jack&rsquo;s 技术博客」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
 原文链接：https://blog.csdn.net/samallhorse/article/details/105542670</p>
-
+<h1 id="ssh">ssh</h1>
+<pre tabindex="0"><code>Unable to negotiate with x.x.x.x port 2222: no matching host key type found. Their offer: ssh-rsa
+ssh -o HostKeyAlgorithms=+ssh-rsa -o PubkeyAcceptedKeyTypes=+ssh-rsa  user@host -p 2222
+ssh -o HostKeyAlgorithms=+ssh-rsa -o PubkeyAcceptedKeyTypes=+ssh-rsa  root@192.168.31.1
+</code></pre>
 		</div>
 		<footer class="post__footer">
 			

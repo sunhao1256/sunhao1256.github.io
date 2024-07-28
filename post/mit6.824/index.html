@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title> - Lulu</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+		<meta property="og:title" content="" />
+<meta property="og:description" content="MIT6.824 lecture 1 扩展性 我们在写一个web程序的时候，背后可能有个数据库。当我的web节点不够支持流量时，我可以增加web节点。然而数以千万的web节点满足了流量后，我的数据库只有一个node，因此database便成为了bottleneck。因此我们想通过增加机器来实现拓展，这点在现实中很难的。
+可用性 容错，Fault Tolerance，即FT
+容错有很多办法，例如写入磁盘或者replicate复制。磁盘在目前的场景下，相较于flash闪存来说效率太低。而replicate是目前的主要方案，当然是相当复杂的。
+一致性 由于cluster带来的的多节点，可能会导致不同的client同时访问各自的server，这样会导致查询的数据不一致。也就是说这里要考虑是Strong consistency还是Weak consistency
+强一致性，要求client发送一个put请求后，server需要确保其他的replicator也写入成功，这期间需要相当大的网络通信，也导致效率降低。
+甚至是现在为了保证多副本的时候，考虑物理因素，会将server放在不同的地区甚至国家，在网络传输中也需要几十ms的延迟。因此目前人们通常使用弱一致系统，我们只需要更新最近的副本数据，并且只从最近的副本获取数据。
+GFS Vmare FT Raft " />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sunhao1256.github.io/post/mit6.824/" /><meta property="article:section" content="post" />
+
+
+
+
+		<meta itemprop="name" content="">
+<meta itemprop="description" content="MIT6.824 lecture 1 扩展性 我们在写一个web程序的时候，背后可能有个数据库。当我的web节点不够支持流量时，我可以增加web节点。然而数以千万的web节点满足了流量后，我的数据库只有一个node，因此database便成为了bottleneck。因此我们想通过增加机器来实现拓展，这点在现实中很难的。
+可用性 容错，Fault Tolerance，即FT
+容错有很多办法，例如写入磁盘或者replicate复制。磁盘在目前的场景下，相较于flash闪存来说效率太低。而replicate是目前的主要方案，当然是相当复杂的。
+一致性 由于cluster带来的的多节点，可能会导致不同的client同时访问各自的server，这样会导致查询的数据不一致。也就是说这里要考虑是Strong consistency还是Weak consistency
+强一致性，要求client发送一个put请求后，server需要确保其他的replicator也写入成功，这期间需要相当大的网络通信，也导致效率降低。
+甚至是现在为了保证多副本的时候，考虑物理因素，会将server放在不同的地区甚至国家，在网络传输中也需要几十ms的延迟。因此目前人们通常使用弱一致系统，我们只需要更新最近的副本数据，并且只从最近的副本获取数据。
+GFS Vmare FT Raft ">
+
+<meta itemprop="wordCount" content="19">
+<meta itemprop="keywords" content="" />
+		<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content=""/>
+<meta name="twitter:description" content="MIT6.824 lecture 1 扩展性 我们在写一个web程序的时候，背后可能有个数据库。当我的web节点不够支持流量时，我可以增加web节点。然而数以千万的web节点满足了流量后，我的数据库只有一个node，因此database便成为了bottleneck。因此我们想通过增加机器来实现拓展，这点在现实中很难的。
+可用性 容错，Fault Tolerance，即FT
+容错有很多办法，例如写入磁盘或者replicate复制。磁盘在目前的场景下，相较于flash闪存来说效率太低。而replicate是目前的主要方案，当然是相当复杂的。
+一致性 由于cluster带来的的多节点，可能会导致不同的client同时访问各自的server，这样会导致查询的数据不一致。也就是说这里要考虑是Strong consistency还是Weak consistency
+强一致性，要求client发送一个put请求后，server需要确保其他的replicator也写入成功，这期间需要相当大的网络通信，也导致效率降低。
+甚至是现在为了保证多副本的时候，考虑物理因素，会将server放在不同的地区甚至国家，在网络传输中也需要几十ms的延迟。因此目前人们通常使用弱一致系统，我们只需要更新最近的副本数据，并且只从最近的副本获取数据。
+GFS Vmare FT Raft "/>
+
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container header__container">
+		
+	<div class="logo logo--mixed">
+		<a class="logo__link" href="/" title="Lulu" rel="home">
+			<div class="logo__item logo__imagebox">
+					<img class="logo__img" src="/img/placeholder.png">
+				</div><div class="logo__item logo__text">
+					<div class="logo__title">Lulu</div>
+					<div class="logo__tagline">Lulu is arrongant cat</div>
+				</div>
+		</a>
+	</div>
+		
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+	<ul class="menu__list">
+		<li class="menu__item">
+			<a class="menu__link" href="/about/">
+				
+				<span class="menu__text">About</span>
+				
+			</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/k8s-client-informer%E6%9C%BA%E5%88%B6/">
+				
+				<span class="menu__text">K8s Client Informer mechanism</span>
+				
+			</a>
+		</li>
+	</ul>
+</nav>
+
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title"></h1>
+			<div class="post__meta meta"><div class="meta__item-author meta__item">
+	<svg class="meta__icon icon icon-author" width="16" height="16" viewBox="0 0 12 16"><path d="M6 1c2.2 0 3.5 2 3.5 4.5C9.5 7 8.9 8.2 8 9c2.9.8 4 2.5 4 5v1H0v-1c0-2.5 1.1-4.2 4-5-.9-.8-1.5-2-1.5-3.5C2.5 3 3.8 1 6 1z"/></svg><span class="meta__text">Frank Silva</span>
+</div></div>
+		</header>
+		
+<div class="post__toc toc">
+	<div class="toc__title">Page content</div>
+	<div class="toc__menu">
+		<nav id="TableOfContents">
+  <ul>
+    <li><a href="#扩展性">扩展性</a></li>
+    <li><a href="#可用性">可用性</a></li>
+    <li><a href="#一致性">一致性</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#raft">Raft</a></li>
+  </ul>
+</nav>
+	</div>
+</div><div class="content post__content clearfix">
+			<h1 id="mit6824">MIT6.824</h1>
+<h1 id="lecture-1">lecture 1</h1>
+<h2 id="扩展性">扩展性</h2>
+<p>我们在写一个web程序的时候，背后可能有个数据库。当我的web节点不够支持流量时，我可以增加web节点。然而数以千万的web节点满足了流量后，我的数据库只有一个node，因此database便成为了bottleneck。因此我们想通过增加机器来实现拓展，这点在现实中很难的。</p>
+<h2 id="可用性">可用性</h2>
+<p>容错，Fault Tolerance，即FT</p>
+<p>容错有很多办法，例如写入磁盘或者replicate复制。磁盘在目前的场景下，相较于flash闪存来说效率太低。而replicate是目前的主要方案，当然是相当复杂的。</p>
+<h2 id="一致性">一致性</h2>
+<p>由于cluster带来的的多节点，可能会导致不同的client同时访问各自的server，这样会导致查询的数据不一致。也就是说这里要考虑是<strong>Strong consistency</strong>还是<strong>Weak consistency</strong></p>
+<p>强一致性，要求client发送一个put请求后，server需要确保其他的replicator也写入成功，这期间需要相当大的网络通信，也导致效率降低。</p>
+<p>甚至是现在为了保证多副本的时候，考虑物理因素，会将server放在不同的地区甚至国家，在网络传输中也需要几十ms的延迟。因此目前人们通常使用弱一致系统，我们只需要更新最近的副本数据，并且只从最近的副本获取数据。</p>
+<h1 id="gfs">GFS</h1>
+<h1 id="vmare-ft">Vmare FT</h1>
+<h2 id="raft">Raft</h2>
+
+		</div>
+	</article>
+</main>
+
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="Frank Silva avatar" src="/img/avatar.png" class="avatar" height="90" width="90">
+	</figure>
+	<div class="authorbox__header">
+		<span class="authorbox__name">About Frank Silva</span>
+	</div>
+	<div class="authorbox__description">
+		Pursue Consummate Coding.
+	</div>
+</div>
+
+<nav class="pager flex">
+	<div class="pager__item pager__item--next">
+		<a class="pager__link" href="/post/kafka-vs-rabbitmq/" rel="next">
+			<span class="pager__subtitle">Next&thinsp;»</span>
+			<p class="pager__title"></p>
+		</a>
+	</div>
+</nav>
+
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2024 Frank Silva.
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+<script src="/js/custom.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+</body>
+</html>
