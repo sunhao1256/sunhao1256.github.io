@@ -15,7 +15,7 @@ tags: []
 
 - kafka的核心组件相互直接的关系与作用
 
-- kafka的consumer group是什么？
+- kafka的consumer group是什么？怎么实现的？
 
 - kafka如何保证消息顺序？消息不丢失？消息不重复消费 ？
 
@@ -25,4 +25,7 @@ tags: []
 
 - zookeeper在kafka中扮演什么角色，做了哪些事情，与kRaft模式的区别
 
-- kafka
+- kafka说的这个日志是什么，随机写入和顺序写入的区别？java的RandomAccessFile 干什么的，java的NIO包又是干什么的？
+
+- kafka的集群架构是什么样子的？
+
