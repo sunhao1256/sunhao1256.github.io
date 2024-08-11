@@ -46,3 +46,7 @@ tags: []
 - kafkaController干嘛的
   - 在源码中的一个类。
   - partition选举的leader
+
+- 如何提高kafka的消费能力？
+
+  增加topic的partition个数
