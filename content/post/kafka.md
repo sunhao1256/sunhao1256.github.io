@@ -50,3 +50,19 @@ tags: []
 - 如何提高kafka的消费能力？
 
   增加topic的partition个数
+
+- 如何配置topic的replication.factor
+
+  broker的server.property可以配置
+
+  ```properties
+  default.replication.factor = 1  //默认是1
+  ```
+
+  kafka提供的command tool的话也有创建参数
+
+  ```shell
+  ./kafka-topics.sh --bootstrap-server localhost:8092  --topic demo1 --create --replication-factor 3
+  ```
+
+  client肯定也可以
