@@ -41,10 +41,21 @@ tags: []
 - kafka的集群架构是什么样子的？
 
 - 如何构建一个kafka集群
+
 - 如何加入一个broker
 
 - kafkaController干嘛的
+  
+  - 是一个角色
+  
   - 在源码中的一个类。
+  
+  - 也是维护整个cluster的节点，通过zookeeper去选举。当client send a request的时候，
+  
+    eg: ./kafka-topics.sh --bootstrap-server localhost:9092  --topic demo1 --describe , localhost:9092只是一个broker，并不一定是kafkaController。
+  
+    也就是说如果我有个2个broker，一个8082和一个9092的话，8082的default.replication.factor=3，而9092的default.replication.factor=1的话，而8082是kafkaController的话 ，我这条command，会创建失败，因为整个集群里只有2个broker，不满足3。但是如果我的8082挂了，我执行这个命令，9092会成为kafkaController，从而创建一个replication.factor=1的topic
+  
   - partition选举的leader
 
 - 如何提高kafka的消费能力？
@@ -58,6 +69,8 @@ tags: []
   ```properties
   default.replication.factor = 1  //默认是1
   ```
+
+  - 如果是一个kafka cluster的话，
 
   kafka提供的command tool的话也有创建参数
 
