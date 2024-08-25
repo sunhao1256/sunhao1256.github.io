@@ -1,7 +1,7 @@
 ---
 title: "Kafka"
 date: 2024-07-04T10:18:22+08:00
-tags: []
+tags: ["middleware"]
 ---
 
 - difference between kafka and rabbitmq
@@ -58,6 +58,96 @@ tags: []
   
   - partition选举的leader
 
+  - 在BrokerServer启动的是即startup方法里，会创建KafkaController
+  
+    ```scala
+            /* start kafka controller */ //开启kafka controller
+            _kafkaController = new KafkaController(config, zkClient, time, metrics, brokerInfo, brokerEpoch, tokenManager, brokerFeatures, metadataCache, threadNamePrefix)
+            kafkaController.startup()
+    ```
+  
+    kafkaController的startup里
+  
+    ```scala
+      def startup(): Unit = {
+        zkClient.registerStateChangeHandler(new StateChangeHandler {
+          override val name: String = StateChangeHandlers.ControllerHandler
+          override def afterInitializingSession(): Unit = {
+            eventManager.put(RegisterBrokerAndReelect)
+          }
+          override def beforeInitializingSession(): Unit = {
+            val queuedEvent = eventManager.clearAndPut(Expire)
+    
+            // Block initialization of the new session until the expiration event is being handled,
+            // which ensures that all pending events have been processed before creating the new session
+            queuedEvent.awaitProcessing()
+          }
+        })
+        eventManager.put(Startup) //扔一个启动的event
+        eventManager.start() // 线程启动处理event
+      }
+    
+    ```
+  
+    ```scala
+      private def processStartup(): Unit = {
+        zkClient.registerZNodeChangeHandlerAndCheckExistence(controllerChangeHandler)
+        elect()
+      }
+      private def elect(): Unit = {
+        activeControllerId = zkClient.getControllerId.getOrElse(-1) //第一步就是去zookeeper获取/controller里有没有内容的，有的话，则controller已经是别的节点了
+        /*
+         * We can get here during the initial startup and the handleDeleted ZK callback. Because of the potential race condition,
+         * it's possible that the controller has already been elected when we get here. This check will prevent the following
+         * createEphemeralPath method from getting into an infinite loop if this broker is already the controller.
+         */
+        if (activeControllerId != -1) {
+          debug(s"Broker $activeControllerId has been elected as the controller, so stopping the election process.")
+          return
+        }
+    
+        try {
+          val (epoch, epochZkVersion) = zkClient.registerControllerAndIncrementControllerEpoch(config.brokerId)
+          controllerContext.epoch = epoch
+          controllerContext.epochZkVersion = epochZkVersion
+          activeControllerId = config.brokerId
+    
+          info(s"${config.brokerId} successfully elected as the controller. Epoch incremented to ${controllerContext.epoch} " +
+            s"and epoch zk version is now ${controllerContext.epochZkVersion}")
+    
+          onControllerFailover() //通知所有的broker，更新controller的信息,实际是通过ControllerBrokerRequestBatch这个去发送的，他给每个broker都创建了独立的ControllerBrokerRequestBatch，里面维护一个线程去接queue里的内容，kafka几乎所有的异步都是这么玩的。
+        } catch {
+          case e: ControllerMovedException =>
+            maybeResign()
+    
+            if (activeControllerId != -1)
+              debug(s"Broker $activeControllerId was elected as controller instead of broker ${config.brokerId}", e)
+            else
+              warn("A controller has been elected but just resigned, this will result in another round of election", e)
+          case t: Throwable =>
+            error(s"Error while electing or becoming controller on broker ${config.brokerId}. " +
+              s"Trigger controller movement immediately", t)
+            triggerControllerMove()
+        }
+      }
+    
+    
+    ```
+  
+    在kafkaController被创建完成，或者后续有变更的时候，都会通知给所有的broker，并且api协议用的枚举是UPDATE_METADATA
+  
+    ```java
+        public UpdateMetadataRequest(UpdateMetadataRequestData data, short version) {
+            super(ApiKeys.UPDATE_METADATA, version);
+            this.data = data;
+            // Do this from the constructor to make it thread-safe (even though it's only needed when some methods are called)
+            normalize();
+        }
+    
+    ```
+  
+    所以每个broker都会有KafkaApis这个类来接受的
+  
 - 如何提高kafka的消费能力？
 
   增加topic的partition个数
