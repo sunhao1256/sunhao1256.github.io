@@ -839,6 +839,10 @@ class NodeToControllerRequestThread(
 - 而中间加了一个中间类InterBrokerSendThread，用于衔接NodeToControllerRequestThread和ShutdownableThread，从NodeToControllerRequestThread里的队列取数据，并调用ShutdownableThread的doWork
 - NodeToControllerManager提供了sendRequest方法，实际上就是将对象扔进了NodeToControllerRequestThread的队列里
 
+# Producer的流程
+
+
+
 # kafka如何保证消息的消费顺序
 
 
