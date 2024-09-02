@@ -255,3 +255,9 @@ T{char}                 Till after [count]'th occurrence of {char} to the
 
 - Enter visual Model
 - Shift+dot  (ie, ".")
+
+# Format Code
+
+https://stackoverflow.com/questions/506075/how-do-i-fix-the-indentation-of-an-entire-file-in-vi
+
+`=`, the indent command can take motions. So, `gg` to get the start of the file, `=` to indent, `G` to the end of the file, `gg=G`.
