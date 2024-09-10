@@ -841,6 +841,234 @@ class NodeToControllerRequestThread(
 
 # Producer的流程
 
+Producer作为客户端
+
+## 使用方法
+
+```kotlin
+    private val producerProp = run {
+        val props = Properties()
+        props.setProperty("bootstrap.servers", "localhost:8092")
+        props["linger.ms"] = 1;
+        props.setProperty("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+        props.setProperty("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+        props
+    }
+
+
+    @Test
+    fun test_producer() {
+        val kafkaProducer = KafkaProducer<String, String>(producerProp)
+        val topic = "my-topic"
+        for (x in 2..5) {
+            println("what $x")
+            kafkaProducer.send(ProducerRecord(topic,  "what $x"))
+                .get()
+        }
+    }
+
+```
+
+## doSend()
+
+在doSend()方法里 先会等待metaData的更新
+
+```java
+    private Future<RecordMetadata> doSend(ProducerRecord<K, V> record, Callback callback) {
+        // Append callback takes care of the following:
+        //  - call interceptors and user callback on completion
+        //  - remember partition that is calculated in RecordAccumulator.append
+        AppendCallbacks<K, V> appendCallbacks = new AppendCallbacks<K, V>(callback, this.interceptors, record);
+
+        try {
+            throwIfProducerClosed();
+            // first make sure the metadata for the topic is available
+            long nowMs = time.milliseconds();
+            ClusterAndWaitTime clusterAndWaitTime;
+            try {
+                clusterAndWaitTime = waitOnMetadata(record.topic(), record.partition(), nowMs, maxBlockTimeMs);
+            } catch (KafkaException e) {
+                if (metadata.isClosed())
+                    throw new KafkaException("Producer closed while send in progress", e);
+                throw e;
+            }
+            nowMs += clusterAndWaitTime.waitedOnMetadataMs;
+            long remainingWaitMs = Math.max(0, maxBlockTimeMs - clusterAndWaitTime.waitedOnMetadataMs);
+            Cluster cluster = clusterAndWaitTime.cluster;
+
+          
+```
+
+## waitOnMetaData
+
+```java
+    private ClusterAndWaitTime waitOnMetadata(String topic, Integer partition, long nowMs, long maxWaitMs) throws InterruptedException {
+        // add topic to metadata topic list if it is not there already and reset expiry
+        Cluster cluster = metadata.fetch();
+
+        if (cluster.invalidTopics().contains(topic))
+            throw new InvalidTopicException(topic);
+
+      //添加到metadata里面，如果这个topic不在缓存里的话，则需要更新
+        metadata.add(topic, nowMs);
+
+        Integer partitionsCount = cluster.partitionCountForTopic(topic); //新的topic都会返回null
+        // Return cached metadata if we have it, and if the record's partition is either undefined
+        // or within the known partition range
+        if (partitionsCount != null && (partition == null || partition < partitionsCount))
+            return new ClusterAndWaitTime(cluster, 0);
+
+        long remainingWaitMs = maxWaitMs;
+        long elapsed = 0;
+        // Issue metadata requests until we have metadata for the topic and the requested partition,
+        // or until maxWaitTimeMs is exceeded. This is necessary in case the metadata
+        // is stale and the number of partitions for this topic has increased in the meantime.
+        long nowNanos = time.nanoseconds();
+        do {
+            if (partition != null) {
+                log.trace("Requesting metadata update for partition {} of topic {}.", partition, topic);
+            } else {
+                log.trace("Requesting metadata update for topic {}.", topic);
+            }
+          //更新下时间
+            metadata.add(topic, nowMs + elapsed);
+            int version = metadata.requestUpdateForTopic(topic); 
+          //更新topic的metadata,实际上是给metadata.needPartialUpdate = true
+          //在timeToNextUpdate这个方法中会检测，如果needPartialUpdate 为true，则timeToNextUpdate方法则返回0
+            sender.wakeup();
+            try {
+                metadata.awaitUpdate(version, remainingWaitMs);
+            } catch (TimeoutException ex) {
+                // Rethrow with original maxWaitMs to prevent logging exception with remainingWaitMs
+                throw new TimeoutException(
+                        String.format("Topic %s not present in metadata after %d ms.",
+                                topic, maxWaitMs));
+            }
+            cluster = metadata.fetch();
+            elapsed = time.milliseconds() - nowMs;
+            if (elapsed >= maxWaitMs) {
+                throw new TimeoutException(partitionsCount == null ?
+                        String.format("Topic %s not present in metadata after %d ms.",
+                                topic, maxWaitMs) :
+                        String.format("Partition %d of topic %s with partition count %d is not present in metadata after %d ms.",
+                                partition, topic, partitionsCount, maxWaitMs));
+            }
+            metadata.maybeThrowExceptionForTopic(topic);
+            remainingWaitMs = maxWaitMs - elapsed;
+            partitionsCount = cluster.partitionCountForTopic(topic);
+        } while (partitionsCount == null || (partition != null && partition >= partitionsCount));
+
+        producerMetrics.recordMetadataWait(time.nanoseconds() - nowNanos);
+
+        return new ClusterAndWaitTime(cluster, elapsed);
+    }
+
+```
+
+## Sender
+
+一个独立线程，负责真正调用client 去send请求
+
+```java
+    @Override
+    public void run() {
+        log.debug("Starting Kafka producer I/O thread.");
+
+        // main loop, runs until close is called
+        while (running) {
+            try {
+                runOnce();
+            } catch (Exception e) {
+                log.error("Uncaught error in kafka producer I/O thread: ", e);
+            }
+        }
+
+        log.debug("Beginning shutdown of Kafka producer I/O thread, sending remaining records.");
+
+        // okay we stopped accepting requests but there may still be
+        // requests in the transaction manager, accumulator or waiting for acknowledgment,
+        // wait until these are completed.
+        while (!forceClose && ((this.accumulator.hasUndrained() || this.client.inFlightRequestCount() > 0) || hasPendingTransactionalRequests())) {
+            try {
+                runOnce();
+            } catch (Exception e) {
+                log.error("Uncaught error in kafka producer I/O thread: ", e);
+            }
+        }
+
+        // Abort the transaction if any commit or abort didn't go through the transaction manager's queue
+        while (!forceClose && transactionManager != null && transactionManager.hasOngoingTransaction()) {
+            if (!transactionManager.isCompleting()) {
+                log.info("Aborting incomplete transaction due to shutdown");
+                transactionManager.beginAbort();
+            }
+            try {
+                runOnce();
+            } catch (Exception e) {
+                log.error("Uncaught error in kafka producer I/O thread: ", e);
+            }
+        }
+
+        if (forceClose) {
+            // We need to fail all the incomplete transactional requests and batches and wake up the threads waiting on
+            // the futures.
+            if (transactionManager != null) {
+                log.debug("Aborting incomplete transactional requests due to forced shutdown");
+                transactionManager.close();
+            }
+            log.debug("Aborting incomplete batches due to forced shutdown");
+            this.accumulator.abortIncompleteBatches();
+        }
+        try {
+            this.client.close();
+        } catch (Exception e) {
+            log.error("Failed to close network client", e);
+        }
+
+        log.debug("Shutdown of Kafka producer I/O thread has completed.");
+    }
+
+    /**
+     * Run a single iteration of sending
+     *
+     */
+    void runOnce() {
+        if (transactionManager != null) {
+            try {
+                transactionManager.maybeResolveSequences();
+
+                // do not continue sending if the transaction manager is in a failed state
+                if (transactionManager.hasFatalError()) {
+                    RuntimeException lastError = transactionManager.lastError();
+                    if (lastError != null)
+                        maybeAbortBatches(lastError);
+                    client.poll(retryBackoffMs, time.milliseconds());
+                    return;
+                }
+
+                // Check whether we need a new producerId. If so, we will enqueue an InitProducerId
+                // request which will be sent below
+                transactionManager.bumpIdempotentEpochAndResetIdIfNeeded();
+
+                if (maybeSendAndPollTransactionalRequest()) {
+                    return;
+                }
+            } catch (AuthenticationException e) {
+                // This is already logged as error, but propagated here to perform any clean ups.
+                log.trace("Authentication exception while processing transactional request", e);
+                transactionManager.authenticationFailed(e);
+            }
+        }
+
+        long currentTimeMs = time.milliseconds();
+        long pollTimeout = sendProducerData(currentTimeMs);
+        client.poll(pollTimeout, currentTimeMs);
+    }
+
+```
+
+
+
 
 
 # kafka如何保证消息的消费顺序
