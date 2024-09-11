@@ -1067,9 +1067,9 @@ Producer作为客户端
 
 ```
 
+## producer更新metadata的流程
 
-
-
+- producer创建完毕
 
 # kafka如何保证消息的消费顺序
 
