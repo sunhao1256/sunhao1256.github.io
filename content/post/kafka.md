@@ -1070,6 +1070,11 @@ Producer作为客户端
 ## producer更新metadata的流程
 
 - producer创建完毕
+- 内部的Sender是独立的一个线程，实际上是while true去一直通过selector去检查是否有事件
+- 实际上是这个Sender里面有runOnce，里面最后都会调用kafka提供的NetworkClient的Poll方法，实际上里面是通过nio的select方法，只不过有一个timeout
+  - while true
+  - 执行一个select timeout方法
+  - 如果需要发一个请求的话，则调用sender的wakerup，实际上就是调的networkClient里的nio selector的wakeup，如果当前在select阻塞中立刻重新返回结果。
 
 # kafka如何保证消息的消费顺序
 
