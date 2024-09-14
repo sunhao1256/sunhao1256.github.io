@@ -1569,6 +1569,33 @@ private void doSend(ClientRequest clientRequest, boolean isInternalRequest, long
 
 ```
 
+# Consumer的流程
+
+## ConsumerGroup
+
+消费者组，就是只一个topic可以有多个消费者消费。也可以由多个消费者组成一个组去消费。
+
+
+
+
+
+## Consumer能多线程去消费吗
+
+```java
+//不能   
+private void acquire() {
+        final Thread thread = Thread.currentThread();
+        final long threadId = thread.getId();
+        if (threadId != currentThread.get() && !currentThread.compareAndSet(NO_CURRENT_THREAD, threadId))
+            throw new ConcurrentModificationException("KafkaConsumer is not safe for multi-threaded access. " +
+                    "currentThread(name: " + thread.getName() + ", id: " + threadId + ")" +
+                    " otherThread(id: " + currentThread.get() + ")"
+            );
+        refcount.incrementAndGet();
+    }
+
+```
+
 
 
 # kafka如何保证消息的消费顺序
