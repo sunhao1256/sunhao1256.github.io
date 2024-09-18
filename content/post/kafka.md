@@ -1575,7 +1575,11 @@ private void doSend(ClientRequest clientRequest, boolean isInternalRequest, long
 
 消费者组，就是只一个topic可以有多个消费者消费。也可以由多个消费者组成一个组去消费。
 
+消费者组是说一群消费者当做一个消费者去消费topic，每个消费者之间是独立的，他们的offset就是各自的。
 
+比如说消费者A和消费者B是2个组的，那么他们连接上kafka的时候各自获取到自己的offset，我给这个topic发一条消息，**两人都会收到**。
+
+如果消费者A和消费者B都属于Demo组的话，那么他们连接上kafka的时候的offset是整个组的，也就是说我给这个topic发一条消息，**只会有一个人收到**。
 
 
 
